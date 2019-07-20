@@ -2,13 +2,10 @@
 #define RENDERWINDOW_H
 
 #include <QWindow>
-#include <QOpenGLFunctions_4_1_Core>
 #include <QTimer>
 #include <QElapsedTimer>
-#include <vector>
 #include "texture.h"
 #include "camera.h"
-#include "matrix4x4.h"
 #include "visualobject.h"
 #include "input.h"
 

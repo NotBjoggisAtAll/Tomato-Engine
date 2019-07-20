@@ -1,16 +1,13 @@
 #include "renderwindow.h"
+#include "innpch.h"
 #include <QTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLDebugLogger>
 #include <QKeyEvent>
 #include <QStatusBar>
-#include <QDebug>
 
-#include "shader.h"
 #include "mainwindow.h"
-#include "matrix4x4.h"
-#include "gsl_math.h"
 
 #include "xyz.h"
 #include "trianglesurface.h"

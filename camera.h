@@ -1,8 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "matrix4x4.h"
-#include "vector3d.h"
+#include "innpch.h"
 
 class Camera
 {

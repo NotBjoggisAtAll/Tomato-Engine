@@ -1,8 +1,8 @@
+#include "innpch.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QSurfaceFormat>
-#include <QDebug>
 #include <QDesktopWidget>
 
 #include "renderwindow.h"

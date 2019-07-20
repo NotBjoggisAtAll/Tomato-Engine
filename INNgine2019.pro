@@ -1,11 +1,36 @@
 QT          += core gui widgets
 
 TEMPLATE    = app
-CONFIG      += c++11
+CONFIG      += c++17
 
-TARGET      = 3D-eksamen
+TARGET      = INNgine2019
+
+PRECOMPILED_HEADER = innpch.h
 
 INCLUDEPATH +=  ./GSL
+
+HEADERS += \
+    GSL/matrix2x2.h \
+    GSL/matrix3x3.h \
+    GSL/matrix4x4.h \
+    GSL/vector2d.h \
+    GSL/vector3d.h \
+    GSL/vector4d.h \
+    GSL/gsl_math.h \
+    GSL/math_constants.h \
+#    innpch.h \
+    renderwindow.h \
+    shader.h \
+    mainwindow.h \
+    triangle.h \
+    texture.h \
+    vertex.h \
+    xyz.h \
+    gltypes.h \
+    trianglesurface.h \
+    input.h \
+    visualobject.h \
+    camera.h
 
 SOURCES += main.cpp \
     GSL/matrix2x2.cpp \
@@ -27,27 +52,7 @@ SOURCES += main.cpp \
     visualobject.cpp \
     camera.cpp
 
-HEADERS += \
-    GSL/matrix2x2.h \
-    GSL/matrix3x3.h \
-    GSL/matrix4x4.h \
-    GSL/vector2d.h \
-    GSL/vector3d.h \
-    GSL/vector4d.h \
-    GSL/gsl_math.h \
-    GSL/math_constants.h \
-    renderwindow.h \
-    shader.h \
-    mainwindow.h \
-    triangle.h \
-    texture.h \
-    vertex.h \
-    xyz.h \
-    gltypes.h \
-    trianglesurface.h \
-    input.h \
-    visualobject.h \
-    camera.h
+
 
 FORMS += \
     mainwindow.ui

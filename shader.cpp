@@ -1,8 +1,6 @@
+#include "innpch.h"
 #include "shader.h"
-#include <string>
-#include <fstream>
 #include <sstream>
-#include <iostream>
 
 //#include "GL/glew.h" - using QOpenGLFunctions instead
 

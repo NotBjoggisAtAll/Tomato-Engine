@@ -1,8 +1,6 @@
+#include "innpch.h"
 #include "trianglesurface.h"
-#include "vertex.h"
-#include "math_constants.h"
 #include <cmath>
-#include <QDebug>
 
 TriangleSurface::TriangleSurface() : VisualObject() {
     Vertex v{};

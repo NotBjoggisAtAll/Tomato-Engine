@@ -1,10 +1,6 @@
 #ifndef VISUALOBJECT_H
 #define VISUALOBJECT_H
 
-#include <QOpenGLFunctions_4_1_Core>
-#include <vector>
-#include "vertex.h"
-#include "matrix4x4.h"
 #include "shader.h"
 
 class RenderWindow;

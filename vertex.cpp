@@ -1,5 +1,5 @@
+#include "innpch.h"
 #include "vertex.h"
-#include <iostream>
 
 Vertex::Vertex() { }
 

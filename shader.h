@@ -1,8 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <QOpenGLFunctions_4_1_Core>
-
 //#include "GL/glew.h" //We use QOpenGLFunctions instead, so no need for Glew (or GLAD)!
 
 //This class is pretty much a copy of the shader class at

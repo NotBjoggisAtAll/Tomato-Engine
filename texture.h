@@ -1,13 +1,15 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <QOpenGLFunctions_4_1_Core>
+#include "innpch.h"
 
 /**
     \brief Simple class for creating textures from a bitmap file.
     \author Dag Nylund
     \date 16/02/05
  */
+
+
 class Texture : protected QOpenGLFunctions_4_1_Core
 {
 private:

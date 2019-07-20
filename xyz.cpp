@@ -1,6 +1,5 @@
+#include "innpch.h"
 #include "xyz.h"
-#include "vertex.h"
-#include "shader.h"
 
 XYZ::XYZ() {
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 1.f, 0.f, 0.f});

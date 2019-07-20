@@ -1,5 +1,5 @@
+#include "innpch.h"
 #include "camera.h"
-#include <QDebug>
 
 Camera::Camera()
 {

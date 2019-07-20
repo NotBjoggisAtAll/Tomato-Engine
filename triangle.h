@@ -1,10 +1,6 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include <QOpenGLFunctions_4_1_Core>
-#include <vector>
-#include <matrix4x4.h>
-
 class Triangle :  protected QOpenGLFunctions_4_1_Core
 {
 public:
