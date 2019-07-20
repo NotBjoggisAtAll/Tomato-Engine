@@ -59,6 +59,11 @@ void RenderWindow::init()
     //must call this to use OpenGL functions
     initializeOpenGLFunctions();
 
+    //Print render version info:
+    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
+
     //Start the Qt OpenGL debugger
     //Really helpfull when doing OpenGL
     //Supported on most Windows machines
