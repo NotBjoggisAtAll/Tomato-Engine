@@ -1,4 +1,4 @@
-# GSOpenGL2019
+# INNgine2019
 Kode for kurset Spillmotorarkitektur, høsten 2019.
 Repositoriet er lukket og privat for lærere og studenter i denne klassa.
 
