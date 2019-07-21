@@ -1,6 +1,9 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <QOpenGLFunctions_4_1_Core>
+#include "matrix4x4.h"
+
 //#include "GL/glew.h" //We use QOpenGLFunctions instead, so no need for Glew (or GLAD)!
 
 //This class is pretty much a copy of the shader class at
@@ -8,6 +11,9 @@
 //which is based on stuff from http://learnopengl.com/ and http://open.gl/.
 
 //must inherit from QOpenGLFunctions_4_1_Core, since we use that instead of glfw/glew/glad
+
+class Camera;
+
 class Shader : protected QOpenGLFunctions_4_1_Core
 {
 public:
@@ -20,8 +26,20 @@ public:
     //Get program number for this shader
     GLuint getProgram() const;
 
-private:
+    virtual void transmitUniformData(gsl::Matrix4x4 *modelMatrix, class Material *material = nullptr);
+
+    void setCurrentCamera(Camera *currentCamera);
+
+    Camera *getCurrentCamera() const;
+
+protected:
     GLuint program{0};
+    GLint mMatrixUniform{-1};
+    GLint vMatrixUniform{-1};
+    GLint pMatrixUniform{-1};
+
+    Camera *mCurrentCamera{nullptr};
+
 };
 
 #endif

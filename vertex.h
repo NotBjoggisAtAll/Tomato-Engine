@@ -1,6 +1,9 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
+#include "vector2d.h"
+#include "vector3d.h"
+
 class Vertex {
 public:
     Vertex();

@@ -1,5 +1,6 @@
 #include "innpch.h"
 #include "xyz.h"
+#include "shader.h"
 
 XYZ::XYZ() {
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 1.f, 0.f, 0.f});
@@ -49,6 +50,8 @@ void XYZ::init()
 
 void XYZ::draw()
 {
+    glUseProgram(mMaterial.mShader->getProgram());
     glBindVertexArray( mVAO );
+    mMaterial.mShader->transmitUniformData(&mMatrix);
     glDrawArrays(GL_LINES, 0, mVertices.size());
 }

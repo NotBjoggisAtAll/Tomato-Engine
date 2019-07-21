@@ -18,19 +18,31 @@ HEADERS += \
     GSL/vector4d.h \
     GSL/gsl_math.h \
     GSL/math_constants.h \
-#    innpch.h \
     renderwindow.h \
     shader.h \
     mainwindow.h \
     triangle.h \
     texture.h \
+    billboard.h \
     vertex.h \
     xyz.h \
+    visualobject.h \
+    octahedronball.h \
+    billboard.h \
+    camera.h \
+    octahedronball.h \
     gltypes.h \
     trianglesurface.h \
     input.h \
-    visualobject.h \
-    camera.h
+    material.h \
+    light.h \
+    objmesh.h \
+#    innpch.h \
+    colorshader.h \
+    textureshader.h \
+    skybox.h \
+    phongshader.h \
+
 
 SOURCES += main.cpp \
     GSL/matrix2x2.cpp \
@@ -41,18 +53,25 @@ SOURCES += main.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
     renderwindow.cpp \
-    shader.cpp \
     mainwindow.cpp \
+    shader.cpp \
     triangle.cpp \
     texture.cpp \
+    billboard.cpp \
     vertex.cpp \
+    visualobject.cpp \
+    camera.cpp \
+    octahedronball.cpp \
     xyz.cpp \
     trianglesurface.cpp \
     input.cpp \
-    visualobject.cpp \
-    camera.cpp
-
-
+    material.cpp \
+    light.cpp \
+    objmesh.cpp \
+    colorshader.cpp \
+    textureshader.cpp \
+    skybox.cpp \
+    phongshader.cpp
 
 FORMS += \
     mainwindow.ui
@@ -61,4 +80,8 @@ DISTFILES += \
     plainfragment.frag \
     plainvertex.vert \
     texturefragmet.frag \
-    texturevertex.vert
+    texturevertex.vert \
+    phong.vert \
+    phong.frag \
+    GSL/README.md \
+    README.md

@@ -5,11 +5,13 @@
 #include <QOpenGLFunctions_4_1_Core>
 #include <QDebug>
 
-//STL
+//STL and standard includes
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 //Own stuff
 #include "matrix4x4.h"

@@ -1,15 +1,13 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "innpch.h"
+#include <QOpenGLFunctions_4_1_Core>
 
 /**
     \brief Simple class for creating textures from a bitmap file.
     \author Dag Nylund
     \date 16/02/05
  */
-
-
 class Texture : protected QOpenGLFunctions_4_1_Core
 {
 private:
@@ -20,10 +18,10 @@ private:
     int mRows;
     int mnByte;
     void readBitmap(const std::string& filename);
-    void setTexture();
+    void setTexture(GLuint textureUnit);
 public:
-    Texture();  //basic texture from code
-    Texture(const std::string &filename);
+    Texture(GLuint textureUnit = 0);  //basic texture from code
+    Texture(const std::string &filename, GLuint textureUnit = 0);
     GLuint id() const;
 
 private:

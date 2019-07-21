@@ -1,5 +1,5 @@
-#include "renderwindow.h"
 #include "innpch.h"
+#include "renderwindow.h"
 #include <QTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
@@ -7,10 +7,18 @@
 #include <QKeyEvent>
 #include <QStatusBar>
 
+#include "shader.h"
 #include "mainwindow.h"
 
 #include "xyz.h"
+#include "octahedronball.h"
+#include "skybox.h"
+#include "billboard.h"
 #include "trianglesurface.h"
+#include "objmesh.h"
+#include "light.h"
+#include "colorshader.h"
+#include "textureshader.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -80,37 +88,94 @@ void RenderWindow::init()
     //NB: hardcoded path to files! You have to change this if you change directories for the project.
     //Qt makes a build-folder besides the project folder. That is why we go down one directory
     // (out of the build-folder) and then up into the project folder.
-    mShaderProgram[0] = new Shader("../GSOpenGL2019/plainvertex.vert", "../GSOpenGL2019/plainfragment.frag");
+    mShaderProgram[0] = new ColorShader("../INNgine2019/plainvertex.vert", "../INNgine2019/plainfragment.frag");
     qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
-    mShaderProgram[1]= new Shader("../GSOpenGL2019/texturevertex.vert", "../GSOpenGL2019/texturefragmet.frag");
+    mShaderProgram[1]= new TextureShader("../INNgine2019/texturevertex.vert", "../INNgine2019/texturefragmet.frag");
     qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
-
-    setupPlainShader(0);
-    setupTextureShader(1);
+    mShaderProgram[2]= new Shader("../INNgine2019/phong.vert", "../INNgine2019/phong.frag");
+    qDebug() << "Phong shader program id: " << mShaderProgram[2]->getProgram();
 
     //**********************  Texture stuff: **********************
-    mTexture[0] = new Texture();
-    mTexture[1] = new Texture("../GSOpenGL2019/Assets/hund.bmp");
+    mTexture[0] = new Texture("../INNgine2019/Assets/white.bmp");
+    mTexture[1] = new Texture("../INNgine2019/Assets/hund.bmp", 1);
+    mTexture[2] = new Texture("../INNgine2019/Assets/skybox.bmp", 2);
 
     //Set the textures loaded to a texture unit
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mTexture[0]->id());
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mTexture[1]->id());
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
 
     //********************** Making the objects to be drawn **********************
     VisualObject *temp = new XYZ();
     temp->init();
+    temp->setShader(mShaderProgram[0]);
+    mVisualObjects.push_back(temp);
+
+    temp = new OctahedronBall(2);
+    temp->init();
+    temp->setShader(mShaderProgram[0]);
+    temp->mMatrix.scale(0.5f, 0.5f, 0.5f);
+    temp->mName = "Ball";
+    mVisualObjects.push_back(temp);
+    mPlayer = temp;
+
+    temp = new SkyBox();
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMaterial.setTextureUnit(2);
+    temp->mMatrix.scale(15.f);
+    temp->mName = "Cube";
+    mVisualObjects.push_back(temp);
+
+    temp = new BillBoard();
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(4.f, 0.f, -3.5f);
+    temp->mName = "Billboard";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(1);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
+    mVisualObjects.push_back(temp);
+
+    mLight = new Light();
+    temp = mLight;
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
+    //    temp->mMatrix.rotateY(180.f);
+    temp->mName = "light";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(0);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
     mVisualObjects.push_back(temp);
 
     //testing triangle surface class
-    temp = new TriangleSurface();
+//    temp = new TriangleSurface("../INNgine2019/Assets/box.txt");
+//    temp->init();
+//    temp->mMatrix.rotateY(180.f);
+//    temp->setShader(mShaderProgram[0]);
+//    mVisualObjects.push_back(temp);
+
+    //    testing objmesh class
+    temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+    temp->setShader(mShaderProgram[0]);
     temp->init();
+    temp->mMatrix.translate(2.f, 0.f, -2.f);
     mVisualObjects.push_back(temp);
 
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
-    mCurrentCamera->setPosition(gsl::Vector3D(1.f, .5f, 2.f));
+    mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
+//    mCurrentCamera->yaw(45.f);
+//    mCurrentCamera->pitch(5.f);
+
+    //new system - shader sends uniforms so needs to get the view and projection matrixes
+    mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
+    mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
 }
 
 ///Called each frame - doing the rendering
@@ -127,20 +192,10 @@ void RenderWindow::render()
     //to clear the screen for each redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //******** This should be done with a loop!
+    for (auto visObject: mVisualObjects)
     {
-        glUseProgram(mShaderProgram[0]->getProgram());
-        glUniformMatrix4fv( vMatrixUniform0, 1, GL_TRUE, mCurrentCamera->mViewMatrix.constData());
-        glUniformMatrix4fv( pMatrixUniform0, 1, GL_TRUE, mCurrentCamera->mProjectionMatrix.constData());
-        glUniformMatrix4fv( mMatrixUniform0, 1, GL_TRUE, mVisualObjects[0]->mMatrix.constData());
-        mVisualObjects[0]->draw();
-
-        glUseProgram(mShaderProgram[1]->getProgram());
-        glUniformMatrix4fv( vMatrixUniform1, 1, GL_TRUE, mCurrentCamera->mViewMatrix.constData());
-        glUniformMatrix4fv( pMatrixUniform1, 1, GL_TRUE, mCurrentCamera->mProjectionMatrix.constData());
-        glUniformMatrix4fv( mMatrixUniform1, 1, GL_TRUE, mVisualObjects[1]->mMatrix.constData());
-        glUniform1i(mTextureUniform, 1);
-        mVisualObjects[1]->draw();
+        visObject->draw();
+        checkForGLerrors();
     }
 
     //Calculate framerate before

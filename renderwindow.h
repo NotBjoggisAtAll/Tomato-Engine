@@ -12,6 +12,7 @@
 class QOpenGLContext;
 class Shader;
 class MainWindow;
+class Light;
 
 /// This inherits from QWindow to get access to the Qt functionality and
 /// OpenGL surface.
@@ -56,6 +57,9 @@ private:
     GLint mTextureUniform{-1};
 
     std::vector<VisualObject*> mVisualObjects;
+
+    VisualObject *mPlayer;  //the controllable object
+    Light *mLight;
 
     Camera *mCurrentCamera{nullptr};
 
