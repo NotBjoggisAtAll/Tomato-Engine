@@ -21,6 +21,7 @@ private:
     gsl::Vector3D normal{0.f, 0.f, -1.f};
 
     bool mConstantYUp{true};
+    bool mNormalVersion{false};     //flip between two ways to calculate forward direction
 };
 
 #endif // BILLBOARD_H

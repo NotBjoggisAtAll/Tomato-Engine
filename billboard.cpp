@@ -6,12 +6,12 @@ BillBoard::BillBoard()
 {
     mVertices.insert( mVertices.end(),
     {
-        // Positions            // Normals          //UVs
-        Vertex{gsl::Vector3D(-2.f, -2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(0.f, 0.f)},       // Bottom Left
-        Vertex{gsl::Vector3D(2.f, -2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(1.f, 0.f)},       // Bottom Right
-        Vertex{gsl::Vector3D(-2.f, 2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(0.f, 1.f)},       // Top Left
-        Vertex{gsl::Vector3D(2.f,  2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(1.f, 1.f)}       // Top Right
-    });
+                          // Positions            // Normals          //UVs
+                          Vertex{gsl::Vector3D(-2.f, -2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(0.f, 0.f)},       // Bottom Left
+                          Vertex{gsl::Vector3D(2.f, -2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(1.f, 0.f)},       // Bottom Right
+                          Vertex{gsl::Vector3D(-2.f, 2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(0.f, 1.f)},       // Top Left
+                          Vertex{gsl::Vector3D(2.f,  2.f,  0.f),   gsl::Vector3D(0.0f, 0.0f, 1.0f),     gsl::Vector2D(1.f, 1.f)}       // Top Right
+                      });
 
     mMatrix.setToIdentity();
 }
@@ -65,11 +65,23 @@ void BillBoard::setConstantYUp(bool constantUp)
 void BillBoard::draw()
 {
     //find direction between this and camera
-    gsl::Vector3D camPosition = mMaterial.mShader->getCurrentCamera()->position();
-    //cancel heigth info so billboard is allways upright:
-    if(mConstantYUp)
-        camPosition.setY(mMatrix.getPosition().y);
-    gsl::Vector3D direction = gsl::Vector3D(mMatrix.getPosition()) - (-camPosition);
+    gsl::Vector3D direction{};
+    if(mNormalVersion)
+    {
+        gsl::Vector3D camPosition = mMaterial.mShader->getCurrentCamera()->position();
+        //cancel heigth info so billboard is allways upright:
+        if(mConstantYUp)
+            camPosition.setY(mMatrix.getPosition().y);
+        direction = camPosition - gsl::Vector3D(mMatrix.getPosition());
+    }
+    else {
+        gsl::Vector3D camDirection = mMaterial.mShader->getCurrentCamera()->forward();
+        //cancel heigth info so billboard is allways upright:
+        if(mConstantYUp)
+            camDirection.setY(mMatrix.getPosition().y);
+        direction = camDirection * -1;
+    }
+
     direction.normalize();
     //set rotation to this direction
     mMatrix.setRotationToVector(direction);
