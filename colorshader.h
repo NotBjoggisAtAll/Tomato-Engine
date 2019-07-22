@@ -6,7 +6,7 @@
 class ColorShader : public Shader
 {
 public:
-    ColorShader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath = nullptr);
+    ColorShader(const std::string shaderName, const GLchar *geometryPath = nullptr);
     virtual ~ColorShader() override;
 };
 

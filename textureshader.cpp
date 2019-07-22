@@ -2,8 +2,8 @@
 #include "textureshader.h"
 #include "material.h"
 
-TextureShader::TextureShader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath)
-    :Shader(vertexPath, fragmentPath, geometryPath)
+TextureShader::TextureShader(const std::string shaderName, const GLchar *geometryPath)
+    :Shader(shaderName, geometryPath)
 {
     mMatrixUniform = glGetUniformLocation( program, "mMatrix" );
     vMatrixUniform = glGetUniformLocation( program, "vMatrix" );

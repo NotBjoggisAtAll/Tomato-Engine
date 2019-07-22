@@ -25,5 +25,6 @@
 #include "gltypes.h"
 #include "gsl_math.h"
 #include "math_constants.h"
+#include "constants.h"
 
 #endif // INNPCH_H

@@ -1,8 +1,8 @@
 #include "innpch.h"
 #include "colorshader.h"
 
-ColorShader::ColorShader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath)
-    :Shader(vertexPath, fragmentPath, geometryPath)
+ColorShader::ColorShader(const std::string shaderName, const GLchar *geometryPath)
+    :Shader(shaderName, geometryPath)
 {
     mMatrixUniform = glGetUniformLocation( program, "mMatrix" );
     vMatrixUniform = glGetUniformLocation( program, "vMatrix" );

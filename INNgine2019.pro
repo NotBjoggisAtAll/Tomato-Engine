@@ -18,6 +18,7 @@ HEADERS += \
     GSL/vector4d.h \
     GSL/gsl_math.h \
     GSL/math_constants.h \
+    constants.h \
     renderwindow.h \
     shader.h \
     mainwindow.h \
@@ -77,11 +78,11 @@ FORMS += \
     mainwindow.ui
 
 DISTFILES += \
-    plainfragment.frag \
-    plainvertex.vert \
-    texturefragmet.frag \
-    texturevertex.vert \
-    phong.vert \
-    phong.frag \
+    Shaders/phongshader.frag \
+    Shaders/phongshader.vert \
+    Shaders/plainshader.frag \
+    Shaders/plainshader.vert \
+    Shaders/textureshader.frag \
     GSL/README.md \
-    README.md
+    README.md \
+    Shaders/textureshader.vert

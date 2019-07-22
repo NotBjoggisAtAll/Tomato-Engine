@@ -6,9 +6,12 @@
 #include "camera.h"
 #include "matrix4x4.h"
 
-Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath)
+Shader::Shader(const std::string shaderName, const GLchar *geometryPath)
 {
     initializeOpenGLFunctions();    //must do this to get access to OpenGL functions in QOpenGLFunctions
+    std::string vertexName = shaderName + ".vert";
+    std::string fragmentName = shaderName + ".frag";
+
 
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -16,13 +19,16 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLcha
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
 
+    std::string vertexWithPath = gsl::shaderFilePath + vertexName;
+    std::string fragmentWithPath = gsl::shaderFilePath + fragmentName;
+
     // Open files and check for errors
-    vShaderFile.open( vertexPath );
+    vShaderFile.open( vertexWithPath );
     if(!vShaderFile)
-        std::cout << "ERROR SHADER FILE " << vertexPath << " NOT SUCCESFULLY READ" << std::endl;
-    fShaderFile.open( fragmentPath );
+        std::cout << "ERROR SHADER FILE " << vertexWithPath << " NOT SUCCESFULLY READ" << std::endl;
+    fShaderFile.open( fragmentWithPath );
     if(!fShaderFile)
-        std::cout << "ERROR SHADER FILE " << fragmentPath << " NOT SUCCESFULLY READ" << std::endl;
+        std::cout << "ERROR SHADER FILE " << vertexWithPath << " NOT SUCCESFULLY READ" << std::endl;
     std::stringstream vShaderStream, fShaderStream;
     // Read file's buffer contents into streams
     vShaderStream << vShaderFile.rdbuf( );
@@ -74,7 +80,7 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLcha
     if ( !success )
     {
         glGetShaderInfoLog( vertex, 512, nullptr, infoLog );
-        std::cout << "ERROR SHADER VERTEX " << vertexPath << " COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR SHADER VERTEX " << shaderName << " COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     // Fragment Shader
     fragment = glCreateShader( GL_FRAGMENT_SHADER );
@@ -85,7 +91,7 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLcha
     if ( !success )
     {
         glGetShaderInfoLog( fragment, 512, nullptr, infoLog );
-        std::cout << "ERROR SHADER FRAGMENT " << fragmentPath << " COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR SHADER FRAGMENT " << shaderName << " COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     // Geometry Shader
     if (gShaderCode)
@@ -122,7 +128,7 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLcha
     if(geometryPath)
         glDeleteShader(geometry);
 
-    std::cout << "Shader read: " << vertexPath << std::endl;
+    std::cout << "Shader read: " << shaderName << std::endl;
 }
 
 Shader::~Shader()
