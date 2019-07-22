@@ -19,6 +19,7 @@
 #include "light.h"
 #include "colorshader.h"
 #include "textureshader.h"
+#include "phongshader.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -42,6 +43,10 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
 
 RenderWindow::~RenderWindow()
 {
+    for (int i = 0; i < 4; ++i) {
+        if (mShaderProgram[i])
+            delete mShaderProgram[i];
+    }
 }
 
 /// Sets up the general OpenGL stuff and the buffers needed to render a triangle
@@ -92,7 +97,7 @@ void RenderWindow::init()
     qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
     mShaderProgram[1]= new TextureShader("../INNgine2019/texturevertex.vert", "../INNgine2019/texturefragmet.frag");
     qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
-    mShaderProgram[2]= new Shader("../INNgine2019/phong.vert", "../INNgine2019/phong.frag");
+    mShaderProgram[2]= new PhongShader("../INNgine2019/phong.vert", "../INNgine2019/phong.frag");
     qDebug() << "Phong shader program id: " << mShaderProgram[2]->getProgram();
 
     //**********************  Texture stuff: **********************

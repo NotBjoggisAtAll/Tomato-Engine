@@ -7,6 +7,7 @@ class TextureShader : public Shader
 {
 public:
     TextureShader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath = nullptr);
+    virtual ~TextureShader() override;
 
     void transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material) override;
 

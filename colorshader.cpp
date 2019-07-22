@@ -8,3 +8,8 @@ ColorShader::ColorShader(const GLchar *vertexPath, const GLchar *fragmentPath, c
     vMatrixUniform = glGetUniformLocation( program, "vMatrix" );
     pMatrixUniform = glGetUniformLocation( program, "pMatrix" );
 }
+
+ColorShader::~ColorShader()
+{
+    qDebug() << "Deleting ColorShader";
+}

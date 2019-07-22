@@ -21,6 +21,11 @@ PhongShader::PhongShader(const GLchar *vertexPath, const GLchar *fragmentPath, c
     mCameraPositionUniform = glGetUniformLocation( program, "cameraPosition" );
 }
 
+PhongShader::~PhongShader()
+{
+    qDebug() << "Deleting PhongShader";
+}
+
 void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
     Shader::transmitUniformData(modelMatrix);

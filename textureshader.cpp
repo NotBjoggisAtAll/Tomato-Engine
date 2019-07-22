@@ -12,6 +12,11 @@ TextureShader::TextureShader(const GLchar *vertexPath, const GLchar *fragmentPat
     textureUniform = glGetUniformLocation(program, "textureSampler");
 }
 
+TextureShader::~TextureShader()
+{
+    qDebug() << "Deleting TextureShader";
+}
+
 void TextureShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
     Shader::transmitUniformData(modelMatrix);

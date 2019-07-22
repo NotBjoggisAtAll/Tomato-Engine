@@ -7,6 +7,7 @@ class PhongShader : public Shader
 {
 public:
     PhongShader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLchar *geometryPath = nullptr);
+    virtual ~PhongShader() override;
 
     void transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material) override;
 

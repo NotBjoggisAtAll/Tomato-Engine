@@ -125,6 +125,12 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, const GLcha
     std::cout << "Shader read: " << vertexPath << std::endl;
 }
 
+Shader::~Shader()
+{
+    qDebug() << "shader program " << program;
+    glDeleteProgram(program);
+}
+
 void Shader::use()
 {
     glUseProgram( this->program );
