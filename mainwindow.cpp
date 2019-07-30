@@ -45,6 +45,9 @@ void MainWindow::init()
     //Set the number of samples used for multisampling
     format.setSamples(8);
 
+    //Turn off VSync. If this is set to 1, VSync is on - default behaviour
+    format.setSwapInterval(0);
+
     //Just prints out what OpenGL format we will get
     // - this can be deleted
     qDebug() << "Requesting surface format: " << format;

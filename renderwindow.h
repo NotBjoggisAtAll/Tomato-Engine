@@ -4,6 +4,7 @@
 #include <QWindow>
 #include <QTimer>
 #include <QElapsedTimer>
+#include <chrono>
 #include "texture.h"
 #include "camera.h"
 #include "visualobject.h"
@@ -85,6 +86,8 @@ private:
     void startOpenGLDebugger();
 
     void handleInput();
+
+    std::chrono::high_resolution_clock::time_point mLastTime;
 
 protected:
     //The QWindow that we inherit from has these functions to capture

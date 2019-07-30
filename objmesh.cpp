@@ -206,5 +206,5 @@ void ObjMesh::draw()
     glBindVertexArray( mVAO );
     mMaterial.mShader->transmitUniformData(&mMatrix, &mMaterial);
     glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, nullptr);
-    glBindVertexArray(0);
+//    glBindVertexArray(0);
 }

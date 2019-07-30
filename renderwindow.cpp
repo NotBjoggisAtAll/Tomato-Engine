@@ -6,8 +6,8 @@
 #include <QOpenGLDebugLogger>
 #include <QKeyEvent>
 #include <QStatusBar>
+#include <chrono>
 
-#include "shader.h"
 #include "mainwindow.h"
 
 #include "xyz.h"
@@ -114,49 +114,51 @@ void RenderWindow::init()
     glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
 
     //********************** Making the objects to be drawn **********************
-    VisualObject *temp = new XYZ();
-    temp->init();
-    temp->setShader(mShaderProgram[0]);
-    mVisualObjects.push_back(temp);
+    VisualObject * temp{nullptr};
 
-    temp = new OctahedronBall(2);
-    temp->init();
-    temp->setShader(mShaderProgram[0]);
-    temp->mMatrix.scale(0.5f, 0.5f, 0.5f);
-    temp->mName = "Ball";
-    mVisualObjects.push_back(temp);
-    mPlayer = temp;
+//    temp = new XYZ();
+//    temp->init();
+//    temp->setShader(mShaderProgram[0]);
+//    mVisualObjects.push_back(temp);
 
-    temp = new SkyBox();
-    temp->init();
-    temp->setShader(mShaderProgram[1]);
-    temp->mMaterial.setTextureUnit(2);
-    temp->mMatrix.scale(15.f);
-    temp->mName = "Cube";
-    mVisualObjects.push_back(temp);
+//    temp = new OctahedronBall(2);
+//    temp->init();
+//    temp->setShader(mShaderProgram[0]);
+//    temp->mMatrix.scale(0.5f, 0.5f, 0.5f);
+//    temp->mName = "Ball";
+//    mVisualObjects.push_back(temp);
+//    mPlayer = temp;
 
-    temp = new BillBoard();
-    temp->init();
-    temp->setShader(mShaderProgram[1]);
-    temp->mMatrix.translate(4.f, 0.f, -3.5f);
-    temp->mName = "Billboard";
-    temp->mRenderWindow = this;
-    temp->mMaterial.setTextureUnit(1);
-    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
-    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
-    mVisualObjects.push_back(temp);
+//    temp = new SkyBox();
+//    temp->init();
+//    temp->setShader(mShaderProgram[1]);
+//    temp->mMaterial.setTextureUnit(2);
+//    temp->mMatrix.scale(15.f);
+//    temp->mName = "Cube";
+//    mVisualObjects.push_back(temp);
 
-    mLight = new Light();
-    temp = mLight;
-    temp->init();
-    temp->setShader(mShaderProgram[1]);
-    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
-    //    temp->mMatrix.rotateY(180.f);
-    temp->mName = "light";
-    temp->mRenderWindow = this;
-    temp->mMaterial.setTextureUnit(0);
-    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
-    mVisualObjects.push_back(temp);
+//    temp = new BillBoard();
+//    temp->init();
+//    temp->setShader(mShaderProgram[1]);
+//    temp->mMatrix.translate(4.f, 0.f, -3.5f);
+//    temp->mName = "Billboard";
+//    temp->mRenderWindow = this;
+//    temp->mMaterial.setTextureUnit(1);
+//    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+//    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
+//    mVisualObjects.push_back(temp);
+
+//    mLight = new Light();
+//    temp = mLight;
+//    temp->init();
+//    temp->setShader(mShaderProgram[1]);
+//    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
+//    //    temp->mMatrix.rotateY(180.f);
+//    temp->mName = "light";
+//    temp->mRenderWindow = this;
+//    temp->mMaterial.setTextureUnit(0);
+//    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
+//    mVisualObjects.push_back(temp);
 
     //testing triangle surface class
 //    temp = new TriangleSurface("../INNgine2019/Assets/box.txt");
@@ -165,13 +167,26 @@ void RenderWindow::init()
 //    temp->setShader(mShaderProgram[0]);
 //    mVisualObjects.push_back(temp);
 
-    //    testing objmesh class
-    temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
-    temp->setShader(mShaderProgram[0]);
-    temp->init();
-    temp->mMatrix.translate(2.f, 0.f, -2.f);
-    mVisualObjects.push_back(temp);
-
+    // testing objmesh class - many of them!
+    // here we see the need for resource management!
+    int x{0};
+    int y{0};
+    int numberOfObjs{100};
+    for (int i{0}; i < numberOfObjs; i++)
+    {
+        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+        temp->setShader(mShaderProgram[0]);
+        temp->init();
+        x++;
+        temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
+        temp->mMatrix.scale(0.5f);
+        mVisualObjects.push_back(temp);
+        if(x%10 == 0)
+        {
+            x = 0;
+            y++;
+        }
+    }
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
     mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
@@ -186,6 +201,13 @@ void RenderWindow::init()
 ///Called each frame - doing the rendering
 void RenderWindow::render()
 {
+    //calculate the time since last render-call
+    //this should be the same as xxx in the mRenderTimer->start(xxx) set in RenderWindow::exposeEvent(...)
+//    auto now = std::chrono::high_resolution_clock::now();
+//    std::chrono::duration<float> duration = now - mLastTime;
+//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+//    mLastTime = now;
+
     //input
     handleInput();
 
@@ -197,10 +219,11 @@ void RenderWindow::render()
     //to clear the screen for each redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     for (auto visObject: mVisualObjects)
     {
         visObject->draw();
-        checkForGLerrors();
+//        checkForGLerrors();
     }
 
     //Calculate framerate before
@@ -209,12 +232,18 @@ void RenderWindow::render()
     calculateFramerate();
 
     //using our expanded OpenGL debugger to check if everything is OK.
-    checkForGLerrors();
+//    checkForGLerrors();
 
     //Qt require us to call this swapBuffers() -function.
     // swapInterval is 1 by default which means that swapBuffers() will (hopefully) block
     // and wait for vsync.
+//    auto start = std::chrono::high_resolution_clock::now();
     mContext->swapBuffers(this);
+//    auto end = std::chrono::high_resolution_clock::now();
+//    std::chrono::duration<float> duration = end - start;
+//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+
+//    calculateFramerate();
 }
 
 void RenderWindow::setupPlainShader(int shaderIndex)
@@ -250,7 +279,7 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     {
         //This timer runs the actual MainLoop
         //16 means 16ms = 60 Frames pr second (should be 16.6666666 to be exact..)
-        mRenderTimer->start(16);
+        mRenderTimer->start(1);
         mTimeStart.start();
     }
     mAspectratio = static_cast<float>(width()) / height();
@@ -299,7 +328,6 @@ void RenderWindow::calculateFramerate()
         }
     }
 }
-
 
 /// Uses QOpenGLDebugLogger if this is present
 /// Reverts to glGetError() if not
