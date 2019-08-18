@@ -67,7 +67,7 @@ private:
     bool mWireframe{false};
 
     Input mInput;
-    float mCameraSpeed{0.05f};
+    float mCameraSpeed{0.01f};
     float mCameraRotateSpeed{0.1f};
     int mMouseXlast{0};
     int mMouseYlast{0};

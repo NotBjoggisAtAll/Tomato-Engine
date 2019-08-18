@@ -116,10 +116,10 @@ void RenderWindow::init()
     //********************** Making the objects to be drawn **********************
     VisualObject * temp{nullptr};
 
-//    temp = new XYZ();
-//    temp->init();
-//    temp->setShader(mShaderProgram[0]);
-//    mVisualObjects.push_back(temp);
+    temp = new XYZ();
+    temp->init();
+    temp->setShader(mShaderProgram[0]);
+    mVisualObjects.push_back(temp);
 
 //    temp = new OctahedronBall(2);
 //    temp->init();
@@ -148,17 +148,17 @@ void RenderWindow::init()
 //    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
 //    mVisualObjects.push_back(temp);
 
-//    mLight = new Light();
-//    temp = mLight;
-//    temp->init();
-//    temp->setShader(mShaderProgram[1]);
-//    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
-//    //    temp->mMatrix.rotateY(180.f);
-//    temp->mName = "light";
-//    temp->mRenderWindow = this;
-//    temp->mMaterial.setTextureUnit(0);
-//    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
-//    mVisualObjects.push_back(temp);
+    mLight = new Light();
+    temp = mLight;
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
+    //    temp->mMatrix.rotateY(180.f);
+    temp->mName = "light";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(0);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
+    mVisualObjects.push_back(temp);
 
     //testing triangle surface class
 //    temp = new TriangleSurface("../INNgine2019/Assets/box.txt");
@@ -167,26 +167,34 @@ void RenderWindow::init()
 //    temp->setShader(mShaderProgram[0]);
 //    mVisualObjects.push_back(temp);
 
-    // testing objmesh class - many of them!
+    //one monkey
+    temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+    temp->setShader(mShaderProgram[0]);
+    temp->init();
+    temp->mMatrix.scale(0.5f);
+    mVisualObjects.push_back(temp);
+
+//     testing objmesh class - many of them!
     // here we see the need for resource management!
-    int x{0};
-    int y{0};
-    int numberOfObjs{100};
-    for (int i{0}; i < numberOfObjs; i++)
-    {
-        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
-        temp->setShader(mShaderProgram[0]);
-        temp->init();
-        x++;
-        temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
-        temp->mMatrix.scale(0.5f);
-        mVisualObjects.push_back(temp);
-        if(x%10 == 0)
-        {
-            x = 0;
-            y++;
-        }
-    }
+//    int x{0};
+//    int y{0};
+//    int numberOfObjs{10};
+//    for (int i{0}; i < numberOfObjs; i++)
+//    {
+//        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+//        temp->setShader(mShaderProgram[0]);
+//        temp->init();
+//        x++;
+//        temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
+//        temp->mMatrix.scale(0.5f);
+//        mVisualObjects.push_back(temp);
+//        if(x%10 == 0)
+//        {
+//            x = 0;
+//            y++;
+//        }
+//    }
+
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
     mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
