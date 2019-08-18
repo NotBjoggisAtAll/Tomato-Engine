@@ -78,9 +78,9 @@ void RenderWindow::init()
     //NB: hardcoded path to files! You have to change this if you change directories for the project.
     //Qt makes a build-folder besides the project folder. That is why we go down one directory
     // (out of the build-folder) and then up into the project folder.
-    mShaderProgram[0] = new Shader("../GSOpenGL2019/plainvertex.vert", "../GSOpenGL2019/plainfragment.frag");
+    mShaderProgram[0] = new Shader("../INNgine2019/plainvertex.vert", "../INNgine2019/plainfragment.frag");
     qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
-    mShaderProgram[1]= new Shader("../GSOpenGL2019/texturevertex.vert", "../GSOpenGL2019/texturefragmet.frag");
+    mShaderProgram[1]= new Shader("../INNgine2019/texturevertex.vert", "../INNgine2019/texturefragmet.frag");
     qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
 
     setupPlainShader(0);
@@ -88,7 +88,7 @@ void RenderWindow::init()
 
     //**********************  Texture stuff: **********************
     mTexture[0] = new Texture();
-    mTexture[1] = new Texture("../GSOpenGL2019/Assets/hund.bmp");
+    mTexture[1] = new Texture("../INNgine2019/Assets/hund.bmp");
 
     //Set the textures loaded to a texture unit
     glActiveTexture(GL_TEXTURE0);
