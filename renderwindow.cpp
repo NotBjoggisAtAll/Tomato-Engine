@@ -90,10 +90,6 @@ void RenderWindow::init()
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f);    //color used in glClear GL_COLOR_BUFFER_BIT
 
     //Compile shaders:
-    //NB: hardcoded path to files! You have to change this if you change directories for the project.
-    //Qt makes a build-folder besides the project folder. That is why we go down one directory
-    // (out of the build-folder) and then up into the project folder.
-
     mShaderProgram[0] = new ColorShader("plainshader");
     qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
     mShaderProgram[1]= new TextureShader("textureshader");
@@ -166,14 +162,14 @@ void RenderWindow::init()
     static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
 
     //testing triangle surface class
-    temp = new TriangleSurface("../INNgine2019/Assets/box2.txt");
+    temp = new TriangleSurface("box2.txt");
     temp->init();
     temp->mMatrix.rotateY(180.f);
     temp->setShader(mShaderProgram[0]);
     mVisualObjects.push_back(temp);
 
     //one monkey
-    temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+    temp = new ObjMesh("monkey.obj");
     temp->setShader(mShaderProgram[2]);
     temp->init();
     temp->mName = "Monkey";
@@ -185,7 +181,7 @@ void RenderWindow::init()
     // here we see the need for resource management!
 //    int x{0};
 //    int y{0};
-//    int numberOfObjs{10};
+//    int numberOfObjs{100};
 //    for (int i{0}; i < numberOfObjs; i++)
 //    {
 //        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
@@ -208,7 +204,7 @@ void RenderWindow::init()
 //    mCurrentCamera->yaw(45.f);
 //    mCurrentCamera->pitch(5.f);
 
-    //new system - shader sends uniforms so needs to get the view and projection matrixes
+    //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[2]->setCurrentCamera(mCurrentCamera);

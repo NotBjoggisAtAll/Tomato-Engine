@@ -60,3 +60,4 @@ CMakeLists.txt.user*
 #Assets
 *.bmp
 *.obj
+*.txt

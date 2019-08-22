@@ -9,9 +9,9 @@
 Shader::Shader(const std::string shaderName, const GLchar *geometryPath)
 {
     initializeOpenGLFunctions();    //must do this to get access to OpenGL functions in QOpenGLFunctions
+
     std::string vertexName = shaderName + ".vert";
     std::string fragmentName = shaderName + ".frag";
-
 
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;

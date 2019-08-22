@@ -54,9 +54,9 @@ void ObjMesh::init()
 void ObjMesh::readFile(std::string filename)
 {
     //Open File
-    //    std::string filename = Orf::assetFilePath.toStdString() + fileName + ".obj";
+    std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
     std::ifstream fileIn;
-    fileIn.open (filename, std::ifstream::in);
+    fileIn.open (fileWithPath, std::ifstream::in);
     if(!fileIn)
         qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
 

@@ -68,7 +68,9 @@ void TriangleSurface::draw()
 
 void TriangleSurface::readFile(std::string filename) {
     std::ifstream inn;
-    inn.open(filename.c_str());
+    std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+
+    inn.open(fileWithPath);
 
     if (inn.is_open()) {
         int n;
@@ -80,6 +82,11 @@ void TriangleSurface::readFile(std::string filename) {
             mVertices.push_back(vertex);
         }
         inn.close();
+        qDebug() << "TriangleSurface file read: " << QString::fromStdString(filename);
+    }
+    else
+    {
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
     }
 }
 
