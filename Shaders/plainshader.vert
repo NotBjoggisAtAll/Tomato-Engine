@@ -8,6 +8,6 @@ uniform mat4 vMatrix;
 uniform mat4 pMatrix;
 
 void main() {
-   col = colAttr;
+   col = abs(colAttr);
    gl_Position = pMatrix * vMatrix * mMatrix * posAttr;
 }
