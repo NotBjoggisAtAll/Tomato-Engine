@@ -129,36 +129,38 @@ void RenderWindow::init()
 //    mVisualObjects.push_back(temp);
 //    mPlayer = temp;
 
-//    temp = new SkyBox();
-//    temp->init();
-//    temp->setShader(mShaderProgram[1]);
-//    temp->mMaterial.setTextureUnit(2);
-//    temp->mMatrix.scale(15.f);
-//    temp->mName = "Cube";
-//    mVisualObjects.push_back(temp);
+    temp = new SkyBox();
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMaterial.setTextureUnit(2);
+    temp->mMatrix.scale(15.f);
+    temp->mName = "Cube";
+    mVisualObjects.push_back(temp);
 
-//    temp = new BillBoard();
-//    temp->init();
-//    temp->setShader(mShaderProgram[1]);
-//    temp->mMatrix.translate(4.f, 0.f, -3.5f);
-//    temp->mName = "Billboard";
-//    temp->mRenderWindow = this;
-//    temp->mMaterial.setTextureUnit(1);
-//    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
-//    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
-//    mVisualObjects.push_back(temp);
+    temp = new BillBoard();
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(4.f, 0.f, -3.5f);
+    temp->mName = "Billboard";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(1);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
+    mVisualObjects.push_back(temp);
 
     mLight = new Light();
     temp = mLight;
     temp->init();
     temp->setShader(mShaderProgram[1]);
-    temp->mMatrix.translate(-2.5f, 0.f, 0.f);
+    temp->mMatrix.translate(2.5f, 3.f, 0.f);
     //    temp->mMatrix.rotateY(180.f);
     temp->mName = "light";
     temp->mRenderWindow = this;
     temp->mMaterial.setTextureUnit(0);
     temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
     mVisualObjects.push_back(temp);
+
+    static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
 
     //testing triangle surface class
 //    temp = new TriangleSurface("../INNgine2019/Assets/box.txt");
@@ -169,8 +171,9 @@ void RenderWindow::init()
 
     //one monkey
     temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
-    temp->setShader(mShaderProgram[0]);
+    temp->setShader(mShaderProgram[2]);
     temp->init();
+    temp->mName = "Monkey";
     temp->mMatrix.scale(0.5f);
     mVisualObjects.push_back(temp);
 
@@ -204,6 +207,7 @@ void RenderWindow::init()
     //new system - shader sends uniforms so needs to get the view and projection matrixes
     mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
+    mShaderProgram[2]->setCurrentCamera(mCurrentCamera);
 }
 
 ///Called each frame - doing the rendering
@@ -409,6 +413,21 @@ void RenderWindow::handleInput()
             mCurrentCamera->updateHeigth(-mCameraSpeed);
         if(mInput.E)
             mCurrentCamera->updateHeigth(mCameraSpeed);
+    }
+    else
+    {
+        if(mInput.W)
+            mLight->mMatrix.translateZ(-mCameraSpeed);
+        if(mInput.S)
+            mLight->mMatrix.translateZ(mCameraSpeed);
+        if(mInput.D)
+            mLight->mMatrix.translateX(mCameraSpeed);
+        if(mInput.A)
+            mLight->mMatrix.translateX(-mCameraSpeed);
+        if(mInput.Q)
+            mLight->mMatrix.translateY(mCameraSpeed);
+        if(mInput.E)
+            mLight->mMatrix.translateY(-mCameraSpeed);
     }
 }
 
