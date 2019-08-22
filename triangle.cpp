@@ -1,3 +1,4 @@
+#include "innpch.h"
 #include "triangle.h"
 
 Triangle::Triangle()

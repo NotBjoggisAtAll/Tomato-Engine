@@ -1,22 +1,19 @@
+#include "innpch.h"
 #include "trianglesurface.h"
-#include "vertex.h"
-#include "math_constants.h"
-#include <cmath>
-#include <QDebug>
 
 TriangleSurface::TriangleSurface() : VisualObject() {
     Vertex v{};
-    v.set_xyz(0,0,0); v.set_rgb(1,0,0); v.set_uv(0,0);
+    v.set_xyz(0,0,0); v.set_rgb(1,0,0);
     mVertices.push_back(v);
-    v.set_xyz(0.5,0,0); v.set_rgb(0,1,0);  v.set_uv(1,0);
+    v.set_xyz(0.5,0,0); v.set_rgb(0,1,0);
     mVertices.push_back(v);
-    v.set_xyz(0.5,0.5,0); v.set_rgb(0,0,1); v.set_uv(1,1);
+    v.set_xyz(0.5,0.5,0); v.set_rgb(0,0,1);
     mVertices.push_back(v);
-    v.set_xyz(0,0,0); v.set_rgb(0,1,0); v.set_uv(0,0);
+    v.set_xyz(0,0,0); v.set_rgb(0,1,0);
     mVertices.push_back(v);
-    v.set_xyz(0.5,0.5,0); v.set_rgb(1,0,0); v.set_uv(1,1);
+    v.set_xyz(0.5,0.5,0); v.set_rgb(1,0,0);
     mVertices.push_back(v);
-    v.set_xyz(0,0.5,0); v.set_rgb(0,0,1); v.set_uv(0,1);
+    v.set_xyz(0,0.5,0); v.set_rgb(0,0,1);
     mVertices.push_back(v);
 
     mMatrix.setToIdentity();
@@ -63,30 +60,26 @@ void TriangleSurface::init()
 
 void TriangleSurface::draw()
 {
+    glUseProgram(mMaterial.mShader->getProgram());
     glBindVertexArray( mVAO );
-    glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
+    mMaterial.mShader->transmitUniformData(&mMatrix, &mMaterial);
+    glDrawArrays(GL_TRIANGLES, 0, mVertices.size());//mVertices.size());
 }
 
 void TriangleSurface::readFile(std::string filename) {
     std::ifstream inn;
     inn.open(filename.c_str());
 
-    if (inn.is_open())
-    {
-        unsigned long n;
+    if (inn.is_open()) {
+        int n;
         Vertex vertex;
         inn >> n;
         mVertices.reserve(n);
-        for (unsigned long i=0; i<n; i++)
-        {
+        for (int i=0; i<n; i++) {
             inn >> vertex;
             mVertices.push_back(vertex);
         }
         inn.close();
-    }
-    else
-    {
-        qDebug() << "Error: " << filename.c_str() << " could not be opened!";
     }
 }
 
@@ -114,7 +107,6 @@ void TriangleSurface::construct()
 {
     float xmin=0.0f, xmax=1.0f, ymin=0.0f, ymax=1.0f, h=0.25f;
     for (auto x=xmin; x<xmax; x+=h)
-    {
         for (auto y=ymin; y<ymax; y+=h)
         {
             float z = sin(gsl::PI*x)*sin(gsl::PI*y);
@@ -129,5 +121,4 @@ void TriangleSurface::construct()
             z = sin(gsl::PI*(x+h))*sin(gsl::PI*(y+h));
             mVertices.push_back(Vertex{x+h,y+h,z,x,y,z});
         }
-    }
 }

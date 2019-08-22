@@ -18,10 +18,10 @@ private:
     int mRows;
     int mnByte;
     void readBitmap(const std::string& filename);
-    void setTexture();
+    void setTexture(GLuint textureUnit);
 public:
-    Texture();  //basic texture from code
-    Texture(const std::string &filename);
+    Texture(GLuint textureUnit = 0);  //basic texture from code
+    Texture(const std::string &filename, GLuint textureUnit = 0);
     GLuint id() const;
 
 private:

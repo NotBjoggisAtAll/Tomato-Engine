@@ -1,15 +1,11 @@
-#include <QDebug>
+#include "innpch.h"
 #include <QImage>
 #include <QBuffer>
 #include <QByteArray>
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "texture.h"
 
-Texture::Texture() : QOpenGLFunctions_4_1_Core()
+Texture::Texture(GLuint textureUnit) : QOpenGLFunctions_4_1_Core()
 {
     initializeOpenGLFunctions();
     //small dummy texture
@@ -24,12 +20,14 @@ Texture::Texture() : QOpenGLFunctions_4_1_Core()
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     glGenTextures(1, &mId);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mId);
     qDebug() << "Texture::Texture() id = " << mId;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE,
                  reinterpret_cast<const GLvoid*>(pixels));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    setTexture(textureUnit);
 }
 
 /**
@@ -43,11 +41,11 @@ Texture::Texture() : QOpenGLFunctions_4_1_Core()
  - glTexImage2D()
  are used. The texture can be retrieved later by using the function id()
  */
-Texture::Texture(const std::string& filename): QOpenGLFunctions_4_1_Core()
+Texture::Texture(const std::string& filename, GLuint textureUnit): QOpenGLFunctions_4_1_Core()
 {
     initializeOpenGLFunctions();
     readBitmap(filename);
-    setTexture();
+    setTexture(textureUnit);
 }
 
 /**
@@ -64,7 +62,7 @@ void Texture::readBitmap(const std::string &filename)
     OBITMAPFILEHEADER bmFileHeader;
     OBITMAPINFOHEADER bmInfoHeader;
 
-    std::string fileWithPath = filename;
+    std::string fileWithPath =  gsl::assetFilePath + filename;
 
     std::ifstream file;
     file.open (fileWithPath.c_str(), std::ifstream::in | std::ifstream::binary);
@@ -92,11 +90,14 @@ void Texture::readBitmap(const std::string &filename)
         mBitmap[k] = mBitmap[k + 2];
         mBitmap[k + 2] = tmp;
     }
+    qDebug() << "Texture read: " << QString(fileWithPath.c_str());
 }
 
-void Texture::setTexture()
+void Texture::setTexture(GLuint textureUnit)
 {
     glGenTextures(1, &mId);
+    // activate the texture unit first before binding texture
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, mId);
     qDebug() << "Texture::Texture() id = " << mId;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

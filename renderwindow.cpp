@@ -1,3 +1,4 @@
+#include "innpch.h"
 #include "renderwindow.h"
 #include <QTimer>
 #include <QOpenGLContext>
@@ -5,15 +6,20 @@
 #include <QOpenGLDebugLogger>
 #include <QKeyEvent>
 #include <QStatusBar>
-#include <QDebug>
+#include <chrono>
 
-#include "shader.h"
 #include "mainwindow.h"
-#include "matrix4x4.h"
-#include "gsl_math.h"
 
 #include "xyz.h"
+#include "octahedronball.h"
+#include "skybox.h"
+#include "billboard.h"
 #include "trianglesurface.h"
+#include "objmesh.h"
+#include "light.h"
+#include "colorshader.h"
+#include "textureshader.h"
+#include "phongshader.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -37,6 +43,10 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
 
 RenderWindow::~RenderWindow()
 {
+    for (int i = 0; i < 4; ++i) {
+        if (mShaderProgram[i])
+            delete mShaderProgram[i];
+    }
 }
 
 /// Sets up the general OpenGL stuff and the buffers needed to render a triangle
@@ -62,6 +72,11 @@ void RenderWindow::init()
     //must call this to use OpenGL functions
     initializeOpenGLFunctions();
 
+    //Print render version info:
+    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
+
     //Start the Qt OpenGL debugger
     //Really helpfull when doing OpenGL
     //Supported on most Windows machines
@@ -78,42 +93,137 @@ void RenderWindow::init()
     //NB: hardcoded path to files! You have to change this if you change directories for the project.
     //Qt makes a build-folder besides the project folder. That is why we go down one directory
     // (out of the build-folder) and then up into the project folder.
-    mShaderProgram[0] = new Shader("../INNgine2019/plainvertex.vert", "../INNgine2019/plainfragment.frag");
-    qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
-    mShaderProgram[1]= new Shader("../INNgine2019/texturevertex.vert", "../INNgine2019/texturefragmet.frag");
-    qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
 
-    setupPlainShader(0);
-    setupTextureShader(1);
+    mShaderProgram[0] = new ColorShader("plainshader");
+    qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
+    mShaderProgram[1]= new TextureShader("textureshader");
+
+    qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
+    mShaderProgram[2]= new PhongShader("phongshader");
+    qDebug() << "Phong shader program id: " << mShaderProgram[2]->getProgram();
 
     //**********************  Texture stuff: **********************
-    mTexture[0] = new Texture();
-    mTexture[1] = new Texture("../INNgine2019/Assets/hund.bmp");
+
+    mTexture[0] = new Texture("white.bmp");
+    mTexture[1] = new Texture("hund.bmp", 1);
+    mTexture[2] = new Texture("skybox.bmp", 2);
 
     //Set the textures loaded to a texture unit
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mTexture[0]->id());
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mTexture[1]->id());
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
 
     //********************** Making the objects to be drawn **********************
-    VisualObject *temp = new XYZ();
+    VisualObject * temp{nullptr};
+
+    temp = new XYZ();
     temp->init();
+    temp->setShader(mShaderProgram[0]);
     mVisualObjects.push_back(temp);
 
-    //testing triangle surface class
-    temp = new TriangleSurface();
+//    temp = new OctahedronBall(2);
+//    temp->init();
+//    temp->setShader(mShaderProgram[0]);
+//    temp->mMatrix.scale(0.5f, 0.5f, 0.5f);
+//    temp->mName = "Ball";
+//    mVisualObjects.push_back(temp);
+//    mPlayer = temp;
+
+    temp = new SkyBox();
     temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMaterial.setTextureUnit(2);
+    temp->mMatrix.scale(15.f);
+    temp->mName = "Cube";
     mVisualObjects.push_back(temp);
+
+    temp = new BillBoard();
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(4.f, 0.f, -3.5f);
+    temp->mName = "Billboard";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(1);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
+    mVisualObjects.push_back(temp);
+
+    mLight = new Light();
+    temp = mLight;
+    temp->init();
+    temp->setShader(mShaderProgram[1]);
+    temp->mMatrix.translate(2.5f, 3.f, 0.f);
+    //    temp->mMatrix.rotateY(180.f);
+    temp->mName = "light";
+    temp->mRenderWindow = this;
+    temp->mMaterial.setTextureUnit(0);
+    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
+    mVisualObjects.push_back(temp);
+
+    static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
+
+    //testing triangle surface class
+    temp = new TriangleSurface("../INNgine2019/Assets/box2.txt");
+    temp->init();
+    temp->mMatrix.rotateY(180.f);
+    temp->setShader(mShaderProgram[0]);
+    mVisualObjects.push_back(temp);
+
+    //one monkey
+    temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+    temp->setShader(mShaderProgram[2]);
+    temp->init();
+    temp->mName = "Monkey";
+    temp->mMatrix.scale(0.5f);
+    temp->mMatrix.translate(3.f, 2.f, -2.f);
+    mVisualObjects.push_back(temp);
+
+//     testing objmesh class - many of them!
+    // here we see the need for resource management!
+//    int x{0};
+//    int y{0};
+//    int numberOfObjs{10};
+//    for (int i{0}; i < numberOfObjs; i++)
+//    {
+//        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
+//        temp->setShader(mShaderProgram[0]);
+//        temp->init();
+//        x++;
+//        temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
+//        temp->mMatrix.scale(0.5f);
+//        mVisualObjects.push_back(temp);
+//        if(x%10 == 0)
+//        {
+//            x = 0;
+//            y++;
+//        }
+//    }
 
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
-    mCurrentCamera->setPosition(gsl::Vector3D(1.f, .5f, 2.f));
+    mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
+//    mCurrentCamera->yaw(45.f);
+//    mCurrentCamera->pitch(5.f);
+
+    //new system - shader sends uniforms so needs to get the view and projection matrixes
+    mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
+    mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
+    mShaderProgram[2]->setCurrentCamera(mCurrentCamera);
 }
 
 ///Called each frame - doing the rendering
 void RenderWindow::render()
 {
+    //calculate the time since last render-call
+    //this should be the same as xxx in the mRenderTimer->start(xxx) set in RenderWindow::exposeEvent(...)
+//    auto now = std::chrono::high_resolution_clock::now();
+//    std::chrono::duration<float> duration = now - mLastTime;
+//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+//    mLastTime = now;
+
     //input
     handleInput();
 
@@ -125,20 +235,11 @@ void RenderWindow::render()
     //to clear the screen for each redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //******** This should be done with a loop!
-    {
-        glUseProgram(mShaderProgram[0]->getProgram());
-        glUniformMatrix4fv( vMatrixUniform0, 1, GL_TRUE, mCurrentCamera->mViewMatrix.constData());
-        glUniformMatrix4fv( pMatrixUniform0, 1, GL_TRUE, mCurrentCamera->mProjectionMatrix.constData());
-        glUniformMatrix4fv( mMatrixUniform0, 1, GL_TRUE, mVisualObjects[0]->mMatrix.constData());
-        mVisualObjects[0]->draw();
 
-        glUseProgram(mShaderProgram[1]->getProgram());
-        glUniformMatrix4fv( vMatrixUniform1, 1, GL_TRUE, mCurrentCamera->mViewMatrix.constData());
-        glUniformMatrix4fv( pMatrixUniform1, 1, GL_TRUE, mCurrentCamera->mProjectionMatrix.constData());
-        glUniformMatrix4fv( mMatrixUniform1, 1, GL_TRUE, mVisualObjects[1]->mMatrix.constData());
-        glUniform1i(mTextureUniform, 1);
-        mVisualObjects[1]->draw();
+    for (auto visObject: mVisualObjects)
+    {
+        visObject->draw();
+//        checkForGLerrors();
     }
 
     //Calculate framerate before
@@ -147,12 +248,18 @@ void RenderWindow::render()
     calculateFramerate();
 
     //using our expanded OpenGL debugger to check if everything is OK.
-    checkForGLerrors();
+//    checkForGLerrors();
 
     //Qt require us to call this swapBuffers() -function.
     // swapInterval is 1 by default which means that swapBuffers() will (hopefully) block
     // and wait for vsync.
+//    auto start = std::chrono::high_resolution_clock::now();
     mContext->swapBuffers(this);
+//    auto end = std::chrono::high_resolution_clock::now();
+//    std::chrono::duration<float> duration = end - start;
+//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+
+//    calculateFramerate();
 }
 
 void RenderWindow::setupPlainShader(int shaderIndex)
@@ -188,7 +295,7 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     {
         //This timer runs the actual MainLoop
         //16 means 16ms = 60 Frames pr second (should be 16.6666666 to be exact..)
-        mRenderTimer->start(16);
+        mRenderTimer->start(1);
         mTimeStart.start();
     }
     mAspectratio = static_cast<float>(width()) / height();
@@ -237,7 +344,6 @@ void RenderWindow::calculateFramerate()
         }
     }
 }
-
 
 /// Uses QOpenGLDebugLogger if this is present
 /// Reverts to glGetError() if not
@@ -311,6 +417,21 @@ void RenderWindow::handleInput()
             mCurrentCamera->updateHeigth(-mCameraSpeed);
         if(mInput.E)
             mCurrentCamera->updateHeigth(mCameraSpeed);
+    }
+    else
+    {
+        if(mInput.W)
+            mLight->mMatrix.translateZ(-mCameraSpeed);
+        if(mInput.S)
+            mLight->mMatrix.translateZ(mCameraSpeed);
+        if(mInput.D)
+            mLight->mMatrix.translateX(mCameraSpeed);
+        if(mInput.A)
+            mLight->mMatrix.translateX(-mCameraSpeed);
+        if(mInput.Q)
+            mLight->mMatrix.translateY(mCameraSpeed);
+        if(mInput.E)
+            mLight->mMatrix.translateY(-mCameraSpeed);
     }
 }
 

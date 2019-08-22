@@ -1,8 +1,8 @@
+#include "innpch.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QSurfaceFormat>
-#include <QDebug>
 #include <QDesktopWidget>
 
 #include "renderwindow.h"
@@ -44,6 +44,9 @@ void MainWindow::init()
 
     //Set the number of samples used for multisampling
     format.setSamples(8);
+
+    //Turn off VSync. If this is set to 1, VSync is on - default behaviour
+    format.setSwapInterval(0);
 
     //Just prints out what OpenGL format we will get
     // - this can be deleted

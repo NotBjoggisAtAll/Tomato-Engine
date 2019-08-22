@@ -2,19 +2,18 @@
 #define RENDERWINDOW_H
 
 #include <QWindow>
-#include <QOpenGLFunctions_4_1_Core>
 #include <QTimer>
 #include <QElapsedTimer>
-#include <vector>
+#include <chrono>
 #include "texture.h"
 #include "camera.h"
-#include "matrix4x4.h"
 #include "visualobject.h"
 #include "input.h"
 
 class QOpenGLContext;
 class Shader;
 class MainWindow;
+class Light;
 
 /// This inherits from QWindow to get access to the Qt functionality and
 /// OpenGL surface.
@@ -60,12 +59,15 @@ private:
 
     std::vector<VisualObject*> mVisualObjects;
 
+    VisualObject *mPlayer;  //the controllable object
+    Light *mLight;
+
     Camera *mCurrentCamera{nullptr};
 
     bool mWireframe{false};
 
     Input mInput;
-    float mCameraSpeed{0.05f};
+    float mCameraSpeed{0.01f};
     float mCameraRotateSpeed{0.1f};
     int mMouseXlast{0};
     int mMouseYlast{0};
@@ -84,6 +86,8 @@ private:
     void startOpenGLDebugger();
 
     void handleInput();
+
+    std::chrono::high_resolution_clock::time_point mLastTime;
 
 protected:
     //The QWindow that we inherit from has these functions to capture

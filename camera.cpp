@@ -1,5 +1,5 @@
+#include "innpch.h"
 #include "camera.h"
-#include <QDebug>
 
 Camera::Camera()
 {
@@ -91,4 +91,9 @@ gsl::Vector3D Camera::position() const
 gsl::Vector3D Camera::up() const
 {
     return mUp;
+}
+
+gsl::Vector3D Camera::forward() const
+{
+    return mForward;
 }

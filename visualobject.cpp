@@ -1,3 +1,4 @@
+#include "innpch.h"
 #include "visualobject.h"
 #include "shader.h"
 
@@ -13,4 +14,9 @@ VisualObject::~VisualObject()
 
 void VisualObject::init()
 {
+}
+
+void VisualObject::setShader(Shader *shader)
+{
+    mMaterial.mShader = shader;
 }

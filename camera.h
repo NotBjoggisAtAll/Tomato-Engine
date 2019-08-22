@@ -1,8 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "matrix4x4.h"
-#include "vector3d.h"
+#include "innpch.h"
 
 class Camera
 {
@@ -26,6 +25,8 @@ public:
 
     gsl::Vector3D position() const;
     gsl::Vector3D up() const;
+
+    gsl::Vector3D forward() const;
 
 private:
     gsl::Vector3D mForward{0.f, 0.f, -1.f};
