@@ -161,17 +161,18 @@ void RenderWindow::init()
     mVisualObjects.push_back(temp);
 
     //testing triangle surface class
-//    temp = new TriangleSurface("../INNgine2019/Assets/box.txt");
-//    temp->init();
-//    temp->mMatrix.rotateY(180.f);
-//    temp->setShader(mShaderProgram[0]);
-//    mVisualObjects.push_back(temp);
+    temp = new TriangleSurface("../INNgine2019/Assets/box2.txt");
+    temp->init();
+    temp->mMatrix.rotateY(180.f);
+    temp->setShader(mShaderProgram[0]);
+    mVisualObjects.push_back(temp);
 
     //one monkey
     temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
     temp->setShader(mShaderProgram[0]);
     temp->init();
     temp->mMatrix.scale(0.5f);
+    temp->mMatrix.translate(3.f, 2.f, -2.f);
     mVisualObjects.push_back(temp);
 
 //     testing objmesh class - many of them!
