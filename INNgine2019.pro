@@ -10,6 +10,16 @@ PRECOMPILED_HEADER = innpch.h
 INCLUDEPATH +=  ./GSL
 
 HEADERS += \
+    Components/cameracomponent.h \
+    Components/collisioncomponent.h \
+    Components/lightcomponent.h \
+    Components/materialcomponent.h \
+    Components/meshcomponent.h \
+    Components/physicscomponent.h \
+    Components/rendercomponent.h \
+    Components/scriptcomponent.h \
+    Components/soundcomponent.h \
+    Components/transformcomponent.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
