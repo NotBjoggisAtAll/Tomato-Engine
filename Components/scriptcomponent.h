@@ -1,7 +1,9 @@
 #ifndef SCRIPTCOMPONENT_H
 #define SCRIPTCOMPONENT_H
 
-struct ScriptComponent
+#include "basecomponent.h"
+
+struct ScriptComponent : public BaseComponent
 {
 
 };

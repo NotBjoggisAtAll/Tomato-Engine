@@ -1,7 +1,9 @@
 #ifndef CAMERACOMPONENT_H
 #define CAMERACOMPONENT_H
 
-struct CameraComponent
+#include "basecomponent.h"
+
+struct CameraComponent : public BaseComponent
 {
 
 };

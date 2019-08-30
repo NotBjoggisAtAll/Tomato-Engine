@@ -1,7 +1,9 @@
 #ifndef MESHCOMPONENT_H
 #define MESHCOMPONENT_H
 
-struct MeshComponent
+#include "basecomponent.h"
+
+struct MeshComponent : public BaseComponent
 {
 };
 

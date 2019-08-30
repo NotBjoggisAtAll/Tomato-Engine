@@ -10,6 +10,7 @@ PRECOMPILED_HEADER = innpch.h
 INCLUDEPATH +=  ./GSL
 
 HEADERS += \
+    Components/basecomponent.h \
     Components/cameracomponent.h \
     Components/collisioncomponent.h \
     Components/lightcomponent.h \
@@ -29,6 +30,7 @@ HEADERS += \
     GSL/gsl_math.h \
     GSL/math_constants.h \
     constants.h \
+    gameobject.h \
     renderwindow.h \
     shader.h \
     mainwindow.h \
@@ -63,6 +65,7 @@ SOURCES += main.cpp \
     GSL/vector3d.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
+    gameobject.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
     shader.cpp \

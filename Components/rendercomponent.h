@@ -1,6 +1,9 @@
 #ifndef RENDER_H
 #define RENDER_H
-struct RenderComponent
+
+#include "basecomponent.h"
+
+struct RenderComponent : public BaseComponent
 {
 
 };

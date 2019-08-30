@@ -19,8 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
-
+    void on_actionToggle_Wireframe_triggered();
 private:
     void init();
     Ui::MainWindow *ui;

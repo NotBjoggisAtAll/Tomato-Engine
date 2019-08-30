@@ -3,7 +3,7 @@
 
 #include "vector3d.h"
 
-class Material
+class Material // DONT USE THIS USE MATERIAL COMPONENT INSTEAD
 {
 public:
     Material();

@@ -1,7 +1,9 @@
 #ifndef LIGHTCOMPONENT_H
 #define LIGHTCOMPONENT_H
 
-struct LightComponent
+#include "basecomponent.h"
+
+struct LightComponent : public BaseComponent
 {
 
 };

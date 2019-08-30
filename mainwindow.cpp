@@ -75,10 +75,18 @@ void MainWindow::init()
 
     //Set size of program in % of available screen
     resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+
+    QTreeWidgetItem* wd = new QTreeWidgetItem();
+    wd->setText(0,"Navn");
+    wd->setText(1,"Type");
+    QTreeWidgetItem* wd2 = new QTreeWidgetItem();
+    wd2->setText(0,"Child");
+    wd2->setText(1,"Type2");
+    wd->addChild(wd2);
+    ui->Outliner->addTopLevelItem(wd);
 }
 
-//Example of a slot called from the button on the top of the program.
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_actionToggle_Wireframe_triggered()
 {
     mRenderWindow->toggleWireframe();
 }

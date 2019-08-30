@@ -1,7 +1,9 @@
 #ifndef PHYSICSCOMPONENT_H
 #define PHYSICSCOMPONENT_H
 
-struct PhysicsComponent
+#include "basecomponent.h"
+
+struct PhysicsComponent : public BaseComponent
 {
 
 };
