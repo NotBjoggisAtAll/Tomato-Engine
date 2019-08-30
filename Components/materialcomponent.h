@@ -2,7 +2,7 @@
 #define MATERIALCOMPONENT_H
 
 #include "basecomponent.h"
-
+class Shader;
 struct MaterialComponent : public BaseComponent
 {
     Shader* mShader{nullptr};

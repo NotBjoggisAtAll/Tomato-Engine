@@ -131,7 +131,7 @@ void RenderWindow::init()
     temp = new SkyBox();
     temp->init();
     temp->setShader(mShaderProgram[1]);
-    temp->mMaterial.setTextureUnit(2);
+    temp->mMaterial.mTextureUnit = 2;
     temp->mMatrix.scale(15.f);
     temp->mName = "Cube";
     mVisualObjects.push_back(temp);
@@ -142,8 +142,8 @@ void RenderWindow::init()
     temp->mMatrix.translate(4.f, 0.f, -3.5f);
     temp->mName = "Billboard";
     temp->mRenderWindow = this;
-    temp->mMaterial.setTextureUnit(1);
-    temp->mMaterial.mObjectColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+    temp->mMaterial.mTextureUnit = 1;
+    temp->mMaterial.mColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
     dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
     mVisualObjects.push_back(temp);
 
@@ -155,8 +155,8 @@ void RenderWindow::init()
     //    temp->mMatrix.rotateY(180.f);
     temp->mName = "light";
     temp->mRenderWindow = this;
-    temp->mMaterial.setTextureUnit(0);
-    temp->mMaterial.mObjectColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
+    temp->mMaterial.mTextureUnit = 0;
+    temp->mMaterial.mColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
     mVisualObjects.push_back(temp);
 
     static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
@@ -433,11 +433,6 @@ void RenderWindow::handleInput()
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) //Shuts down whole program
-    {
-        mMainWindow->close();
-    }
-
     //    You get the keyboard input like this
     if(event->key() == Qt::Key_W)
     {

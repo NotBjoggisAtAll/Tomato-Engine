@@ -17,10 +17,10 @@ TextureShader::~TextureShader()
     qDebug() << "Deleting TextureShader";
 }
 
-void TextureShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
+void TextureShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, MaterialComponent *material)
 {
     Shader::transmitUniformData(modelMatrix);
 
     glUniform1i(textureUniform, material->mTextureUnit); //TextureUnit = 0 as default);
-    glUniform3f(objectColorUniform, material->mObjectColor.x, material->mObjectColor.y, material->mObjectColor.z);
+    glUniform3f(objectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
 }

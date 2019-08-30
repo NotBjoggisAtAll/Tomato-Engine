@@ -26,7 +26,7 @@ PhongShader::~PhongShader()
     qDebug() << "Deleting PhongShader";
 }
 
-void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
+void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, MaterialComponent *material)
 {
     Shader::transmitUniformData(modelMatrix);
 
@@ -35,7 +35,7 @@ void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *mat
     glUniform1f(mLightPowerUniform, mLight->mLightStrenght);
     glUniform3f(mLightColorUniform, mLight->mLightColor.x, mLight->mLightColor.y, mLight->mLightColor.z);
     glUniform3f(mLightPositionUniform, mLight->mMatrix.getPosition().x, mLight->mMatrix.getPosition().y, mLight->mMatrix.getPosition().z);
-    glUniform3f(mObjectColorUniform, material->mObjectColor.x, material->mObjectColor.y, material->mObjectColor.z);
+    glUniform3f(mObjectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
 }
 
 void PhongShader::setLight(Light *light)

@@ -20,6 +20,8 @@ public:
 
 private slots:
     void on_actionToggle_Wireframe_triggered();
+    void on_actionExit_triggered();
+
 private:
     void init();
     Ui::MainWindow *ui;

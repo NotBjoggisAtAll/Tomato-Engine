@@ -90,3 +90,8 @@ void MainWindow::on_actionToggle_Wireframe_triggered()
 {
     mRenderWindow->toggleWireframe();
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
+}

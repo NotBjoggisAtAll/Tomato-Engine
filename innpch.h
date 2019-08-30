@@ -20,7 +20,7 @@
 #include "vector4d.h"
 #include "vector3d.h"
 #include "vector2d.h"
-#include "vertex.h"
+//#include "vertex.h"
 #include "shader.h"
 #include "gltypes.h"
 #include "gsl_math.h"

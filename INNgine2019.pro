@@ -29,6 +29,12 @@ HEADERS += \
     GSL/vector4d.h \
     GSL/gsl_math.h \
     GSL/math_constants.h \
+    JBA/jbamath.h \
+    JBA/matrix4x4.h \
+    JBA/vector2d.h \
+    JBA/vector3d.h \
+    JBA/vector4d.h \
+    Managers/filemanager.h \
     constants.h \
     gameobject.h \
     renderwindow.h \
@@ -50,11 +56,11 @@ HEADERS += \
     material.h \
     light.h \
     objmesh.h \
-#    innpch.h \
+    innpch.h \
     colorshader.h \
     textureshader.h \
     skybox.h \
-    phongshader.h \
+    phongshader.h
 
 
 SOURCES += main.cpp \
@@ -65,6 +71,8 @@ SOURCES += main.cpp \
     GSL/vector3d.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
+    Managers/filemanager.cpp \
+    vertex.cpp \
     gameobject.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
@@ -72,7 +80,6 @@ SOURCES += main.cpp \
     triangle.cpp \
     texture.cpp \
     billboard.cpp \
-    vertex.cpp \
     visualobject.cpp \
     camera.cpp \
     octahedronball.cpp \

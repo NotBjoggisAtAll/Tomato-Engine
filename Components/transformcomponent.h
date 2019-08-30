@@ -5,7 +5,7 @@
 
 struct TransformComponent : public BaseComponent
 {
-
+    gsl::Matrix4x4 mMatrix;
 };
 
 #endif // TRANSFORMCOMPONENT_H
