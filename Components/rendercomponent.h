@@ -67,7 +67,7 @@ struct RenderComponent : public BaseComponent, public QOpenGLFunctions_4_1_Core
 
         glUseProgram(mMaterialComponent->mShader->getProgram());
         glBindVertexArray( mVAO );
-        mMaterialComponent->mShader->transmitUniformData(&mTransformComponent->mMatrix, &mMaterialComponent);
+        mMaterialComponent->mShader->transmitUniformData(&mTransformComponent->mMatrix, mMaterialComponent);
         glDrawElements(GL_TRIANGLES, mMeshComponent->mIndices.size(), GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
     }

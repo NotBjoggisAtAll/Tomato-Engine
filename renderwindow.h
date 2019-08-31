@@ -14,7 +14,7 @@ class QOpenGLContext;
 class Shader;
 class MainWindow;
 class Light;
-
+class GameObject;
 /// This inherits from QWindow to get access to the Qt functionality and
 /// OpenGL surface.
 /// We also inherit from QOpenGLFunctions, to get access to the OpenGL functions
@@ -32,6 +32,9 @@ public:
     void toggleWireframe();
 
     void checkForGLerrors();
+
+    std::vector<GameObject*> mGameObjects;
+
 
 private slots:
     void render();

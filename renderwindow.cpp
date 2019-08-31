@@ -21,6 +21,11 @@
 #include "textureshader.h"
 #include "phongshader.h"
 
+#include "gameobject.h"
+#include "Components/rendercomponent.h"
+#include "Components/transformcomponent.h"
+#include "Components/meshcomponent.h"
+
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
 {
@@ -120,13 +125,15 @@ void RenderWindow::init()
     temp->setShader(mShaderProgram[0]);
     mVisualObjects.push_back(temp);
 
-//    temp = new OctahedronBall(2);
-//    temp->init();
-//    temp->setShader(mShaderProgram[0]);
-//    temp->mMatrix.scale(0.5f, 0.5f, 0.5f);
-//    temp->mName = "Ball";
-//    mVisualObjects.push_back(temp);
-//    mPlayer = temp;
+
+    //    temp = new OctahedronBall(2);
+    //    temp->init();
+    //    temp->setShader(mShaderProgram[0]);
+    //    temp->mMatrix.scale(1);
+    //    temp->mMatrix.translate(5);
+    //    temp->mName = "Ball";
+    //    mVisualObjects.push_back(temp);
+    //    mPlayer = temp;
 
     temp = new SkyBox();
     temp->init();
@@ -169,40 +176,58 @@ void RenderWindow::init()
     mVisualObjects.push_back(temp);
 
     //one monkey
-    temp = new ObjMesh("monkey.obj");
-    temp->setShader(mShaderProgram[2]);
-    temp->init();
-    temp->mName = "Monkey";
-    temp->mMatrix.scale(0.5f);
-    temp->mMatrix.translate(3.f, 2.f, -2.f);
-    mVisualObjects.push_back(temp);
+    GameObject* go = new GameObject();
+    MaterialComponent* Material = new MaterialComponent();
+    Material->mShader = mShaderProgram[2];
+    MeshComponent* Mesh = new MeshComponent("monkey.obj");
+    TransformComponent* Transform = new TransformComponent();
+    Transform->mMatrix.setToIdentity();
+    Transform->mMatrix.scale(0.5f);
+    Transform->mMatrix.translate(3.f, 2.f, -2.f);
+    RenderComponent* renderComp = new RenderComponent(Mesh, Material, Transform);
+    renderComp->Init();
+    go->mName = "Monkey";
 
-//     testing objmesh class - many of them!
-    // here we see the need for resource management!
-//    int x{0};
-//    int y{0};
-//    int numberOfObjs{100};
-//    for (int i{0}; i < numberOfObjs; i++)
-//    {
-//        temp = new ObjMesh("../INNgine2019/Assets/monkey.obj");
-//        temp->setShader(mShaderProgram[0]);
-//        temp->init();
-//        x++;
-//        temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
-//        temp->mMatrix.scale(0.5f);
-//        mVisualObjects.push_back(temp);
-//        if(x%10 == 0)
-//        {
-//            x = 0;
-//            y++;
-//        }
-//    }
+    go->mComponents.push_back(renderComp);
+    go->mComponents.push_back(Material);
+    go->mComponents.push_back(Mesh);
+    go->mComponents.push_back(Transform);
+
+
+    //    temp = new ObjMesh("monkey.obj");
+    //    temp->setShader(mShaderProgram[2]);
+    //    temp->init();
+    //    temp->mName = "Monkey";
+    //    temp->mMatrix.scale(0.5f);
+    //    temp->mMatrix.translate(3.f, 2.f, -2.f);
+    //    mVisualObjects.push_back(temp);
+
+    //     //    testing objmesh class - many of them!
+    //   //  here we see the need for resource management!
+    //        int x{0};
+    //        int y{0};
+    //        int numberOfObjs{100};
+    //        for (int i{0}; i < numberOfObjs; i++)
+    //        {
+    //            temp = new ObjMesh("monkey.obj");
+    //            temp->setShader(mShaderProgram[0]);
+    //            temp->init();
+    //            x++;
+    //            temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
+    //            temp->mMatrix.scale(0.5f);
+    //            mVisualObjects.push_back(temp);
+    //            if(x%10 == 0)
+    //            {
+    //                x = 0;
+    //                y++;
+    //            }
+    //        }
 
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
     mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
-//    mCurrentCamera->yaw(45.f);
-//    mCurrentCamera->pitch(5.f);
+    //    mCurrentCamera->yaw(45.f);
+    //    mCurrentCamera->pitch(5.f);
 
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
@@ -215,10 +240,10 @@ void RenderWindow::render()
 {
     //calculate the time since last render-call
     //this should be the same as xxx in the mRenderTimer->start(xxx) set in RenderWindow::exposeEvent(...)
-//    auto now = std::chrono::high_resolution_clock::now();
-//    std::chrono::duration<float> duration = now - mLastTime;
-//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
-//    mLastTime = now;
+    //    auto now = std::chrono::high_resolution_clock::now();
+    //    std::chrono::duration<float> duration = now - mLastTime;
+    //    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+    //    mLastTime = now;
 
     //input
     handleInput();
@@ -235,27 +260,31 @@ void RenderWindow::render()
     for (auto visObject: mVisualObjects)
     {
         visObject->draw();
-//        checkForGLerrors();
+        //        checkForGLerrors();
     }
 
+    for(auto& gameObject : mGameObjects)
+    {
+        static_cast<RenderComponent*>(gameObject->mComponents.at(0))->Render();
+    }
     //Calculate framerate before
     // checkForGLerrors() because that takes a long time
     // and before swapBuffers(), else it will show the vsync time
     calculateFramerate();
 
     //using our expanded OpenGL debugger to check if everything is OK.
-//    checkForGLerrors();
+    //    checkForGLerrors();
 
     //Qt require us to call this swapBuffers() -function.
     // swapInterval is 1 by default which means that swapBuffers() will (hopefully) block
     // and wait for vsync.
-//    auto start = std::chrono::high_resolution_clock::now();
+    //    auto start = std::chrono::high_resolution_clock::now();
     mContext->swapBuffers(this);
-//    auto end = std::chrono::high_resolution_clock::now();
-//    std::chrono::duration<float> duration = end - start;
-//    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
+    //    auto end = std::chrono::high_resolution_clock::now();
+    //    std::chrono::duration<float> duration = end - start;
+    //    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
 
-//    calculateFramerate();
+    //    calculateFramerate();
 }
 
 void RenderWindow::setupPlainShader(int shaderIndex)
