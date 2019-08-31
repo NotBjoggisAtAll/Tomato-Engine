@@ -5,6 +5,7 @@
 
 class QWidget;
 class RenderWindow;
+class GameObject;
 
 namespace Ui {
 class MainWindow;
@@ -18,14 +19,18 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void DisplayGameObjectInList(std::vector<GameObject*> GameObjects);
+
 private slots:
     void on_actionToggle_Wireframe_triggered();
     void on_actionExit_triggered();
 
+    void on_createObjectButton_clicked();
+
 private:
     void init();
-    Ui::MainWindow *ui;
 
+    Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
 };

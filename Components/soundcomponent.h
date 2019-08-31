@@ -1,9 +1,9 @@
 #ifndef SOUNDCOMPONENT_H
 #define SOUNDCOMPONENT_H
 
-#include "basecomponent.h"
+#include "component.h"
 
-struct SoundComponent : public BaseComponent
+struct SoundComponent : public Component
 {
 
 };

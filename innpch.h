@@ -21,7 +21,7 @@
 #include "vector3d.h"
 #include "vector2d.h"
 //#include "vertex.h"
-#include "shader.h"
+//#include "shader.h"
 #include "gltypes.h"
 #include "gsl_math.h"
 #include "math_constants.h"

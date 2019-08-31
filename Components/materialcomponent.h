@@ -1,9 +1,9 @@
 #ifndef MATERIALCOMPONENT_H
 #define MATERIALCOMPONENT_H
 
-#include "basecomponent.h"
+#include "component.h"
 class Shader;
-struct MaterialComponent : public BaseComponent
+struct MaterialComponent : public Component
 {
     Shader* mShader{nullptr};
     gsl::Vector3D mColor{1,1,1};

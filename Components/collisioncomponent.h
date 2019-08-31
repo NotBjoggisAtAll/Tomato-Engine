@@ -1,9 +1,9 @@
 #ifndef COLLISIONCOMPONENT_H
 #define COLLISIONCOMPONENT_H
 
-#include "basecomponent.h"
+#include "component.h"
 
-struct CollisionComponent : public BaseComponent
+struct CollisionComponent : public Component
 {
 
 };

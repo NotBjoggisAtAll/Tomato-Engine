@@ -1,13 +1,13 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "basecomponent.h"
+#include "component.h"
 #include "meshcomponent.h"
 #include "materialcomponent.h"
 #include "transformcomponent.h"
 #include <QOpenGLFunctions_4_1_Core>
 
-struct RenderComponent : public BaseComponent, public QOpenGLFunctions_4_1_Core
+struct RenderComponent : public Component, public QOpenGLFunctions_4_1_Core
 {
     RenderComponent(MeshComponent* MeshComponent = nullptr, MaterialComponent* MaterialComponent = nullptr, TransformComponent* TransformComponent = nullptr)
         : mMeshComponent(MeshComponent), mMaterialComponent(MaterialComponent), mTransformComponent(TransformComponent) {}

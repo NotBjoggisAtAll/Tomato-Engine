@@ -176,7 +176,7 @@ void RenderWindow::init()
     mVisualObjects.push_back(temp);
 
     //one monkey
-    GameObject* go = new GameObject();
+    GameObject* go = GameObject::Create("Monkey");
     MaterialComponent* Material = new MaterialComponent();
     Material->mShader = mShaderProgram[2];
     MeshComponent* Mesh = new MeshComponent("monkey.obj");
@@ -193,7 +193,9 @@ void RenderWindow::init()
     go->mComponents.push_back(Mesh);
     go->mComponents.push_back(Transform);
 
+    mGameObjects.push_back(go);
 
+    mMainWindow->DisplayGameObjectInList(mGameObjects);
     //    temp = new ObjMesh("monkey.obj");
     //    temp->setShader(mShaderProgram[2]);
     //    temp->init();

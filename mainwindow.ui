@@ -62,7 +62,10 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QComboBox" name="listOfCreateableObjects"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="createObjectButton">
              <property name="maximumSize">
               <size>
                <width>100</width>
@@ -73,7 +76,7 @@
               <enum>Qt::LeftToRight</enum>
              </property>
              <property name="text">
-              <string>PushButton</string>
+              <string>Create Object</string>
              </property>
             </widget>
            </item>

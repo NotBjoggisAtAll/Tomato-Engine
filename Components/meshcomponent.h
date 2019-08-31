@@ -1,12 +1,12 @@
 #ifndef MESHCOMPONENT_H
 #define MESHCOMPONENT_H
 
-#include "basecomponent.h"
+#include "component.h"
 #include <vector>
 #include "vertex.h"
 #include "gltypes.h"
 #include "Managers/filemanager.h"
-struct MeshComponent : public BaseComponent
+struct MeshComponent : public Component
 {
     MeshComponent(std::string FileName)
     {

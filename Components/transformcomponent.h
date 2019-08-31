@@ -1,9 +1,9 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include "basecomponent.h"
+#include "component.h"
 
-struct TransformComponent : public BaseComponent
+struct TransformComponent : public Component
 {
     gsl::Matrix4x4 mMatrix;
 };

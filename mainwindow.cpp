@@ -21,6 +21,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::DisplayGameObjectInList(std::vector<GameObject *> GameObjects)
+{
+    for(auto GameObject : GameObjects)
+    {
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        item->setText(0, QString::fromStdString(GameObject->mName));
+        ui->Outliner->addTopLevelItem(item);
+        ui->listOfCreateableObjects->addItem(QString::fromStdString(GameObject->mName));
+    }
+}
+
 void MainWindow::init()
 {
     //This will contain the setup of the OpenGL surface we will render into
@@ -89,4 +100,9 @@ void MainWindow::on_actionToggle_Wireframe_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     close();
+}
+
+void MainWindow::on_createObjectButton_clicked()
+{
+  qDebug() << ui->listOfCreateableObjects->currentText();
 }

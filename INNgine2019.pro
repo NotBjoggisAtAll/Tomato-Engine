@@ -10,9 +10,9 @@ PRECOMPILED_HEADER = innpch.h
 INCLUDEPATH +=  ./GSL
 
 HEADERS += \
-    Components/basecomponent.h \
     Components/cameracomponent.h \
     Components/collisioncomponent.h \
+    Components/component.h \
     Components/lightcomponent.h \
     Components/materialcomponent.h \
     Components/meshcomponent.h \
@@ -64,6 +64,7 @@ HEADERS += \
 
 
 SOURCES += main.cpp \
+    Components/component.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
