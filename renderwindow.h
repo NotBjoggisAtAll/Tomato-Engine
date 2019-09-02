@@ -15,6 +15,8 @@ class Shader;
 class MainWindow;
 class Light;
 class GameObject;
+
+class RenderSystem;
 /// This inherits from QWindow to get access to the Qt functionality and
 /// OpenGL surface.
 /// We also inherit from QOpenGLFunctions, to get access to the OpenGL functions
@@ -35,7 +37,9 @@ public:
 
     std::vector<GameObject*> mGameObjects;
 
+    RenderSystem* mRenderSystem{nullptr};
 
+    GameObject *CreateObject(std::string Name, std::string MeshPath);
 private slots:
     void render();
 

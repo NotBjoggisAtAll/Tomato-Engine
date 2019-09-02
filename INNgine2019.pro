@@ -37,6 +37,7 @@ HEADERS += \
     Managers/filemanager.h \
     constants.h \
     gameobject.h \
+    rendersystem.h \
     renderwindow.h \
     shader.h \
     mainwindow.h \
@@ -73,6 +74,7 @@ SOURCES += main.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
     Managers/filemanager.cpp \
+    rendersystem.cpp \
     vertex.cpp \
     gameobject.cpp \
     renderwindow.cpp \

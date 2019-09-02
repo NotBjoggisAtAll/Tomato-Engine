@@ -26,6 +26,8 @@
 #include "Components/transformcomponent.h"
 #include "Components/meshcomponent.h"
 
+#include "rendersystem.h"
+
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
 {
@@ -117,7 +119,14 @@ void RenderWindow::init()
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
 
+    //********************** Creating Systems *********************
+    mRenderSystem = new RenderSystem();
+
+
+
+
     //********************** Making the objects to be drawn **********************
+
     VisualObject * temp{nullptr};
 
     temp = new XYZ();
@@ -176,54 +185,19 @@ void RenderWindow::init()
     mVisualObjects.push_back(temp);
 
     //one monkey
-    GameObject* go = GameObject::Create("Monkey");
-    MaterialComponent* Material = new MaterialComponent();
-    Material->mShader = mShaderProgram[2];
-    MeshComponent* Mesh = new MeshComponent("monkey.obj");
-    TransformComponent* Transform = new TransformComponent();
-    Transform->mMatrix.setToIdentity();
-    Transform->mMatrix.scale(0.5f);
-    Transform->mMatrix.translate(3.f, 2.f, -2.f);
-    RenderComponent* renderComp = new RenderComponent(Mesh, Material, Transform);
-    renderComp->Init();
-    go->mName = "Monkey";
+    auto go = CreateObject("Monkey", "monkey.obj");
+    go->mMaterialComponent->mShader = mShaderProgram[2];
+    go->mTransformComponent->mMatrix.setToIdentity();
+    go->mTransformComponent->mMatrix.scale(0.5f);
+    go->mTransformComponent->mMatrix.translate(3.f, 2.f, -2.f);
 
-    go->mComponents.push_back(renderComp);
-    go->mComponents.push_back(Material);
-    go->mComponents.push_back(Mesh);
-    go->mComponents.push_back(Transform);
 
-    mGameObjects.push_back(go);
+
+    //********************** System stuff **********************
 
     mMainWindow->DisplayGameObjectInList(mGameObjects);
-    //    temp = new ObjMesh("monkey.obj");
-    //    temp->setShader(mShaderProgram[2]);
-    //    temp->init();
-    //    temp->mName = "Monkey";
-    //    temp->mMatrix.scale(0.5f);
-    //    temp->mMatrix.translate(3.f, 2.f, -2.f);
-    //    mVisualObjects.push_back(temp);
+    mRenderSystem->Init();
 
-    //     //    testing objmesh class - many of them!
-    //   //  here we see the need for resource management!
-    //        int x{0};
-    //        int y{0};
-    //        int numberOfObjs{100};
-    //        for (int i{0}; i < numberOfObjs; i++)
-    //        {
-    //            temp = new ObjMesh("monkey.obj");
-    //            temp->setShader(mShaderProgram[0]);
-    //            temp->init();
-    //            x++;
-    //            temp->mMatrix.translate(0.f + x, 0.f, -2.f - y);
-    //            temp->mMatrix.scale(0.5f);
-    //            mVisualObjects.push_back(temp);
-    //            if(x%10 == 0)
-    //            {
-    //                x = 0;
-    //                y++;
-    //            }
-    //        }
 
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
@@ -235,6 +209,21 @@ void RenderWindow::init()
     mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[2]->setCurrentCamera(mCurrentCamera);
+}
+
+GameObject* RenderWindow::CreateObject(std::string Name, std::string MeshPath)
+{
+    GameObject* go = GameObject::Create(Name);
+    MeshComponent* Mesh = new MeshComponent(MeshPath);
+    MaterialComponent* Material = new MaterialComponent();
+    TransformComponent* Transform = new TransformComponent();
+    RenderComponent* Render = mRenderSystem->CreateComponent(go);
+    go->mMeshComponent = Mesh;
+    go->mMaterialComponent = Material;
+    go->mTransformComponent = Transform;
+    go->mRenderComponent = Render;
+    mGameObjects.push_back(go);
+    return go;
 }
 
 ///Called each frame - doing the rendering
@@ -265,10 +254,8 @@ void RenderWindow::render()
         //        checkForGLerrors();
     }
 
-    for(auto& gameObject : mGameObjects)
-    {
-        static_cast<RenderComponent*>(gameObject->mComponents.at(0))->Render();
-    }
+    mRenderSystem->Render();
+
     //Calculate framerate before
     // checkForGLerrors() because that takes a long time
     // and before swapBuffers(), else it will show the vsync time

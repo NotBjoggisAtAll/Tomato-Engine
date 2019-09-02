@@ -14,9 +14,13 @@ enum ComponentType{
     E_Transform
 };
 
+class GameObject;
+
 struct Component
 {
     static Component* Create(ComponentType Type);
+
+    GameObject* Owner{nullptr};
 };
 
 #endif // BASECOMPONENT_H
