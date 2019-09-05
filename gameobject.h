@@ -2,34 +2,25 @@
 #define GAMEOBJECT_H
 
 #include "Components/component.h"
-#include "Components/meshcomponent.h"
 #include "Components/materialcomponent.h"
 #include "Components/transformcomponent.h"
-
-enum DefaultObjectTypes
-{
-    E_Cube,
-    E_Sphere,
-    E_Plane,
-    E_Monkey
-};
-
 class GameObject
 {
 public:
     virtual ~GameObject();
 
-    static GameObject* Create(std::string Name);
+    GameObject(std::string Name);
+
+    void addComponent(Component* component);
 
     std::string mName;
     std::vector<Component*> mComponents;
 
-    MeshComponent* mMeshComponent{nullptr};
-    MaterialComponent* mMaterialComponent{nullptr};
-    TransformComponent* mTransformComponent{nullptr};
+    MaterialComponent* mMaterialComponent;
+    TransformComponent* mTransformComponent;
+
 
 private:
-    GameObject();
 };
 
 #endif // GAMEOBJECT_H

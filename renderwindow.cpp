@@ -175,8 +175,18 @@ void RenderWindow::init()
     mVisualObjects.push_back(temp);
 
     //one monkey
-    auto go = CreateObject("Monkey", "monkey.obj");
+    GameObject* go = new GameObject("Monkey");
+
+    go->addComponent(ResourceFactory::instance()->createComponent("monkey.obj"));
+    go->addComponent(new MaterialComponent());
+    go->addComponent(new TransformComponent());
+    mGameObjects.push_back(go);
+
+    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
+    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+
     go->mMaterialComponent->mShader = mShaderProgram[2];
+
     go->mTransformComponent->mMatrix.setToIdentity();
     go->mTransformComponent->mMatrix.scale(0.5f);
     go->mTransformComponent->mMatrix.translate(3.f, 2.f, -2.f);
@@ -198,20 +208,6 @@ void RenderWindow::init()
     mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
     mShaderProgram[2]->setCurrentCamera(mCurrentCamera);
-}
-
-GameObject* RenderWindow::CreateObject(std::string Name, std::string MeshPath)
-{
-    GameObject* go = GameObject::Create(Name);
-    MaterialComponent* Material = new MaterialComponent();
-    TransformComponent* Transform = new TransformComponent();
-    auto Mesh = ResourceFactory::instance()->createComponent(MeshPath);
-    Mesh->Owner = go;
-    go->mMaterialComponent = Material;
-    go->mTransformComponent = Transform;
-    go->mMeshComponent = Mesh;
-    mGameObjects.push_back(go);
-    return go;
 }
 
 ///Called each frame - doing the rendering

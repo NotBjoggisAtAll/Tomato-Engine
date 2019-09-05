@@ -39,7 +39,6 @@ public:
 
     RenderSystem* mRenderSystem{nullptr};
 
-    GameObject *CreateObject(std::string Name, std::string MeshPath);
 private slots:
     void render();
 

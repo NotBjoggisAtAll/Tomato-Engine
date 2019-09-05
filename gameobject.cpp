@@ -1,8 +1,7 @@
 #include "gameobject.h"
 
-GameObject::GameObject()
+GameObject::GameObject(std::string Name) : mName(Name)
 {
-    mName = "GameObject";
     mComponents.reserve(11);
 }
 
@@ -11,9 +10,8 @@ GameObject::~GameObject()
 
 }
 
-GameObject *GameObject::Create(std::string Name)
+void GameObject::addComponent(Component *component)
 {
-    GameObject* object = new GameObject();
-    object->mName = Name;
-    return object;
+    component->Owner = this;
+    mComponents.push_back(component);
 }
