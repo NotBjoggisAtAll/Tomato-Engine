@@ -5,7 +5,6 @@
 #include "Components/meshcomponent.h"
 #include "Components/materialcomponent.h"
 #include "Components/transformcomponent.h"
-#include "Components/rendercomponent.h"
 
 enum DefaultObjectTypes
 {
@@ -28,7 +27,6 @@ public:
     MeshComponent* mMeshComponent{nullptr};
     MaterialComponent* mMaterialComponent{nullptr};
     TransformComponent* mTransformComponent{nullptr};
-    RenderComponent* mRenderComponent{nullptr};
 
 private:
     GameObject();

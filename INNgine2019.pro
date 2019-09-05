@@ -17,7 +17,6 @@ HEADERS += \
     Components/materialcomponent.h \
     Components/meshcomponent.h \
     Components/physicscomponent.h \
-    Components/rendercomponent.h \
     Components/scriptcomponent.h \
     Components/soundcomponent.h \
     Components/transformcomponent.h \
@@ -39,6 +38,7 @@ HEADERS += \
     gameobject.h \
     rendersystem.h \
     renderwindow.h \
+    resourcefactory.h \
     shader.h \
     mainwindow.h \
     triangle.h \
@@ -75,6 +75,7 @@ SOURCES += main.cpp \
     GSL/gsl_math.cpp \
     Managers/filemanager.cpp \
     rendersystem.cpp \
+    resourcefactory.cpp \
     vertex.cpp \
     gameobject.cpp \
     renderwindow.cpp \

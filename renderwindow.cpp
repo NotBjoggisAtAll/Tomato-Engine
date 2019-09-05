@@ -22,11 +22,11 @@
 #include "phongshader.h"
 
 #include "gameobject.h"
-#include "Components/rendercomponent.h"
 #include "Components/transformcomponent.h"
 #include "Components/meshcomponent.h"
 
 #include "rendersystem.h"
+#include "resourcefactory.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -134,16 +134,6 @@ void RenderWindow::init()
     temp->setShader(mShaderProgram[0]);
     mVisualObjects.push_back(temp);
 
-
-    //    temp = new OctahedronBall(2);
-    //    temp->init();
-    //    temp->setShader(mShaderProgram[0]);
-    //    temp->mMatrix.scale(1);
-    //    temp->mMatrix.translate(5);
-    //    temp->mName = "Ball";
-    //    mVisualObjects.push_back(temp);
-    //    mPlayer = temp;
-
     temp = new SkyBox();
     temp->init();
     temp->setShader(mShaderProgram[1]);
@@ -196,7 +186,6 @@ void RenderWindow::init()
     //********************** System stuff **********************
 
     mMainWindow->DisplayGameObjectInList(mGameObjects);
-    mRenderSystem->Init();
 
 
     //********************** Set up camera **********************
@@ -214,14 +203,13 @@ void RenderWindow::init()
 GameObject* RenderWindow::CreateObject(std::string Name, std::string MeshPath)
 {
     GameObject* go = GameObject::Create(Name);
-    MeshComponent* Mesh = new MeshComponent(MeshPath);
     MaterialComponent* Material = new MaterialComponent();
     TransformComponent* Transform = new TransformComponent();
-    RenderComponent* Render = mRenderSystem->CreateComponent(go);
-    go->mMeshComponent = Mesh;
+    auto Mesh = ResourceFactory::instance()->createComponent(MeshPath);
+    Mesh->Owner = go;
     go->mMaterialComponent = Material;
     go->mTransformComponent = Transform;
-    go->mRenderComponent = Render;
+    go->mMeshComponent = Mesh;
     mGameObjects.push_back(go);
     return go;
 }
