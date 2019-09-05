@@ -26,6 +26,8 @@ MeshComponent* ResourceFactory::createComponent(std::string filePath)
         createAxis();
     if(filePath.find(".obj") != std::string::npos)
         createObject(filePath);
+    if(filePath.find(".txt") != std::string::npos)
+        createObject(filePath);
 
     return &mMeshComponents.back();
 }
@@ -93,6 +95,7 @@ void ResourceFactory::createAxis()
 
 }
 
+
 void ResourceFactory::createObject(std::string filePath)
 {
     mVertices.clear();
@@ -100,7 +103,10 @@ void ResourceFactory::createObject(std::string filePath)
     initializeOpenGLFunctions();
     mMeshComponents.push_back(MeshComponent());
 
-    readFile(filePath);
+    if(filePath.find(".obj") != std::string::npos)
+        readOBJFile(filePath);
+    else if(filePath.find(".txt") != std::string::npos)
+        readTXTFile(filePath);
 
     //set up buffers
     openGLVertexBuffers();
@@ -112,7 +118,32 @@ void ResourceFactory::createObject(std::string filePath)
     glBindVertexArray(0);
 }
 
-void ResourceFactory::readFile(std::string filename)
+void ResourceFactory::readTXTFile(std::string filename)
+{
+    std::ifstream inn;
+    std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+
+    inn.open(fileWithPath);
+
+    if (inn.is_open()) {
+        int n;
+        Vertex vertex;
+        inn >> n;
+        mVertices.reserve(n);
+        for (int i=0; i<n; i++) {
+            inn >> vertex;
+            mVertices.push_back(vertex);
+        }
+        inn.close();
+        qDebug() << "TriangleSurface file read: " << QString::fromStdString(filename);
+    }
+    else
+    {
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
+    }
+}
+
+void ResourceFactory::readOBJFile(std::string filename)
 {
     //Open File
     std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;

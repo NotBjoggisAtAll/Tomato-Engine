@@ -29,7 +29,7 @@ private:
     ResourceFactory();
     std::map<std::string, unsigned int> mMeshComponentMap;
 
-    void readFile(std::string filename);
+    void readOBJFile(std::string filename);
     std::vector<Vertex> mVertices;
     std::vector<unsigned int> mIndices;
     void openGLVertexBuffers();
@@ -39,6 +39,7 @@ private:
 
     void createAxis();
     void createObject(std::string filePath);
+    void readTXTFile(std::string filename);
 };
 
 #endif // RESOURCEFACTORY_H

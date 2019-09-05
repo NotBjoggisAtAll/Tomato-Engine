@@ -168,14 +168,23 @@ void RenderWindow::init()
     static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
 
     //testing triangle surface class
-    temp = new TriangleSurface("box2.txt");
-    temp->init();
-    temp->mMatrix.rotateY(180.f);
-    temp->setShader(mShaderProgram[0]);
-    mVisualObjects.push_back(temp);
+    GameObject* go = new GameObject("Box 2");
+
+    go->addComponent(ResourceFactory::instance()->createComponent("box2.txt"));
+    go->addComponent(new MaterialComponent());
+    go->addComponent(new TransformComponent());
+    mGameObjects.push_back(go);
+
+    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
+    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+
+    go->mMaterialComponent->mShader = mShaderProgram[0];
+
+    go->mTransformComponent->mMatrix.setToIdentity();
+    go->mTransformComponent->mMatrix.rotateY(180.f);
 
     //one monkey
-    GameObject* go = new GameObject("Monkey");
+     go = new GameObject("Monkey");
 
     go->addComponent(ResourceFactory::instance()->createComponent("monkey.obj"));
     go->addComponent(new MaterialComponent());
