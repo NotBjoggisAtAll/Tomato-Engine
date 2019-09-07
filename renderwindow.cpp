@@ -170,7 +170,7 @@ void RenderWindow::init()
     //testing triangle surface class
     GameObject* go = new GameObject("Box 2");
 
-    go->addComponent(ResourceFactory::instance()->createComponent("box2.txt"));
+    go->addComponent(ResourceFactory::instance()->createMeshComponent("box2.txt"));
     go->addComponent(new MaterialComponent());
     go->addComponent(new TransformComponent());
     mGameObjects.push_back(go);
@@ -186,7 +186,7 @@ void RenderWindow::init()
     //one monkey
      go = new GameObject("Monkey");
 
-    go->addComponent(ResourceFactory::instance()->createComponent("monkey.obj"));
+    go->addComponent(ResourceFactory::instance()->createMeshComponent("monkey.obj"));
     go->addComponent(new MaterialComponent());
     go->addComponent(new TransformComponent());
     mGameObjects.push_back(go);

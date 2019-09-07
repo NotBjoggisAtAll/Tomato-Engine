@@ -16,7 +16,7 @@ ResourceFactory *ResourceFactory::instance()
     return mInstance;
 }
 
-MeshComponent* ResourceFactory::createComponent(std::string filePath)
+MeshComponent* ResourceFactory::createMeshComponent(std::string filePath)
 {
     auto search = mMeshComponentMap.find(filePath);
     if (search != mMeshComponentMap.end())
@@ -78,11 +78,11 @@ void ResourceFactory::createAxis()
     mMeshComponents.push_back(MeshComponent());
 
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 1.f, 0.f, 0.f});
-    mVertices.push_back(Vertex{100.f, 0.f, 0.f, 1.f, 0.f, 0.f});
+    mVertices.push_back(Vertex{1000.f, 0.f, 0.f, 1.f, 0.f, 0.f});
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 0.f, 1.f, 0.f});
-    mVertices.push_back(Vertex{0.f, 100.f, 0.f, 0.f, 1.f, 0.f});
+    mVertices.push_back(Vertex{0.f, 1000.f, 0.f, 0.f, 1.f, 0.f});
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 0.f, 0.f, 1.f});
-    mVertices.push_back(Vertex{0.f, 0.f, 100.f, 0.f, 0.f, 1.f});
+    mVertices.push_back(Vertex{0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
 
     //set up buffers
     openGLVertexBuffers();

@@ -35,6 +35,7 @@ HEADERS += \
     JBA/vector4d.h \
     Managers/filemanager.h \
     constants.h \
+    entitymanager.h \
     gameobject.h \
     rendersystem.h \
     renderwindow.h \
@@ -74,6 +75,7 @@ SOURCES += main.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
     Managers/filemanager.cpp \
+    entitymanager.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
     vertex.cpp \

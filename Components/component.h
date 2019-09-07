@@ -20,7 +20,9 @@ struct Component
 {
     static Component* Create(ComponentType Type);
 
-    GameObject* Owner{nullptr};
+    GameObject* Owner{nullptr}; //TODO remove
+
+    unsigned int EntityID{};
 };
 
 #endif // BASECOMPONENT_H

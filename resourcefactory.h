@@ -22,7 +22,7 @@ class ResourceFactory : public QOpenGLFunctions_4_1_Core
 public:
     static ResourceFactory* instance();
 
-    MeshComponent *createComponent(std::string filePath);
+    MeshComponent *createMeshComponent(std::string filePath);
     std::vector<MeshComponent> GetComponents() const;
 private:
     std::vector<MeshComponent> mMeshComponents;
