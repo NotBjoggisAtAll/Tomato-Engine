@@ -4,18 +4,20 @@
 #include "resourcefactory.h"
 RenderSystem::RenderSystem()
 {
-
+    factory = ResourceFactory::instance();
 }
 
 void RenderSystem::Render()
 {
     initializeOpenGLFunctions();
-    for(auto& Component : ResourceFactory::instance()->GetComponents())
+    for(auto& Component : factory->getMeshComponents())
     {
+        auto Material = factory->getMaterialComponents().at(Component.EntityID);
+        auto Transform = factory->getTransformComponents().at(Component.EntityID);
 
-        glUseProgram(Component.Owner->mMaterialComponent->mShader->getProgram());
+        glUseProgram(Material.mShader->getProgram());
         glBindVertexArray(Component.mVAO );
-        Component.Owner->mMaterialComponent->mShader->transmitUniformData(&Component.Owner->mTransformComponent->mMatrix, Component.Owner->mMaterialComponent);   //rendersystem should know what data is needed for each shader.
+        Material.mShader->transmitUniformData(&Transform.mMatrix, &Material);   //rendersystem should know what data is needed for each shader.
 
         //checking if indices are used - draws accordingly with Elements or Arrays
         if (Component.mIndiceCount > 0)

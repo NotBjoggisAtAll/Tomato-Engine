@@ -28,6 +28,8 @@
 #include "rendersystem.h"
 #include "resourcefactory.h"
 
+#include "entitymanager.h"
+
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
 {
@@ -121,6 +123,7 @@ void RenderWindow::init()
 
     //********************** Creating Systems *********************
     mRenderSystem = new RenderSystem();
+    mEntityManager = EntityManager::instance();
 
 
 
@@ -167,38 +170,48 @@ void RenderWindow::init()
 
     static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
 
-    //testing triangle surface class
-    GameObject* go = new GameObject("Box 2");
+//    //testing triangle surface class
+//    GameObject* go = new GameObject("Box 2");
 
-    go->addComponent(ResourceFactory::instance()->createMeshComponent("box2.txt"));
-    go->addComponent(new MaterialComponent());
-    go->addComponent(new TransformComponent());
-    mGameObjects.push_back(go);
+//    go->addComponent(ResourceFactory::instance()->createMeshComponent(0,"box2.txt"));
+//    go->addComponent(new MaterialComponent());
+//    go->addComponent(new TransformComponent());
+//    mGameObjects.push_back(go);
 
-    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
-    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+//    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
+//    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
 
-    go->mMaterialComponent->mShader = mShaderProgram[0];
+//    go->mMaterialComponent->mShader = mShaderProgram[0];
 
-    go->mTransformComponent->mMatrix.setToIdentity();
-    go->mTransformComponent->mMatrix.rotateY(180.f);
+//    go->mTransformComponent->mMatrix.setToIdentity();
+//    go->mTransformComponent->mMatrix.rotateY(180.f);
 
-    //one monkey
-     go = new GameObject("Monkey");
+//    //one monkey
+//     go = new GameObject("Monkey");
 
-    go->addComponent(ResourceFactory::instance()->createMeshComponent("monkey.obj"));
-    go->addComponent(new MaterialComponent());
-    go->addComponent(new TransformComponent());
-    mGameObjects.push_back(go);
+     auto Entity = mEntityManager->CreateEntity();
 
-    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
-    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+     mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
+     mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
+     mEntityManager->addComponent(Entity, ComponentType::Transform);
 
-    go->mMaterialComponent->mShader = mShaderProgram[2];
+     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.setToIdentity();
+     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.scale(0.5f);
+     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.translate(3.f, 2.f, -2.f);
 
-    go->mTransformComponent->mMatrix.setToIdentity();
-    go->mTransformComponent->mMatrix.scale(0.5f);
-    go->mTransformComponent->mMatrix.translate(3.f, 2.f, -2.f);
+    //go->addComponent(ResourceFactory::instance()->createMeshComponent(1,"monkey.obj"));
+    //go->addComponent(new MaterialComponent());
+  //  go->addComponent(new TransformComponent());
+ //   mGameObjects.push_back(go);
+
+ ///   go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
+ //   go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+
+ //   go->mMaterialComponent->mShader = mShaderProgram[2];
+
+//    go->mTransformComponent->mMatrix.setToIdentity();
+//    go->mTransformComponent->mMatrix.scale(0.5f);
+//    go->mTransformComponent->mMatrix.translate(3.f, 2.f, -2.f);
 
 
 

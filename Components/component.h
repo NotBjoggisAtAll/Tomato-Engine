@@ -22,7 +22,9 @@ struct Component
 
     GameObject* Owner{nullptr}; //TODO remove
 
-    unsigned int EntityID{};
+     unsigned int EntityID{};
 };
+
+
 
 #endif // BASECOMPONENT_H

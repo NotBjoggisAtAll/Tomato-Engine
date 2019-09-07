@@ -16,11 +16,15 @@ ResourceFactory *ResourceFactory::instance()
     return mInstance;
 }
 
-MeshComponent* ResourceFactory::createMeshComponent(std::string filePath)
+MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::string filePath)
 {
     auto search = mMeshComponentMap.find(filePath);
     if (search != mMeshComponentMap.end())
-        return &mMeshComponents[search->second];
+    {
+        mMeshComponents.push_back(mMeshComponents[search->second]);
+        mMeshComponents.back().EntityID = EntityID;
+        return &mMeshComponents.back();
+    }
 
     if(filePath == "axis")
         createAxis();
@@ -29,12 +33,38 @@ MeshComponent* ResourceFactory::createMeshComponent(std::string filePath)
     if(filePath.find(".txt") != std::string::npos)
         createObject(filePath);
 
+    mMeshComponents.back().EntityID = EntityID;
     return &mMeshComponents.back();
 }
 
-std::vector<MeshComponent> ResourceFactory::GetComponents() const
+TransformComponent *ResourceFactory::createTransformComponent(unsigned int EntityID)
+{
+    mTransformComponents.push_back(TransformComponent());
+    mTransformComponents.back().EntityID = EntityID;
+    return &mTransformComponents.back();
+}
+
+MaterialComponent *ResourceFactory::createMaterialComponent(unsigned int EntityID, Shader* Shader)
+{
+    mMaterialComponents.push_back(MaterialComponent());
+    mMaterialComponents.back().EntityID = EntityID;
+    mMaterialComponents.back().mShader = Shader;
+    return &mMaterialComponents.back();
+}
+
+std::vector<MeshComponent>& ResourceFactory::getMeshComponents()
 {
     return mMeshComponents;
+}
+
+std::vector<TransformComponent> &ResourceFactory::getTransformComponents()
+{
+    return mTransformComponents;
+}
+
+std::vector<MaterialComponent> &ResourceFactory::getMaterialComponents()
+{
+    return mMaterialComponents;
 }
 
 void ResourceFactory::openGLVertexBuffers()
@@ -101,7 +131,10 @@ void ResourceFactory::createObject(std::string filePath)
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
+
     mMeshComponents.push_back(MeshComponent());
+
+    mMeshComponentMap[filePath] = static_cast<unsigned int>(mMeshComponents.size()) - 1;
 
     if(filePath.find(".obj") != std::string::npos)
         readOBJFile(filePath);

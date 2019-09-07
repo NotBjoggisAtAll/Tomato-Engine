@@ -2,7 +2,7 @@
 #define RESOURCEFACTORY_H
 
 #include <QOpenGLFunctions_4_1_Core>
-#include "Components/meshcomponent.h"
+#include "Components/allcomponents.h"
 #include <map>
 #include <vector>
 #include "vertex.h"
@@ -22,10 +22,21 @@ class ResourceFactory : public QOpenGLFunctions_4_1_Core
 public:
     static ResourceFactory* instance();
 
-    MeshComponent *createMeshComponent(std::string filePath);
-    std::vector<MeshComponent> GetComponents() const;
+    MeshComponent *createMeshComponent(unsigned int EntityID, std::string filePath);
+    TransformComponent *createTransformComponent(unsigned int EntityID);
+    MaterialComponent *createMaterialComponent(unsigned int EntityID, Shader *Shader);
+
+    std::vector<MeshComponent>& getMeshComponents();
+    std::vector<TransformComponent>& getTransformComponents();
+    std::vector<MaterialComponent>& getMaterialComponents();
+
 private:
     std::vector<MeshComponent> mMeshComponents;
+    std::vector<TransformComponent> mTransformComponents;
+    std::vector<MaterialComponent> mMaterialComponents;
+
+
+
     ResourceFactory();
     std::map<std::string, unsigned int> mMeshComponentMap;
 

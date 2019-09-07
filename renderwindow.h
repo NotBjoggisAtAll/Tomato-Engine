@@ -15,6 +15,7 @@ class Shader;
 class MainWindow;
 class Light;
 class GameObject;
+class EntityManager;
 
 class RenderSystem;
 /// This inherits from QWindow to get access to the Qt functionality and
@@ -38,6 +39,7 @@ public:
     std::vector<GameObject*> mGameObjects;
 
     RenderSystem* mRenderSystem{nullptr};
+    EntityManager* mEntityManager{nullptr};
 
 private slots:
     void render();

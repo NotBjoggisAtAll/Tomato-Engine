@@ -10,6 +10,7 @@ PRECOMPILED_HEADER = innpch.h
 INCLUDEPATH +=  ./GSL
 
 HEADERS += \
+    Components/allcomponents.h \
     Components/cameracomponent.h \
     Components/collisioncomponent.h \
     Components/component.h \
