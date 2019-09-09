@@ -36,8 +36,6 @@ public:
 
     void checkForGLerrors();
 
-    std::vector<GameObject*> mGameObjects;
-
     RenderSystem* mRenderSystem{nullptr};
     EntityManager* mEntityManager{nullptr};
 

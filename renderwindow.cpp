@@ -21,7 +21,6 @@
 #include "textureshader.h"
 #include "phongshader.h"
 
-#include "gameobject.h"
 #include "Components/transformcomponent.h"
 #include "Components/meshcomponent.h"
 
@@ -125,9 +124,6 @@ void RenderWindow::init()
     mRenderSystem = new RenderSystem();
     mEntityManager = EntityManager::instance();
 
-
-
-
     //********************** Making the objects to be drawn **********************
 
     VisualObject * temp{nullptr};
@@ -148,14 +144,6 @@ void RenderWindow::init()
     Transform->mMatrix.scale(15.f);
     Material->mTextureUnit = 2;
 
-//    temp = new SkyBox();
-//    temp->init();
-//    temp->setShader(mShaderProgram[1]);
-//    temp->mMaterial.mTextureUnit = 2;
-//    temp->mMatrix.scale(15.f);
-//    temp->mName = "Cube";
-//    mVisualObjects.push_back(temp);
-
     temp = new BillBoard();
     temp->init();
     temp->setShader(mShaderProgram[1]);
@@ -172,7 +160,6 @@ void RenderWindow::init()
     temp->init();
     temp->setShader(mShaderProgram[1]);
     temp->mMatrix.translate(2.5f, 3.f, 0.f);
-    //    temp->mMatrix.rotateY(180.f);
     temp->mName = "light";
     temp->mRenderWindow = this;
     temp->mMaterial.mTextureUnit = 0;
@@ -181,8 +168,6 @@ void RenderWindow::init()
 
     static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
 
-//    //testing triangle surface class
-//    GameObject* go = new GameObject("Box 2");
     Entity = mEntityManager->CreateEntity("BoxBox");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
@@ -191,10 +176,6 @@ void RenderWindow::init()
 
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
-
-
-//    //one monkey
-//     go = new GameObject("Monkey");
 
      Entity = mEntityManager->CreateEntity("Monkiii");
 
@@ -206,25 +187,9 @@ void RenderWindow::init()
      Transform->mMatrix.scale(0.5f);
      Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
-    //go->addComponent(ResourceFactory::instance()->createMeshComponent(1,"monkey.obj"));
-    //go->addComponent(new MaterialComponent());
-  //  go->addComponent(new TransformComponent());
- //   mGameObjects.push_back(go);
-
- ///   go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
- //   go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
-
- //   go->mMaterialComponent->mShader = mShaderProgram[2];
-
-//    go->mTransformComponent->mMatrix.setToIdentity();
-//    go->mTransformComponent->mMatrix.scale(0.5f);
-//    go->mTransformComponent->mMatrix.translate(3.f, 2.f, -2.f);
-
-
-
     //********************** System stuff **********************
 
-    mMainWindow->DisplayGameObjectInList(mGameObjects);
+    mMainWindow->DisplayEntitesInOutliner();
 
 
     //********************** Set up camera **********************

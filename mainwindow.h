@@ -19,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayGameObjectInList(std::vector<GameObject*> GameObjects);
+    void DisplayEntitesInOutliner();
 
 private slots:
     void on_actionToggle_Wireframe_triggered();

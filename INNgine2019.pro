@@ -37,7 +37,6 @@ HEADERS += \
     Managers/filemanager.h \
     constants.h \
     entitymanager.h \
-    gameobject.h \
     rendersystem.h \
     renderwindow.h \
     resourcefactory.h \
@@ -82,7 +81,6 @@ SOURCES += main.cpp \
     resourcefactory.cpp \
     resourcemanager.cpp \
     vertex.cpp \
-    gameobject.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
     shader.cpp \

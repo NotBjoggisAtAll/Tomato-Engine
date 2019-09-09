@@ -5,7 +5,6 @@
 #include <QSurfaceFormat>
 #include <QDesktopWidget>
 
-#include "gameobject.h"
 #include "renderwindow.h"
 #include "entitymanager.h"
 
@@ -22,7 +21,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::DisplayGameObjectInList(std::vector<GameObject *> GameObjects)
+void MainWindow::DisplayEntitesInOutliner()
 {
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
