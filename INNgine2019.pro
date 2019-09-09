@@ -47,7 +47,6 @@ HEADERS += \
     texture.h \
     billboard.h \
     vertex.h \
-    xyz.h \
     visualobject.h \
     octahedronball.h \
     billboard.h \
@@ -62,7 +61,6 @@ HEADERS += \
     innpch.h \
     colorshader.h \
     textureshader.h \
-    skybox.h \
     phongshader.h
 
 
@@ -90,7 +88,6 @@ SOURCES += main.cpp \
     visualobject.cpp \
     camera.cpp \
     octahedronball.cpp \
-    xyz.cpp \
     trianglesurface.cpp \
     input.cpp \
     material.cpp \
@@ -98,7 +95,6 @@ SOURCES += main.cpp \
     objmesh.cpp \
     colorshader.cpp \
     textureshader.cpp \
-    skybox.cpp \
     phongshader.cpp
 
 FORMS += \

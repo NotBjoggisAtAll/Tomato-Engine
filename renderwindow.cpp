@@ -10,9 +10,7 @@
 
 #include "mainwindow.h"
 
-#include "xyz.h"
 #include "octahedronball.h"
-#include "skybox.h"
 #include "billboard.h"
 #include "trianglesurface.h"
 #include "objmesh.h"
@@ -25,8 +23,6 @@
 #include "Components/meshcomponent.h"
 
 #include "rendersystem.h"
-#include "resourcefactory.h"
-
 #include "entitymanager.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
