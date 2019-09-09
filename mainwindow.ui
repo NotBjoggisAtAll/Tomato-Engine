@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1047</width>
-    <height>788</height>
+    <width>1521</width>
+    <height>758</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,17 @@
       <item>
        <layout class="QVBoxLayout" name="OpenGLLayout"/>
       </item>
+      <item>
+       <widget class="QWidget" name="verticalWidget" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>350</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2"/>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -97,7 +108,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1047</width>
+     <width>1521</width>
      <height>20</height>
     </rect>
    </property>
