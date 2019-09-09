@@ -40,7 +40,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Type</string>
+               <string>ID</string>
               </property>
              </column>
             </widget>

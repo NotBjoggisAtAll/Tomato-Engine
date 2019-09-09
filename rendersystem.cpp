@@ -1,19 +1,19 @@
 #include "rendersystem.h"
 #include "gameobject.h"
 #include "shader.h"
-#include "resourcefactory.h"
+#include "resourcemanager.h"
 RenderSystem::RenderSystem()
 {
-    factory = ResourceFactory::instance();
+    factory = ResourceManager::instance();
 }
 
 void RenderSystem::Render()
 {
     initializeOpenGLFunctions();
-    for(auto& Component : factory->getMeshComponents())
+    for(auto& Component : factory->mMeshComponents)
     {
-        auto Material = factory->getMaterialComponents().at(Component.EntityID);
-        auto Transform = factory->getTransformComponents().at(Component.EntityID);
+        auto Material = factory->mMaterialComponents.at(Component.EntityID);
+        auto Transform = factory->mTransformComponents.at(Component.EntityID);
 
         glUseProgram(Material.mShader->getProgram());
         glBindVertexArray(Component.mVAO );

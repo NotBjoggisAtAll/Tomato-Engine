@@ -22,34 +22,23 @@ class ResourceFactory : public QOpenGLFunctions_4_1_Core
 public:
     static ResourceFactory* instance();
 
-    MeshComponent *createMeshComponent(unsigned int EntityID, std::string filePath);
-    TransformComponent *createTransformComponent(unsigned int EntityID);
-    MaterialComponent *createMaterialComponent(unsigned int EntityID, Shader *Shader);
-
-    std::vector<MeshComponent>& getMeshComponents();
-    std::vector<TransformComponent>& getTransformComponents();
-    std::vector<MaterialComponent>& getMaterialComponents();
+    MeshComponent *createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent> &mMeshComponents);
 
 private:
-    std::vector<MeshComponent> mMeshComponents;
-    std::vector<TransformComponent> mTransformComponents;
-    std::vector<MaterialComponent> mMaterialComponents;
-
-
 
     ResourceFactory();
-    std::map<std::string, unsigned int> mMeshComponentMap;
+    std::map<std::string, unsigned int> mMeshComponentMap; //string = filepath, unsigned int = Index in vector
 
     void readOBJFile(std::string filename);
     std::vector<Vertex> mVertices;
     std::vector<unsigned int> mIndices;
-    void openGLVertexBuffers();
-    void openGLIndexBuffer();
+    void openGLVertexBuffers(std::vector<MeshComponent> &mMeshComponents);
+    void openGLIndexBuffer(std::vector<MeshComponent> &mMeshComponents);
 
     static ResourceFactory* mInstance;
 
-    void createAxis();
-    void createObject(std::string filePath);
+    void createAxis(std::vector<MeshComponent> &mMeshComponents);
+    void createObject(std::vector<MeshComponent> &mMeshComponents, std::string filePath);
     void readTXTFile(std::string filename);
 };
 

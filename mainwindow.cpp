@@ -7,6 +7,7 @@
 
 #include "gameobject.h"
 #include "renderwindow.h"
+#include "entitymanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -23,12 +24,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayGameObjectInList(std::vector<GameObject *> GameObjects)
 {
-    for(auto GameObject : GameObjects)
+    for(auto& Entity : EntityManager::instance()->mEntities)
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
-        item->setText(0, QString::fromStdString(GameObject->mName));
+        item->setText(0, QString::fromStdString(Entity.second));
+        item->setText(1, QString::number(Entity.first));
         ui->Outliner->addTopLevelItem(item);
-        ui->listOfCreateableObjects->addItem(QString::fromStdString(GameObject->mName));
+        ui->listOfCreateableObjects->addItem(QString::fromStdString(Entity.second));
     }
 }
 

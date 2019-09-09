@@ -5,14 +5,14 @@
 
 class RenderComponent;
 class GameObject;
-class ResourceFactory;
+class ResourceManager;
 
 struct RenderSystem : public QOpenGLFunctions_4_1_Core
 {
     RenderSystem();
     void Render();
 
-    ResourceFactory* factory{nullptr};
+    ResourceManager* factory{nullptr};
 
 };
 

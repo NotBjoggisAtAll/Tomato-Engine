@@ -172,32 +172,28 @@ void RenderWindow::init()
 
 //    //testing triangle surface class
 //    GameObject* go = new GameObject("Box 2");
+    auto Entity = mEntityManager->CreateEntity("BoxBox");
 
-//    go->addComponent(ResourceFactory::instance()->createMeshComponent(0,"box2.txt"));
-//    go->addComponent(new MaterialComponent());
-//    go->addComponent(new TransformComponent());
-//    mGameObjects.push_back(go);
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
+    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    TransformComponent* Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
-//    go->mMaterialComponent = static_cast<MaterialComponent*>(go->mComponents.at(1));
-//    go->mTransformComponent = static_cast<TransformComponent*>(go->mComponents.at(2));
+    Transform->mMatrix.setToIdentity();
+    Transform->mMatrix.rotateY(180.f);
 
-//    go->mMaterialComponent->mShader = mShaderProgram[0];
-
-//    go->mTransformComponent->mMatrix.setToIdentity();
-//    go->mTransformComponent->mMatrix.rotateY(180.f);
 
 //    //one monkey
 //     go = new GameObject("Monkey");
 
-     auto Entity = mEntityManager->CreateEntity();
+     Entity = mEntityManager->CreateEntity("Monkiii");
 
      mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
-     mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
-     mEntityManager->addComponent(Entity, ComponentType::Transform);
+     auto Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
+     Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
-     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.setToIdentity();
-     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.scale(0.5f);
-     ResourceFactory::instance()->getTransformComponents().at(Entity).mMatrix.translate(3.f, 2.f, -2.f);
+     Transform->mMatrix.setToIdentity();
+     Transform->mMatrix.scale(0.5f);
+     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
     //go->addComponent(ResourceFactory::instance()->createMeshComponent(1,"monkey.obj"));
     //go->addComponent(new MaterialComponent());

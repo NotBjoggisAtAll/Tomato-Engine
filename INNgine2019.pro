@@ -41,6 +41,7 @@ HEADERS += \
     rendersystem.h \
     renderwindow.h \
     resourcefactory.h \
+    resourcemanager.h \
     shader.h \
     mainwindow.h \
     triangle.h \
@@ -79,6 +80,7 @@ SOURCES += main.cpp \
     entitymanager.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
+    resourcemanager.cpp \
     vertex.cpp \
     gameobject.cpp \
     renderwindow.cpp \

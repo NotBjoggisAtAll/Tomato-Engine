@@ -1,6 +1,6 @@
 #include "entitymanager.h"
 #include "Components/allcomponents.h"
-#include "resourcefactory.h"
+#include "resourcemanager.h"
 
 EntityManager* EntityManager::mInstance = nullptr;
 EntityManager::EntityManager()
@@ -21,22 +21,28 @@ EntityManager *EntityManager::instance()
     return mInstance;
 }
 
-unsigned int EntityManager::CreateEntity()
+unsigned int EntityManager::CreateEntity(std::string Name)
 {
+    mEntities[EntityID] = Name;
     return EntityID++;
 }
-void EntityManager::addComponent(unsigned int EntityID, ComponentType Type, Shader* Shader)
+MaterialComponent* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, Shader* Shader)
 {
+    MaterialComponent* ComponentToReturn{nullptr};
     if(Type == ComponentType::Material)
-        ResourceFactory::instance()->createMaterialComponent(EntityID, Shader);
+        ComponentToReturn = ResourceManager::instance()->createMaterialComponent(EntityID, Shader);
+
+    return ComponentToReturn;
 }
 
 
-void EntityManager::addComponent(unsigned int EntityID, ComponentType Type, std::string filePath)
+Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, std::string filePath)
 {
+    Component* ComponentToReturn{nullptr};
+
     switch (Type) {
     case ComponentType::Mesh:
-        ResourceFactory::instance()->createMeshComponent(EntityID, filePath);
+        ComponentToReturn = ResourceManager::instance()->createMeshComponent(EntityID, filePath);
         break;
     case ComponentType::Light:
 
@@ -62,9 +68,11 @@ void EntityManager::addComponent(unsigned int EntityID, ComponentType Type, std:
 
         break;
     case ComponentType::Transform:
-        ResourceFactory::instance()->createTransformComponent(EntityID);
+        ComponentToReturn = ResourceManager::instance()->createTransformComponent(EntityID);
         break;
     default:
         break;
     }
+
+    return ComponentToReturn;
 }

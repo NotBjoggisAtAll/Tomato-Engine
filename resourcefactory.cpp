@@ -16,7 +16,7 @@ ResourceFactory *ResourceFactory::instance()
     return mInstance;
 }
 
-MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::string filePath)
+MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent>& mMeshComponents)
 {
     auto search = mMeshComponentMap.find(filePath);
     if (search != mMeshComponentMap.end())
@@ -27,47 +27,18 @@ MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::
     }
 
     if(filePath == "axis")
-        createAxis();
+        createAxis(mMeshComponents);
     if(filePath.find(".obj") != std::string::npos)
-        createObject(filePath);
+        createObject(mMeshComponents,filePath);
     if(filePath.find(".txt") != std::string::npos)
-        createObject(filePath);
+        createObject(mMeshComponents,filePath);
 
     mMeshComponents.back().EntityID = EntityID;
     return &mMeshComponents.back();
 }
 
-TransformComponent *ResourceFactory::createTransformComponent(unsigned int EntityID)
-{
-    mTransformComponents.push_back(TransformComponent());
-    mTransformComponents.back().EntityID = EntityID;
-    return &mTransformComponents.back();
-}
 
-MaterialComponent *ResourceFactory::createMaterialComponent(unsigned int EntityID, Shader* Shader)
-{
-    mMaterialComponents.push_back(MaterialComponent());
-    mMaterialComponents.back().EntityID = EntityID;
-    mMaterialComponents.back().mShader = Shader;
-    return &mMaterialComponents.back();
-}
-
-std::vector<MeshComponent>& ResourceFactory::getMeshComponents()
-{
-    return mMeshComponents;
-}
-
-std::vector<TransformComponent> &ResourceFactory::getTransformComponents()
-{
-    return mTransformComponents;
-}
-
-std::vector<MaterialComponent> &ResourceFactory::getMaterialComponents()
-{
-    return mMaterialComponents;
-}
-
-void ResourceFactory::openGLVertexBuffers()
+void ResourceFactory::openGLVertexBuffers(std::vector<MeshComponent>& mMeshComponents)
 {
     glGenVertexArrays( 1, &mMeshComponents.back().mVAO );
     glBindVertexArray( mMeshComponents.back().mVAO );
@@ -92,14 +63,14 @@ void ResourceFactory::openGLVertexBuffers()
     glEnableVertexAttribArray(2);
 }
 
-void ResourceFactory::openGLIndexBuffer()
+void ResourceFactory::openGLIndexBuffer(std::vector<MeshComponent>& mMeshComponents)
 {
     glGenBuffers(1, &mMeshComponents.back().mEAB);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mMeshComponents.back().mEAB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(GLuint), mIndices.data(), GL_STATIC_DRAW);
 }
 
-void ResourceFactory::createAxis()
+void ResourceFactory::createAxis(std::vector<MeshComponent>& mMeshComponents)
 {
     mVertices.clear();
     mIndices.clear();
@@ -115,7 +86,7 @@ void ResourceFactory::createAxis()
     mVertices.push_back(Vertex{0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
 
     //set up buffers
-    openGLVertexBuffers();
+    openGLVertexBuffers(mMeshComponents);
 
     mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
     mMeshComponents.back().mIndiceCount = 0;
@@ -126,7 +97,7 @@ void ResourceFactory::createAxis()
 }
 
 
-void ResourceFactory::createObject(std::string filePath)
+void ResourceFactory::createObject(std::vector<MeshComponent>& mMeshComponents, std::string filePath)
 {
     mVertices.clear();
     mIndices.clear();
@@ -142,8 +113,8 @@ void ResourceFactory::createObject(std::string filePath)
         readTXTFile(filePath);
 
     //set up buffers
-    openGLVertexBuffers();
-    openGLIndexBuffer();
+    openGLVertexBuffers(mMeshComponents);
+    openGLIndexBuffer(mMeshComponents);
 
     mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
     mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
