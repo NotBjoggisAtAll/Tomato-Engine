@@ -5,6 +5,7 @@
 #include <QSurfaceFormat>
 #include <QDesktopWidget>
 
+#include "transformwidget.h"
 #include "renderwindow.h"
 #include "entitymanager.h"
 
@@ -23,17 +24,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayEntitesInOutliner()
 {
-
-    QTreeWidgetItem* child = new QTreeWidgetItem();
-    child->setText(0,"Child");
-
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
 
         item->setText(0, QString::fromStdString(Entity.second));
         item->setText(1, QString::number(Entity.first));
-        item->addChild(child);
         ui->Outliner->addTopLevelItem(item);
         ui->listOfCreateableObjects->addItem(QString::fromStdString(Entity.second));
     }
@@ -96,6 +92,9 @@ void MainWindow::init()
     resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
 
 
+    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->scrollArea->setWidgetResizable(true);
+
 
 }
 
@@ -111,5 +110,24 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_createObjectButton_clicked()
 {
-  qDebug() << ui->listOfCreateableObjects->currentText();
+    qDebug() << ui->listOfCreateableObjects->currentText();
+
+}
+
+void MainWindow::updateComponentWidgets(unsigned int EntityID)
+{
+    QWidget* widget = new QWidget();
+    ui->scrollArea->setWidget(widget);
+    QVBoxLayout* layout = new QVBoxLayout();
+    widget->setLayout(layout);
+
+
+    TransformWidget* Transform = new TransformWidget();
+    Transform->setup(EntityID);
+    layout->addWidget(Transform);
+}
+
+void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    updateComponentWidgets((item->text(1)).toUInt());
 }

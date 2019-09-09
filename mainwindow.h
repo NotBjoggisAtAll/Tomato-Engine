@@ -5,7 +5,7 @@
 
 class QWidget;
 class RenderWindow;
-class GameObject;
+class QTreeWidgetItem;
 
 namespace Ui {
 class MainWindow;
@@ -21,11 +21,14 @@ public:
 
     void DisplayEntitesInOutliner();
 
+    void updateComponentWidgets(unsigned int EntityID);
 private slots:
     void on_actionToggle_Wireframe_triggered();
     void on_actionExit_triggered();
 
     void on_createObjectButton_clicked();
+
+    void on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     void init();

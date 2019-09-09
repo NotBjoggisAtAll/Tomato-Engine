@@ -89,14 +89,32 @@
        <layout class="QVBoxLayout" name="OpenGLLayout"/>
       </item>
       <item>
-       <widget class="QWidget" name="verticalWidget" native="true">
+       <widget class="QWidget" name="Components" native="true">
         <property name="maximumSize">
          <size>
           <width>350</width>
           <height>16777215</height>
          </size>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2"/>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>330</width>
+              <height>659</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

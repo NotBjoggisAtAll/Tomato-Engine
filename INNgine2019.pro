@@ -43,6 +43,7 @@ HEADERS += \
     resourcemanager.h \
     shader.h \
     mainwindow.h \
+    transformwidget.h \
     triangle.h \
     texture.h \
     billboard.h \
@@ -78,6 +79,7 @@ SOURCES += main.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
     resourcemanager.cpp \
+    transformwidget.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
@@ -98,7 +100,8 @@ SOURCES += main.cpp \
     phongshader.cpp
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    transformwidget.ui
 
 DISTFILES += \
     Shaders/phongshader.frag \
