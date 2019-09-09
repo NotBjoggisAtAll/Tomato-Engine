@@ -23,6 +23,10 @@ EntityManager *EntityManager::instance()
 
 unsigned int EntityManager::CreateEntity(std::string Name)
 {
+    if(Name == "axis" || Name == "skybox")
+    {
+        return EntityID++;
+    }
     mEntities[EntityID] = Name;
     return EntityID++;
 }

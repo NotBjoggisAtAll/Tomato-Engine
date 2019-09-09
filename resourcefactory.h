@@ -38,6 +38,7 @@ private:
     static ResourceFactory* mInstance;
 
     void createAxis(std::vector<MeshComponent> &mMeshComponents);
+    void createSkybox(std::vector<MeshComponent> &mMeshComponents);
     void createObject(std::vector<MeshComponent> &mMeshComponents, std::string filePath);
     void readTXTFile(std::string filename);
 };

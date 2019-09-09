@@ -132,18 +132,29 @@ void RenderWindow::init()
 
     VisualObject * temp{nullptr};
 
-    temp = new XYZ();
-    temp->init();
-    temp->setShader(mShaderProgram[0]);
-    mVisualObjects.push_back(temp);
+    auto Entity = mEntityManager->CreateEntity("axis");
 
-    temp = new SkyBox();
-    temp->init();
-    temp->setShader(mShaderProgram[1]);
-    temp->mMaterial.mTextureUnit = 2;
-    temp->mMatrix.scale(15.f);
-    temp->mName = "Cube";
-    mVisualObjects.push_back(temp);
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"axis");
+    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    TransformComponent* Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    Transform->mMatrix.setToIdentity();
+
+    Entity = mEntityManager->CreateEntity("skybox");
+
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"skybox");
+    MaterialComponent* Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[1]);
+    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    Transform->mMatrix.setToIdentity();
+    Transform->mMatrix.scale(15.f);
+    Material->mTextureUnit = 2;
+
+//    temp = new SkyBox();
+//    temp->init();
+//    temp->setShader(mShaderProgram[1]);
+//    temp->mMaterial.mTextureUnit = 2;
+//    temp->mMatrix.scale(15.f);
+//    temp->mName = "Cube";
+//    mVisualObjects.push_back(temp);
 
     temp = new BillBoard();
     temp->init();
@@ -172,11 +183,11 @@ void RenderWindow::init()
 
 //    //testing triangle surface class
 //    GameObject* go = new GameObject("Box 2");
-    auto Entity = mEntityManager->CreateEntity("BoxBox");
+    Entity = mEntityManager->CreateEntity("BoxBox");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
     mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
-    TransformComponent* Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
@@ -188,7 +199,7 @@ void RenderWindow::init()
      Entity = mEntityManager->CreateEntity("Monkiii");
 
      mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
-     auto Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
+     Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
      Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
      Transform->mMatrix.setToIdentity();
