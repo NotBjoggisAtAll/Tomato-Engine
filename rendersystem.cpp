@@ -1,5 +1,4 @@
 #include "rendersystem.h"
-#include "gameobject.h"
 #include "shader.h"
 #include "resourcemanager.h"
 RenderSystem::RenderSystem()

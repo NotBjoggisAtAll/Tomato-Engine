@@ -14,13 +14,10 @@ enum class ComponentType{
     Transform
 };
 
-class GameObject;
 
 struct Component
 {
     static Component* Create(ComponentType Type);
-
-    GameObject* Owner{nullptr}; //TODO remove
 
      unsigned int EntityID{};
 };

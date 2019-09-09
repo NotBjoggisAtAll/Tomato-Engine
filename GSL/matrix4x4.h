@@ -15,7 +15,7 @@ class Matrix3x3;
 class Matrix4x4
 {
 public:
-    Matrix4x4(bool isIdentity = false);
+    Matrix4x4();
     Matrix4x4(std::initializer_list<GLfloat> values);
 
     Matrix4x4 identity();

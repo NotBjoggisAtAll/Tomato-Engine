@@ -12,17 +12,9 @@
 namespace gsl
 {
 
-Matrix4x4::Matrix4x4(bool isIdentity)
+Matrix4x4::Matrix4x4()
 {
-    if(isIdentity)
-    {
-        identity();
-    }
-    else
-    {
-        for(int i = 0; i < 16; i++)
-            matrix[i] = 0.f;
-    }
+    identity();
 }
 
 Matrix4x4::Matrix4x4(std::initializer_list<GLfloat> values)

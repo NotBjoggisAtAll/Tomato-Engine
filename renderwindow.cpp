@@ -173,15 +173,16 @@ void RenderWindow::init()
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
 
-     Entity = mEntityManager->CreateEntity("Monkiii");
 
-     mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
-     Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
-     Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    Entity = mEntityManager->CreateEntity("Monkiii");
 
-     Transform->mMatrix.setToIdentity();
-     Transform->mMatrix.scale(0.5f);
-     Transform->mMatrix.translate(3.f, 2.f, -2.f);
+    mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
+    Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
+    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+
+    Transform->mMatrix.setToIdentity();
+    Transform->mMatrix.scale(0.5f);
+    Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
     //********************** System stuff **********************
 

@@ -23,11 +23,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayEntitesInOutliner()
 {
+
+    QTreeWidgetItem* child = new QTreeWidgetItem();
+    child->setText(0,"Child");
+
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
+
         item->setText(0, QString::fromStdString(Entity.second));
         item->setText(1, QString::number(Entity.first));
+        item->addChild(child);
         ui->Outliner->addTopLevelItem(item);
         ui->listOfCreateableObjects->addItem(QString::fromStdString(Entity.second));
     }
