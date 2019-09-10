@@ -7,14 +7,14 @@ TransformWidget::TransformWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->xDoubleSpinBox->setRange(-1000,1000);
-    ui->xDoubleSpinBox->setSingleStep(0.5);
+    ui->xPosition->setRange(-1000,1000);
+    ui->xPosition->setSingleStep(0.5);
 
-    ui->yDoubleSpinBox->setRange(-1000,1000);
-    ui->yDoubleSpinBox->setSingleStep(0.5);
+    ui->yPosition->setRange(-1000,1000);
+    ui->yPosition->setSingleStep(0.5);
 
-    ui->zDoubleSpinBox->setRange(-1000,1000);
-    ui->zDoubleSpinBox->setSingleStep(0.5);
+    ui->zPosition->setRange(-1000,1000);
+    ui->zPosition->setSingleStep(0.5);
 
 }
 
@@ -29,24 +29,24 @@ void TransformWidget::setup(unsigned int EntityID)
 
     auto Pos = Transform->mMatrix.getPosition();
 
-    ui->xDoubleSpinBox->setValue(static_cast<double>(Pos.getX()));
-    ui->yDoubleSpinBox->setValue(static_cast<double>(Pos.y));
-    ui->zDoubleSpinBox->setValue(static_cast<double>(Pos.z));
+    ui->xPosition->setValue(static_cast<double>(Pos.getX()));
+    ui->yPosition->setValue(static_cast<double>(Pos.y));
+    ui->zPosition->setValue(static_cast<double>(Pos.z));
 }
 
-void TransformWidget::on_xDoubleSpinBox_valueChanged(double arg1)
+void TransformWidget::on_xPosition_valueChanged(double arg1)
 {
     auto p = Transform->mMatrix.getPosition();
     Transform->mMatrix.setPosition(arg1,p.y,p.z);
 }
 
-void TransformWidget::on_yDoubleSpinBox_valueChanged(double arg1)
+void TransformWidget::on_yPosition_valueChanged(double arg1)
 {
     auto p = Transform->mMatrix.getPosition();
     Transform->mMatrix.setPosition(p.x,arg1,p.z);
 }
 
-void TransformWidget::on_zDoubleSpinBox_valueChanged(double arg1)
+void TransformWidget::on_zPosition_valueChanged(double arg1)
 {
     auto p = Transform->mMatrix.getPosition();
     Transform->mMatrix.setPosition(p.x,p.y,arg1);

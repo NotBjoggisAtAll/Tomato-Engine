@@ -19,11 +19,12 @@ public:
 
     void setup(unsigned int EntityID);
 private slots:
-    void on_xDoubleSpinBox_valueChanged(double arg1);
 
-    void on_yDoubleSpinBox_valueChanged(double arg1);
+    void on_xPosition_valueChanged(double arg1);
 
-    void on_zDoubleSpinBox_valueChanged(double arg1);
+    void on_yPosition_valueChanged(double arg1);
+
+    void on_zPosition_valueChanged(double arg1);
 
 private:
     Ui::TransformWidget *ui;
