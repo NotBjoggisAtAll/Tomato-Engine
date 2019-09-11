@@ -1,5 +1,6 @@
 #include "resourcefactory.h"
 #include "vertex.h"
+#include "octahedronball.h"
 
 ResourceFactory* ResourceFactory::mInstance = nullptr;
 
@@ -34,6 +35,8 @@ MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::
         createObject(mMeshComponents,filePath);
     if(filePath == "skybox")
         createSkybox(mMeshComponents);
+    if(filePath == "sphere")
+        createSphere(mMeshComponents);
 
     mMeshComponents.back().EntityID = EntityID;
     return &mMeshComponents.back();
@@ -71,6 +74,30 @@ void ResourceFactory::openGLIndexBuffer(std::vector<MeshComponent>& mMeshCompone
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mMeshComponents.back().mEAB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(GLuint), mIndices.data(), GL_STATIC_DRAW);
 }
+
+void ResourceFactory::createSphere(std::vector<MeshComponent>& mMeshComponents)
+{
+    mVertices.clear();
+    mIndices.clear();
+    initializeOpenGLFunctions();
+    mMeshComponents.push_back(MeshComponent());
+    mMeshComponentMap["sphere"] = static_cast<unsigned int>(mMeshComponents.size()) - 1;
+
+    OctahedronBall ball(3);
+    mVertices = ball.mVertices;
+    mIndices = ball.mIndices;
+
+    //set up buffers
+    openGLVertexBuffers(mMeshComponents);
+    openGLIndexBuffer(mMeshComponents);
+
+    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    glBindVertexArray(0);
+
+}
+
 
 void ResourceFactory::createSkybox(std::vector<MeshComponent>& mMeshComponents)
 {

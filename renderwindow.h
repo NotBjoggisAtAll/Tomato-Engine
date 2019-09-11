@@ -42,6 +42,9 @@ public:
 private slots:
     void render();
 
+    void spawnCube();
+    void spawnSphere();
+    void spawnPlane();
 private:
     void init();
     void setCameraSpeed(float value);

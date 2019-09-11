@@ -22,6 +22,14 @@ public:
     void DisplayEntitesInOutliner();
 
     void updateComponentWidgets(unsigned int EntityID);
+
+signals:
+
+    void spawnCube();
+    void spawnSphere();
+    void spawnPlane();
+
+
 private slots:
     void on_actionToggle_Wireframe_triggered();
     void on_actionExit_triggered();
@@ -29,6 +37,10 @@ private slots:
     void on_createObjectButton_clicked();
 
     void on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
+    void on_spawnCube_triggered();
+
+    void on_spawnSphere_triggered();
 
 private:
     void init();

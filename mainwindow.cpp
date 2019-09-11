@@ -24,6 +24,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayEntitesInOutliner()
 {
+    ui->Outliner->clear();
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
@@ -130,4 +131,14 @@ void MainWindow::updateComponentWidgets(unsigned int EntityID)
 void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     updateComponentWidgets((item->text(1)).toUInt());
+}
+
+void MainWindow::on_spawnCube_triggered()
+{
+    emit spawnCube();
+}
+
+void MainWindow::on_spawnSphere_triggered()
+{
+    emit spawnSphere();
 }

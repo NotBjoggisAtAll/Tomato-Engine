@@ -28,8 +28,9 @@ public:
     MaterialComponent mMaterial;
 
 protected:
-    std::vector<Vertex> mVertices;   //This is usually not needed after object is made
-    std::vector<GLuint> mIndices;    //This is usually not needed after object is made
+
+std::vector<Vertex> mVertices;
+std::vector<unsigned int> mIndices;
 
     GLuint mVAO{0};
     GLuint mVBO{0};

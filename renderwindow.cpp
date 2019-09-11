@@ -59,6 +59,11 @@ void RenderWindow::init()
     //Connect the gameloop timer to the render function:
     connect(mRenderTimer, SIGNAL(timeout()), this, SLOT(render()));
 
+    connect(mMainWindow, &MainWindow::spawnCube, this, &RenderWindow::spawnCube);
+    connect(mMainWindow, &MainWindow::spawnSphere, this, &RenderWindow::spawnSphere);
+    connect(mMainWindow, &MainWindow::spawnPlane, this, &RenderWindow::spawnPlane);
+
+
     //********************** General OpenGL stuff **********************
 
     //The OpenGL context has to be set.
@@ -588,3 +593,32 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
     mMouseXlast = event->pos().x();
     mMouseYlast = event->pos().y();
 }
+// The stuff below this line should be somewhere else in the future.
+
+void RenderWindow::spawnCube()
+{
+    auto Entity = mEntityManager->CreateEntity("Cube");
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
+    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    mMainWindow->DisplayEntitesInOutliner();
+}
+
+void RenderWindow::spawnSphere()
+{
+    auto Entity = mEntityManager->CreateEntity("Sphere");
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"sphere");
+    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    mMainWindow->DisplayEntitesInOutliner();
+}
+
+void RenderWindow::spawnPlane()
+{
+    auto Entity = mEntityManager->CreateEntity("Plane");
+    mEntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
+    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    mMainWindow->DisplayEntitesInOutliner();
+}
+
