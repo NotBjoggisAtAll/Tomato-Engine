@@ -18,7 +18,7 @@
 #include "colorshader.h"
 #include "textureshader.h"
 #include "phongshader.h"
-
+#include "Managers/shadermanager.h"
 #include "Components/transformcomponent.h"
 #include "Components/meshcomponent.h"
 
@@ -47,10 +47,6 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
 
 RenderWindow::~RenderWindow()
 {
-    for (int i = 0; i < 4; ++i) {
-        if (mShaderProgram[i])
-            delete mShaderProgram[i];
-    }
 }
 
 /// Sets up the general OpenGL stuff and the buffers needed to render a triangle
@@ -98,14 +94,7 @@ void RenderWindow::init()
     glEnable(GL_CULL_FACE);     //draws only front side of models - usually what you want -
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f);    //color used in glClear GL_COLOR_BUFFER_BIT
 
-    //Compile shaders:
-    mShaderProgram[0] = new ColorShader("plainshader");
-    qDebug() << "Plain shader program id: " << mShaderProgram[0]->getProgram();
-    mShaderProgram[1]= new TextureShader("textureshader");
 
-    qDebug() << "Texture shader program id: " << mShaderProgram[1]->getProgram();
-    mShaderProgram[2]= new PhongShader("phongshader");
-    qDebug() << "Phong shader program id: " << mShaderProgram[2]->getProgram();
 
     //**********************  Texture stuff: **********************
 
@@ -132,14 +121,14 @@ void RenderWindow::init()
     auto Entity = mEntityManager->CreateEntity("axis");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"axis");
-    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
     TransformComponent* Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
     Transform->mMatrix.setToIdentity();
 
     Entity = mEntityManager->CreateEntity("skybox");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"skybox");
-    MaterialComponent* Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[1]);
+    MaterialComponent* Material = mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->textureShader());
     Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.scale(15.f);
@@ -147,7 +136,7 @@ void RenderWindow::init()
 
     temp = new BillBoard();
     temp->init();
-    temp->setShader(mShaderProgram[1]);
+    temp->setShader(ShaderManager::instance()->textureShader());
     temp->mMatrix.translate(4.f, 0.f, -3.5f);
     temp->mName = "Billboard";
     temp->mRenderWindow = this;
@@ -159,7 +148,7 @@ void RenderWindow::init()
     mLight = new Light();
     temp = mLight;
     temp->init();
-    temp->setShader(mShaderProgram[1]);
+    temp->setShader(ShaderManager::instance()->colorShader());
     temp->mMatrix.translate(2.5f, 3.f, 0.f);
     temp->mName = "light";
     temp->mRenderWindow = this;
@@ -167,22 +156,22 @@ void RenderWindow::init()
     temp->mMaterial.mColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
     mVisualObjects.push_back(temp);
 
-    static_cast<PhongShader*>(mShaderProgram[2])->setLight(mLight);
+    ShaderManager::instance()->phongShader()->setLight(mLight);
 
-    Entity = mEntityManager->CreateEntity("BoxBox");
+    Entity = mEntityManager->CreateEmptyEntity("BoxBox");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
-    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
     Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
 
 
-    Entity = mEntityManager->CreateEntity("Monkiii");
+    Entity = mEntityManager->CreateEmptyEntity("Monkiii");
 
     mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
-    Material = mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[2]);
+    Material = mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
 
     Transform->mMatrix.setToIdentity();
@@ -201,9 +190,8 @@ void RenderWindow::init()
     //    mCurrentCamera->pitch(5.f);
 
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
-    mShaderProgram[0]->setCurrentCamera(mCurrentCamera);
-    mShaderProgram[1]->setCurrentCamera(mCurrentCamera);
-    mShaderProgram[2]->setCurrentCamera(mCurrentCamera);
+    for(auto& Shader : ShaderManager::instance()->mShaders)
+        Shader->setCurrentCamera(mCurrentCamera);
 }
 
 ///Called each frame - doing the rendering
@@ -256,20 +244,6 @@ void RenderWindow::render()
     //    calculateFramerate();
 }
 
-void RenderWindow::setupPlainShader(int shaderIndex)
-{
-    mMatrixUniform0 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "mMatrix" );
-    vMatrixUniform0 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "vMatrix" );
-    pMatrixUniform0 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "pMatrix" );
-}
-
-void RenderWindow::setupTextureShader(int shaderIndex)
-{
-    mMatrixUniform1 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "mMatrix" );
-    vMatrixUniform1 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "vMatrix" );
-    pMatrixUniform1 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "pMatrix" );
-    mTextureUniform = glGetUniformLocation(mShaderProgram[shaderIndex]->getProgram(), "textureSampler");
-}
 
 //This function is called from Qt when window is exposed (shown)
 //and when it is resized
@@ -599,7 +573,7 @@ void RenderWindow::spawnCube()
 {
     auto Entity = mEntityManager->CreateEntity("Cube");
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
-    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     mEntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }
@@ -608,7 +582,7 @@ void RenderWindow::spawnSphere()
 {
     auto Entity = mEntityManager->CreateEntity("Sphere");
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"sphere");
-    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     mEntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }
@@ -617,7 +591,7 @@ void RenderWindow::spawnPlane()
 {
     auto Entity = mEntityManager->CreateEntity("Plane");
     mEntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
-    mEntityManager->addComponent(Entity, ComponentType::Material, mShaderProgram[0]);
+    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     mEntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }

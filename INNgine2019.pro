@@ -35,6 +35,7 @@ HEADERS += \
     JBA/vector3d.h \
     JBA/vector4d.h \
     Managers/filemanager.h \
+    Managers/shadermanager.h \
     constants.h \
     entitymanager.h \
     rendersystem.h \
@@ -75,6 +76,7 @@ SOURCES += main.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
     Managers/filemanager.cpp \
+    Managers/shadermanager.cpp \
     entitymanager.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \

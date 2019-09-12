@@ -53,18 +53,6 @@ private:
     bool mInitialized{false};
 
     Texture *mTexture[4]{nullptr}; //We can hold 4 textures
-    Shader *mShaderProgram[4]{nullptr}; //We can hold 4 shaders
-
-    void setupPlainShader(int shaderIndex);
-    GLint mMatrixUniform0{-1};
-    GLint vMatrixUniform0{-1};
-    GLint pMatrixUniform0{-1};
-
-    void setupTextureShader(int shaderIndex);
-    GLint mMatrixUniform1{-1};
-    GLint vMatrixUniform1{-1};
-    GLint pMatrixUniform1{-1};
-    GLint mTextureUniform{-1};
 
     std::vector<VisualObject*> mVisualObjects;
 

@@ -117,7 +117,10 @@ void MainWindow::on_createObjectButton_clicked()
 
 void MainWindow::updateComponentWidgets(unsigned int EntityID)
 {
-    QWidget* widget = new QWidget();
+    if(widget)
+        delete widget;
+
+    widget = new QWidget();
     ui->scrollArea->setWidget(widget);
     QVBoxLayout* layout = new QVBoxLayout();
     widget->setLayout(layout);

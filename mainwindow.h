@@ -48,6 +48,10 @@ private:
     Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
+
+    //Parent to all componentwidgets
+    QWidget* widget{nullptr};
+
 };
 
 #endif // MAINWINDOW_H
