@@ -38,6 +38,7 @@ HEADERS += \
     Managers/shadermanager.h \
     constants.h \
     entitymanager.h \
+    meshwidget.h \
     rendersystem.h \
     renderwindow.h \
     resourcefactory.h \
@@ -78,6 +79,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     entitymanager.cpp \
+    meshwidget.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
     resourcemanager.cpp \
@@ -103,6 +105,7 @@ SOURCES += main.cpp \
 
 FORMS += \
     mainwindow.ui \
+    meshwidget.ui \
     transformwidget.ui
 
 DISTFILES += \
