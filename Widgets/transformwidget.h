@@ -14,10 +14,9 @@ class TransformWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit TransformWidget(QWidget *parent = nullptr);
+    explicit TransformWidget(unsigned int &EntityID, QWidget *parent = nullptr);
     ~TransformWidget();
 
-    void setup(unsigned int EntityID);
 private slots:
 
     void on_xPosition_valueChanged(double arg1);
@@ -29,7 +28,7 @@ private slots:
 private:
     Ui::TransformWidget *ui;
 
-    TransformComponent* Transform {nullptr};
+    TransformComponent* Component {nullptr};
 };
 
 #endif // TRANSFORMWIDGET_H

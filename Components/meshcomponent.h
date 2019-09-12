@@ -11,6 +11,8 @@ struct MeshComponent : public Component
     GLuint mVerticeCount{0};
     GLuint mIndiceCount{0};
     GLenum mDrawType{0};
+
+    bool isVisible{true};
 };
 
 #endif // MESHCOMPONENT_H

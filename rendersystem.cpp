@@ -11,6 +11,8 @@ void RenderSystem::Render()
     initializeOpenGLFunctions();
     for(auto& Component : factory->mMeshComponents)
     {
+        if(!Component.isVisible)
+            continue;
         auto Material = factory->mMaterialComponents.at(Component.EntityID);
         auto Transform = factory->mTransformComponents.at(Component.EntityID);
 

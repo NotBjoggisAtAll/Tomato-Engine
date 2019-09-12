@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+
+class MeshComponent;
+
 namespace Ui {
 class MeshWidget;
 }
@@ -12,11 +15,15 @@ class MeshWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MeshWidget(QWidget *parent = nullptr);
+    explicit MeshWidget(unsigned int &EntityID, QWidget *parent = nullptr);
     ~MeshWidget();
+
+private slots:
+    void on_isVisible_toggled(bool checked);
 
 private:
     Ui::MeshWidget *ui;
+    MeshComponent* Component = {nullptr};
 };
 
 #endif // MESHWIDGET_H

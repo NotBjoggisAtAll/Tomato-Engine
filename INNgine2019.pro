@@ -38,14 +38,14 @@ HEADERS += \
     Managers/shadermanager.h \
     constants.h \
     entitymanager.h \
-    meshwidget.h \
+    Widgets/meshwidget.h \
     rendersystem.h \
     renderwindow.h \
     resourcefactory.h \
     resourcemanager.h \
     shader.h \
     mainwindow.h \
-    transformwidget.h \
+    Widgets/transformwidget.h \
     triangle.h \
     texture.h \
     billboard.h \
@@ -79,11 +79,11 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     entitymanager.cpp \
-    meshwidget.cpp \
+    Widgets/meshwidget.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
     resourcemanager.cpp \
-    transformwidget.cpp \
+    Widgets/transformwidget.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
@@ -105,8 +105,8 @@ SOURCES += main.cpp \
 
 FORMS += \
     mainwindow.ui \
-    meshwidget.ui \
-    transformwidget.ui
+    Widgets/meshwidget.ui \
+    Widgets/transformwidget.ui
 
 DISTFILES += \
     Shaders/phongshader.frag \

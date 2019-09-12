@@ -1,7 +1,7 @@
 #include "transformwidget.h"
 #include "ui_transformwidget.h"
 #include "resourcemanager.h"
-TransformWidget::TransformWidget(QWidget *parent) :
+TransformWidget::TransformWidget(unsigned int& EntityID, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TransformWidget)
 {
@@ -16,6 +16,13 @@ TransformWidget::TransformWidget(QWidget *parent) :
     ui->zPosition->setRange(-1000,1000);
     ui->zPosition->setSingleStep(0.5);
 
+    Component = &ResourceManager::instance()->mTransformComponents.at(EntityID);
+
+    auto Pos = Component->mMatrix.getPosition();
+
+    ui->xPosition->setValue(static_cast<double>(Pos.getX()));
+    ui->yPosition->setValue(static_cast<double>(Pos.y));
+    ui->zPosition->setValue(static_cast<double>(Pos.z));
 }
 
 TransformWidget::~TransformWidget()
@@ -23,31 +30,20 @@ TransformWidget::~TransformWidget()
     delete ui;
 }
 
-void TransformWidget::setup(unsigned int EntityID)
-{
-    Transform = &ResourceManager::instance()->mTransformComponents.at(EntityID);
-
-    auto Pos = Transform->mMatrix.getPosition();
-
-    ui->xPosition->setValue(static_cast<double>(Pos.getX()));
-    ui->yPosition->setValue(static_cast<double>(Pos.y));
-    ui->zPosition->setValue(static_cast<double>(Pos.z));
-}
-
 void TransformWidget::on_xPosition_valueChanged(double arg1)
 {
-    auto p = Transform->mMatrix.getPosition();
-    Transform->mMatrix.setPosition(arg1,p.y,p.z);
+    auto p = Component->mMatrix.getPosition();
+    Component->mMatrix.setPosition(arg1,p.y,p.z);
 }
 
 void TransformWidget::on_yPosition_valueChanged(double arg1)
 {
-    auto p = Transform->mMatrix.getPosition();
-    Transform->mMatrix.setPosition(p.x,arg1,p.z);
+    auto p = Component->mMatrix.getPosition();
+    Component->mMatrix.setPosition(p.x,arg1,p.z);
 }
 
 void TransformWidget::on_zPosition_valueChanged(double arg1)
 {
-    auto p = Transform->mMatrix.getPosition();
-    Transform->mMatrix.setPosition(p.x,p.y,arg1);
+    auto p = Component->mMatrix.getPosition();
+    Component->mMatrix.setPosition(p.x,p.y,arg1);
 }

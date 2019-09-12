@@ -5,8 +5,10 @@
 #include <QSurfaceFormat>
 #include <QDesktopWidget>
 
-#include "transformwidget.h"
+#include "Widgets/transformwidget.h"
+#include "Widgets/meshwidget.h"
 #include "renderwindow.h"
+#include "resourcemanager.h"
 #include "entitymanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -125,10 +127,32 @@ void MainWindow::updateComponentWidgets(unsigned int EntityID)
     QVBoxLayout* layout = new QVBoxLayout();
     widget->setLayout(layout);
 
+    auto resource = ResourceManager::instance();
 
-    TransformWidget* Transform = new TransformWidget();
-    Transform->setup(EntityID);
-    layout->addWidget(Transform);
+    Component* Component{nullptr};
+
+    for(auto& comp : resource->mTransformComponents)
+    {
+        if(comp.EntityID == EntityID)
+            Component = &comp;
+    }
+    if(Component)
+    {
+        layout->addWidget(new TransformWidget(EntityID));
+    }
+    Component = nullptr;
+    for(auto& comp : resource->mMeshComponents)
+    {
+        if(comp.EntityID == EntityID)
+            Component = &comp;
+    }
+    if(Component)
+    {
+        layout->addWidget(new MeshWidget(EntityID));
+    }
+
+
+
 }
 
 void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)
