@@ -9,6 +9,15 @@ PRECOMPILED_HEADER = innpch.h
 
 INCLUDEPATH +=  ./GSL
 
+mac {
+    LIBS += -framework OpenAL
+}
+
+win32 {
+    INCLUDEPATH += $(OPENAL_HOME)\\include\\AL
+    LIBS *= $(OPENAL_HOME)\\libs\\Win64\\libOpenAL32.dll.a
+}
+
 HEADERS += \
     Components/allcomponents.h \
     Components/cameracomponent.h \
@@ -29,6 +38,7 @@ HEADERS += \
     GSL/vector4d.h \
     GSL/gsl_math.h \
     GSL/math_constants.h \
+    Handlers/wavfilehandler.h \
     JBA/jbamath.h \
     JBA/matrix4x4.h \
     JBA/vector2d.h \
@@ -36,6 +46,7 @@ HEADERS += \
     JBA/vector4d.h \
     Managers/filemanager.h \
     Managers/shadermanager.h \
+    Managers/soundmanager.h \
     constants.h \
     entitymanager.h \
     Widgets/meshwidget.h \
@@ -46,6 +57,7 @@ HEADERS += \
     shader.h \
     mainwindow.h \
     Widgets/transformwidget.h \
+    soundsource.h \
     triangle.h \
     texture.h \
     billboard.h \
@@ -76,14 +88,17 @@ SOURCES += main.cpp \
     GSL/vector3d.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
+    Handlers/wavfilehandler.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
+    Managers/soundmanager.cpp \
     entitymanager.cpp \
     Widgets/meshwidget.cpp \
     rendersystem.cpp \
     resourcefactory.cpp \
     resourcemanager.cpp \
     Widgets/transformwidget.cpp \
+    soundsource.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \

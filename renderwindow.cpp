@@ -24,6 +24,7 @@
 
 #include "rendersystem.h"
 #include "entitymanager.h"
+#include "Managers/soundmanager.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -47,6 +48,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
 
 RenderWindow::~RenderWindow()
 {
+    SoundManager::instance()->cleanUp();
 }
 
 /// Sets up the general OpenGL stuff and the buffers needed to render a triangle
@@ -178,6 +180,17 @@ void RenderWindow::init()
     Transform->mMatrix.scale(0.5f);
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
+
+    //Testing sound
+    SoundSource* stereo{};
+
+    stereo = SoundManager::instance()->createSource("Caravan", {0,0,0},"Caravan_mono.wav", true, 1.f);
+
+
+    stereo->play();
+
+
+
     //********************** System stuff **********************
 
     mMainWindow->DisplayEntitesInOutliner();
@@ -208,6 +221,13 @@ void RenderWindow::render()
     handleInput();
 
     mCurrentCamera->update();
+
+    jba::Vector3D pos = {mCurrentCamera->position().getX(), mCurrentCamera->position().getY(), mCurrentCamera->position().getZ()};
+    jba::Vector3D vel = {};
+    jba::Vector3D forward = {mCurrentCamera->forward().getX(), mCurrentCamera->forward().getY(), mCurrentCamera->forward().getZ()};
+    jba::Vector3D up = {mCurrentCamera->up().getX(), mCurrentCamera->up().getY(), mCurrentCamera->up().getZ()};
+
+    SoundManager::instance()->updateListener(pos,vel,forward,up);
 
     mTimeStart.restart(); //restart FPS clock
     mContext->makeCurrent(this); //must be called every frame (every time mContext->swapBuffers is called)

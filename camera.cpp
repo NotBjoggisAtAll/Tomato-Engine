@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "camera.h"
 
 Camera::Camera()
