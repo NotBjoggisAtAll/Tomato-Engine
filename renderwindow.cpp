@@ -187,7 +187,7 @@ void RenderWindow::init()
 
     Entity = EntityManager->CreateEmptyEntity("Caravan");
     EntityManager->addComponent(Entity, ComponentType::Transform);
-    auto sound = static_cast<SoundComponent*>(EntityManager->addComponent(Entity, ComponentType::Sound, "caravan_mono.wav", true, .5f));
+    EntityManager->addComponent(Entity, ComponentType::Sound, "caravan_mono.wav", true, .5f);
 
     //********************** System stuff **********************
 

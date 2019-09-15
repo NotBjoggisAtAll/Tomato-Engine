@@ -48,6 +48,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Widgets/soundwidget.h \
     constants.h \
     entitymanager.h \
     Widgets/meshwidget.h \
@@ -93,6 +94,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Widgets/soundwidget.cpp \
     entitymanager.cpp \
     Widgets/meshwidget.cpp \
     rendersystem.cpp \
@@ -120,6 +122,7 @@ SOURCES += main.cpp \
     phongshader.cpp
 
 FORMS += \
+    Widgets/soundwidget.ui \
     mainwindow.ui \
     Widgets/meshwidget.ui \
     Widgets/transformwidget.ui

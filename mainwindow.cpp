@@ -7,6 +7,7 @@
 
 #include "Widgets/transformwidget.h"
 #include "Widgets/meshwidget.h"
+#include "Widgets/soundwidget.h"
 #include "renderwindow.h"
 #include "resourcemanager.h"
 #include "entitymanager.h"
@@ -149,6 +150,16 @@ void MainWindow::updateComponentWidgets(unsigned int EntityID)
     if(Component)
     {
         layout->addWidget(new MeshWidget(EntityID));
+    }
+    Component = nullptr;
+    for(auto& comp : resource->mSoundComponents)
+    {
+        if(comp.EntityID == EntityID)
+            Component = &comp;
+    }
+    if(Component)
+    {
+        layout->addWidget(new SoundWidget(EntityID));
     }
 
 
