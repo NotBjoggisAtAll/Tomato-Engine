@@ -183,8 +183,6 @@ void RenderWindow::init()
     Transform->mMatrix.scale(0.5f);
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
-
-
     Entity = EntityManager->CreateEmptyEntity("Caravan");
     EntityManager->addComponent(Entity, ComponentType::Transform);
     EntityManager->addComponent(Entity, ComponentType::Sound, "caravan_mono.wav", true, .5f);

@@ -15,7 +15,7 @@ SoundWidget::SoundWidget(unsigned int EntityID, QWidget *parent) :
         Component = &ResourceManager::instance()->mSoundComponents.at(id);
     }
 
-   ui->fileNameHere->setText(QString::fromStdString(Component->Sound.mName));
+    ui->fileNameHere->setText(QString::fromStdString(Component->Sound.mName));
 }
 
 SoundWidget::~SoundWidget()

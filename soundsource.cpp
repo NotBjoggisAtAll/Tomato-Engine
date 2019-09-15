@@ -87,7 +87,7 @@ bool SoundSource::loadWave(std::string filePath)
     default: break;
     }
 
-    if (waveData->buffer == NULL)
+    if (waveData->buffer == nullptr)
     {
         std::cout << "NO WAVE DATA!\n";
     }
