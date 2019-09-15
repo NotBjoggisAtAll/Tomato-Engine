@@ -54,10 +54,9 @@ void SoundSystem::update(Camera* currCamera)
         Sound.Sound.setPosition(pos);
 
         //For now loops all the sounds
-        if(!Sound.isPlaying)
+        if(!Sound.Sound.isPlaying())
         {
             Sound.Sound.play();
-            Sound.isPlaying = true;
         }
     }
 

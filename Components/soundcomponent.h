@@ -8,7 +8,6 @@ struct SoundComponent : public Component
     SoundComponent(){}
     ComponentType Type = ComponentType::Sound;
     SoundSource Sound{};
-    bool isPlaying{false};
 };
 
 #endif // SOUNDCOMPONENT_H
