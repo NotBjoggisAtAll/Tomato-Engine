@@ -12,7 +12,7 @@ struct RenderSystem : public QOpenGLFunctions_4_1_Core
     RenderSystem();
     void Render();
 
-    ResourceManager* factory{nullptr};
+    ResourceManager* Factory{nullptr};
 
 };
 

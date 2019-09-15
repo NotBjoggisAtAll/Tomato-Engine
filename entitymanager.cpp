@@ -47,8 +47,7 @@ MaterialComponent* EntityManager::addComponent(unsigned int EntityID, ComponentT
     return ComponentToReturn;
 }
 
-
-Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, std::string filePath)
+Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, std::string filePath, bool loop, float gain)
 {
     Component* ComponentToReturn{nullptr};
 
@@ -60,7 +59,7 @@ Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type
 
         break;
     case ComponentType::Sound:
-
+        ComponentToReturn = ResourceManager::instance()->createSoundComponent(EntityID, filePath, loop, gain);
         break;
     case ComponentType::Camera:
 

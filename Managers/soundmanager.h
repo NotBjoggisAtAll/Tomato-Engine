@@ -42,12 +42,7 @@ public:
         }
     };
 
-    static SoundManager* instance()          ///< Get pointer to singleton instance.
-    {
-        if (!mInstance)
-            mInstance = new SoundManager();
-        return mInstance;
-    }
+    static SoundManager* instance();
 
     /// Cleans up and shuts down OpenAl.
     void cleanUp();
@@ -59,13 +54,13 @@ public:
         \param File path relative to execution directory.
         \param Boolean to see if sound should loop or not.
     **/
-    SoundSource* createSource(std::string name, jba::Vector3D pos, std::string filePath = "", bool loop = false, float gain = 1.0);
+    SoundSource *createSource(std::string name, jba::Vector3D pos, std::string filePath = "", bool loop = false, float gain = 1.0);
     void updateListener(jba::Vector3D pos, jba::Vector3D vel, jba::Vector3D dir, jba::Vector3D up);
 
 private:
     SoundManager();                         ///< Private constructor.
-    SoundManager(SoundManager const&);      ///< Private copy constructor.
-    void operator=(SoundManager const&);    ///< Private class assignment operator.
+   // SoundManager(SoundManager const&);      ///< Private copy constructor.
+   // void operator=(SoundManager const&);    ///< Private class assignment operator.
     static SoundManager* mInstance;         ///< Singleton instance pointer.
     /// Debug function.
     /**

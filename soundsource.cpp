@@ -3,12 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-SoundSource::SoundSource(std::string name, bool loop, float gain) :
-    mName(name),
-    mSource(0),
-    mBuffer(0),
-    mPosition(0.0f, 0.0f, 0.0f),
-    mVelocity(0.0f, 0.0f, 0.0f)
+void SoundSource::init(std::string name, bool loop, float gain)
 {
     alGetError();
     alGenBuffers(1, &mBuffer);
@@ -24,6 +19,17 @@ SoundSource::SoundSource(std::string name, bool loop, float gain) :
     alSourcefv(mSource, AL_VELOCITY, temp2);
 
     alSourcei(mSource, AL_LOOPING, loop);
+
+}
+
+SoundSource::SoundSource(std::string name, bool loop, float gain) :
+    mName(name),
+    mSource(0),
+    mBuffer(0),
+    mPosition(0.0f, 0.0f, 0.0f),
+    mVelocity(0.0f, 0.0f, 0.0f)
+{
+    init(name, loop, gain);
 }
 SoundSource::~SoundSource()
 {
@@ -104,6 +110,7 @@ bool SoundSource::loadWave(std::string filePath)
 
 void SoundSource::play()
 {
+    qDebug() <<"Started playing " + QString::fromStdString(mName);
     alSourcePlay(mSource);
 }
 void SoundSource::pause()
@@ -113,6 +120,15 @@ void SoundSource::pause()
 void SoundSource::stop()
 {
     alSourceStop(mSource);
+}
+
+bool SoundSource::isPlaying()
+{
+        ALenum state;
+
+        alGetSourcei(mSource, AL_SOURCE_STATE, &state);
+
+        return (state == AL_PLAYING);
 }
 
 void SoundSource::setPosition(jba::Vector3D newPos)

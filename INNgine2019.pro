@@ -30,6 +30,7 @@ HEADERS += \
     Components/scriptcomponent.h \
     Components/soundcomponent.h \
     Components/transformcomponent.h \
+    Entity.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -58,7 +59,7 @@ HEADERS += \
     mainwindow.h \
     Widgets/transformwidget.h \
     soundsource.h \
-    triangle.h \
+    soundsystem.h \
     texture.h \
     billboard.h \
     vertex.h \
@@ -99,11 +100,11 @@ SOURCES += main.cpp \
     resourcemanager.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \
+    soundsystem.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
     shader.cpp \
-    triangle.cpp \
     texture.cpp \
     billboard.cpp \
     visualobject.cpp \

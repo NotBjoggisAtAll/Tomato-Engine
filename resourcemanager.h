@@ -2,22 +2,38 @@
 #define RESOURCEMANAGER_H
 
 #include "Components/allcomponents.h"
+#include "Entity.h"
+#include <unordered_map>
+
+class ResourceFactory;
+
+typedef unsigned int ComponentID;
 
 class ResourceManager
 {
 public:
     static ResourceManager* instance();
 
-    TransformComponent *createTransformComponent(unsigned int EntityID);
-    MaterialComponent *createMaterialComponent(unsigned int EntityID, Shader *Shader);
-    MeshComponent *createMeshComponent(unsigned int EntityID, std::string filePath);
+    TransformComponent *createTransformComponent(Entity id);
+    MaterialComponent *createMaterialComponent(Entity id, Shader *Shader);
+    MeshComponent *createMeshComponent(Entity id, std::string filePath);
+    SoundComponent* createSoundComponent(Entity id, std::string filePath, bool loop, float gain);
+    //Stores where in the vector the component for each entity is
+    std::unordered_map<Entity, ComponentID> mTransformMap;
+    std::unordered_map<Entity, ComponentID> mMaterialMap;
+    std::unordered_map<Entity, ComponentID> mMeshMap;
+    std::unordered_map<Entity, ComponentID> mSoundMap;
 
-     std::vector<TransformComponent> mTransformComponents;
-     std::vector<MaterialComponent> mMaterialComponents;
-     std::vector<MeshComponent> mMeshComponents;
+    std::vector<TransformComponent> mTransformComponents;
+    std::vector<MaterialComponent> mMaterialComponents;
+    std::vector<MeshComponent> mMeshComponents;
+    std::vector<SoundComponent> mSoundComponents;
 
 private:
     ResourceManager();
+    ~ResourceManager();
+
+    ResourceFactory* Factory{nullptr};
 
     static ResourceManager* mInstance;
 

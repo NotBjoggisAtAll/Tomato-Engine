@@ -28,6 +28,13 @@ SoundManager::SoundManager() :
         qDebug() << "Intialization complete!\n";
 }
 
+SoundManager *SoundManager::instance()         ///< Get pointer to singleton instance.
+{
+    if (!mInstance)
+        mInstance = new SoundManager();
+    return mInstance;
+}
+
 void SoundManager::cleanUp()
 {
     mContext = alcGetCurrentContext();
@@ -44,19 +51,19 @@ bool SoundManager::checkError()
     case AL_NO_ERROR:
         break;
     case AL_INVALID_NAME:
-        std::cout << "Invalid name!\n";
+        qDebug() << "Invalid name!\n";
         return false;
     case AL_INVALID_ENUM:
-        std::cout << "Invalid enum!\n";
+        qDebug() << "Invalid enum!\n";
         return false;
     case AL_INVALID_VALUE:
-        std::cout << "Invalid value!\n";
+        qDebug() << "Invalid value!\n";
         return false;
     case AL_INVALID_OPERATION:
-        std::cout << "Invalid operation!\n";
+        qDebug() << "Invalid operation!\n";
         return false;
     case AL_OUT_OF_MEMORY:
-        std::cout << "Out of memory!\n";
+        qDebug() << "Out of memory!\n";
         return false;
     default: break;
     }

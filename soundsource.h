@@ -22,6 +22,7 @@
 class SoundSource
 {
 public:
+    SoundSource(){init("caravan_mono.wav",true,1.f);}
     /// Constructor.
     /**
         Takes two arguments, initialises some variables.
@@ -38,10 +39,13 @@ public:
     /// Stops the sound source and rewinds to start.
     void stop();
 
+    /// Checks if the song is playing
+    bool isPlaying();
+
     /// Loads one given WAVE file.
     /**
         Calls the wave loader from the FileHandler class, parses the wave data and buffers it.
-        \param The file path relative to execution directory.
+        \param The file path relative to the Assets/Sounds folder.
     **/
     bool loadWave(std::string filePath);
 
@@ -50,12 +54,14 @@ public:
     void setVelocity(jba::Vector3D newVel);             ///< Sets source velocity from Vector3.
     jba::Vector3D getVelocity() {return mVelocity;}     ///< Returns source velocity as Vector3.
 
-private:
     std::string mName;          ///< The name of the sound source (Not used).
+    
+    void init(std::string name, bool loop, float gain);
+private:
     ALuint mSource;             ///< The sound source.
     ALuint mBuffer;             ///< The data buffer.
-    jba::Vector3D mPosition;    ///< Vector containing source position.
-    jba::Vector3D mVelocity;    ///< Vector containing source velocity.
+    jba::Vector3D mPosition{};    ///< Vector containing source position.
+    jba::Vector3D mVelocity{};    ///< Vector containing source velocity.
     bool checkError(std::string name);
 };
 

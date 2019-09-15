@@ -2,20 +2,11 @@
 #include "vertex.h"
 #include "octahedronball.h"
 
-ResourceFactory* ResourceFactory::mInstance = nullptr;
-
 ResourceFactory::ResourceFactory()
 {
 
 }
 
-ResourceFactory *ResourceFactory::instance()
-{
-    if(!mInstance)
-        mInstance = new ResourceFactory();
-
-    return mInstance;
-}
 
 MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent>& mMeshComponents)
 {

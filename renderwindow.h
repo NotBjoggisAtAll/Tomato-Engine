@@ -14,7 +14,7 @@ class QOpenGLContext;
 class Shader;
 class MainWindow;
 class Light;
-class GameObject;
+class SoundSystem;
 class EntityManager;
 
 class RenderSystem;
@@ -37,7 +37,8 @@ public:
     void checkForGLerrors();
 
     RenderSystem* mRenderSystem{nullptr};
-    EntityManager* mEntityManager{nullptr};
+    SoundSystem* mSoundSystem{nullptr};
+    EntityManager* EntityManager{nullptr};
 
 private slots:
     void render();

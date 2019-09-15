@@ -2,7 +2,7 @@
 #define ENTITYMANAGER_H
 
 #include "Components/component.h"
-
+#include "Entity.h"
 class Shader;
 class TransformComponent;
 class MaterialComponent;
@@ -14,7 +14,7 @@ public:
 
     unsigned int CreateEmptyEntity(std::string Name);
     unsigned int CreateEntity(std::string Name);
-    Component *addComponent(unsigned int EntityID, ComponentType Type, std::string filePath="");
+    Component *addComponent(unsigned int EntityID, ComponentType Type, std::string filePath="", bool loop=false, float gain=1.f);
     MaterialComponent *addComponent(unsigned int EntityID, ComponentType Type, Shader *Shader);
 
     std::unordered_map<unsigned int, std::string> mEntities;
@@ -22,8 +22,6 @@ public:
 private:
     EntityManager();
     ~EntityManager();
-
-
 
     static EntityManager* mInstance;
 

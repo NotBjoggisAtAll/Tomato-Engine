@@ -3,19 +3,28 @@
 #include "resourcemanager.h"
 RenderSystem::RenderSystem()
 {
-    factory = ResourceManager::instance();
+    Factory = ResourceManager::instance();
 }
 
 void RenderSystem::Render()
 {
     initializeOpenGLFunctions();
-    for(auto& Component : factory->mMeshComponents)
+    for(auto& Component : Factory->mMeshComponents)
     {
         if(!Component.isVisible)
             continue;
-        auto Material = factory->mMaterialComponents.at(Component.EntityID);
-        auto Transform = factory->mTransformComponents.at(Component.EntityID);
-
+        auto Material = Factory->mMaterialComponents.at(Component.EntityID);
+        auto Transform = Factory->mTransformComponents.at(Component.EntityID);
+        if(Material.EntityID != Component.EntityID)
+        {
+            Entity id = Factory->mMaterialMap.at(Component.EntityID);
+            Material = Factory->mMaterialComponents.at(id);
+        }
+        if(Transform.EntityID != Component.EntityID)
+        {
+            Entity id = Factory->mTransformMap.at(Component.EntityID);
+            Transform = Factory->mTransformComponents.at(id);
+        }
         glUseProgram(Material.mShader->getProgram());
         glBindVertexArray(Component.mVAO );
         Material.mShader->transmitUniformData(&Transform.mMatrix, &Material);   //rendersystem should know what data is needed for each shader.

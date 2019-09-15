@@ -17,8 +17,7 @@ enum class ComponentType{
 
 struct Component
 {
-    static Component* Create(ComponentType Type);
-
+    Component();
      unsigned int EntityID{};
 };
 

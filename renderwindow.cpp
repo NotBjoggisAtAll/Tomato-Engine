@@ -25,6 +25,8 @@
 #include "rendersystem.h"
 #include "entitymanager.h"
 #include "Managers/soundmanager.h"
+#include "soundsystem.h"
+#include "Components/soundcomponent.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -114,24 +116,25 @@ void RenderWindow::init()
 
     //********************** Creating Systems *********************
     mRenderSystem = new RenderSystem();
-    mEntityManager = EntityManager::instance();
+    mSoundSystem = new SoundSystem();
+    EntityManager = EntityManager::instance();
 
     //********************** Making the objects to be drawn **********************
 
     VisualObject * temp{nullptr};
 
-    auto Entity = mEntityManager->CreateEntity("axis");
+    auto Entity = EntityManager->CreateEntity("axis");
 
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"axis");
-    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
-    TransformComponent* Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"axis");
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
+    TransformComponent* Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
     Transform->mMatrix.setToIdentity();
 
-    Entity = mEntityManager->CreateEntity("skybox");
+    Entity = EntityManager->CreateEntity("skybox");
 
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"skybox");
-    MaterialComponent* Material = mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->textureShader());
-    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"skybox");
+    MaterialComponent* Material = EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->textureShader());
+    Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.scale(15.f);
     Material->mTextureUnit = 2;
@@ -160,36 +163,31 @@ void RenderWindow::init()
 
     ShaderManager::instance()->phongShader()->setLight(mLight);
 
-    Entity = mEntityManager->CreateEmptyEntity("BoxBox");
+    Entity = EntityManager->CreateEmptyEntity("BoxBox");
 
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
-    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
-    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
+    Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
 
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
 
 
-    Entity = mEntityManager->CreateEmptyEntity("Monkiii");
+    Entity = EntityManager->CreateEmptyEntity("Monkiii");
 
-    mEntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
-    Material = mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
-    Transform = static_cast<TransformComponent*>(mEntityManager->addComponent(Entity, ComponentType::Transform));
+    EntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
+    Material = EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
+    Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
 
     Transform->mMatrix.setToIdentity();
     Transform->mMatrix.scale(0.5f);
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
 
-    //Testing sound
-    SoundSource* stereo{};
 
-    stereo = SoundManager::instance()->createSource("Caravan", {0,0,0},"Caravan_mono.wav", true, 1.f);
-
-
-    stereo->play();
-
-
+    Entity = EntityManager->CreateEmptyEntity("Caravan");
+    EntityManager->addComponent(Entity, ComponentType::Transform);
+    auto sound = static_cast<SoundComponent*>(EntityManager->addComponent(Entity, ComponentType::Sound, "caravan_mono.wav", true, .5f));
 
     //********************** System stuff **********************
 
@@ -222,12 +220,8 @@ void RenderWindow::render()
 
     mCurrentCamera->update();
 
-    jba::Vector3D pos = {mCurrentCamera->position().getX(), mCurrentCamera->position().getY(), mCurrentCamera->position().getZ()};
-    jba::Vector3D vel = {};
-    jba::Vector3D forward = {mCurrentCamera->forward().getX(), mCurrentCamera->forward().getY(), mCurrentCamera->forward().getZ()};
-    jba::Vector3D up = {mCurrentCamera->up().getX(), mCurrentCamera->up().getY(), mCurrentCamera->up().getZ()};
+    mSoundSystem->update(mCurrentCamera);
 
-    SoundManager::instance()->updateListener(pos,vel,forward,up);
 
     mTimeStart.restart(); //restart FPS clock
     mContext->makeCurrent(this); //must be called every frame (every time mContext->swapBuffers is called)
@@ -591,28 +585,28 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
 
 void RenderWindow::spawnCube()
 {
-    auto Entity = mEntityManager->CreateEntity("Cube");
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
-    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
-    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    auto Entity = EntityManager->CreateEntity("Cube");
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
+    EntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }
 
 void RenderWindow::spawnSphere()
 {
-    auto Entity = mEntityManager->CreateEntity("Sphere");
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"sphere");
-    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
-    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    auto Entity = EntityManager->CreateEntity("Sphere");
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"sphere");
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
+    EntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }
 
 void RenderWindow::spawnPlane()
 {
-    auto Entity = mEntityManager->CreateEntity("Plane");
-    mEntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
-    mEntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
-    mEntityManager->addComponent(Entity, ComponentType::Transform);
+    auto Entity = EntityManager->CreateEntity("Plane");
+    EntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
+    EntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }
 

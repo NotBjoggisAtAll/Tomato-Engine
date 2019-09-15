@@ -20,13 +20,12 @@ enum class MeshType{
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:
-    static ResourceFactory* instance();
+    ResourceFactory();
 
-    MeshComponent *createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent> &mMeshComponents);
+    MeshComponent* createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent> &mMeshComponents);
 
 private:
 
-    ResourceFactory();
     std::map<std::string, unsigned int> mMeshComponentMap; //string = filepath, unsigned int = Index in vector
 
     void readOBJFile(std::string filename);
@@ -34,8 +33,6 @@ private:
     std::vector<unsigned int> mIndices;
     void openGLVertexBuffers(std::vector<MeshComponent> &mMeshComponents);
     void openGLIndexBuffer(std::vector<MeshComponent> &mMeshComponents);
-
-    static ResourceFactory* mInstance;
 
     void createSphere(std::vector<MeshComponent> &mMeshComponents);
     void createAxis(std::vector<MeshComponent> &mMeshComponents);
