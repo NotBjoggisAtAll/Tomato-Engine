@@ -49,7 +49,7 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
 
     if(Component->Child != -1){
         auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(0,p.y-arg1,0);
+        child->mMatrix.translate(0,arg1-p.y,0);
     }
 }
 
