@@ -165,3 +165,8 @@ void MainWindow::on_spawnSphere_triggered()
 {
     emit spawnSphere();
 }
+
+void MainWindow::on_spawnPlane_triggered()
+{
+    emit spawnPlane();
+}

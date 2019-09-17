@@ -608,7 +608,7 @@ void RenderWindow::spawnPlane()
 {
     auto Entity = EntityManager->CreateEntity("Plane");
     EntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
-    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
+    EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
     EntityManager->addComponent(Entity, ComponentType::Transform);
     mMainWindow->DisplayEntitesInOutliner();
 }

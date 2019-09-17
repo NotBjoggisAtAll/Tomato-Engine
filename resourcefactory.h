@@ -34,6 +34,8 @@ private:
     void openGLVertexBuffers(std::vector<MeshComponent> &mMeshComponents);
     void openGLIndexBuffer(std::vector<MeshComponent> &mMeshComponents);
 
+
+    void createPlane(std::vector<MeshComponent> &mMeshComponents);
     void createSphere(std::vector<MeshComponent> &mMeshComponents);
     void createAxis(std::vector<MeshComponent> &mMeshComponents);
     void createSkybox(std::vector<MeshComponent> &mMeshComponents);

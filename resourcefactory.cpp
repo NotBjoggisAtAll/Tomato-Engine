@@ -28,6 +28,8 @@ MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::
         createSkybox(mMeshComponents);
     if(filePath == "sphere")
         createSphere(mMeshComponents);
+    if(filePath == "plane")
+        createPlane(mMeshComponents);
 
     mMeshComponents.back().EntityID = EntityID;
     return &mMeshComponents.back();
@@ -65,6 +67,37 @@ void ResourceFactory::openGLIndexBuffer(std::vector<MeshComponent>& mMeshCompone
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mMeshComponents.back().mEAB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(GLuint), mIndices.data(), GL_STATIC_DRAW);
 }
+
+void ResourceFactory::createPlane(std::vector<MeshComponent>& mMeshComponents)
+{
+    mVertices.clear();
+    mIndices.clear();
+    initializeOpenGLFunctions();
+    mMeshComponents.push_back(MeshComponent());
+    mMeshComponentMap["plane"] = static_cast<unsigned int>(mMeshComponents.size() -1);
+
+    Vertex v;
+    v.set_xyz(0,0,0); v.set_rgb(1,0,0);
+    mVertices.push_back(v);
+    v.set_xyz(1,0,1); v.set_rgb(0,0,1);
+    mVertices.push_back(v);
+    v.set_xyz(1,0,0); v.set_rgb(0,1,0);
+    mVertices.push_back(v);
+    v.set_xyz(0,0,0); v.set_rgb(0,1,0);
+    mVertices.push_back(v);
+    v.set_xyz(0,0,1); v.set_rgb(0,0,1);
+    mVertices.push_back(v);
+    v.set_xyz(1,0,1); v.set_rgb(1,0,0);
+    mVertices.push_back(v);
+
+    openGLVertexBuffers(mMeshComponents);
+
+    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    glBindVertexArray(0);
+}
+
 
 void ResourceFactory::createSphere(std::vector<MeshComponent>& mMeshComponents)
 {

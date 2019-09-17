@@ -40,6 +40,8 @@ private slots:
 
     void on_spawnSphere_triggered();
 
+    void on_spawnPlane_triggered();
+
 private:
     void init();
 
