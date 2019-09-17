@@ -18,6 +18,12 @@ public:
 
     std::unordered_map<unsigned int, std::string> mEntities;
 
+    /**
+     * @brief To work both Entites needs to have a transform before you use this function
+     * @param Parent
+     * @param Child
+     */
+    void addChild(Entity Parent, Entity Child);
 private:
     EntityManager();
     ~EntityManager();

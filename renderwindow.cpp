@@ -169,9 +169,9 @@ void RenderWindow::init()
     EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
     Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
 
-    Transform->mMatrix.setToIdentity();
     Transform->mMatrix.rotateY(180.f);
 
+    auto Box = Entity;
 
     Entity = EntityManager->CreateEntity("Monkiii");
 
@@ -179,9 +179,14 @@ void RenderWindow::init()
     Material = EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     Transform = static_cast<TransformComponent*>(EntityManager->addComponent(Entity, ComponentType::Transform));
 
-    Transform->mMatrix.setToIdentity();
+
     Transform->mMatrix.scale(0.5f);
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
+
+
+    EntityManager->addChild(Entity, Box);
+
+
 
     Entity = EntityManager->CreateEntity("Caravan");
     EntityManager->addComponent(Entity, ComponentType::Transform);

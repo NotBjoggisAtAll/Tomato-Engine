@@ -9,8 +9,10 @@ class SoundSystem
 public:
     SoundSystem();
 
-    ResourceManager* Factory{nullptr};
     void update(Camera *currCamera);
+
+private:
+    ResourceManager* Factory{nullptr};
 };
 
 #endif // SOUNDSYSTEM_H

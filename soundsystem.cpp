@@ -43,13 +43,13 @@ void SoundSystem::update(Camera* currCamera)
 
         auto Transform = Factory->getTransformComponent(Sound.EntityID);
 
-        //TODO Fixup Transform.mMatrix to a jba::Matrix4x4
+        //TODO Fixup gsl::Transform.mMatrix to a jba::Matrix4x4
         jba::Vector3D pos{Transform->mMatrix.getPosition().getX(),
                     Transform->mMatrix.getPosition().getY(),
                     Transform->mMatrix.getPosition().getZ()};
         Sound.Sound.setPosition(pos);
 
-        //For now loops all the sounds
+        //For now loops all the sounds - This is going to change
         if(!Sound.Sound.isPlaying())
         {
             Sound.Sound.play();

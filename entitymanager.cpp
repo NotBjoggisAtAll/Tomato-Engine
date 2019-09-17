@@ -80,3 +80,14 @@ Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type
 
     return ComponentToReturn;
 }
+
+void EntityManager::addChild(Entity Parent, Entity Child)
+{
+
+    auto ParentTransform = ResourceManager::instance()->getTransformComponent(Parent);
+    auto ChildTransform = ResourceManager::instance()->getTransformComponent(Child);
+
+    ChildTransform->Parent = Parent;
+    ParentTransform->Child = Child;
+
+}
