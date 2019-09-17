@@ -30,12 +30,28 @@ void MainWindow::DisplayEntitesInOutliner()
     ui->Outliner->clear();
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
+        auto Transform = ResourceManager::instance()->getTransformComponent(Entity.first);
+        if(Transform)
+            if(Transform->Parent != -1)
+                continue;
+
         QTreeWidgetItem* item = new QTreeWidgetItem();
+        QTreeWidgetItem* childWidget{nullptr};
 
         item->setText(0, QString::fromStdString(Entity.second));
         item->setText(1, QString::number(Entity.first));
         ui->Outliner->addTopLevelItem(item);
-        ui->listOfCreateableObjects->addItem(QString::fromStdString(Entity.second));
+
+        Transform = ResourceManager::instance()->getTransformComponent(Entity.first);
+        if(Transform)
+            if(Transform->Child != -1)
+            {
+                childWidget = new QTreeWidgetItem();
+                auto child = EntityManager::instance()->mEntities.find(Transform->Child);
+                childWidget->setText(0, QString::fromStdString(child->second));
+                childWidget->setText(1, QString::number(child->first));
+                item->addChild(childWidget);
+            }
     }
 }
 
@@ -112,11 +128,6 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
-void MainWindow::on_createObjectButton_clicked()
-{
-    qDebug() << ui->listOfCreateableObjects->currentText();
-
-}
 
 void MainWindow::updateComponentWidgets(unsigned int EntityID)
 {

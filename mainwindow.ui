@@ -63,25 +63,6 @@
             </property>
            </spacer>
           </item>
-          <item>
-           <widget class="QComboBox" name="listOfCreateableObjects"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="createObjectButton">
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>Create Object</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>

@@ -34,8 +34,6 @@ private slots:
     void on_actionToggle_Wireframe_triggered();
     void on_actionExit_triggered();
 
-    void on_createObjectButton_clicked();
-
     void on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
     void on_spawnCube_triggered();
