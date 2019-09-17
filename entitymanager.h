@@ -12,8 +12,7 @@ public:
 
     static EntityManager* instance();
 
-    unsigned int CreateEmptyEntity(std::string Name);
-    unsigned int CreateEntity(std::string Name);
+    Entity CreateEntity(std::string Name);
     Component *addComponent(unsigned int EntityID, ComponentType Type, std::string filePath="", bool loop=false, float gain=1.f);
     MaterialComponent *addComponent(unsigned int EntityID, ComponentType Type, Shader *Shader);
 

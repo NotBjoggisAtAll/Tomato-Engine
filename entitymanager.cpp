@@ -21,13 +21,7 @@ EntityManager *EntityManager::instance()
     return mInstance;
 }
 
-unsigned int EntityManager::CreateEmptyEntity(std::string Name)
-{
-    mEntities[EntityID] = Name;
-    return EntityID++;
-}
-
-unsigned int EntityManager::CreateEntity(std::string Name)
+Entity EntityManager::CreateEntity(std::string Name)
 {
     if(Name == "axis" || Name == "skybox")
     {
@@ -35,7 +29,6 @@ unsigned int EntityManager::CreateEntity(std::string Name)
     }
     mEntities[EntityID] = Name;
 
-    //addComponent(EntityID,ComponentType::Mesh);
     return EntityID++;
 }
 MaterialComponent* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, Shader* Shader)

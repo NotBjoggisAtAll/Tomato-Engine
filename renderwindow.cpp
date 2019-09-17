@@ -163,7 +163,7 @@ void RenderWindow::init()
 
     ShaderManager::instance()->phongShader()->setLight(mLight);
 
-    Entity = EntityManager->CreateEmptyEntity("BoxBox");
+    Entity = EntityManager->CreateEntity("BoxBox");
 
     EntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
     EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
@@ -173,7 +173,7 @@ void RenderWindow::init()
     Transform->mMatrix.rotateY(180.f);
 
 
-    Entity = EntityManager->CreateEmptyEntity("Monkiii");
+    Entity = EntityManager->CreateEntity("Monkiii");
 
     EntityManager->addComponent(Entity, ComponentType::Mesh, "monkey.obj");
     Material = EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
@@ -183,7 +183,7 @@ void RenderWindow::init()
     Transform->mMatrix.scale(0.5f);
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
-    Entity = EntityManager->CreateEmptyEntity("Caravan");
+    Entity = EntityManager->CreateEntity("Caravan");
     EntityManager->addComponent(Entity, ComponentType::Transform);
     EntityManager->addComponent(Entity, ComponentType::Sound, "caravan_mono.wav", true, .5f);
 
