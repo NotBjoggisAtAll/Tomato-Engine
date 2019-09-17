@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class SoundComponent;
+
 namespace Ui {
 class SoundWidget;
 }
@@ -16,6 +18,9 @@ public:
     ~SoundWidget();
 
 private:
+
+    SoundComponent* Component{nullptr};
+
     Ui::SoundWidget *ui;
 };
 

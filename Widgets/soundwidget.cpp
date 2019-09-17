@@ -7,13 +7,7 @@ SoundWidget::SoundWidget(unsigned int EntityID, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    SoundComponent* Component;
-    try {
-        Component = &ResourceManager::instance()->mSoundComponents.at(EntityID);
-    } catch (...) {
-        auto id =  ResourceManager::instance()->mSoundMap.at(EntityID);
-        Component = &ResourceManager::instance()->mSoundComponents.at(id);
-    }
+    Component = ResourceManager::instance()->getSoundComponent(EntityID);
 
     ui->fileNameHere->setText(QString::fromStdString(Component->Sound.mName));
 }

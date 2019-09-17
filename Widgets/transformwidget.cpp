@@ -16,7 +16,7 @@ TransformWidget::TransformWidget(unsigned int& EntityID, QWidget *parent) :
     ui->zPosition->setRange(-1000,1000);
     ui->zPosition->setSingleStep(0.5);
 
-    Component = &ResourceManager::instance()->mTransformComponents.at(EntityID);
+    Component = ResourceManager::instance()->getTransformComponent(EntityID);
 
     auto Pos = Component->mMatrix.getPosition();
 

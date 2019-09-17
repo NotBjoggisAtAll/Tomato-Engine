@@ -30,6 +30,10 @@ public:
     std::vector<MeshComponent> mMeshComponents;
     std::vector<SoundComponent> mSoundComponents;
 
+    TransformComponent *getTransformComponent(Entity id);
+    MaterialComponent *getMaterialComponent(Entity id);
+    MeshComponent *getMeshComponent(Entity id);
+    SoundComponent *getSoundComponent(Entity id);
 private:
     ResourceManager();
     ~ResourceManager();

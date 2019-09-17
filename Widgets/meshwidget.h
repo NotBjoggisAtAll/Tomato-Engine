@@ -2,7 +2,7 @@
 #define MESHWIDGET_H
 
 #include <QWidget>
-
+#include "Entity.h"
 
 class MeshComponent;
 
@@ -15,7 +15,7 @@ class MeshWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MeshWidget(unsigned int &EntityID, QWidget *parent = nullptr);
+    explicit MeshWidget(Entity EntityID, QWidget *parent = nullptr);
     ~MeshWidget();
 
 private slots:

@@ -128,42 +128,16 @@ void MainWindow::updateComponentWidgets(unsigned int EntityID)
     QVBoxLayout* layout = new QVBoxLayout();
     widget->setLayout(layout);
 
-    auto resource = ResourceManager::instance();
+    auto Manager = ResourceManager::instance();
 
-    Component* Component{nullptr};
-
-    for(auto& comp : resource->mTransformComponents)
-    {
-        if(comp.EntityID == EntityID)
-            Component = &comp;
-    }
-    if(Component)
-    {
+    if(Manager->getTransformComponent(EntityID))
         layout->addWidget(new TransformWidget(EntityID));
-    }
-    Component = nullptr;
-    for(auto& comp : resource->mMeshComponents)
-    {
-        if(comp.EntityID == EntityID)
-            Component = &comp;
-    }
-    if(Component)
-    {
+
+    if(Manager->getMeshComponent(EntityID))
         layout->addWidget(new MeshWidget(EntityID));
-    }
-    Component = nullptr;
-    for(auto& comp : resource->mSoundComponents)
-    {
-        if(comp.EntityID == EntityID)
-            Component = &comp;
-    }
-    if(Component)
-    {
+
+    if(Manager->getSoundComponent(EntityID))
         layout->addWidget(new SoundWidget(EntityID));
-    }
-
-
-
 }
 
 void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)

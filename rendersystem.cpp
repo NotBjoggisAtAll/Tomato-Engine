@@ -13,21 +13,12 @@ void RenderSystem::Render()
     {
         if(!Component.isVisible)
             continue;
-        auto Material = Factory->mMaterialComponents.at(Component.EntityID);
-        auto Transform = Factory->mTransformComponents.at(Component.EntityID);
-        if(Material.EntityID != Component.EntityID)
-        {
-            Entity id = Factory->mMaterialMap.at(Component.EntityID);
-            Material = Factory->mMaterialComponents.at(id);
-        }
-        if(Transform.EntityID != Component.EntityID)
-        {
-            Entity id = Factory->mTransformMap.at(Component.EntityID);
-            Transform = Factory->mTransformComponents.at(id);
-        }
-        glUseProgram(Material.mShader->getProgram());
+        auto Material = Factory->getMaterialComponent(Component.EntityID);
+        auto Transform = Factory->getTransformComponent(Component.EntityID);
+
+        glUseProgram(Material->mShader->getProgram());
         glBindVertexArray(Component.mVAO );
-        Material.mShader->transmitUniformData(&Transform.mMatrix, &Material);   //rendersystem should know what data is needed for each shader.
+        Material->mShader->transmitUniformData(&Transform->mMatrix, Material);   //rendersystem should know what data is needed for each shader.
 
         //checking if indices are used - draws accordingly with Elements or Arrays
         if (Component.mIndiceCount > 0)

@@ -41,16 +41,12 @@ void SoundSystem::update(Camera* currCamera)
     for(auto& Sound : Factory->mSoundComponents)
     {
 
-        auto Transform = Factory->mTransformComponents.at(Sound.EntityID);
-        if(Transform.EntityID != Sound.EntityID)
-        {
-            auto id = Factory->mTransformMap.at(Sound.EntityID);
-            Transform = Factory->mTransformComponents.at(id);
-        }
+        auto Transform = Factory->getTransformComponent(Sound.EntityID);
+
         //TODO Fixup Transform.mMatrix to a jba::Matrix4x4
-        jba::Vector3D pos{Transform.mMatrix.getPosition().getX(),
-                    Transform.mMatrix.getPosition().getY(),
-                    Transform.mMatrix.getPosition().getZ()};
+        jba::Vector3D pos{Transform->mMatrix.getPosition().getX(),
+                    Transform->mMatrix.getPosition().getY(),
+                    Transform->mMatrix.getPosition().getZ()};
         Sound.Sound.setPosition(pos);
 
         //For now loops all the sounds

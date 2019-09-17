@@ -3,13 +3,13 @@
 #include "resourcemanager.h"
 #include "Components/meshcomponent.h"
 
-MeshWidget::MeshWidget(unsigned int& EntityID, QWidget *parent) :
+MeshWidget::MeshWidget(Entity EntityID, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MeshWidget)
 {
     ui->setupUi(this);
 
-    Component = &ResourceManager::instance()->mMeshComponents.at(EntityID);
+    Component = ResourceManager::instance()->getMeshComponent(EntityID);
 
     ui->isVisible->setChecked(Component->isVisible);
 
