@@ -19,11 +19,11 @@ public:
 
 private slots:
 
-    void on_xPosition_valueChanged(double arg1);
+    void on_xPosition_valueChanged(double newX);
 
-    void on_yPosition_valueChanged(double arg1);
+    void on_yPosition_valueChanged(double newY);
 
-    void on_zPosition_valueChanged(double arg1);
+    void on_zPosition_valueChanged(double newZ);
 
 private:
     Ui::TransformWidget *ui;

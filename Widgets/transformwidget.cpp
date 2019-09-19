@@ -30,37 +30,37 @@ TransformWidget::~TransformWidget()
     delete ui;
 }
 
-void TransformWidget::on_xPosition_valueChanged(double arg1)
+void TransformWidget::on_xPosition_valueChanged(double newX)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(arg1,p.y,p.z);
+    Component->mMatrix.setPosition(newX,p.y,p.z);
 
     if(Component->Child != -1){
         auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(p.x-arg1,0,0);
+        child->mMatrix.translate(p.x-newX,0,0);
     }
 }
 
-void TransformWidget::on_yPosition_valueChanged(double arg1)
+void TransformWidget::on_yPosition_valueChanged(double newY)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(p.x,arg1,p.z);
+    Component->mMatrix.setPosition(p.x,newY,p.z);
 
 
     if(Component->Child != -1){
         auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(0,arg1-p.y,0);
+        child->mMatrix.translate(0,newY-p.y,0);
     }
 }
 
-void TransformWidget::on_zPosition_valueChanged(double arg1)
+void TransformWidget::on_zPosition_valueChanged(double newZ)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(p.x,p.y,arg1);
+    Component->mMatrix.setPosition(p.x,p.y,newZ);
 
     if(Component->Child != -1){
         auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(0,0,p.z-arg1);
+        child->mMatrix.translate(0,0,p.z-newZ);
 
     }
 }
