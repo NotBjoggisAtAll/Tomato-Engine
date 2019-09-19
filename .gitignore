@@ -58,7 +58,4 @@ CMakeLists.txt.user*
 .DS_Store
 
 #Assets
-*.bmp
-*.obj
-*.txt
-*.wav
+Assets/
