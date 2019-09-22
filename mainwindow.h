@@ -19,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayEntitesInOutliner();
+    void DisplayEntitiesInOutliner();
 
     void updateComponentWidgets(unsigned int EntityID);
 
@@ -42,9 +42,9 @@ private slots:
 
     void on_spawnPlane_triggered();
 
-private:
-    void init();
+    void on_Outliner_itemClicked(QTreeWidgetItem *item, int column);
 
+private:
     Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
@@ -52,6 +52,7 @@ private:
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
 
+    void updateParentChild(QTreeWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H

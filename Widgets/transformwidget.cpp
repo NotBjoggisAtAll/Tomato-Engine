@@ -35,9 +35,8 @@ void TransformWidget::on_xPosition_valueChanged(double arg1)
     auto p = Component->mMatrix.getPosition();
     Component->mMatrix.setPosition(arg1,p.y,p.z);
 
-    if(Component->Child != -1){
-        auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(p.x-arg1,0,0);
+    for(auto& Child : Component->mChildren){
+        Child->mMatrix.translate(p.x-arg1,0,0);
     }
 }
 
@@ -47,9 +46,9 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
     Component->mMatrix.setPosition(p.x,arg1,p.z);
 
 
-    if(Component->Child != -1){
-        auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(0,arg1-p.y,0);
+    for(auto& Child : Component->mChildren){
+
+        Child->mMatrix.translate(0,arg1-p.y,0);
     }
 }
 
@@ -58,9 +57,9 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
     auto p = Component->mMatrix.getPosition();
     Component->mMatrix.setPosition(p.x,p.y,arg1);
 
-    if(Component->Child != -1){
-        auto child = ResourceManager::instance()->getTransformComponent(static_cast<Entity>(Component->Child));
-        child->mMatrix.translate(0,0,p.z-arg1);
+    for(auto& Child : Component->mChildren){
+
+        Child->mMatrix.translate(0,0,p.z-arg1);
 
     }
 }

@@ -5,8 +5,7 @@
 
 struct TransformComponent : public Component
 {
-    int  Parent{-1};
-    int Child{-1};
+    std::vector<TransformComponent*> mChildren;
 
     gsl::Matrix4x4 mMatrix;
 };
