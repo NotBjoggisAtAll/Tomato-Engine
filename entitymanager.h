@@ -25,7 +25,7 @@ public:
      */
     void addChild(Entity Parent, Entity Child);
 
-    void removeChildren(Entity Parent);
+    void removeRelationship(Entity Parent);
 
 private:
     EntityManager();

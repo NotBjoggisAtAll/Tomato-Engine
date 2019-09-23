@@ -84,12 +84,17 @@ Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type
 void EntityManager::addChild(Entity Parent, Entity Child)
 {
     auto p = ResourceManager::instance()->getTransformComponent(Parent);
+    auto c = ResourceManager::instance()->getTransformComponent(Child);
+    c->mParent = p;
     p->mChildren.push_back(ResourceManager::instance()->getTransformComponent(Child));
 }
 
-void EntityManager::removeChildren(Entity Parent)
+void EntityManager::removeRelationship(Entity Parent)
 {
     auto transform = ResourceManager::instance()->getTransformComponent(Parent);
+    for(auto& Child : transform->mChildren)
+        Child->mParent = nullptr;
+
     transform->mChildren.clear();
 }
 

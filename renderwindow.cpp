@@ -194,7 +194,7 @@ void RenderWindow::init()
 
     //********************** System stuff **********************
 
-    mMainWindow->DisplayEntitiesInOutliner();
+    mMainWindow->initWorldOutliner();
 
    // qDebug() << EntityManager->getParent(Box);
 
@@ -593,7 +593,7 @@ void RenderWindow::spawnCube()
     EntityManager->addComponent(Entity, ComponentType::Mesh,"box2.txt");
     EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     EntityManager->addComponent(Entity, ComponentType::Transform);
-    mMainWindow->DisplayEntitiesInOutliner();
+    mMainWindow->initWorldOutliner();
 }
 
 void RenderWindow::spawnSphere()
@@ -602,7 +602,7 @@ void RenderWindow::spawnSphere()
     EntityManager->addComponent(Entity, ComponentType::Mesh,"sphere");
     EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->phongShader());
     EntityManager->addComponent(Entity, ComponentType::Transform);
-    mMainWindow->DisplayEntitiesInOutliner();
+    mMainWindow->initWorldOutliner();
 }
 
 void RenderWindow::spawnPlane()
@@ -611,6 +611,6 @@ void RenderWindow::spawnPlane()
     EntityManager->addComponent(Entity, ComponentType::Mesh,"plane");
     EntityManager->addComponent(Entity, ComponentType::Material, ShaderManager::instance()->colorShader());
     EntityManager->addComponent(Entity, ComponentType::Transform);
-    mMainWindow->DisplayEntitiesInOutliner();
+    mMainWindow->initWorldOutliner();
 }
 

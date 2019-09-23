@@ -1,6 +1,7 @@
 #include "transformwidget.h"
 #include "ui_transformwidget.h"
 #include "resourcemanager.h"
+
 TransformWidget::TransformWidget(unsigned int& EntityID, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TransformWidget)
@@ -33,33 +34,33 @@ TransformWidget::~TransformWidget()
 void TransformWidget::on_xPosition_valueChanged(double arg1)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(arg1,p.y,p.z);
+    Component->mMatrix.setPosition(static_cast<float>(arg1),p.y,p.z);
 
-    for(auto& Child : Component->mChildren){
-        Child->mMatrix.translate(p.x-arg1,0,0);
-    }
+//    for(auto& Child : Component->mChildren){
+//        Child->mMatrix.translate(p.x-arg1,0,0);
+//    }
 }
 
 void TransformWidget::on_yPosition_valueChanged(double arg1)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(p.x,arg1,p.z);
+    Component->mMatrix.setPosition(p.x,static_cast<float>(arg1),p.z);
 
 
-    for(auto& Child : Component->mChildren){
+//    for(auto& Child : Component->mChildren){
 
-        Child->mMatrix.translate(0,arg1-p.y,0);
-    }
+//        Child->mMatrix.translate(0,arg1-p.y,0);
+//    }
 }
 
 void TransformWidget::on_zPosition_valueChanged(double arg1)
 {
     auto p = Component->mMatrix.getPosition();
-    Component->mMatrix.setPosition(p.x,p.y,arg1);
+    Component->mMatrix.setPosition(p.x,p.y,static_cast<float>(arg1));
 
-    for(auto& Child : Component->mChildren){
+//    for(auto& Child : Component->mChildren){
 
-        Child->mMatrix.translate(0,0,p.z-arg1);
+//        Child->mMatrix.translate(0,0,p.z-arg1);
 
-    }
+//    }
 }

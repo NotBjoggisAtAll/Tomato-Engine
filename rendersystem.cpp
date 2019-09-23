@@ -15,10 +15,23 @@ void RenderSystem::Render()
             continue;
         auto Material = Factory->getMaterialComponent(Component.EntityID);
         auto Transform = Factory->getTransformComponent(Component.EntityID);
+        auto Parent = Transform->mParent;
+
+
 
         glUseProgram(Material->mShader->getProgram());
         glBindVertexArray(Component.mVAO );
-        Material->mShader->transmitUniformData(&Transform->mMatrix, Material);   //rendersystem should know what data is needed for each shader.
+        if(Parent)
+        {
+
+            gsl::Matrix4x4* transformMatrix = new gsl::Matrix4x4(Parent->mMatrix * Transform->mMatrix);
+
+            Material->mShader->transmitUniformData(transformMatrix, Material);   //rendersystem should know what data is needed for each shader.
+        }
+        else{
+            Material->mShader->transmitUniformData(&Transform->mMatrix, Material);   //rendersystem should know what data is needed for each shader.
+
+        }
 
         //checking if indices are used - draws accordingly with Elements or Arrays
         if (Component.mIndiceCount > 0)

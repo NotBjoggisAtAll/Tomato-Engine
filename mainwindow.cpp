@@ -54,9 +54,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::DisplayEntitiesInOutliner()
+void MainWindow::initWorldOutliner()
 {
-    ui->Outliner->clear();
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
 
@@ -67,6 +66,9 @@ void MainWindow::DisplayEntitiesInOutliner()
         ui->Outliner->addTopLevelItem(item);
     }
 }
+
+
+
 
 void MainWindow::updateParentChild(QTreeWidgetItem* item)
 {
@@ -134,7 +136,7 @@ void MainWindow::on_Outliner_itemClicked(QTreeWidgetItem *item, int column)
 {
     for(auto& Entity : EntityManager::instance()->mEntities)
     {
-        EntityManager::instance()->removeChildren(Entity.first);
+        EntityManager::instance()->removeRelationship(Entity.first);
     }
     for(unsigned int i=0; i<ui->Outliner->topLevelItemCount(); i++)
     {

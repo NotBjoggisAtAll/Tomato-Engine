@@ -19,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayEntitiesInOutliner();
+    void initWorldOutliner();
 
     void updateComponentWidgets(unsigned int EntityID);
 
