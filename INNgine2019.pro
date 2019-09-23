@@ -49,6 +49,7 @@ HEADERS += \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
     Widgets/soundwidget.h \
+    WorldOutliner.h \
     constants.h \
     entitymanager.h \
     Widgets/meshwidget.h \
@@ -95,6 +96,7 @@ SOURCES += main.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
     Widgets/soundwidget.cpp \
+    WorldOutliner.cpp \
     entitymanager.cpp \
     Widgets/meshwidget.cpp \
     rendersystem.cpp \

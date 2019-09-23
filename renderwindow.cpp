@@ -184,7 +184,7 @@ void RenderWindow::init()
     Transform->mMatrix.translate(3.f, 2.f, -2.f);
 
 
-    EntityManager->addChild(Entity, Box);
+  //  EntityManager->addChild(Entity, Box);
 
 
 

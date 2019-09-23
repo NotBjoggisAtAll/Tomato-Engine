@@ -56,18 +56,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::initWorldOutliner()
 {
-    for(auto& Entity : EntityManager::instance()->mEntities)
-    {
-
-        QTreeWidgetItem* item = new QTreeWidgetItem();
-
-        item->setText(0, QString::fromStdString(Entity.second));
-        item->setText(1, QString::number(Entity.first));
-        ui->Outliner->addTopLevelItem(item);
-    }
+    ui->Outliner->init();
 }
-
-
 
 
 void MainWindow::updateParentChild(QTreeWidgetItem* item)

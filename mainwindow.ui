@@ -34,7 +34,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QTreeWidget" name="Outliner">
+           <widget class="WorldOutliner" name="Outliner">
             <property name="dragEnabled">
              <bool>true</bool>
             </property>
@@ -194,6 +194,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>WorldOutliner</class>
+   <extends>QTreeWidget</extends>
+   <header>worldoutliner.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
