@@ -25,11 +25,11 @@ Entity EntityManager::CreateEntity(std::string Name)
 {
     if(Name == "axis" || Name == "skybox")
     {
-        return EntityID++;
+        return entity++;
     }
-    mEntities[EntityID] = Name;
+    mEntities[entity] = Name;
 
-    return EntityID++;
+    return entity++;
 }
 MaterialComponent* EntityManager::addComponent(unsigned int EntityID, ComponentType Type, Shader* Shader)
 {
@@ -83,11 +83,13 @@ Component* EntityManager::addComponent(unsigned int EntityID, ComponentType Type
 
 void EntityManager::addChild(Entity Parent, Entity Child)
 {
-
-    auto ParentTransform = ResourceManager::instance()->getTransformComponent(Parent);
-    auto ChildTransform = ResourceManager::instance()->getTransformComponent(Child);
-
-    ChildTransform->Parent = Parent;
-    ParentTransform->Child = Child;
-
+    auto p = ResourceManager::instance()->getTransformComponent(Parent);
+    p->mChildren.push_back(ResourceManager::instance()->getTransformComponent(Child));
 }
+
+void EntityManager::removeChildren(Entity Parent)
+{
+    auto transform = ResourceManager::instance()->getTransformComponent(Parent);
+    transform->mChildren.clear();
+}
+

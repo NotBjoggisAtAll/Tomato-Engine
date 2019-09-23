@@ -13,8 +13,8 @@ public:
     static EntityManager* instance();
 
     Entity CreateEntity(std::string Name);
-    Component *addComponent(unsigned int EntityID, ComponentType Type, std::string filePath="", bool loop=false, float gain=1.f);
-    MaterialComponent *addComponent(unsigned int EntityID, ComponentType Type, Shader *Shader);
+    Component *addComponent(unsigned int entity, ComponentType Type, std::string filePath="", bool loop=false, float gain=1.f);
+    MaterialComponent *addComponent(unsigned int entity, ComponentType Type, Shader *Shader);
 
     std::unordered_map<unsigned int, std::string> mEntities;
 
@@ -24,13 +24,18 @@ public:
      * @param Child
      */
     void addChild(Entity Parent, Entity Child);
+
+    void removeChildren(Entity Parent);
+
 private:
     EntityManager();
     ~EntityManager();
 
     static EntityManager* mInstance;
 
-    unsigned int EntityID = 0;
+    Entity entity = 0;
+
+
 
 };
 
