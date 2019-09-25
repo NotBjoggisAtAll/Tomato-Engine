@@ -1,16 +1,13 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include "vector2d.h"
-#include "vector3d.h"
-#include "JBA/vector3d.h"
-#include "JBA/vector2d.h"
+#include "GSL/vector2d.h"
+#include "GSL/vector3d.h"
 class Vertex {
 public:
     Vertex();
     Vertex(float x, float y, float z, float r, float g, float b);
     Vertex(gsl::Vector3D a, gsl::Vector3D b, gsl::Vector2D c);
-    Vertex(jba::Vector3D a, jba::Vector3D b, jba::Vector2D c);
     ~Vertex();
 
     //! Overloaded ostream operator which writes all vertex data on an open textfile stream

@@ -7,8 +7,6 @@ TARGET      = INNgine2019
 
 PRECOMPILED_HEADER = innpch.h
 
-INCLUDEPATH +=  ./GSL
-
 mac {
     LIBS += -framework OpenAL
 }
@@ -36,11 +34,6 @@ HEADERS += \
     GSL/gsl_math.h \
     GSL/math_constants.h \
     Handlers/wavfilehandler.h \
-    JBA/jbamath.h \
-    JBA/matrix4x4.h \
-    JBA/vector2d.h \
-    JBA/vector3d.h \
-    JBA/vector4d.h \
     Managers/componentManager.h \
     Managers/filemanager.h \
     Managers/shadermanager.h \

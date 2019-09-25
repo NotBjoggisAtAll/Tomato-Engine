@@ -7,6 +7,7 @@
 #include "math_constants.h"
 #include "gltypes.h"
 #include "matrix3x3.h"
+#include "matrix4x4.h"
 #include <vector>
 
 namespace gsl

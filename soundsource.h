@@ -11,7 +11,7 @@
 #endif
 
 #include <string>
-#include "JBA/vector3d.h"
+#include "GSL/vector3d.h"
 
 /// One sound source.
 /**
@@ -49,10 +49,10 @@ public:
     **/
     bool loadWave(std::string filePath);
 
-    void setPosition(jba::Vector3D newPos);             ///< Sets source position from Vector3.
-    jba::Vector3D getPosition() {return mPosition;}     ///< Returns source position as Vector3.
-    void setVelocity(jba::Vector3D newVel);             ///< Sets source velocity from Vector3.
-    jba::Vector3D getVelocity() {return mVelocity;}     ///< Returns source velocity as Vector3.
+    void setPosition(gsl::Vector3D newPos);             ///< Sets source position from Vector3.
+    gsl::Vector3D getPosition() {return mPosition;}     ///< Returns source position as Vector3.
+    void setVelocity(gsl::Vector3D newVel);             ///< Sets source velocity from Vector3.
+    gsl::Vector3D getVelocity() {return mVelocity;}     ///< Returns source velocity as Vector3.
 
     std::string mName;          ///< The name of the sound source (Not used).
     
@@ -60,8 +60,8 @@ public:
 private:
     ALuint mSource;             ///< The sound source.
     ALuint mBuffer;             ///< The data buffer.
-    jba::Vector3D mPosition{};    ///< Vector containing source position.
-    jba::Vector3D mVelocity{};    ///< Vector containing source velocity.
+    gsl::Vector3D mPosition{};    ///< Vector containing source position.
+    gsl::Vector3D mVelocity{};    ///< Vector containing source velocity.
     bool checkError(std::string name);
 };
 

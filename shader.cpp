@@ -4,7 +4,6 @@
 //#include "GL/glew.h" - using QOpenGLFunctions instead
 
 #include "camera.h"
-#include "matrix4x4.h"
 
 Shader::Shader(const std::string shaderName, const GLchar *geometryPath)
 {

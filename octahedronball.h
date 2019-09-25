@@ -1,7 +1,7 @@
 #ifndef OCTAHEDRONBALL_H
 #define OCTAHEDRONBALL_H
 
-#include "vector3d.h"
+#include "GSL/vector3d.h"
 #include "gltypes.h"
 
 class Vertex;

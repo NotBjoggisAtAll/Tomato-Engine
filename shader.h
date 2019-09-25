@@ -2,7 +2,7 @@
 #define SHADER_H
 
 #include <QOpenGLFunctions_4_1_Core>
-#include "matrix4x4.h"
+#include "GSL/matrix4x4.h"
 #include "Components/materialcomponent.h"
 
 //#include "GL/glew.h" //We use QOpenGLFunctions instead, so no need for Glew (or GLAD)!

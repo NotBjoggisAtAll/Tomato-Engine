@@ -3,7 +3,6 @@
 #include "vertex.h"
 #include <QString>
 #include <QFile>
-#include "JBA/jbamath.h"
 
 FileManager* FileManager::m_Instance = nullptr;
 
@@ -73,9 +72,9 @@ std::pair<std::vector<Vertex>,std::vector<unsigned int>> FileManager::ReadOBJFil
 {
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
-    std::vector<jba::Vector3D> Position;
-    std::vector<jba::Vector3D> Normals;
-    std::vector<jba::Vector2D> Texture;
+    std::vector<gsl::Vector3D> Position;
+    std::vector<gsl::Vector3D> Normals;
+    std::vector<gsl::Vector2D> Texture;
 
     unsigned int index{};
     QFile file(m_DirPath + File);
@@ -90,25 +89,28 @@ std::pair<std::vector<Vertex>,std::vector<unsigned int>> FileManager::ReadOBJFil
         if(List.first() == "v")
         {
             List.removeFirst();
-            jba::Vector3D TempPosition;
-            for (unsigned int i = 0; i < 3; ++i)
-                TempPosition[i] = List.takeFirst().toFloat();
+            gsl::Vector3D TempPosition;
+            TempPosition.x = List.takeFirst().toFloat();
+            TempPosition.y = List.takeFirst().toFloat();
+            TempPosition.z = List.takeFirst().toFloat();
+
             Position.push_back(TempPosition);
         }
         else if(List.first() == "vt")
         {
             List.removeFirst();
-            jba::Vector2D TempUV;
-            for (unsigned int i = 0; i < 2; ++i)
-                TempUV[i] = List.takeFirst().toFloat();
+            gsl::Vector2D TempUV;
+            TempUV.x = List.takeFirst().toFloat();
+            TempUV.y = List.takeFirst().toFloat();
             Texture.push_back(TempUV);
         }
         else if(List.first() == "vn")
         {
             List.removeFirst();
-            jba::Vector3D TempNormal;
-            for (unsigned int i = 0; i < 3; ++i)
-                TempNormal[i] = List.takeFirst().toFloat();
+            gsl::Vector3D TempNormal;
+            TempNormal.x = List.takeFirst().toFloat();
+            TempNormal.y = List.takeFirst().toFloat();
+            TempNormal.z = List.takeFirst().toFloat();
             Normals.push_back(TempNormal);
         }
         else if(List.first() == "f")
@@ -124,7 +126,7 @@ std::pair<std::vector<Vertex>,std::vector<unsigned int>> FileManager::ReadOBJFil
                     TempIndices.push_back(IndiceList.takeFirst().toUInt());
 
                 if((static_cast<int>(TempIndices.at(1)) - 1) <= 0)
-                    Vertices.emplace_back(Position.at(TempIndices.at(0) - 1), Normals.at(TempIndices.at(2) - 1),jba::Vector2D());
+                    Vertices.emplace_back(Position.at(TempIndices.at(0) - 1), Normals.at(TempIndices.at(2) - 1),gsl::Vector2D());
                 else
                     Vertices.emplace_back(Position.at(TempIndices.at(0) - 1), Normals.at(TempIndices.at(2) - 1), Texture.at(TempIndices.at(1) - 1));
 

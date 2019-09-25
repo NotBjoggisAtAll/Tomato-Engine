@@ -3,11 +3,11 @@
 
 #include <bitset>
 
-using Entity = std::uint32_t;
+using Entity = unsigned int;
 
 const Entity MAX_ENTITIES = 5000;
 
-using ComponentType = std::uint8_t;
+using ComponentType = unsigned int;
 
 const ComponentType MAX_COMPONENTS = 32;
 

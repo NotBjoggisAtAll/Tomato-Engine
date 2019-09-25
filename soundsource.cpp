@@ -13,9 +13,9 @@ void SoundSource::init(std::string name, bool loop, float gain)
     alSourcef(mSource, AL_PITCH, 1.0f);
     alSourcef(mSource, AL_GAIN, gain);
 
-    ALfloat temp[3] = {mPosition.x(), mPosition.y(), mPosition.z()};
+    ALfloat temp[3] = {mPosition.x, mPosition.y, mPosition.z};
     alSourcefv(mSource, AL_POSITION, temp);
-    ALfloat temp2[3] = {mVelocity.x(), mVelocity.y(), mVelocity.z()};
+    ALfloat temp2[3] = {mVelocity.x, mVelocity.y, mVelocity.z};
     alSourcefv(mSource, AL_VELOCITY, temp2);
 
     alSourcei(mSource, AL_LOOPING, loop);
@@ -124,23 +124,23 @@ void SoundSource::stop()
 
 bool SoundSource::isPlaying()
 {
-        ALenum state;
+    ALenum state;
 
-        alGetSourcei(mSource, AL_SOURCE_STATE, &state);
+    alGetSourcei(mSource, AL_SOURCE_STATE, &state);
 
-        return (state == AL_PLAYING);
+    return (state == AL_PLAYING);
 }
 
-void SoundSource::setPosition(jba::Vector3D newPos)
+void SoundSource::setPosition(gsl::Vector3D newPos)
 {
     mPosition = newPos;
-    ALfloat temp[3] = {mPosition.x(), mPosition.y(), mPosition.z()};
+    ALfloat temp[3] = {mPosition.x, mPosition.y, mPosition.z};
     alSourcefv(mSource, AL_POSITION, temp);
 }
-void SoundSource::setVelocity(jba::Vector3D newVel)
+void SoundSource::setVelocity(gsl::Vector3D newVel)
 {
     mVelocity = newVel;
-    ALfloat temp[3] = {mVelocity.x(), mVelocity.y(), mVelocity.z()};
+    ALfloat temp[3] = {mVelocity.x, mVelocity.y, mVelocity.z};
     alSourcefv(mSource, AL_VELOCITY, temp);
 }
 

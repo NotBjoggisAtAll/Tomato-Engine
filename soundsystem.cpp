@@ -19,15 +19,15 @@ SoundSystem::SoundSystem()
 void SoundSystem::update(Camera* currCamera)
 {
     // Updates listener location
-    jba::Vector3D cameraPos{currCamera->position().getX(),
+    gsl::Vector3D cameraPos{currCamera->position().getX(),
                 currCamera->position().getY(),
                 currCamera->position().getZ()};
 
-    jba::Vector3D cameraForward{currCamera->forward().getX(),
+    gsl::Vector3D cameraForward{currCamera->forward().getX(),
                 currCamera->forward().getY(),
                 currCamera->forward().getZ()};
 
-    jba::Vector3D cameraUp{currCamera->up().getX(),
+    gsl::Vector3D cameraUp{currCamera->up().getX(),
                 currCamera->up().getY(),
                 currCamera->up().getZ()};
 
@@ -41,8 +41,8 @@ void SoundSystem::update(Camera* currCamera)
         auto sound = world->getComponent<Sound>(entity).value();
         auto transform = world->getComponent<Transform>(entity).value();
 
-        // TODO Fixup gsl::Transform.mMatrix to a jba::Matrix4x4
-        jba::Vector3D pos{transform->mMatrix.getPosition().getX(),
+        // TODO Fixup gsl::Transform.mMatrix to a gsl::Matrix4x4
+        gsl::Vector3D pos{transform->mMatrix.getPosition().getX(),
                     transform->mMatrix.getPosition().getY(),
                     transform->mMatrix.getPosition().getZ()};
         sound->audio->setPosition(pos);

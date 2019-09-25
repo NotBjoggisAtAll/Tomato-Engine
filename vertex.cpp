@@ -21,13 +21,6 @@ Vertex::Vertex(gsl::Vector3D a, gsl::Vector3D b , gsl::Vector2D c)
     mST = c;
 }
 
-Vertex::Vertex(jba::Vector3D a, jba::Vector3D b, jba::Vector2D c)
-{
-    mXYZ = {a.x(),a.y(),a.z()};
-    mNormal = {b.x(),b.y(),b.z()};
-    mST = {c.GetX(),c.GetX(),};
-}
-
 Vertex::~Vertex() { }
 
 void Vertex::set_xyz(GLfloat *xyz)

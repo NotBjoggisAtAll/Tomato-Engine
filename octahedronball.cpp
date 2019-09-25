@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "octahedronball.h"
 #include "vertex.h"
 OctahedronBall::OctahedronBall(GLint n) : mRecursions{n}, mIndex{0}

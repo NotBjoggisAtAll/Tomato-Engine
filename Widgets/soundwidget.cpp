@@ -1,14 +1,17 @@
 #include "soundwidget.h"
 #include "ui_soundwidget.h"
-SoundWidget::SoundWidget(unsigned int EntityID, QWidget *parent) :
+#include "Components/soundcomponent.h"
+#include "World.h"
+SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SoundWidget)
 {
     ui->setupUi(this);
 
-//    Component = ResourceManager::instance()->getSoundComponent(EntityID);
+    Component = World::getWorld()->getComponent<Sound>(entity).value_or(nullptr);
 
-//    ui->fileNameHere->setText(QString::fromStdString(Component->Sound.mName));
+    if(Component)
+        ui->fileNameHere->setText(QString::fromStdString(Component->audio->mName));
 }
 
 SoundWidget::~SoundWidget()

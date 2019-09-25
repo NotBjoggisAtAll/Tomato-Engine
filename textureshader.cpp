@@ -22,5 +22,5 @@ void TextureShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *m
     Shader::transmitUniformData(modelMatrix);
 
     glUniform1i(textureUniform, material->mTextureUnit); //TextureUnit = 0 as default);
-    glUniform3f(objectColorUniform, material->mColor.x(), material->mColor.y(), material->mColor.z());
+    glUniform3f(objectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
 }

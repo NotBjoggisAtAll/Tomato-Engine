@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "innpch.h"
+#include "GSL/gsl_math.h"
 
 class Camera
 {

@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #include "soundsource.h"
-#include "JBA/vector3d.h"
+#include "gsl/vector3d.h"
 
 /// Class handling OpenAL setup and management of sound sources.
 /**
@@ -24,16 +24,16 @@ class SoundManager
 public:
     struct SoundListener
     {
-        jba::Vector3D pos;
-        jba::Vector3D vel;
-        jba::Vector3D dir;
-        jba::Vector3D up;
+        gsl::Vector3D pos;
+        gsl::Vector3D vel;
+        gsl::Vector3D dir;
+        gsl::Vector3D up;
         SoundListener()
         {
-            pos = jba::Vector3D(0.0f, 0.0f, 0.0f);
-            vel = jba::Vector3D(0.0f, 0.0f, 0.0f);
-            dir = jba::Vector3D(0.0f, 0.0f, 1.0f);
-            up = jba::Vector3D(0.0f, 1.0f, 0.0f);
+            pos = gsl::Vector3D(0.0f, 0.0f, 0.0f);
+            vel = gsl::Vector3D(0.0f, 0.0f, 0.0f);
+            dir = gsl::Vector3D(0.0f, 0.0f, 1.0f);
+            up = gsl::Vector3D(0.0f, 1.0f, 0.0f);
             //Could be something like this, if Vector3-class had support support:
             //pos = Vector3::ZERO;
             //vel = Vector3::ZERO;
@@ -50,12 +50,12 @@ public:
     /// Creates a new SoundSource with the given parameters.
     /**
         \param The name of the sound. (Not in use.)
-        \param The source position as jba::Vector3D.
+        \param The source position as gsl::Vector3D.
         \param File path relative to execution directory.
         \param Boolean to see if sound should loop or not.
     **/
-    SoundSource *createSource(std::string name, jba::Vector3D pos, std::string filePath = "", bool loop = false, float gain = 1.0);
-    void updateListener(jba::Vector3D pos, jba::Vector3D vel, jba::Vector3D dir, jba::Vector3D up);
+    SoundSource *createSource(std::string name, gsl::Vector3D pos, std::string filePath = "", bool loop = false, float gain = 1.0);
+    void updateListener(gsl::Vector3D pos, gsl::Vector3D vel, gsl::Vector3D dir, gsl::Vector3D up);
 
 private:
     SoundManager();                         ///< Private constructor.

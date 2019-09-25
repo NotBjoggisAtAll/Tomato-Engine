@@ -2,7 +2,7 @@
 #define SOUNDWIDGET_H
 
 #include <QWidget>
-
+#include "types.h"
 class Sound;
 
 namespace Ui {
@@ -14,7 +14,7 @@ class SoundWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SoundWidget(unsigned int EntityID, QWidget *parent = nullptr);
+    explicit SoundWidget(Entity entity, QWidget *parent = nullptr);
     ~SoundWidget();
 
 private:
