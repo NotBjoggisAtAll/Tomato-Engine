@@ -1,10 +1,12 @@
 #ifndef SOUNDSYSTEM_H
 #define SOUNDSYSTEM_H
 
-class ResourceManager;
+#include "system.h"
+
+class World;
 class Camera;
 
-class SoundSystem
+class SoundSystem : public System
 {
 public:
     SoundSystem();
@@ -12,7 +14,8 @@ public:
     void update(Camera *currCamera);
 
 private:
-    ResourceManager* Factory{nullptr};
+
+    World* world{nullptr};
 };
 
 #endif // SOUNDSYSTEM_H

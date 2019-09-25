@@ -6,41 +6,33 @@
 #include <map>
 #include <vector>
 #include "vertex.h"
-#include <optional>
-
-enum class MeshType{
-    Billboard,
-    XYZ,
-    Cube,
-    Sphere,
-    OBJ,
-    TXT
-};
 
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:
-    ResourceFactory();
+    ResourceFactory() = default;
 
-    MeshComponent* createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent> &mMeshComponents);
+    Mesh loadMesh(std::string filePath);
 
 private:
 
-    std::map<std::string, unsigned int> mMeshComponentMap; //string = filepath, unsigned int = Index in vector
+    //Used to check if the mesh is already loaded from file
+    std::map<std::string, Mesh> mMeshMap; //string - filepath, Mesh - Meshdata
+    std::map<std::string, Mesh>::iterator currentIt{};
 
     void readOBJFile(std::string filename);
     std::vector<Vertex> mVertices;
     std::vector<unsigned int> mIndices;
-    void openGLVertexBuffers(std::vector<MeshComponent> &mMeshComponents);
-    void openGLIndexBuffer(std::vector<MeshComponent> &mMeshComponents);
+    void openGLVertexBuffers();
+    void openGLIndexBuffer();
 
-
-    void createPlane(std::vector<MeshComponent> &mMeshComponents);
-    void createSphere(std::vector<MeshComponent> &mMeshComponents);
-    void createAxis(std::vector<MeshComponent> &mMeshComponents);
-    void createSkybox(std::vector<MeshComponent> &mMeshComponents);
-    void createObject(std::vector<MeshComponent> &mMeshComponents, std::string filePath);
+    void createPlane();
+    void createSphere();
+    void createAxis();
+    void createSkybox();
+    void createObject(std::string filePath);
     void readTXTFile(std::string filename);
+
 };
 
 #endif // RESOURCEFACTORY_H

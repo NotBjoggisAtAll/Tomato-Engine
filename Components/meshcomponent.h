@@ -1,8 +1,7 @@
 #ifndef MESHCOMPONENT_H
 #define MESHCOMPONENT_H
 
-#include "component.h"
-struct MeshComponent : public Component
+struct Mesh
 {
     GLuint mVAO{0};
     GLuint mVBO{0};

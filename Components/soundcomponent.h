@@ -1,13 +1,12 @@
 #ifndef SOUNDCOMPONENT_H
 #define SOUNDCOMPONENT_H
 
-#include "component.h"
 #include "soundsource.h"
-struct SoundComponent : public Component
+struct Sound
 {
-    SoundComponent(){}
-    ComponentType Type = ComponentType::Sound;
-    SoundSource Sound{};
+    Sound(){}
+    Sound(SoundSource* Sound) : audio(Sound){}
+    SoundSource* audio{};
 };
 
 #endif // SOUNDCOMPONENT_H

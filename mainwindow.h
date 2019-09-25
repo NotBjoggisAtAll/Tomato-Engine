@@ -3,9 +3,13 @@
 
 #include <QMainWindow>
 
+#include "types.h"
+
 class QWidget;
 class RenderWindow;
 class QTreeWidgetItem;
+class World;
+
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +23,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void initWorldOutliner();
+    void DisplayEntitesInOutliner();
 
-    void updateComponentWidgets(unsigned int EntityID);
+    void updateComponentWidgets(Entity entity);
 
 signals:
 
@@ -42,17 +46,18 @@ private slots:
 
     void on_spawnPlane_triggered();
 
-    void on_Outliner_itemClicked(QTreeWidgetItem *item, int column);
-
 private:
+    void init();
+
     Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
 
+    World* world{};
+
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
 
-    void updateParentChild(QTreeWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H

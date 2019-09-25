@@ -1,42 +1,67 @@
 #ifndef ENTITYMANAGER_H
 #define ENTITYMANAGER_H
 
-#include "Components/component.h"
-#include "Entity.h"
-class Shader;
-class TransformComponent;
-class MaterialComponent;
+#include "types.h"
+#include <queue>
+#include <array>
+
 class EntityManager
 {
 public:
 
-    static EntityManager* instance();
+    EntityManager()
+    {
+        for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
+        {
+            mUnusedEntityPool.push(entity);
+        }
+    }
 
-    Entity CreateEntity(std::string Name);
-    Component *addComponent(unsigned int entity, ComponentType Type, std::string filePath="", bool loop=false, float gain=1.f);
-    MaterialComponent *addComponent(unsigned int entity, ComponentType Type, Shader *Shader);
+    Entity createEntity()
+    {
+        assert(mLivingEntites < MAX_ENTITIES && "Too many entities in existence.");
 
-    std::unordered_map<unsigned int, std::string> mEntities;
+        Entity id = mUnusedEntityPool.front();
+        mUnusedEntityPool.pop();
+        ++mLivingEntites;
 
-    /**
-     * @brief To work both Entites needs to have a transform before you use this function
-     * @param Parent
-     * @param Child
-     */
-    void addChild(Entity Parent, Entity Child);
+        return id;
+    }
 
-    void removeRelationship(Entity Parent);
+    void destroyEntity(Entity entity)
+    {
+        assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+        mSignatures[entity].reset();
+
+        mUnusedEntityPool.push(entity);
+        --mLivingEntites;
+
+    }
+
+    void setSignature(Entity entity, Signature signature)
+    {
+        assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+        mSignatures[entity] = signature;
+
+    }
+
+    Signature getSignature(Entity entity)
+    {
+        assert(entity < MAX_ENTITIES && "Entity out of range.");
+
+        return mSignatures[entity];
+    }
 
 private:
-    EntityManager();
-    ~EntityManager();
 
-    static EntityManager* mInstance;
+    std::queue<Entity> mUnusedEntityPool{};
 
-    Entity entity = 0;
+    uint32_t mLivingEntites{};
 
-
-
+    ///Array of entites and components
+    std::array<Signature, MAX_ENTITIES> mSignatures{};
 };
 
 #endif // ENTITYMANAGER_H

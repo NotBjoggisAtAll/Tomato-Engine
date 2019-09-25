@@ -28,7 +28,7 @@ public:
     //Get program number for this shader
     GLuint getProgram() const;
 
-    virtual void transmitUniformData(gsl::Matrix4x4 *modelMatrix, MaterialComponent *material = nullptr);
+    virtual void transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material = nullptr);
 
     void setCurrentCamera(Camera *currentCamera);
 

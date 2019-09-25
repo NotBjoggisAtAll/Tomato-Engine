@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class SoundComponent;
+class Sound;
 
 namespace Ui {
 class SoundWidget;
@@ -19,7 +19,7 @@ public:
 
 private:
 
-    SoundComponent* Component{nullptr};
+    Sound* Component{nullptr};
 
     Ui::SoundWidget *ui;
 };

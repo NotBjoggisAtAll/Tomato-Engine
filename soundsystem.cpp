@@ -1,19 +1,18 @@
 #include "soundsystem.h"
-#include "resourcemanager.h"
 #include "camera.h"
 #include "Managers/soundmanager.h"
-
+#include "World.h"
+#include "Components/allcomponents.h"
 /**
  * TODO
  * Take a look at the soundmanager and the sound system?
  * Maybe I could merge them together?
  */
 
-
 SoundSystem::SoundSystem()
 {
-    Factory = ResourceManager::instance();
     SoundManager::instance();
+    world = World::getWorld();
 }
 
 // TODO Need to find a way to not send in the camera
@@ -33,27 +32,25 @@ void SoundSystem::update(Camera* currCamera)
                 currCamera->up().getZ()};
 
     SoundManager::instance()->updateListener(cameraPos,
-                                             {},
+    {},
                                              cameraForward,
                                              cameraUp);
 
-    //Updates sound location
-    for(auto& Sound : Factory->mSoundComponents)
+    for(auto const& entity : mEntities)
     {
+        auto sound = world->getComponent<Sound>(entity).value();
+        auto transform = world->getComponent<Transform>(entity).value();
 
-        auto Transform = Factory->getTransformComponent(Sound.EntityID);
-
-        //TODO Fixup gsl::Transform.mMatrix to a jba::Matrix4x4
-        jba::Vector3D pos{Transform->mMatrix.getPosition().getX(),
-                    Transform->mMatrix.getPosition().getY(),
-                    Transform->mMatrix.getPosition().getZ()};
-        Sound.Sound.setPosition(pos);
+        // TODO Fixup gsl::Transform.mMatrix to a jba::Matrix4x4
+        jba::Vector3D pos{transform->mMatrix.getPosition().getX(),
+                    transform->mMatrix.getPosition().getY(),
+                    transform->mMatrix.getPosition().getZ()};
+        sound->audio->setPosition(pos);
 
         //For now loops all the sounds - This is going to change
-        if(!Sound.Sound.isPlaying())
+        if(!sound->audio->isPlaying())
         {
-            Sound.Sound.play();
+            sound->audio->play();
         }
     }
-
 }

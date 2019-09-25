@@ -1,42 +1,38 @@
 #include "rendersystem.h"
+
+#include "World.h"
+#include "Components/meshcomponent.h"
+#include "Components/transformcomponent.h"
+#include "Components/materialcomponent.h"
 #include "shader.h"
-#include "resourcemanager.h"
+
 RenderSystem::RenderSystem()
 {
-    Factory = ResourceManager::instance();
+    world = World::getWorld();
 }
 
-void RenderSystem::Render()
+void RenderSystem::render()
 {
     initializeOpenGLFunctions();
-    for(auto& Component : Factory->mMeshComponents)
+
+    for(auto& entity : mEntities)
     {
-        if(!Component.isVisible)
+        auto mesh = world->getComponent<Mesh>(entity).value();
+
+        if(!mesh->isVisible)
             continue;
-        auto Material = Factory->getMaterialComponent(Component.EntityID);
-        auto Transform = Factory->getTransformComponent(Component.EntityID);
-        auto Parent = Transform->mParent;
 
+        auto material = world->getComponent<Material>(entity).value();
+        auto transform = world->getComponent<Transform>(entity).value();
 
+        glUseProgram(material->mShader->getProgram());
+        glBindVertexArray(mesh->mVAO);
+        material->mShader->transmitUniformData(&transform->mMatrix, material);
 
-        glUseProgram(Material->mShader->getProgram());
-        glBindVertexArray(Component.mVAO );
-        if(Parent)
-        {
-
-            gsl::Matrix4x4* transformMatrix = new gsl::Matrix4x4(Parent->mMatrix * Transform->mMatrix);
-
-            Material->mShader->transmitUniformData(transformMatrix, Material);   //rendersystem should know what data is needed for each shader.
-        }
-        else{
-            Material->mShader->transmitUniformData(&Transform->mMatrix, Material);   //rendersystem should know what data is needed for each shader.
-
-        }
-
-        //checking if indices are used - draws accordingly with Elements or Arrays
-        if (Component.mIndiceCount > 0)
-            glDrawElements(Component.mDrawType, Component.mIndiceCount, GL_UNSIGNED_INT, nullptr);
+        if(mesh->mIndiceCount > 0)
+            glDrawElements(mesh->mDrawType, mesh->mIndiceCount, GL_UNSIGNED_INT, nullptr);
         else
-            glDrawArrays(Component.mDrawType, 0, Component.mVerticeCount);
+            glDrawArrays(mesh->mDrawType, 0, mesh->mVerticeCount);
+
     }
 }

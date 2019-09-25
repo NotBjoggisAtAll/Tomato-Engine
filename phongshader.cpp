@@ -1,7 +1,6 @@
 #include "innpch.h"
 #include "phongshader.h"
-#include "material.h"
-#include "light.h"
+#include "Components/materialcomponent.h"
 
 PhongShader::PhongShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
@@ -26,16 +25,16 @@ PhongShader::~PhongShader()
     qDebug() << "Deleting PhongShader";
 }
 
-void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, MaterialComponent *material)
+void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
     Shader::transmitUniformData(modelMatrix);
 
     //    glUniform1i(textureUniform, material->mTextureUnit); //TextureUnit = 0 as default);
-    glUniform1f(mAmbientLightStrengthUniform, mLight->mAmbientStrenght);
-    glUniform1f(mLightPowerUniform, mLight->mLightStrenght);
-    glUniform3f(mLightColorUniform, mLight->mLightColor.x, mLight->mLightColor.y, mLight->mLightColor.z);
-    glUniform3f(mLightPositionUniform, mLight->mMatrix.getPosition().x, mLight->mMatrix.getPosition().y, mLight->mMatrix.getPosition().z);
-    glUniform3f(mObjectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
+//    glUniform1f(mAmbientLightStrengthUniform, mLight->mAmbientStrenght);
+//    glUniform1f(mLightPowerUniform, mLight->mLightStrenght);
+//    glUniform3f(mLightColorUniform, mLight->mLightColor.x, mLight->mLightColor.y, mLight->mLightColor.z);
+//    glUniform3f(mLightPositionUniform, mLight->mMatrix.getPosition().x, mLight->mMatrix.getPosition().y, mLight->mMatrix.getPosition().z);
+//    glUniform3f(mObjectColorUniform, material->mColor.x(), material->mColor.y(), material->mColor.z());
 }
 
 void PhongShader::setLight(Light *light)

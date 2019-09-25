@@ -1,13 +1,9 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include "component.h"
 
-struct TransformComponent : public Component
+struct Transform
 {
-    std::vector<TransformComponent*> mChildren;
-    TransformComponent* mParent{nullptr};
-
     gsl::Matrix4x4 mMatrix;
 };
 

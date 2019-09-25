@@ -1,15 +1,17 @@
 #include "meshwidget.h"
 #include "ui_meshwidget.h"
-#include "resourcemanager.h"
 #include "Components/meshcomponent.h"
+#include "World.h"
 
-MeshWidget::MeshWidget(Entity EntityID, QWidget *parent) :
+extern World world;
+
+MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MeshWidget)
 {
     ui->setupUi(this);
 
-    Component = ResourceManager::instance()->getMeshComponent(EntityID);
+    Component = World::getWorld()->getComponent<Mesh>(entity).value();
 
     ui->isVisible->setChecked(Component->isVisible);
 

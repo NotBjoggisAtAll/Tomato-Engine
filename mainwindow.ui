@@ -34,16 +34,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="WorldOutliner" name="Outliner">
-            <property name="dragEnabled">
-             <bool>true</bool>
-            </property>
-            <property name="dragDropMode">
-             <enum>QAbstractItemView::DragDrop</enum>
-            </property>
-            <property name="defaultDropAction">
-             <enum>Qt::MoveAction</enum>
-            </property>
+           <widget class="QTreeWidget" name="Outliner">
             <column>
              <property name="text">
               <string>Name</string>
@@ -76,7 +67,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="">
        <layout class="QVBoxLayout" name="OpenGLLayout"/>
       </widget>
       <widget class="QWidget" name="Components" native="true">
@@ -194,13 +185,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>WorldOutliner</class>
-   <extends>QTreeWidget</extends>
-   <header>worldoutliner.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

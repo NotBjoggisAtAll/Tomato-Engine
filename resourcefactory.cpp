@@ -1,55 +1,47 @@
 #include "resourcefactory.h"
-#include "vertex.h"
 #include "octahedronball.h"
 
-ResourceFactory::ResourceFactory()
+Mesh ResourceFactory::loadMesh(std::string filePath)
 {
 
-}
+    auto meshIt = mMeshMap.find(filePath);
+    if (meshIt != mMeshMap.end())
+        return meshIt->second;
 
-
-MeshComponent* ResourceFactory::createMeshComponent(unsigned int EntityID, std::string filePath, std::vector<MeshComponent>& mMeshComponents)
-{
-    auto search = mMeshComponentMap.find(filePath);
-    if (search != mMeshComponentMap.end())
-    {
-        mMeshComponents.push_back(mMeshComponents[search->second]);
-        mMeshComponents.back().EntityID = EntityID;
-        return &mMeshComponents.back();
-    }
+     mMeshMap.insert({filePath, Mesh()});
+     currentIt = mMeshMap.find(filePath);
 
     if(filePath == "axis")
-        createAxis(mMeshComponents);
+        createAxis();
     if(filePath.find(".obj") != std::string::npos)
-        createObject(mMeshComponents,filePath);
+        createObject(filePath);
     if(filePath.find(".txt") != std::string::npos)
-        createObject(mMeshComponents,filePath);
+        createObject(filePath);
     if(filePath == "skybox")
-        createSkybox(mMeshComponents);
+        createSkybox();
     if(filePath == "sphere")
-        createSphere(mMeshComponents);
+        createSphere();
     if(filePath == "plane")
-        createPlane(mMeshComponents);
+        createPlane();
 
-    mMeshComponents.back().EntityID = EntityID;
-    return &mMeshComponents.back();
+    return currentIt->second;
 }
 
 
-void ResourceFactory::openGLVertexBuffers(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::openGLVertexBuffers()
 {
-    glGenVertexArrays( 1, &mMeshComponents.back().mVAO );
-    glBindVertexArray( mMeshComponents.back().mVAO );
+    glGenVertexArrays( 1, &currentIt->second.mVAO );
+    glBindVertexArray( currentIt->second.mVAO );
 
     //Vertex Buffer Object to hold vertices - VBO
-    glGenBuffers( 1, &mMeshComponents.back().mVBO );
-    glBindBuffer( GL_ARRAY_BUFFER, mMeshComponents.back().mVBO );
+    glGenBuffers( 1, &currentIt->second.mVBO );
+    glBindBuffer( GL_ARRAY_BUFFER, currentIt->second.mVBO );
 
     glBufferData( GL_ARRAY_BUFFER, mVertices.size()*sizeof(Vertex), mVertices.data(), GL_STATIC_DRAW );
 
     // 1rst attribute buffer : vertices
-    glBindBuffer(GL_ARRAY_BUFFER, mMeshComponents.back().mVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+    glBindBuffer(GL_ARRAY_BUFFER, currentIt->second.mVBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex), (GLvoid*)nullptr);
     glEnableVertexAttribArray(0);
 
     // 2nd attribute buffer : colors
@@ -61,20 +53,18 @@ void ResourceFactory::openGLVertexBuffers(std::vector<MeshComponent>& mMeshCompo
     glEnableVertexAttribArray(2);
 }
 
-void ResourceFactory::openGLIndexBuffer(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::openGLIndexBuffer()
 {
-    glGenBuffers(1, &mMeshComponents.back().mEAB);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mMeshComponents.back().mEAB);
+    glGenBuffers(1, &currentIt->second.mEAB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentIt->second.mEAB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(GLuint), mIndices.data(), GL_STATIC_DRAW);
 }
 
-void ResourceFactory::createPlane(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::createPlane()
 {
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
-    mMeshComponents.push_back(MeshComponent());
-    mMeshComponentMap["plane"] = static_cast<unsigned int>(mMeshComponents.size() -1);
 
     Vertex v;
     v.set_xyz(0,0,0); v.set_rgb(1,0,0);
@@ -90,46 +80,43 @@ void ResourceFactory::createPlane(std::vector<MeshComponent>& mMeshComponents)
     v.set_xyz(1,0,1); v.set_rgb(1,0,0);
     mVertices.push_back(v);
 
-    openGLVertexBuffers(mMeshComponents);
+    openGLVertexBuffers();
 
-    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 
 
-void ResourceFactory::createSphere(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::createSphere()
 {
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
-    mMeshComponents.push_back(MeshComponent());
-    mMeshComponentMap["sphere"] = static_cast<unsigned int>(mMeshComponents.size()) - 1;
 
     OctahedronBall ball(3);
     mVertices = ball.mVertices;
     mIndices = ball.mIndices;
 
     //set up buffers
-    openGLVertexBuffers(mMeshComponents);
-    openGLIndexBuffer(mMeshComponents);
+    openGLVertexBuffers();
+    openGLIndexBuffer();
 
-    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 
 }
 
 
-void ResourceFactory::createSkybox(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::createSkybox()
 {
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
 
-    mMeshComponents.push_back(MeshComponent());
 
     mVertices.insert( mVertices.end(),
     {//Vertex data for front
@@ -178,22 +165,21 @@ void ResourceFactory::createSkybox(std::vector<MeshComponent>& mMeshComponents)
       20, 22, 21, 21, 22, 23      //Face 5 - triangle strip (v20, v21, v22, v23)
                      });
 
-    openGLVertexBuffers(mMeshComponents);
-    openGLIndexBuffer(mMeshComponents);
+    openGLVertexBuffers();
+    openGLIndexBuffer();
 
-    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.mDrawType = GL_TRIANGLES;
 
     glBindVertexArray(0);
 }
-void ResourceFactory::createAxis(std::vector<MeshComponent>& mMeshComponents)
+void ResourceFactory::createAxis()
 {
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
 
-    mMeshComponents.push_back(MeshComponent());
 
     mVertices.push_back(Vertex{0.f, 0.f, 0.f, 1.f, 0.f, 0.f});
     mVertices.push_back(Vertex{1000.f, 0.f, 0.f, 1.f, 0.f, 0.f});
@@ -203,26 +189,21 @@ void ResourceFactory::createAxis(std::vector<MeshComponent>& mMeshComponents)
     mVertices.push_back(Vertex{0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
 
     //set up buffers
-    openGLVertexBuffers(mMeshComponents);
+    openGLVertexBuffers();
 
-    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    mMeshComponents.back().mIndiceCount = 0;
-    mMeshComponents.back().mDrawType = GL_LINES;
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = 0;
+    currentIt->second.mDrawType = GL_LINES;
 
     glBindVertexArray(0);
-
 }
 
 
-void ResourceFactory::createObject(std::vector<MeshComponent>& mMeshComponents, std::string filePath)
+void ResourceFactory::createObject(std::string filePath)
 {
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
-
-    mMeshComponents.push_back(MeshComponent());
-
-    mMeshComponentMap[filePath] = static_cast<unsigned int>(mMeshComponents.size()) - 1;
 
     if(filePath.find(".obj") != std::string::npos)
         readOBJFile(filePath);
@@ -230,12 +211,12 @@ void ResourceFactory::createObject(std::vector<MeshComponent>& mMeshComponents, 
         readTXTFile(filePath);
 
     //set up buffers
-    openGLVertexBuffers(mMeshComponents);
-    openGLIndexBuffer(mMeshComponents);
+    openGLVertexBuffers();
+    openGLIndexBuffer();
 
-    mMeshComponents.back().mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    mMeshComponents.back().mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    mMeshComponents.back().mDrawType = GL_TRIANGLES;
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 
