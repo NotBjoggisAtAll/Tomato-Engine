@@ -29,12 +29,12 @@ MainWindow::~MainWindow()
 void MainWindow::DisplayEntitesInOutliner()
 {
     ui->Outliner->clear();
-    for(auto Entity : world->getEntities())
+    for(auto& Entity : world->getEntities())
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
-
-        item->setText(0, QString::fromStdString(Entity.second));
-        item->setText(1, QString::number(Entity.first));
+        auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
+        item->setText(0, QString::fromStdString(data->name));
+        item->setText(1, QString::number(Entity));
         ui->Outliner->addTopLevelItem(item);
     }
 }
@@ -157,4 +157,24 @@ void MainWindow::on_spawnSphere_triggered()
 void MainWindow::on_spawnPlane_triggered()
 {
     emit spawnPlane();
+}
+
+void MainWindow::on_Outliner_itemSelectionChanged()
+{
+    for(auto& Entity : world->getEntities())
+    {
+        world->getComponent<EntityData>(Entity).value_or(nullptr)->parent = -1;
+    }
+
+    for (int i = 0; i < ui->Outliner->topLevelItemCount(); ++i)
+    {
+        for(int j = 0; j < ui->Outliner->topLevelItem(i)->childCount(); ++j)
+        {
+            auto comp = world->getComponent<EntityData>((ui->Outliner->topLevelItem(i)->child(j)->text(1).toInt())).value_or(nullptr);
+            if(comp)
+            {
+                comp->parent = ui->Outliner->topLevelItem(i)->text(1).toInt();
+            }
+        }
+    }
 }

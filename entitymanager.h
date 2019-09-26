@@ -23,6 +23,7 @@ public:
 
         Entity id = mUnusedEntityPool.front();
         mUnusedEntityPool.pop();
+        mEntities.push_back(id);
         ++mLivingEntites;
 
         return id;
@@ -33,6 +34,9 @@ public:
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
         mSignatures[entity].reset();
+
+        auto entityIt = std::find(mEntities.begin(),mEntities.end(), entity);
+        mEntities.erase(entityIt);
 
         mUnusedEntityPool.push(entity);
         --mLivingEntites;
@@ -54,11 +58,18 @@ public:
         return mSignatures[entity];
     }
 
+    std::vector<Entity> getEntities()
+    {
+        return mEntities;
+    }
+
 private:
 
     std::queue<Entity> mUnusedEntityPool{};
 
     uint32_t mLivingEntites{};
+
+    std::vector<Entity> mEntities;
 
     ///Array of entites and components
     std::array<Signature, MAX_ENTITIES> mSignatures{};

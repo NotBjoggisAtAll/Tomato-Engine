@@ -7,5 +7,6 @@
 #include "scriptcomponent.h"
 #include "soundcomponent.h"
 #include "transformcomponent.h"
+#include "entitydata.h"
 
 #endif // ALLCOMPONENTS_H

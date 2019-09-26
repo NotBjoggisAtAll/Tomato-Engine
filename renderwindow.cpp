@@ -14,15 +14,12 @@
 #include "textureshader.h"
 #include "phongshader.h"
 #include "Managers/shadermanager.h"
-#include "Components/transformcomponent.h"
-#include "Components/meshcomponent.h"
 
 #include "rendersystem.h"
 #include "entitymanager.h"
 #include "Managers/soundmanager.h"
 #include "soundsystem.h"
-#include "Components/soundcomponent.h"
-
+#include "Components/allcomponents.h"
 
 #include "resourcefactory.h"
 #include "World.h"
@@ -125,6 +122,7 @@ void RenderWindow::init()
     world->registerComponent<Mesh>();
     world->registerComponent<Material>();
     world->registerComponent<Sound>();
+    world->registerComponent<EntityData>();
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
@@ -134,6 +132,7 @@ void RenderWindow::init()
     renderSign.set(world->getComponentType<Transform>());
     renderSign.set(world->getComponentType<Mesh>());
     renderSign.set(world->getComponentType<Material>());
+    renderSign.set(world->getComponentType<EntityData>());
     world->setSystemSignature<RenderSystem>(renderSign);
 
     Signature soundSign;
@@ -145,16 +144,16 @@ void RenderWindow::init()
     //********************** Making the objects to be drawn **********************
 
 
-    Entity entity = world->createEntity("Axis");
-    entities.push_back(entity);
+    Entity entity = world->createEntity();
 
+    world->addComponent(entity, EntityData("Axis"));
     world->addComponent(entity, resourceFactory->loadMesh("axis"));
     world->addComponent(entity, Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
-    entity = world->createEntity("Skybox");
-    entities.push_back(entity);
+    entity = world->createEntity();
 
+    world->addComponent(entity, EntityData("Skybox"));
     world->addComponent(entity, resourceFactory->loadMesh("skybox"));
     world->addComponent(entity, Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
@@ -162,8 +161,9 @@ void RenderWindow::init()
     auto transform = world->getComponent<Transform>(entity).value();
     transform->Scale = {15.f,15.f,15.f};
 
-    entity = world->createEntity("Box");
-    entities.push_back(entity);
+    entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Box"));
     world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     world->addComponent(entity, Transform());
@@ -172,8 +172,9 @@ void RenderWindow::init()
     transform->Rotation.y = 180.f;
 
 
-    entity = world->createEntity("Monkey");
-    entities.push_back(entity);
+    entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Monkey"));
     world->addComponent(entity, resourceFactory->loadMesh("monkey.obj"));
     world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
     world->addComponent(entity, Transform());
@@ -182,9 +183,9 @@ void RenderWindow::init()
     transform->Scale = {0.5f, 0.5f, 0.5f};
     transform->Position = {3.f, 2.f, -2.f};
 
-    entity = world->createEntity("Caravan");
-    entities.push_back(entity);
+    entity = world->createEntity();
 
+    world->addComponent(entity, EntityData("Caravan"));
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
@@ -580,8 +581,9 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
 
 void RenderWindow::spawnCube()
 {
-    auto entity = world->createEntity("Cube");
-    entities.push_back(entity);
+    auto entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Cube"));
     world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
@@ -591,8 +593,9 @@ void RenderWindow::spawnCube()
 
 void RenderWindow::spawnSphere()
 {
-    auto entity = world->createEntity("Sphere");
-    entities.push_back(entity);
+    auto entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Sphere"));
     world->addComponent(entity, resourceFactory->loadMesh("sphere"));
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
@@ -602,8 +605,9 @@ void RenderWindow::spawnSphere()
 
 void RenderWindow::spawnPlane()
 {
-    auto entity = world->createEntity("Plane");
-    entities.push_back(entity);
+    auto entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Plane"));
     world->addComponent(entity, resourceFactory->loadMesh("plane"));
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));

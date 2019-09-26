@@ -46,6 +46,8 @@ private slots:
 
     void on_spawnPlane_triggered();
 
+    void on_Outliner_itemSelectionChanged();
+
 private:
     void init();
 

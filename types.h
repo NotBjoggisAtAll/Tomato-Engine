@@ -3,7 +3,7 @@
 
 #include <bitset>
 
-using Entity = unsigned int;
+using Entity = int;
 
 const Entity MAX_ENTITIES = 5000;
 

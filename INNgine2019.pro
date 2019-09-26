@@ -19,6 +19,7 @@ win32 {
 HEADERS += \
     Components/allcomponents.h \
     Components/componentArray.h \
+    Components/entitydata.h \
     Components/materialcomponent.h \
     Components/meshcomponent.h \
     Components/physicscomponent.h \

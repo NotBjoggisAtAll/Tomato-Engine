@@ -31,17 +31,14 @@ public:
 
 
     // Entity methods
-    Entity createEntity(std::string Name)
+    Entity createEntity()
     {
         auto eId = mEntityManager->createEntity();
-        mEntityNames.insert({eId,Name});
         return eId;
     }
 
     void destroyEntity(Entity entity)
     {
-
-        mEntityNames.erase(entity);
 
         mEntityManager->destroyEntity(entity);
 
@@ -50,9 +47,9 @@ public:
         mSystemManager->entityDestroyed(entity);
     }
 
-    std::unordered_map<Entity,std::string>& getEntities()
+    std::vector<Entity> getEntities()
     {
-        return mEntityNames;
+       return mEntityManager->getEntities();
     }
 
     // Component methods
@@ -116,9 +113,6 @@ private:
 
     static World* instance;
     World(){init();}
-
-    //Only used for UI
-    std::unordered_map<Entity,std::string> mEntityNames;
 
     std::unique_ptr<ComponentManager> mComponentManager;
     std::unique_ptr<EntityManager> mEntityManager;
