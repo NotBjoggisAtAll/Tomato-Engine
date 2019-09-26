@@ -98,6 +98,9 @@ void MainWindow::init()
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->scrollArea->setWidgetResizable(true);
 
+    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
+
+
     world = getWorld();
 
 }
