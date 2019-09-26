@@ -160,7 +160,7 @@ void RenderWindow::init()
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
 
     auto transform = world->getComponent<Transform>(entity).value();
-    transform->mMatrix.scale(15.f);
+    transform->Scale = {15.f,15.f,15.f};
 
     entity = world->createEntity("Box");
     entities.push_back(entity);
@@ -169,7 +169,7 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->mMatrix.rotateY(180.f);
+    transform->Rotation.y = 180.f;
 
 
     entity = world->createEntity("Monkey");
@@ -179,8 +179,8 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->mMatrix.scale(0.5f);
-    transform->mMatrix.translate(3.f, 2.f, -2.f);
+    transform->Scale = {0.5f, 0.5f, 0.5f};
+    transform->Position = {3.f, 2.f, -2.f};
 
     entity = world->createEntity("Caravan");
     entities.push_back(entity);

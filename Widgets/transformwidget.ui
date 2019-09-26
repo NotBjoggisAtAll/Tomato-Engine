@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>200</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,10 +43,29 @@
      <x>0</x>
      <y>60</y>
      <width>301</width>
-     <height>110</height>
+     <height>167</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="PositionLabel">
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Position</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="PositionLayout">
       <property name="spacing">
@@ -184,6 +203,25 @@
      </layout>
     </item>
     <item>
+     <widget class="QLabel" name="RotationLabel">
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Rotation</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="RotationLayout">
       <property name="spacing">
        <number>0</number>
@@ -217,7 +255,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="xDoubleSpinBox">
+       <widget class="QDoubleSpinBox" name="xRotation">
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -273,7 +311,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="yDoubleSpinBox">
+       <widget class="QDoubleSpinBox" name="yRotation">
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -308,7 +346,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="zDoubleSpinBox">
+       <widget class="QDoubleSpinBox" name="zRotation">
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -318,6 +356,25 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="ScaleLabel">
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Scale</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="ScaleLayout">
@@ -353,7 +410,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="xDoubleSpinBox_4">
+       <widget class="QDoubleSpinBox" name="xScale">
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -409,7 +466,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="yDoubleSpinBox_4">
+       <widget class="QDoubleSpinBox" name="yScale">
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -444,7 +501,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="zDoubleSpinBox_4">
+       <widget class="QDoubleSpinBox" name="zScale">
         <property name="maximumSize">
          <size>
           <width>70</width>

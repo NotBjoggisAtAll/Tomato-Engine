@@ -27,7 +27,22 @@ void RenderSystem::render()
 
         glUseProgram(material->mShader->getProgram());
         glBindVertexArray(mesh->mVAO);
-        material->mShader->transmitUniformData(&transform->mMatrix, material);
+
+        gsl::Matrix4x4 posMatrix;
+        posMatrix.setPosition(transform->Position);
+
+        gsl::Matrix4x4 rotMatrix;
+        rotMatrix.rotateX(transform->Rotation.x);
+        rotMatrix.rotateY(transform->Rotation.y);
+        rotMatrix.rotateZ(transform->Rotation.z);
+
+        gsl::Matrix4x4 scaleMatrix;
+        scaleMatrix.scale(transform->Scale);
+
+        gsl::Matrix4x4 modelMatrix;
+        modelMatrix = posMatrix * rotMatrix * scaleMatrix;
+
+        material->mShader->transmitUniformData(&modelMatrix, material);
 
         if(mesh->mIndiceCount > 0)
             glDrawElements(mesh->mDrawType, mesh->mIndiceCount, GL_UNSIGNED_INT, nullptr);

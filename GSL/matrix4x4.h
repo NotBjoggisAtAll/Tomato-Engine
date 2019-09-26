@@ -27,6 +27,7 @@ public:
     void translateY(GLfloat y = 0.f);
     void translateZ(GLfloat z = 0.f);
 
+    void setPosition(gsl::Vector3D position);
     void setPosition(GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f);
     gsl::Vector3D getPosition();
 

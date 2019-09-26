@@ -41,11 +41,7 @@ void SoundSystem::update(Camera* currCamera)
         auto sound = world->getComponent<Sound>(entity).value();
         auto transform = world->getComponent<Transform>(entity).value();
 
-        // TODO Fixup gsl::Transform.mMatrix to a gsl::Matrix4x4
-        gsl::Vector3D pos{transform->mMatrix.getPosition().getX(),
-                    transform->mMatrix.getPosition().getY(),
-                    transform->mMatrix.getPosition().getZ()};
-        sound->audio->setPosition(pos);
+        sound->audio->setPosition(transform->Position);
 
         //For now loops all the sounds - This is going to change
         if(!sound->audio->isPlaying())

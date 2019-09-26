@@ -25,6 +25,18 @@ private slots:
 
     void on_zPosition_valueChanged(double arg1);
 
+    void on_xRotation_valueChanged(double arg1);
+
+    void on_yRotation_valueChanged(double arg1);
+
+    void on_zRotation_valueChanged(double arg1);
+
+    void on_xScale_valueChanged(double arg1);
+
+    void on_yScale_valueChanged(double arg1);
+
+    void on_zScale_valueChanged(double arg1);
+
 private:
     Ui::TransformWidget *ui;
 
