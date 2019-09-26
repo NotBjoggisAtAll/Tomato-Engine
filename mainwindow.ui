@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OpenGL in Qt</string>
+   <string>Tomato Engine</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -67,7 +67,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="OpenGLLayout"/>
       </widget>
       <widget class="QWidget" name="Components" native="true">
