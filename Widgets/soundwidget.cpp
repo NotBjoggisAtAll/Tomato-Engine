@@ -8,7 +8,7 @@ SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Component = World::getWorld()->getComponent<Sound>(entity).value_or(nullptr);
+    Component = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
 
     if(Component)
         ui->fileNameHere->setText(QString::fromStdString(Component->audio->mName));

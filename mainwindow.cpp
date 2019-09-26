@@ -98,7 +98,7 @@ void MainWindow::init()
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->scrollArea->setWidgetResizable(true);
 
-    world = World::getWorld();
+    world = getWorld();
 
 }
 

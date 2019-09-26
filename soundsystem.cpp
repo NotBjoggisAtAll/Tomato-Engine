@@ -12,7 +12,7 @@
 SoundSystem::SoundSystem()
 {
     SoundManager::instance();
-    world = World::getWorld();
+    world = getWorld();
 }
 
 // TODO Need to find a way to not send in the camera

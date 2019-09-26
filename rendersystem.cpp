@@ -8,7 +8,7 @@
 
 RenderSystem::RenderSystem()
 {
-    world = World::getWorld();
+    world = getWorld();
 }
 
 void RenderSystem::render()

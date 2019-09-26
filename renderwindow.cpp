@@ -117,8 +117,7 @@ void RenderWindow::init()
 
     //********************** Creating Systems *********************
 
-    world = World::getWorld();
-    world->init();
+    world = getWorld();
 
     resourceFactory = std::make_unique<ResourceFactory>();
 

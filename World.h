@@ -7,11 +7,13 @@
 #include <memory>
 #include <string>
 
+
+
 class World
 {
 public:
 
-    static World* getWorld()
+     friend World* getWorld()
     {
         if(instance == nullptr)
             instance = new World();
@@ -124,5 +126,5 @@ private:
 
 };
 
-
+World* getWorld();
 #endif // WORLD_H
