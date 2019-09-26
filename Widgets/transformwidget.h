@@ -2,8 +2,8 @@
 #define TRANSFORMWIDGET_H
 
 #include <QWidget>
-
-class TransformComponent;
+#include "types.h"
+class Transform;
 
 namespace Ui {
 class TransformWidget;
@@ -14,7 +14,7 @@ class TransformWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit TransformWidget(unsigned int &EntityID, QWidget *parent = nullptr);
+    explicit TransformWidget(Entity entity, QWidget *parent = nullptr);
     ~TransformWidget();
 
 private slots:
@@ -28,7 +28,7 @@ private slots:
 private:
     Ui::TransformWidget *ui;
 
-    TransformComponent* Component {nullptr};
+    Transform* Component {nullptr};
 };
 
 #endif // TRANSFORMWIDGET_H
