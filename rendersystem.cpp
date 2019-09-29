@@ -25,7 +25,6 @@ void RenderSystem::render()
 
         auto material = world->getComponent<Material>(entity).value();
         auto transform = world->getComponent<Transform>(entity).value();
-        auto data = world->getComponent<EntityData>(entity).value();
 
         glUseProgram(material->mShader->getProgram());
         glBindVertexArray(mesh->mVAO);
@@ -44,33 +43,7 @@ void RenderSystem::render()
         gsl::Matrix4x4 modelMatrix;
         modelMatrix = posMatrix * rotMatrix * scaleMatrix;
 
-        if(data->parent != -1)
-        {
-            auto transformParent = world->getComponent<Transform>(data->parent).value();
-
-            gsl::Matrix4x4 PposMatrix;
-            PposMatrix.setPosition(transformParent->Position);
-
-            gsl::Matrix4x4 ProtMatrix;
-            ProtMatrix.rotateX(transformParent->Rotation.x);
-            ProtMatrix.rotateY(transformParent->Rotation.y);
-            ProtMatrix.rotateZ(transformParent->Rotation.z);
-
-            gsl::Matrix4x4 PscaleMatrix;
-            PscaleMatrix.scale(transformParent->Scale);
-
-            gsl::Matrix4x4 PmodelMatrix;
-            PmodelMatrix = posMatrix * rotMatrix * scaleMatrix;
-
-            gsl::Matrix4x4 nyMatrix = PmodelMatrix * modelMatrix;
-
-
-            material->mShader->transmitUniformData(&nyMatrix, material);
-
-        }
-        else{
-            material->mShader->transmitUniformData(&modelMatrix, material);
-        }
+        material->mShader->transmitUniformData(&modelMatrix, material);
 
 
         if(mesh->mIndiceCount > 0)

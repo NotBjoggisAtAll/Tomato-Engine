@@ -11,6 +11,7 @@ struct EntityData{
     std::string name;
 
     Entity parent{-1};
+    std::vector<Entity> children;
 };
 
 #endif // ENTITYDATA_H

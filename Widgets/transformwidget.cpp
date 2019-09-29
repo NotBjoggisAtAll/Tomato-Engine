@@ -2,9 +2,17 @@
 #include "ui_transformwidget.h"
 #include "World.h"
 #include "Components/transformcomponent.h"
-TransformWidget::TransformWidget(Entity entity, QWidget *parent) :
+#include "Systems/movementsystem.h"
+
+/// Trenger egentlig ikke tilgang til transformcomponenten. Kan få denne gjennom movement systemet!!
+///
+///
+///
+TransformWidget::TransformWidget(Entity entityIn, std::shared_ptr<MovementSystem> system, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TransformWidget)
+    ui(new Ui::TransformWidget),
+    movementSystem(system),
+    entity(entityIn)
 {
     ui->setupUi(this);
 
@@ -55,6 +63,8 @@ TransformWidget::TransformWidget(Entity entity, QWidget *parent) :
     ui->xScale->setValue(static_cast<double>(Scale.x));
     ui->yScale->setValue(static_cast<double>(Scale.y));
     ui->zScale->setValue(static_cast<double>(Scale.z));
+
+    initDone = true;
 }
 
 TransformWidget::~TransformWidget()
@@ -64,20 +74,29 @@ TransformWidget::~TransformWidget()
 
 void TransformWidget::on_xPosition_valueChanged(double arg1)
 {
-    auto& p = Component->Position;
-    Component->Position = {static_cast<float>(arg1),p.y,p.z};
+    if(initDone)
+    {
+        auto& p = Component->Position;
+        movementSystem->addPosition(entity, {static_cast<float>(arg1 - p.x),0,0});
+    }
 }
 
 void TransformWidget::on_yPosition_valueChanged(double arg1)
 {
-    auto& p = Component->Position;
-    Component->Position = {p.x,static_cast<float>(arg1),p.z};
+    if(initDone)
+    {
+        auto& p = Component->Position;
+        movementSystem->addPosition(entity, {0,static_cast<float>(arg1 - p.y),0});
+    }
 }
 
 void TransformWidget::on_zPosition_valueChanged(double arg1)
 {
-    auto& p = Component->Position;
-    Component->Position = {p.x,p.y,static_cast<float>(arg1)};
+    if(initDone)
+    {
+        auto& p = Component->Position;
+        movementSystem->addPosition(entity, {0,0,static_cast<float>(arg1 - p.z)});
+    }
 }
 
 void TransformWidget::on_xRotation_valueChanged(double arg1)

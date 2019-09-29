@@ -39,6 +39,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Systems/movementsystem.h \
     Widgets/soundwidget.h \
     World.h \
     constants.h \
@@ -80,6 +81,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Systems/movementsystem.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     World.cpp \

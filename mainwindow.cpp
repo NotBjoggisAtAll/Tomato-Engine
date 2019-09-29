@@ -128,7 +128,7 @@ void MainWindow::updateComponentWidgets(Entity entity)
 
     Transform* transform = world->getComponent<Transform>(entity).value_or(nullptr);
     if(transform)
-        layout->addWidget(new TransformWidget(entity));
+        layout->addWidget(new TransformWidget(entity, mRenderWindow->mMovementSystem));
 
     Mesh* mesh = world->getComponent<Mesh>(entity).value_or(nullptr);
     if(mesh)
@@ -163,17 +163,26 @@ void MainWindow::on_Outliner_itemSelectionChanged()
 {
     for(auto& Entity : world->getEntities())
     {
-        world->getComponent<EntityData>(Entity).value_or(nullptr)->parent = -1;
+       auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
+       data->parent = -1;
+       data->children.clear();
     }
 
     for (int i = 0; i < ui->Outliner->topLevelItemCount(); ++i)
     {
+        auto parentData = world->getComponent<EntityData>(ui->Outliner->topLevelItem(i)->text(1).toInt()).value_or(nullptr);
+
+        if(!ui->Outliner->topLevelItem(i))
+            continue;
+
+
         for(int j = 0; j < ui->Outliner->topLevelItem(i)->childCount(); ++j)
         {
-            auto comp = world->getComponent<EntityData>((ui->Outliner->topLevelItem(i)->child(j)->text(1).toInt())).value_or(nullptr);
-            if(comp)
+            auto childData = world->getComponent<EntityData>((ui->Outliner->topLevelItem(i)->child(j)->text(1).toInt())).value_or(nullptr);
+            if(childData)
             {
-                comp->parent = ui->Outliner->topLevelItem(i)->text(1).toInt();
+                parentData->children.push_back(ui->Outliner->topLevelItem(i)->child(j)->text(1).toInt());
+                childData->parent = ui->Outliner->topLevelItem(i)->text(1).toInt();
             }
         }
     }

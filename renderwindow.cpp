@@ -20,6 +20,7 @@
 #include "Managers/soundmanager.h"
 #include "soundsystem.h"
 #include "Components/allcomponents.h"
+#include "Systems/movementsystem.h"
 
 #include "resourcefactory.h"
 #include "World.h"
@@ -126,13 +127,13 @@ void RenderWindow::init()
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
+    mMovementSystem = world->registerSystem<MovementSystem>();
 
     // Setter opp hvilke komponenter de ulike systemene trenger
     Signature renderSign;
     renderSign.set(world->getComponentType<Transform>());
     renderSign.set(world->getComponentType<Mesh>());
     renderSign.set(world->getComponentType<Material>());
-    renderSign.set(world->getComponentType<EntityData>());
     world->setSystemSignature<RenderSystem>(renderSign);
 
     Signature soundSign;
@@ -140,9 +141,12 @@ void RenderWindow::init()
     soundSign.set(world->getComponentType<Sound>());
     world->setSystemSignature<SoundSystem>(soundSign);
 
+    Signature movementSign;
+    movementSign.set(world->getComponentType<Transform>());
+    movementSign.set(world->getComponentType<EntityData>());
+    world->setSystemSignature<MovementSystem>(movementSign);
 
     //********************** Making the objects to be drawn **********************
-
 
     Entity entity = world->createEntity();
 
