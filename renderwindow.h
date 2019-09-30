@@ -2,13 +2,10 @@
 #define RENDERWINDOW_H
 
 #include <QWindow>
-#include <QTimer>
-#include <QElapsedTimer>
-#include <chrono>
 #include "texture.h"
 #include "camera.h"
 #include "input.h"
-
+#include <QElapsedTimer>
 #include "types.h"
 #include <memory>
 

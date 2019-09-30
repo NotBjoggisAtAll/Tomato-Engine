@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "renderwindow.h"
 #include <QTimer>
 #include <QOpenGLContext>
@@ -13,18 +12,18 @@
 #include "colorshader.h"
 #include "textureshader.h"
 #include "phongshader.h"
-#include "Managers/shadermanager.h"
 
-#include "rendersystem.h"
-#include "entitymanager.h"
-#include "Managers/soundmanager.h"
-#include "soundsystem.h"
-#include "Components/allcomponents.h"
+#include "Systems/rendersystem.h"
+#include "Systems/soundsystem.h"
 #include "Systems/movementsystem.h"
+
+#include "Managers/entitymanager.h"
+#include "Managers/shadermanager.h"
+#include "Managers/soundmanager.h"
+#include "Components/allcomponents.h"
 
 #include "resourcefactory.h"
 #include "World.h"
-#include "shader.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -197,7 +196,6 @@ void RenderWindow::init()
     //********************** System stuff **********************
 
     mMainWindow->DisplayEntitesInOutliner();
-
 
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
@@ -592,7 +590,7 @@ void RenderWindow::spawnCube()
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
-    mMainWindow->DisplayEntitesInOutliner();
+    mMainWindow->addEntityToUi(entity);
 }
 
 void RenderWindow::spawnSphere()
@@ -604,7 +602,7 @@ void RenderWindow::spawnSphere()
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
-    mMainWindow->DisplayEntitesInOutliner();
+    mMainWindow->addEntityToUi(entity);
 }
 
 void RenderWindow::spawnPlane()
@@ -616,11 +614,8 @@ void RenderWindow::spawnPlane()
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
-    mMainWindow->DisplayEntitesInOutliner();
+    mMainWindow->addEntityToUi(entity);
 }
-
-
-
 
 //    temp = new BillBoard();
 //    temp->init();

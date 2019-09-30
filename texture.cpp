@@ -1,8 +1,9 @@
-#include "innpch.h"
 #include <QImage>
 #include <QBuffer>
 #include <QByteArray>
-
+#include <QDebug>
+#include "constants.h"
+#include <fstream>
 #include "texture.h"
 
 Texture::Texture(GLuint textureUnit) : QOpenGLFunctions_4_1_Core()

@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "vertex.h"
 
 Vertex::Vertex() { }

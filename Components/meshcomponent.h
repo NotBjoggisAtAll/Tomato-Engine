@@ -1,6 +1,8 @@
 #ifndef MESHCOMPONENT_H
 #define MESHCOMPONENT_H
 
+#include "gltypes.h"
+
 struct Mesh
 {
     GLuint mVAO{0};

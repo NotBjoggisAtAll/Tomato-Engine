@@ -3,6 +3,9 @@
 
 #include "types.h"
 #include <optional>
+#include <array>
+#include <unordered_map>
+#include <assert.h>
 
 struct IComponentArray
 {

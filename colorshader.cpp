@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "colorshader.h"
 
 ColorShader::ColorShader(const std::string shaderName, const GLchar *geometryPath)

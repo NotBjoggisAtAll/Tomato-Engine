@@ -2,12 +2,10 @@
 #define WORLD_H
 
 #include "Managers/componentManager.h"
-#include "entitymanager.h"
-#include "systemManager.h"
+#include "Managers/entitymanager.h"
+#include "Managers/systemManager.h"
 #include <memory>
 #include <string>
-
-
 
 class World
 {

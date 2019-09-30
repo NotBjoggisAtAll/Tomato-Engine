@@ -1,8 +1,6 @@
-#include "innpch.h"
 #include "shader.h"
-
-//#include "GL/glew.h" - using QOpenGLFunctions instead
-
+#include <fstream>
+#include "constants.h"
 #include "camera.h"
 
 Shader::Shader(const std::string shaderName, const GLchar *geometryPath)

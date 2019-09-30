@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -12,7 +11,6 @@
 
 #include "Components/allcomponents.h"
 #include "World.h"
-#include <qstring.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -38,6 +36,15 @@ void MainWindow::DisplayEntitesInOutliner()
         item->setText(1, QString::number(Entity));
         ui->Outliner->addTopLevelItem(item);
     }
+}
+
+void MainWindow::addEntityToUi(Entity entity)
+{
+    QTreeWidgetItem* item = new QTreeWidgetItem();
+    auto data = world->getComponent<EntityData>(entity).value_or(nullptr);
+    item->setText(0, QString::fromStdString(data->name));
+    item->setText(1, QString::number(entity));
+    ui->Outliner->addTopLevelItem(item);
 }
 
 void MainWindow::init()
@@ -164,9 +171,9 @@ void MainWindow::on_Outliner_itemSelectionChanged()
 {
     for(auto& Entity : world->getEntities())
     {
-       auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
-       data->parent = -1;
-       data->children.clear();
+        auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
+        data->parent = -1;
+        data->children.clear();
     }
 
     for (int i = 0; i < ui->Outliner->topLevelItemCount(); ++i)

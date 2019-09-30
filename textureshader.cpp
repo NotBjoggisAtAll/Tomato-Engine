@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "textureshader.h"
 #include "Components/materialcomponent.h"
 

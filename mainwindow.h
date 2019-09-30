@@ -27,6 +27,7 @@ public:
 
     void updateComponentWidgets(Entity entity);
 
+    void addEntityToUi(Entity entity);
 signals:
 
     void spawnCube();

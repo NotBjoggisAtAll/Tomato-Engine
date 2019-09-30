@@ -1,5 +1,8 @@
 #include "resourcefactory.h"
 #include "octahedronball.h"
+#include "fstream"
+#include "constants.h"
+#include <sstream>
 
 Mesh ResourceFactory::loadMesh(std::string filePath)
 {

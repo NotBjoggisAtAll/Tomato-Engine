@@ -4,6 +4,8 @@
 #include "types.h"
 #include <queue>
 #include <array>
+#include <algorithm>
+#include <assert.h>
 
 class EntityManager
 {

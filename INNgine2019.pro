@@ -5,8 +5,6 @@ CONFIG      += c++17
 
 TARGET      = INNgine2019
 
-PRECOMPILED_HEADER = innpch.h
-
 mac {
     LIBS += -framework OpenAL
 }
@@ -43,27 +41,25 @@ HEADERS += \
     Widgets/soundwidget.h \
     World.h \
     constants.h \
-    entitymanager.h \
+    Managers/entitymanager.h \
     Widgets/meshwidget.h \
-    rendersystem.h \
+    Systems/rendersystem.h \
     renderwindow.h \
     resourcefactory.h \
     shader.h \
     mainwindow.h \
     Widgets/transformwidget.h \
     soundsource.h \
-    soundsystem.h \
-    system.h \
-    systemManager.h \
+    Systems/soundsystem.h \
+    Systems/system.h \
+    Managers/systemManager.h \
     texture.h \
     types.h \
     vertex.h \
     octahedronball.h \
     camera.h \
-    octahedronball.h \
     gltypes.h \
     input.h \
-    innpch.h \
     colorshader.h \
     textureshader.h \
     phongshader.h
@@ -85,11 +81,11 @@ SOURCES += main.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     World.cpp \
-    rendersystem.cpp \
+    Systems/rendersystem.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \
-    soundsystem.cpp \
+    Systems/soundsystem.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \

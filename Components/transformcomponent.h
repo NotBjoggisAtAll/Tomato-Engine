@@ -1,6 +1,7 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
+#include "GSL/vector3d.h"
 
 struct Transform
 {

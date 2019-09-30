@@ -1,4 +1,3 @@
-#include "innpch.h"
 #include "phongshader.h"
 #include "Components/materialcomponent.h"
 
