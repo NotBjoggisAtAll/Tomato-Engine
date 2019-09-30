@@ -30,15 +30,15 @@ void RenderSystem::render()
         glBindVertexArray(mesh->mVAO);
 
         gsl::Matrix4x4 posMatrix;
-        posMatrix.setPosition(transform->Position);
+        posMatrix.setPosition(transform->position);
 
         gsl::Matrix4x4 rotMatrix;
-        rotMatrix.rotateX(transform->Rotation.x);
-        rotMatrix.rotateY(transform->Rotation.y);
-        rotMatrix.rotateZ(transform->Rotation.z);
+        rotMatrix.rotateX(transform->rotation.x);
+        rotMatrix.rotateY(transform->rotation.y);
+        rotMatrix.rotateZ(transform->rotation.z);
 
         gsl::Matrix4x4 scaleMatrix;
-        scaleMatrix.scale(transform->Scale);
+        scaleMatrix.scale(transform->scale);
 
         gsl::Matrix4x4 modelMatrix;
         modelMatrix = posMatrix * rotMatrix * scaleMatrix;

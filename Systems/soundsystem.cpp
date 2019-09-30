@@ -41,7 +41,7 @@ void SoundSystem::update(Camera* currCamera)
         auto sound = world->getComponent<Sound>(entity).value();
         auto transform = world->getComponent<Transform>(entity).value();
 
-        sound->audio->setPosition(transform->Position);
+        sound->audio->setPosition(transform->position);
 
         //For now loops all the sounds - This is going to change
         if(!sound->audio->isPlaying())

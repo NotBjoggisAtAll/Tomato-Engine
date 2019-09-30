@@ -12,7 +12,6 @@
 class QOpenGLContext;
 class Shader;
 class MainWindow;
-class Light;
 class SoundSystem;
 class MovementSystem;
 class EntityManager;
@@ -64,8 +63,6 @@ private:
     bool mInitialized{false};
 
     Texture *mTexture[4]{nullptr}; //We can hold 4 textures
-
-    Light *mLight;
 
     Camera *mCurrentCamera{nullptr};
 

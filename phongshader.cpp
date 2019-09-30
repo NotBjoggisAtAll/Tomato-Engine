@@ -1,6 +1,8 @@
 #include "phongshader.h"
 #include "Components/materialcomponent.h"
-
+#include "Components/lightcomponent.h"
+#include "Components/transformcomponent.h"
+#include "World.h"
 PhongShader::PhongShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
 {
@@ -28,15 +30,18 @@ void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *mat
 {
     Shader::transmitUniformData(modelMatrix);
 
-    //    glUniform1i(textureUniform, material->mTextureUnit); //TextureUnit = 0 as default);
-//    glUniform1f(mAmbientLightStrengthUniform, mLight->mAmbientStrenght);
-//    glUniform1f(mLightPowerUniform, mLight->mLightStrenght);
-//    glUniform3f(mLightColorUniform, mLight->mLightColor.x, mLight->mLightColor.y, mLight->mLightColor.z);
-//    glUniform3f(mLightPositionUniform, mLight->mMatrix.getPosition().x, mLight->mMatrix.getPosition().y, mLight->mMatrix.getPosition().z);
-//    glUniform3f(mObjectColorUniform, material->mColor.x(), material->mColor.y(), material->mColor.z());
+    if(!lightComponent || !lightTransformComponent)
+        return;
+
+    glUniform1f(mAmbientLightStrengthUniform, lightComponent->mAmbientStrenght);
+    glUniform1f(mLightPowerUniform, lightComponent->mLightStrenght);
+    glUniform3f(mLightColorUniform, lightComponent->mLightColor.x, lightComponent->mLightColor.y, lightComponent->mLightColor.z);
+    glUniform3f(mLightPositionUniform, lightTransformComponent->position.x, lightTransformComponent->position.y,lightTransformComponent->position.z);
+    glUniform3f(mObjectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
 }
 
-void PhongShader::setLight(Light *light)
+void PhongShader::setLight(Entity entity)
 {
-    mLight = light;
+     lightComponent = getWorld()->getComponent<Light>(entity).value_or(nullptr);
+     lightTransformComponent = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
 }

@@ -46,19 +46,19 @@ TransformWidget::TransformWidget(Entity entityIn, std::shared_ptr<MovementSystem
 
     Component = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
 
-    auto& Pos = Component->Position;
+    auto& Pos = Component->position;
 
     ui->xPosition->setValue(static_cast<double>(Pos.x));
     ui->yPosition->setValue(static_cast<double>(Pos.y));
     ui->zPosition->setValue(static_cast<double>(Pos.z));
 
-    auto& Rot = Component->Rotation;
+    auto& Rot = Component->rotation;
 
     ui->xRotation->setValue(static_cast<double>(Rot.x));
     ui->yRotation->setValue(static_cast<double>(Rot.y));
     ui->zRotation->setValue(static_cast<double>(Rot.z));
 
-    auto& Scale = Component->Scale;
+    auto& Scale = Component->scale;
 
     ui->xScale->setValue(static_cast<double>(Scale.x));
     ui->yScale->setValue(static_cast<double>(Scale.y));
@@ -76,7 +76,7 @@ void TransformWidget::on_xPosition_valueChanged(double arg1)
 {
     if(initDone)
     {
-        auto& p = Component->Position;
+        auto& p = Component->position;
         movementSystem->addPosition(entity, {static_cast<float>(arg1 - p.x),0,0});
     }
 }
@@ -85,7 +85,7 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
 {
     if(initDone)
     {
-        auto& p = Component->Position;
+        auto& p = Component->position;
         movementSystem->addPosition(entity, {0,static_cast<float>(arg1 - p.y),0});
     }
 }
@@ -94,43 +94,43 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
 {
     if(initDone)
     {
-        auto& p = Component->Position;
+        auto& p = Component->position;
         movementSystem->addPosition(entity, {0,0,static_cast<float>(arg1 - p.z)});
     }
 }
 
 void TransformWidget::on_xRotation_valueChanged(double arg1)
 {
-    auto& r = Component->Rotation;
-    Component->Rotation = {static_cast<float>(arg1), r.y, r.z};
+    auto& r = Component->rotation;
+    Component->rotation = {static_cast<float>(arg1), r.y, r.z};
 }
 
 void TransformWidget::on_yRotation_valueChanged(double arg1)
 {
-    auto& r = Component->Rotation;
-    Component->Rotation = {r.x, static_cast<float>(arg1), r.z};
+    auto& r = Component->rotation;
+    Component->rotation = {r.x, static_cast<float>(arg1), r.z};
 }
 
 void TransformWidget::on_zRotation_valueChanged(double arg1)
 {
-    auto& r = Component->Rotation;
-    Component->Rotation = {r.x, r.y, static_cast<float>(arg1)};
+    auto& r = Component->rotation;
+    Component->rotation = {r.x, r.y, static_cast<float>(arg1)};
 }
 
 void TransformWidget::on_xScale_valueChanged(double arg1)
 {
-    auto& s = Component->Scale;
-    Component->Scale = {static_cast<float>(arg1), s.y, s.z};
+    auto& s = Component->scale;
+    Component->scale = {static_cast<float>(arg1), s.y, s.z};
 }
 
 void TransformWidget::on_yScale_valueChanged(double arg1)
 {
-    auto& s = Component->Scale;
-    Component->Scale = {s.x, static_cast<float>(arg1), s.z};
+    auto& s = Component->scale;
+    Component->scale = {s.x, static_cast<float>(arg1), s.z};
 }
 
 void TransformWidget::on_zScale_valueChanged(double arg1)
 {
-    auto& s = Component->Scale;
-    Component->Scale = {s.x, s.y, static_cast<float>(arg1)};
+    auto& s = Component->scale;
+    Component->scale = {s.x, s.y, static_cast<float>(arg1)};
 }

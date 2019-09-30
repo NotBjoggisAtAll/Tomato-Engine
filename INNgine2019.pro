@@ -18,6 +18,7 @@ HEADERS += \
     Components/allcomponents.h \
     Components/componentArray.h \
     Components/entitydata.h \
+    Components/lightcomponent.h \
     Components/materialcomponent.h \
     Components/meshcomponent.h \
     Components/physicscomponent.h \

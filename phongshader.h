@@ -2,6 +2,10 @@
 #define PHONGSHADER_H
 
 #include "shader.h"
+#include "types.h"
+
+class Light;
+class Transform;
 
 class PhongShader : public Shader
 {
@@ -11,7 +15,7 @@ public:
 
     void transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material) override;
 
-    void setLight(class Light *light);
+    void setLight(Entity entity);
 
 private:
     //    GLint textureUniform{-1};
@@ -24,7 +28,8 @@ private:
     GLint mSpecularExponentUniform{-1};
     GLint mLightPowerUniform{-1};
 
-    class Light *mLight;
+    Light* lightComponent = nullptr;
+    Transform* lightTransformComponent = nullptr;
 };
 
 #endif // PHONGSHADER_H

@@ -123,6 +123,7 @@ void RenderWindow::init()
     world->registerComponent<Material>();
     world->registerComponent<Sound>();
     world->registerComponent<EntityData>();
+    world->registerComponent<Light>();
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
@@ -162,7 +163,7 @@ void RenderWindow::init()
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
 
     auto transform = world->getComponent<Transform>(entity).value();
-    transform->Scale = {15.f,15.f,15.f};
+    transform->scale = {15.f,15.f,15.f};
 
     entity = world->createEntity();
 
@@ -172,7 +173,7 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->Rotation.y = 180.f;
+    transform->rotation.y = 180.f;
 
 
     entity = world->createEntity();
@@ -183,15 +184,24 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->Scale = {0.5f, 0.5f, 0.5f};
-    transform->Position = {3.f, 2.f, -2.f};
+    transform->scale = {0.5f, 0.5f, 0.5f};
+    transform->position = {3.f, 2.f, -2.f};
 
     entity = world->createEntity();
 
-    world->addComponent(entity, EntityData("Caravan"));
+    world->addComponent(entity, EntityData("Sound Source"));
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
+
+    entity = world->createEntity();
+
+    world->addComponent(entity, EntityData("Light Source"));
+    world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
+    world->addComponent(entity, Light());
+    world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
+    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
+    ShaderManager::instance()->phongShader()->setLight(entity);
 
     //********************** System stuff **********************
 
@@ -627,16 +637,3 @@ void RenderWindow::spawnPlane()
 //    temp->mMaterial.mColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
 //    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
 //    mVisualObjects.push_back(temp);
-
-//    mLight = new Light();
-//    temp = mLight;
-//    temp->init();
-//    temp->setShader(ShaderManager::instance()->colorShader());
-//    temp->mMatrix.translate(2.5f, 3.f, 0.f);
-//    temp->mName = "light";
-//    temp->mRenderWindow = this;
-//    temp->mMaterial.mTextureUnit = 0;
-//    temp->mMaterial.mColor = gsl::Vector3D(0.1f, 0.1f, 0.8f);
-//    mVisualObjects.push_back(temp);
-
-//   ShaderManager::instance()->phongShader()->setLight(mLight);

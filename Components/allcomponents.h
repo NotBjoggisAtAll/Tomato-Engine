@@ -8,5 +8,6 @@
 #include "soundcomponent.h"
 #include "transformcomponent.h"
 #include "entitydata.h"
+#include "lightcomponent.h"
 
 #endif // ALLCOMPONENTS_H
