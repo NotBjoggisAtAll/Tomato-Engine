@@ -60,6 +60,7 @@ private:
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
 
+    void setupChildren(QTreeWidgetItem *parent);
 };
 
 #endif // MAINWINDOW_H
