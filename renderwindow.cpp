@@ -24,6 +24,7 @@
 
 #include "resourcefactory.h"
 #include "World.h"
+#include "constants.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
@@ -116,7 +117,7 @@ void RenderWindow::init()
 
     world = getWorld();
 
-    resourceFactory = std::make_unique<ResourceFactory>();
+    resourceFactory = ResourceFactory::instance();
 
     world->registerComponent<Transform>();
     world->registerComponent<Mesh>();
@@ -168,7 +169,7 @@ void RenderWindow::init()
     entity = world->createEntity();
 
     world->addComponent(entity, EntityData("Box"));
-    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
+    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt"));
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     world->addComponent(entity, Transform());
 
@@ -179,7 +180,7 @@ void RenderWindow::init()
     entity = world->createEntity();
 
     world->addComponent(entity, EntityData("Monkey"));
-    world->addComponent(entity, resourceFactory->loadMesh("monkey.obj"));
+    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj"));
     world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
     world->addComponent(entity, Transform());
 
@@ -200,7 +201,7 @@ void RenderWindow::init()
     world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     world->addComponent(entity, Light());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
+    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt"));
     ShaderManager::instance()->phongShader()->setLight(entity);
 
     //********************** System stuff **********************

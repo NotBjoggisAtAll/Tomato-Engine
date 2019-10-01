@@ -15,15 +15,18 @@ class MeshWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MeshWidget(Entity entity, QWidget *parent = nullptr);
+    explicit MeshWidget(Entity entity_, QWidget *parent = nullptr);
     ~MeshWidget();
 
 private slots:
     void on_isVisible_toggled(bool checked);
 
+    void on_changeMeshButton_clicked();
+
 private:
     Ui::MeshWidget *ui;
-    Mesh* Component = {nullptr};
+    Mesh* Component = nullptr;
+    Entity entity = -1;
 };
 
 #endif // MESHWIDGET_H

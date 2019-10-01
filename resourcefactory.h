@@ -10,11 +10,12 @@
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:
-    ResourceFactory() = default;
 
+    static ResourceFactory* instance();
     Mesh loadMesh(std::string filePath);
 
 private:
+    ResourceFactory() = default;
 
     //Used to check if the mesh is already loaded from file
     std::map<std::string, Mesh> mMeshMap; //string - filepath, Mesh - Meshdata
@@ -32,6 +33,8 @@ private:
     void createSkybox();
     void createObject(std::string filePath);
     void readTXTFile(std::string filename);
+
+    static ResourceFactory* instance_;
 
 };
 

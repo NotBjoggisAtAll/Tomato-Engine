@@ -44,7 +44,7 @@ public:
     std::shared_ptr<SoundSystem> mSoundSystem;
 
     World* world;
-    std::unique_ptr<ResourceFactory> resourceFactory;
+    ResourceFactory* resourceFactory;
 
 
     std::vector<Entity> entities;

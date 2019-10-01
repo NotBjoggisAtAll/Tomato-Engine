@@ -4,6 +4,16 @@
 #include "constants.h"
 #include <sstream>
 
+ResourceFactory* ResourceFactory::instance_ = nullptr;
+
+ResourceFactory *ResourceFactory::instance()
+{
+    if(!instance_)
+        instance_ = new ResourceFactory();
+
+    return instance_;
+}
+
 Mesh ResourceFactory::loadMesh(std::string filePath)
 {
 
@@ -226,9 +236,9 @@ void ResourceFactory::createObject(std::string filePath)
 void ResourceFactory::readTXTFile(std::string filename)
 {
     std::ifstream inn;
-    std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+   // std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
 
-    inn.open(fileWithPath);
+    inn.open(filename);
 
     if (inn.is_open()) {
         int n;
@@ -240,7 +250,7 @@ void ResourceFactory::readTXTFile(std::string filename)
             mVertices.push_back(vertex);
         }
         inn.close();
-        qDebug() << "TriangleSurface file read: " << QString::fromStdString(filename);
+        qDebug() << "File read: " << QString::fromStdString(filename);
     }
     else
     {
@@ -251,9 +261,9 @@ void ResourceFactory::readTXTFile(std::string filename)
 void ResourceFactory::readOBJFile(std::string filename)
 {
     //Open File
-    std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+  //  std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
     std::ifstream fileIn;
-    fileIn.open (fileWithPath, std::ifstream::in);
+    fileIn.open (filename, std::ifstream::in);
     if(!fileIn)
         qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
 
