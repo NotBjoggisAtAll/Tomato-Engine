@@ -250,131 +250,9 @@ void RenderWindow::render()
     // and before swapBuffers(), else it will show the vsync time
     calculateFramerate();
 
-    //using our expanded OpenGL debugger to check if everything is OK.
-    //    checkForGLerrors();
 
-    //Qt require us to call this swapBuffers() -function.
-    // swapInterval is 1 by default which means that swapBuffers() will (hopefully) block
-    // and wait for vsync.
-    //    auto start = std::chrono::high_resolution_clock::now();
     mContext->swapBuffers(this);
-    //    auto end = std::chrono::high_resolution_clock::now();
-    //    std::chrono::duration<float> duration = end - start;
-    //    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
 
-    //    calculateFramerate();
-}
-
-
-//This function is called from Qt when window is exposed (shown)
-//and when it is resized
-//exposeEvent is a overridden function from QWindow that we inherit from
-void RenderWindow::exposeEvent(QExposeEvent *)
-{
-    if (!mInitialized)
-        init();
-
-    //This is just to support modern screens with "double" pixels
-    const qreal retinaScale = devicePixelRatio();
-    glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
-
-    //If the window actually is exposed to the screen we start the main loop
-    //isExposed() is a function in QWindow
-    if (isExposed())
-    {
-        //This timer runs the actual MainLoop
-        //16 means 16ms = 60 Frames pr second (should be 16.6666666 to be exact..)
-        mRenderTimer->start(1);
-        mTimeStart.start();
-    }
-    mAspectratio = static_cast<float>(width()) / height();
-    //    qDebug() << mAspectratio;
-    mCurrentCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 1.f, 100.f);
-    //    qDebug() << mCamera.mProjectionMatrix;
-}
-
-//Simple way to turn on/off wireframe mode
-//Not totally accurate, but draws the objects with
-//lines instead of filled polygons
-void RenderWindow::toggleWireframe()
-{
-    mWireframe = !mWireframe;
-    if (mWireframe)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);    //turn on wireframe mode
-        glDisable(GL_CULL_FACE);
-    }
-    else
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    //turn off wireframe mode
-        glEnable(GL_CULL_FACE);
-    }
-}
-
-//The way this is set up is that we start the clock before doing the draw call,
-//and check the time right after it is finished (done in the render function)
-//This will approximate what framerate we COULD have.
-//The actual frame rate on your monitor is limited by the vsync and is probably 60Hz
-void RenderWindow::calculateFramerate()
-{
-    long long nsecElapsed = mTimeStart.nsecsElapsed();
-    static int frameCount{0};                       //counting actual frames for a quick "timer" for the statusbar
-
-    if (mMainWindow)    //if no mainWindow, something is really wrong...
-    {
-        ++frameCount;
-        if (frameCount > 30) //once pr 30 frames = update the message twice pr second (on a 60Hz monitor)
-        {
-            //showing some statistics in status bar
-            mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
-                                                  QString::number(nsecElapsed/1000000., 'g', 4) + " ms  |  " +
-                                                  "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
-            frameCount = 0;     //reset to show a new message in 60 frames
-        }
-    }
-}
-
-/// Uses QOpenGLDebugLogger if this is present
-/// Reverts to glGetError() if not
-void RenderWindow::checkForGLerrors()
-{
-    if(mOpenGLDebugLogger)
-    {
-        const QList<QOpenGLDebugMessage> messages = mOpenGLDebugLogger->loggedMessages();
-        for (const QOpenGLDebugMessage &message : messages)
-            qDebug() << message;
-    }
-    else
-    {
-        GLenum err = GL_NO_ERROR;
-        while((err = glGetError()) != GL_NO_ERROR)
-        {
-            qDebug() << "glGetError returns " << err;
-        }
-    }
-}
-
-/// Tries to start the extended OpenGL debugger that comes with Qt
-void RenderWindow::startOpenGLDebugger()
-{
-    QOpenGLContext * temp = this->context();
-    if (temp)
-    {
-        QSurfaceFormat format = temp->format();
-        if (! format.testOption(QSurfaceFormat::DebugContext))
-            qDebug() << "This system can not use QOpenGLDebugLogger, so we revert to glGetError()";
-
-        if(temp->hasExtension(QByteArrayLiteral("GL_KHR_debug")))
-        {
-            qDebug() << "System can log OpenGL errors!";
-            mOpenGLDebugLogger = new QOpenGLDebugLogger(this);
-            if (mOpenGLDebugLogger->initialize()) // initializes in the current context
-                qDebug() << "Started OpenGL debug logger!";
-        }
-
-        if(mOpenGLDebugLogger)
-            mOpenGLDebugLogger->disableMessages(QOpenGLDebugMessage::APISource, QOpenGLDebugMessage::OtherType, QOpenGLDebugMessage::NotificationSeverity);
-    }
 }
 
 void RenderWindow::setCameraSpeed(float value)
@@ -387,6 +265,29 @@ void RenderWindow::setCameraSpeed(float value)
     if (mCameraSpeed > 0.3f)
         mCameraSpeed = 0.3f;
 }
+
+void RenderWindow::spawnObject(std::string name, std::string path)
+{
+    auto entity = world->createEntity();
+
+    world->addComponent(entity, EntityData(name));
+    world->addComponent(entity, resourceFactory->loadMesh(path));
+    world->addComponent(entity,Transform());
+    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+
+    mMainWindow->addEntityToUi(entity);
+}
+
+//    temp = new BillBoard();
+//    temp->init();
+//    temp->setShader(ShaderManager::instance()->textureShader());
+//    temp->mMatrix.translate(4.f, 0.f, -3.5f);
+//    temp->mName = "Billboard";
+//    temp->mRenderWindow = this;
+//    temp->mMaterial.mTextureUnit = 1;
+//    temp->mMaterial.mColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
+//    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
+//    mVisualObjects.push_back(temp);
 
 void RenderWindow::handleInput()
 {
@@ -590,25 +491,113 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
 }
 // The stuff below this line should be somewhere else in the future.
 
-void RenderWindow::spawnObject(std::string name, std::string path)
+//Simple way to turn on/off wireframe mode
+//Not totally accurate, but draws the objects with
+//lines instead of filled polygons
+void RenderWindow::toggleWireframe()
 {
-    auto entity = world->createEntity();
-
-    world->addComponent(entity, EntityData(name));
-    world->addComponent(entity, resourceFactory->loadMesh(path));
-    world->addComponent(entity,Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
-    mMainWindow->addEntityToUi(entity);
+    mWireframe = !mWireframe;
+    if (mWireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);    //turn on wireframe mode
+        glDisable(GL_CULL_FACE);
+    }
+    else
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    //turn off wireframe mode
+        glEnable(GL_CULL_FACE);
+    }
 }
 
-//    temp = new BillBoard();
-//    temp->init();
-//    temp->setShader(ShaderManager::instance()->textureShader());
-//    temp->mMatrix.translate(4.f, 0.f, -3.5f);
-//    temp->mName = "Billboard";
-//    temp->mRenderWindow = this;
-//    temp->mMaterial.mTextureUnit = 1;
-//    temp->mMaterial.mColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
-//    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
-//    mVisualObjects.push_back(temp);
+//The way this is set up is that we start the clock before doing the draw call,
+//and check the time right after it is finished (done in the render function)
+//This will approximate what framerate we COULD have.
+//The actual frame rate on your monitor is limited by the vsync and is probably 60Hz
+void RenderWindow::calculateFramerate()
+{
+    long long nsecElapsed = mTimeStart.nsecsElapsed();
+    static int frameCount{0};                       //counting actual frames for a quick "timer" for the statusbar
+
+    if (mMainWindow)    //if no mainWindow, something is really wrong...
+    {
+        ++frameCount;
+        if (frameCount > 30) //once pr 30 frames = update the message twice pr second (on a 60Hz monitor)
+        {
+            //showing some statistics in status bar
+            mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
+                                                  QString::number(nsecElapsed/1000000., 'g', 4) + " ms  |  " +
+                                                  "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
+            frameCount = 0;     //reset to show a new message in 60 frames
+        }
+    }
+}
+
+/// Uses QOpenGLDebugLogger if this is present
+/// Reverts to glGetError() if not
+void RenderWindow::checkForGLerrors()
+{
+    if(mOpenGLDebugLogger)
+    {
+        const QList<QOpenGLDebugMessage> messages = mOpenGLDebugLogger->loggedMessages();
+        for (const QOpenGLDebugMessage &message : messages)
+            qDebug() << message;
+    }
+    else
+    {
+        GLenum err = GL_NO_ERROR;
+        while((err = glGetError()) != GL_NO_ERROR)
+        {
+            qDebug() << "glGetError returns " << err;
+        }
+    }
+}
+
+/// Tries to start the extended OpenGL debugger that comes with Qt
+void RenderWindow::startOpenGLDebugger()
+{
+    QOpenGLContext * temp = this->context();
+    if (temp)
+    {
+        QSurfaceFormat format = temp->format();
+        if (! format.testOption(QSurfaceFormat::DebugContext))
+            qDebug() << "This system can not use QOpenGLDebugLogger, so we revert to glGetError()";
+
+        if(temp->hasExtension(QByteArrayLiteral("GL_KHR_debug")))
+        {
+            qDebug() << "System can log OpenGL errors!";
+            mOpenGLDebugLogger = new QOpenGLDebugLogger(this);
+            if (mOpenGLDebugLogger->initialize()) // initializes in the current context
+                qDebug() << "Started OpenGL debug logger!";
+        }
+
+        if(mOpenGLDebugLogger)
+            mOpenGLDebugLogger->disableMessages(QOpenGLDebugMessage::APISource, QOpenGLDebugMessage::OtherType, QOpenGLDebugMessage::NotificationSeverity);
+    }
+}
+
+//This function is called from Qt when window is exposed (shown)
+//and when it is resized
+//exposeEvent is a overridden function from QWindow that we inherit from
+void RenderWindow::exposeEvent(QExposeEvent *)
+{
+    if (!mInitialized)
+        init();
+
+    //This is just to support modern screens with "double" pixels
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
+
+    //If the window actually is exposed to the screen we start the main loop
+    //isExposed() is a function in QWindow
+    if (isExposed())
+    {
+        //This timer runs the actual MainLoop
+        //16 means 16ms = 60 Frames pr second (should be 16.6666666 to be exact..)
+        mRenderTimer->start(1);
+        mTimeStart.start();
+    }
+    mAspectratio = static_cast<float>(width()) / height();
+    //    qDebug() << mAspectratio;
+    mCurrentCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 1.f, 100.f);
+    //    qDebug() << mCamera.mProjectionMatrix;
+}
