@@ -221,14 +221,6 @@ void RenderWindow::init()
 ///Called each frame - doing the rendering
 void RenderWindow::render()
 {
-    //calculate the time since last render-call
-    //this should be the same as xxx in the mRenderTimer->start(xxx) set in RenderWindow::exposeEvent(...)
-    //    auto now = std::chrono::high_resolution_clock::now();
-    //    std::chrono::duration<float> duration = now - mLastTime;
-    //    std::cout << "Chrono deltaTime " << duration.count()*1000 << " ms" << std::endl;
-    //    mLastTime = now;
-
-    //input
     handleInput();
 
     mCurrentCamera->update();
@@ -277,6 +269,47 @@ void RenderWindow::spawnObject(std::string name, std::string path)
 
     mMainWindow->addEntityToUi(entity);
 }
+
+void RenderWindow::fromScreenToWorld(QMouseEvent* event)
+{
+
+    float x = (2.0f * event->pos().x()) / width() - 1.0f;
+    float y = 1.0f - (2.0f * event->pos().y()) / height();
+    float z = 1.0f;
+    gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
+
+
+    gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
+
+    gsl::Matrix4x4 projection_matrix = mCurrentCamera->mProjectionMatrix;
+    projection_matrix.inverse();
+    gsl::Vector4D ray_eye = projection_matrix * ray_clip;
+
+    ray_eye.z = -1.0f;
+    ray_eye.w = 0.0f;
+
+    gsl::Matrix4x4 view_matrix = mCurrentCamera->mViewMatrix;
+    view_matrix.inverse();
+
+    gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
+    ray_world.normalize();
+
+    ray_world = ray_world * 50.f;
+
+    std::vector<Vertex> vertices;
+    vertices.reserve(2);
+    Vertex vertex;
+    vertex.set_xyz(mCurrentCamera->position());
+    vertices.push_back(vertex);
+    vertex.set_xyz(ray_world);
+    vertices.push_back(vertex);
+    Entity entity = world->createEntity();
+
+    world->addComponent(entity, Transform());
+    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
+    world->addComponent(entity, resourceFactory->createLine("line",vertices));
+}
+
 
 //    temp = new BillBoard();
 //    temp->init();
@@ -443,7 +476,10 @@ void RenderWindow::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton)
         mInput.RMB = true;
     if (event->button() == Qt::LeftButton)
+    {
         mInput.LMB = true;
+        fromScreenToWorld(event);
+    }
     if (event->button() == Qt::MiddleButton)
         mInput.MMB = true;
 }

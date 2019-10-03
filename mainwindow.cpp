@@ -173,8 +173,11 @@ void MainWindow::on_Outliner_itemSelectionChanged()
     for(auto& Entity : world->getEntities())
     {
         auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
-        data->parent = -1;
-        data->children.clear();
+        if(data)
+        {
+            data->parent = -1;
+            data->children.clear();
+        }
     }
 
     for (int i = 0; i < ui->Outliner->topLevelItemCount(); ++i)

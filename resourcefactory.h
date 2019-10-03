@@ -13,6 +13,7 @@ public:
 
     static ResourceFactory* instance();
     Mesh loadMesh(std::string filePath);
+    Mesh createLine(std::string filePath, std::vector<Vertex> vertices);
 
 private:
     ResourceFactory() = default;

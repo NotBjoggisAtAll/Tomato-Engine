@@ -89,6 +89,7 @@ private:
 
     std::chrono::high_resolution_clock::time_point mLastTime;
 
+    void fromScreenToWorld(QMouseEvent *event);
 protected:
     //The QWindow that we inherit from has these functions to capture
     // mouse and keyboard. Uncomment to use

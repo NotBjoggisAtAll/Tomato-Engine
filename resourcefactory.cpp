@@ -40,6 +40,22 @@ Mesh ResourceFactory::loadMesh(std::string filePath)
     return currentIt->second;
 }
 
+Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> vertices)
+{
+    mVertices.clear();
+    mIndices.clear();
+    initializeOpenGLFunctions();
+
+    mVertices = vertices;
+
+    openGLVertexBuffers();
+
+    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.mDrawType = GL_LINES;
+    return currentIt->second;
+}
+
 
 void ResourceFactory::openGLVertexBuffers()
 {
