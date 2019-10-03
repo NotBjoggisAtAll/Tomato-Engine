@@ -199,9 +199,6 @@ void RenderWindow::init()
     //********************** Set up camera **********************
     mCurrentCamera = new Camera();
     mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
-    //    mCurrentCamera->yaw(45.f);
-    //    mCurrentCamera->pitch(5.f);
-
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     for(auto& Shader : ShaderManager::instance()->mShaders){
         Shader->setCurrentCamera(mCurrentCamera);
@@ -267,23 +264,16 @@ void RenderWindow::fromScreenToWorld(QMouseEvent* event)
     float y = 1.0f - (2.0f * event->pos().y()) / height();
     float z = 1.0f;
     gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
-
-
     gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
-
     gsl::Matrix4x4 projection_matrix = mCurrentCamera->mProjectionMatrix;
     projection_matrix.inverse();
     gsl::Vector4D ray_eye = projection_matrix * ray_clip;
-
     ray_eye.z = -1.0f;
     ray_eye.w = 0.0f;
-
     gsl::Matrix4x4 view_matrix = mCurrentCamera->mViewMatrix;
     view_matrix.inverse();
-
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
-
     ray_world = ray_world * 50.f;
 
     std::vector<Vertex> vertices;

@@ -21,8 +21,8 @@ Mesh ResourceFactory::loadMesh(std::string filePath)
     if (meshIt != mMeshMap.end())
         return meshIt->second;
 
-     mMeshMap.insert({filePath, Mesh()});
-     currentIt = mMeshMap.find(filePath);
+    mMeshMap.insert({filePath, Mesh()});
+    currentIt = mMeshMap.find(filePath);
 
     if(filePath == "axis")
         createAxis();
@@ -42,6 +42,15 @@ Mesh ResourceFactory::loadMesh(std::string filePath)
 
 Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> vertices)
 {
+    auto meshIt = mMeshMap.find(filePath);
+    if (meshIt != mMeshMap.end())
+    {
+        currentIt = meshIt;
+    }else
+    {
+        mMeshMap.insert({filePath, Mesh()});
+        currentIt = mMeshMap.find(filePath);
+    }
     mVertices.clear();
     mIndices.clear();
     initializeOpenGLFunctions();
@@ -252,7 +261,7 @@ void ResourceFactory::createObject(std::string filePath)
 void ResourceFactory::readTXTFile(std::string filename)
 {
     std::ifstream inn;
-   // std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+    // std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
 
     inn.open(filename);
 
@@ -277,7 +286,7 @@ void ResourceFactory::readTXTFile(std::string filename)
 void ResourceFactory::readOBJFile(std::string filename)
 {
     //Open File
-  //  std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+    //  std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
     std::ifstream fileIn;
     fileIn.open (filename, std::ifstream::in);
     if(!fileIn)
