@@ -16,6 +16,7 @@
 #include "Systems/rendersystem.h"
 #include "Systems/soundsystem.h"
 #include "Systems/movementsystem.h"
+#include "Systems/collisionsystem.h"
 
 #include "Managers/entitymanager.h"
 #include "Managers/shadermanager.h"
