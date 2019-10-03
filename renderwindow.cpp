@@ -56,45 +56,29 @@ void RenderWindow::init()
 {
     //Connect the gameloop timer to the render function:
     connect(mRenderTimer, SIGNAL(timeout()), this, SLOT(render()));
-
     connect(mMainWindow, &MainWindow::spawnObject, this, &RenderWindow::spawnObject);
 
 
     //********************** General OpenGL stuff **********************
 
-    //The OpenGL context has to be set.
-    //The context belongs to the instanse of this class!
     if (!mContext->makeCurrent(this)) {
         qDebug() << "makeCurrent() failed";
         return;
     }
-
-    //just to make sure we don't init several times
-    //used in exposeEvent()
     if (!mInitialized)
         mInitialized = true;
 
-    //must call this to use OpenGL functions
     initializeOpenGLFunctions();
 
-    //Print render version info:
     std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
 
-    //Start the Qt OpenGL debugger
-    //Really helpfull when doing OpenGL
-    //Supported on most Windows machines
-    //reverts to plain glGetError() on Mac and other unsupported PCs
-    // - can be deleted
     startOpenGLDebugger();
 
-    //general OpenGL stuff:
     glEnable(GL_DEPTH_TEST);    //enables depth sorting - must use GL_DEPTH_BUFFER_BIT in glClear
     glEnable(GL_CULL_FACE);     //draws only front side of models - usually what you want -
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f);    //color used in glClear GL_COLOR_BUFFER_BIT
-
-
 
     //**********************  Texture stuff: **********************
 
@@ -102,8 +86,6 @@ void RenderWindow::init()
     mTexture[1] = new Texture("hund.bmp", 1);
     mTexture[2] = new Texture("skybox.bmp", 2);
 
-
-    //Set the textures loaded to a texture unit
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mTexture[0]->id());
     glActiveTexture(GL_TEXTURE1);
@@ -123,10 +105,12 @@ void RenderWindow::init()
     world->registerComponent<Sound>();
     world->registerComponent<EntityData>();
     world->registerComponent<Light>();
+    world->registerComponent<Collision>();
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
     mMovementSystem = world->registerSystem<MovementSystem>();
+    mCollisionSystem = world->registerSystem<CollisionSystem>();
 
     // Setter opp hvilke komponenter de ulike systemene trenger
     Signature renderSign;
@@ -144,6 +128,11 @@ void RenderWindow::init()
     movementSign.set(world->getComponentType<Transform>());
     movementSign.set(world->getComponentType<EntityData>());
     world->setSystemSignature<MovementSystem>(movementSign);
+
+    Signature collisionSign;
+    collisionSign.set(world->getComponentType<Collision>());
+    collisionSign.set(world->getComponentType<EntityData>());
+    world->setSystemSignature<MovementSystem>(collisionSign);
 
     //********************** Making the objects to be drawn **********************
 

@@ -14,6 +14,7 @@ class Shader;
 class MainWindow;
 class SoundSystem;
 class MovementSystem;
+class CollisionSystem;
 class EntityManager;
 
 class ResourceFactory;
@@ -42,6 +43,7 @@ public:
     std::shared_ptr<RenderSystem> mRenderSystem;
     std::shared_ptr<MovementSystem> mMovementSystem;
     std::shared_ptr<SoundSystem> mSoundSystem;
+    std::shared_ptr<CollisionSystem> mCollisionSystem;
 
     World* world;
     ResourceFactory* resourceFactory;

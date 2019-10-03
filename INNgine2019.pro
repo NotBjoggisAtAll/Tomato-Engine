@@ -16,6 +16,7 @@ win32 {
 
 HEADERS += \
     Components/allcomponents.h \
+    Components/collision.h \
     Components/componentArray.h \
     Components/entitydata.h \
     Components/lightcomponent.h \
@@ -38,6 +39,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Systems/collisionsystem.h \
     Systems/movementsystem.h \
     Widgets/soundwidget.h \
     World.h \
@@ -78,6 +80,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
