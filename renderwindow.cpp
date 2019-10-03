@@ -205,15 +205,10 @@ void RenderWindow::init()
     }
 }
 
-///Called each frame - doing the rendering
 void RenderWindow::render()
 {
     handleInput();
-
     mCurrentCamera->update();
-
-    mSoundSystem->update(mCurrentCamera);
-
 
     mTimeStart.restart(); //restart FPS clock
     mContext->makeCurrent(this); //must be called every frame (every time mContext->swapBuffers is called)
@@ -222,16 +217,12 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+    mSoundSystem->update(mCurrentCamera);
     mRenderSystem->render();
 
-    //Calculate framerate before
-    // checkForGLerrors() because that takes a long time
-    // and before swapBuffers(), else it will show the vsync time
+
     calculateFramerate();
-
-
     mContext->swapBuffers(this);
-
 }
 
 void RenderWindow::setCameraSpeed(float value)

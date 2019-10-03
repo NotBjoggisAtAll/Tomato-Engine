@@ -9,8 +9,8 @@ struct Mesh
     GLuint mVBO{0};
     GLuint mEAB{0};
 
-    GLint mVerticeCount{0};
-    GLint mIndiceCount{0};
+    GLuint mVerticeCount{0};
+    GLuint mIndiceCount{0};
     GLenum mDrawType{0};
 
     bool isVisible{true};

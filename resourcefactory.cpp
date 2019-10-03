@@ -75,7 +75,7 @@ void ResourceFactory::openGLVertexBuffers()
     glGenBuffers( 1, &currentIt->second.mVBO );
     glBindBuffer( GL_ARRAY_BUFFER, currentIt->second.mVBO );
 
-    glBufferData( GL_ARRAY_BUFFER, mVertices.size()*sizeof(Vertex), mVertices.data(), GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, static_cast<int>(mVertices.size()*sizeof(Vertex)), mVertices.data(), GL_STATIC_DRAW );
 
     // 1rst attribute buffer : vertices
     glBindBuffer(GL_ARRAY_BUFFER, currentIt->second.mVBO);
@@ -95,7 +95,7 @@ void ResourceFactory::openGLIndexBuffer()
 {
     glGenBuffers(1, &currentIt->second.mEAB);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentIt->second.mEAB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(GLuint), mIndices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<int>(mIndices.size() * sizeof(GLuint)), mIndices.data(), GL_STATIC_DRAW);
 }
 
 void ResourceFactory::createPlane()
@@ -266,11 +266,11 @@ void ResourceFactory::readTXTFile(std::string filename)
     inn.open(filename);
 
     if (inn.is_open()) {
-        int n;
+        unsigned int n;
         Vertex vertex;
         inn >> n;
         mVertices.reserve(n);
-        for (int i=0; i<n; i++) {
+        for (unsigned int i=0; i<n; i++) {
             inn >> vertex;
             mVertices.push_back(vertex);
         }
@@ -405,26 +405,23 @@ void ResourceFactory::readOBJFile(std::string filename)
 
                 if (uv > -1)    //uv present!
                 {
-                    Vertex tempVert(tempVertecies[index], tempNormals[normal], tempUVs[uv]);
+                    Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
+                           tempNormals[static_cast<unsigned int>(normal)],
+                           tempUVs[static_cast<unsigned int>(uv)]);
                     mVertices.push_back(tempVert);
                 }
                 else            //no uv in mesh data, use 0, 0 as uv
                 {
-                    Vertex tempVert(tempVertecies[index], tempNormals[normal], gsl::Vector2D(0.0f, 0.0f));
+                    Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
+                           tempNormals[static_cast<unsigned int>(normal)],
+                           gsl::Vector2D(0.0f, 0.0f));
                     mVertices.push_back(tempVert);
                 }
                 mIndices.push_back(temp_index++);
             }
-
-            //For some reason the winding order is backwards so fixing this by swapping the last two indices
-            //Update: this was because the matrix library was wrong - now it is corrected so this is no longer needed.
-            //            unsigned int back = mIndices.size() - 1;
-            //            std::swap(mIndices.at(back), mIndices.at(back-1));
             continue;
         }
     }
-
-    //beeing a nice boy and closing the file after use
     fileIn.close();
     qDebug() << "Obj file read: " << QString::fromStdString(filename);
 }
