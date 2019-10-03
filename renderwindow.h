@@ -52,9 +52,7 @@ public:
 private slots:
     void render();
 
-    void spawnCube();
-    void spawnSphere();
-    void spawnPlane();
+    void spawnObject(std::string name, std::string path);
 private:
     void init();
     void setCameraSpeed(float value);

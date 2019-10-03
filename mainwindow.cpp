@@ -145,26 +145,27 @@ void MainWindow::updateComponentWidgets(Entity entity)
     Sound* sound = world->getComponent<Sound>(entity).value_or(nullptr);
     if(sound)
         layout->addWidget(new SoundWidget(entity));
+
 }
 
 void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    updateComponentWidgets((item->text(1)).toUInt());
+    updateComponentWidgets((item->text(1)).toInt());
 }
 
 void MainWindow::on_spawnCube_triggered()
 {
-    emit spawnCube();
+    emit spawnObject("Cube","box2.txt");
 }
 
 void MainWindow::on_spawnSphere_triggered()
 {
-    emit spawnSphere();
+    emit spawnObject("Sphere","sphere");
 }
 
 void MainWindow::on_spawnPlane_triggered()
 {
-    emit spawnPlane();
+    emit spawnObject("Plane","plane");
 }
 
 void MainWindow::on_Outliner_itemSelectionChanged()

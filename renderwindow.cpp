@@ -57,9 +57,7 @@ void RenderWindow::init()
     //Connect the gameloop timer to the render function:
     connect(mRenderTimer, SIGNAL(timeout()), this, SLOT(render()));
 
-    connect(mMainWindow, &MainWindow::spawnCube, this, &RenderWindow::spawnCube);
-    connect(mMainWindow, &MainWindow::spawnSphere, this, &RenderWindow::spawnSphere);
-    connect(mMainWindow, &MainWindow::spawnPlane, this, &RenderWindow::spawnPlane);
+    connect(mMainWindow, &MainWindow::spawnObject, this, &RenderWindow::spawnObject);
 
 
     //********************** General OpenGL stuff **********************
@@ -592,36 +590,12 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
 }
 // The stuff below this line should be somewhere else in the future.
 
-void RenderWindow::spawnCube()
+void RenderWindow::spawnObject(std::string name, std::string path)
 {
     auto entity = world->createEntity();
 
-    world->addComponent(entity, EntityData("Cube"));
-    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
-    world->addComponent(entity,Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
-    mMainWindow->addEntityToUi(entity);
-}
-
-void RenderWindow::spawnSphere()
-{
-    auto entity = world->createEntity();
-
-    world->addComponent(entity, EntityData("Sphere"));
-    world->addComponent(entity, resourceFactory->loadMesh("sphere"));
-    world->addComponent(entity,Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
-    mMainWindow->addEntityToUi(entity);
-}
-
-void RenderWindow::spawnPlane()
-{
-    auto entity = world->createEntity();
-
-    world->addComponent(entity, EntityData("Plane"));
-    world->addComponent(entity, resourceFactory->loadMesh("plane"));
+    world->addComponent(entity, EntityData(name));
+    world->addComponent(entity, resourceFactory->loadMesh(path));
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 

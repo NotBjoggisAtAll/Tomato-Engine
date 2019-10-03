@@ -30,10 +30,7 @@ public:
     void addEntityToUi(Entity entity);
 signals:
 
-    void spawnCube();
-    void spawnSphere();
-    void spawnPlane();
-
+    void spawnObject(std::string name, std::string path);
 
 private slots:
     void on_actionToggle_Wireframe_triggered();
