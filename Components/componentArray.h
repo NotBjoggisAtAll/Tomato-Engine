@@ -10,7 +10,7 @@
 struct IComponentArray
 {
     virtual ~IComponentArray() = default;
-     IComponentArray() = default;
+    IComponentArray() = default;
     virtual void entityDestroyed(Entity entity) = 0;
 };
 
@@ -43,6 +43,10 @@ public:
         size_t indexOfRemovedEntity = mEntityToIndexMap[entity];
         size_t indexOfLastElement = mSize - 1;
         mComponentArray[indexOfRemovedEntity] = mComponentArray[indexOfLastElement];
+
+        Entity entityOfLastElement = mIndexToEntityMap[indexOfLastElement];
+        mEntityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
+        mIndexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
 
         mEntityToIndexMap.erase(entity);
         mIndexToEntityMap.erase(indexOfLastElement);
@@ -79,7 +83,7 @@ private:
     std::array<T, MAX_ENTITIES> mComponentArray;
 
     // Map from an entity ID to an array index.
-    std::unordered_map<Entity, size_t> mEntityToIndexMap; //Could use array instead
+    std::unordered_map<Entity, size_t> mEntityToIndexMap;
 
     // Map from an array index to an entity ID.
     std::unordered_map<size_t, Entity> mIndexToEntityMap;
