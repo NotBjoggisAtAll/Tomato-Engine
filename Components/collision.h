@@ -14,11 +14,11 @@ enum class CollisionType
 struct Collision
 {
     Collision(){}
-    Collision(CollisionType type, gsl::Vector3D center, gsl::Vector3D corner) : type_(type), center_(center), corner_(corner) {}
+    Collision(CollisionType type, gsl::Vector3D minVector, gsl::Vector3D maxVector) : type_(type), minVector_(minVector), maxVector_(maxVector) {}
 
     CollisionType type_ = CollisionType::NONE;
-    gsl::Vector3D center_ = gsl::Vector3D(0);
-    gsl::Vector3D corner_ = gsl::Vector3D(0);
+    gsl::Vector3D minVector_ = gsl::Vector3D(0);
+    gsl::Vector3D maxVector_ = gsl::Vector3D(0);
 };
 
 #endif // COLLISION_H

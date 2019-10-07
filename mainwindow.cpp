@@ -108,7 +108,6 @@ void MainWindow::init()
 
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 
-
     world = getWorld();
 
 }
@@ -122,7 +121,6 @@ void MainWindow::on_actionExit_triggered()
 {
     close();
 }
-
 
 void MainWindow::updateComponentWidgets(Entity entity)
 {

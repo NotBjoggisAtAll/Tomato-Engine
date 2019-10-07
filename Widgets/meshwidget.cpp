@@ -39,8 +39,9 @@ void MeshWidget::on_changeMeshButton_clicked()
 
     if(!fileName.empty())
     {
+        std::pair<Mesh, Collision> meshData = ResourceFactory::instance()->loadMesh(fileName);
         qDebug() << QString::fromStdString(fileName);
         getWorld()->removeComponent<Mesh>(entity);
-        getWorld()->addComponent(entity, ResourceFactory::instance()->loadMesh(fileName));
+        getWorld()->addComponent(entity, meshData.first);
     }
 }

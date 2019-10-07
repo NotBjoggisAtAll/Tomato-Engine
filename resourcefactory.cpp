@@ -14,14 +14,15 @@ ResourceFactory *ResourceFactory::instance()
     return instance_;
 }
 
-Mesh ResourceFactory::loadMesh(std::string filePath)
+std::pair<Mesh,Collision> ResourceFactory::loadMesh(std::string filePath)
 {
+    currentIt = mMeshMap.end();
 
     auto meshIt = mMeshMap.find(filePath);
     if (meshIt != mMeshMap.end())
         return meshIt->second;
 
-    mMeshMap.insert({filePath, Mesh()});
+    mMeshMap.insert({filePath, {Mesh(),Collision()}});
     currentIt = mMeshMap.find(filePath);
 
     if(filePath == "axis")
@@ -48,7 +49,7 @@ Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> verti
         currentIt = meshIt;
     }else
     {
-        mMeshMap.insert({filePath, Mesh()});
+        mMeshMap.insert({filePath, {Mesh(),Collision()}});
         currentIt = mMeshMap.find(filePath);
     }
     mVertices.clear();
@@ -59,26 +60,53 @@ Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> verti
 
     openGLVertexBuffers();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.mDrawType = GL_LINES;
-    return currentIt->second;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.mDrawType = GL_LINES;
+    return currentIt->second.first;
+}
+
+void ResourceFactory::createCollision()
+{
+    gsl::Vector3D minVector = mVertices.at(0).mXYZ;
+    gsl::Vector3D maxVector = mVertices.at(0).mXYZ;
+
+    for(auto const& vertex : mVertices)
+    {
+        if(vertex.mXYZ.x < minVector.x)
+            minVector.x = vertex.mXYZ.x;
+        if(vertex.mXYZ.y < minVector.y)
+            minVector.y = vertex.mXYZ.y;
+        if(vertex.mXYZ.z < minVector.z)
+            minVector.z = vertex.mXYZ.z;
+
+        if(vertex.mXYZ.x > maxVector.x)
+            maxVector.x = vertex.mXYZ.x;
+        if(vertex.mXYZ.y > maxVector.y)
+            maxVector.y = vertex.mXYZ.y;
+        if(vertex.mXYZ.z > maxVector.z)
+            maxVector.z = vertex.mXYZ.z;
+    }
+    qDebug() << "Min og Max vector " << minVector << "\n" << maxVector;
+     Collision(CollisionType::AABB,minVector,maxVector);
 }
 
 
 void ResourceFactory::openGLVertexBuffers()
 {
-    glGenVertexArrays( 1, &currentIt->second.mVAO );
-    glBindVertexArray( currentIt->second.mVAO );
+    glGenVertexArrays( 1, &currentIt->second.first.mVAO );
+    glBindVertexArray( currentIt->second.first.mVAO );
+
+    GLuint mVBO;
 
     //Vertex Buffer Object to hold vertices - VBO
-    glGenBuffers( 1, &currentIt->second.mVBO );
-    glBindBuffer( GL_ARRAY_BUFFER, currentIt->second.mVBO );
+    glGenBuffers( 1, &mVBO );
+    glBindBuffer( GL_ARRAY_BUFFER, mVBO );
 
     glBufferData( GL_ARRAY_BUFFER, static_cast<int>(mVertices.size()*sizeof(Vertex)), mVertices.data(), GL_STATIC_DRAW );
 
     // 1rst attribute buffer : vertices
-    glBindBuffer(GL_ARRAY_BUFFER, currentIt->second.mVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex), (GLvoid*)nullptr);
     glEnableVertexAttribArray(0);
 
@@ -93,8 +121,9 @@ void ResourceFactory::openGLVertexBuffers()
 
 void ResourceFactory::openGLIndexBuffer()
 {
-    glGenBuffers(1, &currentIt->second.mEAB);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentIt->second.mEAB);
+    GLuint mEAB;
+    glGenBuffers(1, &mEAB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEAB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<int>(mIndices.size() * sizeof(GLuint)), mIndices.data(), GL_STATIC_DRAW);
 }
 
@@ -120,9 +149,9 @@ void ResourceFactory::createPlane()
 
     openGLVertexBuffers();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 
@@ -141,9 +170,9 @@ void ResourceFactory::createSphere()
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 
 }
@@ -206,9 +235,9 @@ void ResourceFactory::createSkybox()
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.mDrawType = GL_TRIANGLES;
 
     glBindVertexArray(0);
 }
@@ -229,9 +258,9 @@ void ResourceFactory::createAxis()
     //set up buffers
     openGLVertexBuffers();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = 0;
-    currentIt->second.mDrawType = GL_LINES;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = 0;
+    currentIt->second.first.mDrawType = GL_LINES;
 
     glBindVertexArray(0);
 }
@@ -248,13 +277,16 @@ void ResourceFactory::createObject(std::string filePath)
     else if(filePath.find(".txt") != std::string::npos)
         readTXTFile(filePath);
 
+
+    createCollision();
+
     //set up buffers
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.mDrawType = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 

@@ -2,25 +2,29 @@
 #define RESOURCEFACTORY_H
 
 #include <QOpenGLFunctions_4_1_Core>
-#include "Components/allcomponents.h"
+#include "Components/meshcomponent.h"
+#include "Components/collision.h"
 #include <map>
 #include <vector>
 #include "vertex.h"
+#include <utility>
 
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:
 
     static ResourceFactory* instance();
-    Mesh loadMesh(std::string filePath);
+    std::pair<Mesh, Collision> loadMesh(std::string filePath);
+
     Mesh createLine(std::string filePath, std::vector<Vertex> vertices);
 
 private:
     ResourceFactory() = default;
 
+    void createCollision();
     //Used to check if the mesh is already loaded from file
-    std::map<std::string, Mesh> mMeshMap; //string - filepath, Mesh - Meshdata
-    std::map<std::string, Mesh>::iterator currentIt{};
+    std::map<std::string, std::pair<Mesh, Collision>> mMeshMap; //string - filepath, Mesh - Meshdata, Collision - CollisionData
+    std::map<std::string, std::pair<Mesh, Collision>>::iterator currentIt{};
 
     void readOBJFile(std::string filename);
     std::vector<Vertex> mVertices;

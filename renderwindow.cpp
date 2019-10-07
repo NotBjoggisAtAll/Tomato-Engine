@@ -139,25 +139,29 @@ void RenderWindow::init()
 
     Entity entity = world->createEntity();
 
+    std::pair<Mesh, Collision> meshData = resourceFactory->loadMesh("axis");
     world->addComponent(entity, EntityData("Axis"));
-    world->addComponent(entity, resourceFactory->loadMesh("axis"));
+    world->addComponent(entity, meshData.first);
     world->addComponent(entity, Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
     entity = world->createEntity();
 
+    meshData = resourceFactory->loadMesh("skybox");
     world->addComponent(entity, EntityData("Skybox"));
-    world->addComponent(entity, resourceFactory->loadMesh("skybox"));
+    world->addComponent(entity, meshData.first);
     world->addComponent(entity, Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
 
     auto transform = world->getComponent<Transform>(entity).value();
     transform->scale = {15.f,15.f,15.f};
 
+
     entity = world->createEntity();
 
+    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
     world->addComponent(entity, EntityData("Box"));
-    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt"));
+    world->addComponent(entity, meshData.first);
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     world->addComponent(entity, Transform());
 
@@ -167,8 +171,9 @@ void RenderWindow::init()
 
     entity = world->createEntity();
 
+    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
     world->addComponent(entity, EntityData("Monkey"));
-    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj"));
+    world->addComponent(entity, meshData.first);
     world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
     world->addComponent(entity, Transform());
 
@@ -184,12 +189,12 @@ void RenderWindow::init()
 
 
     entity = world->createEntity();
-
+    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
     world->addComponent(entity, EntityData("Light Source"));
     world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     world->addComponent(entity, Light());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    world->addComponent(entity, resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt"));
+    world->addComponent(entity, meshData.first);
     ShaderManager::instance()->phongShader()->setLight(entity);
 
     //********************** System stuff **********************
@@ -240,8 +245,9 @@ void RenderWindow::spawnObject(std::string name, std::string path)
 {
     auto entity = world->createEntity();
 
+    std::pair<Mesh, Collision> meshData = resourceFactory->loadMesh(path);
     world->addComponent(entity, EntityData(name));
-    world->addComponent(entity, resourceFactory->loadMesh(path));
+    world->addComponent(entity, meshData.first);
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
 
@@ -267,18 +273,18 @@ void RenderWindow::fromScreenToWorld(QMouseEvent* event)
     ray_world.normalize();
     ray_world = ray_world * 50.f;
 
-    std::vector<Vertex> vertices;
-    vertices.reserve(2);
-    Vertex vertex;
-    vertex.set_xyz(mCurrentCamera->position());
-    vertices.push_back(vertex);
-    vertex.set_xyz(ray_world);
-    vertices.push_back(vertex);
-    Entity entity = world->createEntity();
+//    std::vector<Vertex> vertices;
+//    vertices.reserve(2);
+//    Vertex vertex;
+//    vertex.set_xyz(mCurrentCamera->position());
+//    vertices.push_back(vertex);
+//    vertex.set_xyz(ray_world);
+//    vertices.push_back(vertex);
+//    Entity entity = world->createEntity();
 
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
-    world->addComponent(entity, resourceFactory->createLine("line",vertices));
+//    world->addComponent(entity, Transform());
+//    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
+//    world->addComponent(entity, resourceFactory->createLine("line",vertices));
 }
 
 
