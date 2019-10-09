@@ -2,6 +2,7 @@
 #define ENTITYDATA_H
 
 #include "types.h"
+#include <vector>
 
 struct EntityData{
 

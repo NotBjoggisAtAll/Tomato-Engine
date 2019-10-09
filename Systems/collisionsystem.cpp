@@ -9,3 +9,8 @@ void CollisionSystem::checkCollision()
 {
 
 }
+
+void CollisionSystem::checkMouseCollision(gsl::Vector3D mousePosition)
+{
+
+}

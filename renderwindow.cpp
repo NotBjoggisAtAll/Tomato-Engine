@@ -133,6 +133,7 @@ void RenderWindow::init()
     Signature collisionSign;
     collisionSign.set(world->getComponentType<Collision>());
     collisionSign.set(world->getComponentType<EntityData>());
+    collisionSign.set(world->getComponentType<Transform>());
     world->setSystemSignature<MovementSystem>(collisionSign);
 
     //********************** Making the objects to be drawn **********************
@@ -271,8 +272,9 @@ void RenderWindow::fromScreenToWorld(QMouseEvent* event)
     view_matrix.inverse();
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
-    ray_world = ray_world * 50.f;
+//    ray_world = ray_world;
 
+    qDebug() << ray_world;
 //    std::vector<Vertex> vertices;
 //    vertices.reserve(2);
 //    Vertex vertex;
