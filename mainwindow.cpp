@@ -119,7 +119,10 @@ void MainWindow::on_actionToggle_Wireframe_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    close();
+    if(world->bGameRunning)
+        stopGame();
+    else
+        close();
 }
 
 void MainWindow::updateComponentWidgets(Entity entity)
@@ -201,10 +204,43 @@ void MainWindow::setupChildren(QTreeWidgetItem* parent)
     }
 }
 
-void MainWindow::on_playButton_clicked()
+void MainWindow::on_actionPlay_triggered()
 {
-    QString buttonText = world->bGameRunning ? "Play" : "Stop";
-    ui->playButton->setText(buttonText);
+    updatePlayButtons();
     world->bGameRunning = !world->bGameRunning;
+    if(world->bGameRunning)
+    {
+        ui->leftPanel->hide();
+        ui->rightPanel->hide();
+    }
+    else
+    {
+        ui->leftPanel->show();
+        ui->rightPanel->show();
+    }
 
+}
+
+
+void MainWindow::on_actionPlay_in_Editor_triggered()
+{
+    updatePlayButtons();
+    world->bGameRunning = !world->bGameRunning;
+}
+
+void MainWindow::updatePlayButtons()
+{
+    QString buttonText = world->bGameRunning ? "Play (Fullscreen)" : "Stop";
+    ui->actionPlay->setText(buttonText);
+
+    buttonText = world->bGameRunning ? "Play in Editor" : "Stop";
+    ui->actionPlay_in_Editor->setText(buttonText);
+}
+
+void MainWindow::stopGame()
+{
+    updatePlayButtons();
+    world->bGameRunning = false;
+    ui->leftPanel->show();
+    ui->rightPanel->show();
 }

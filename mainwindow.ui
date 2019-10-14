@@ -23,7 +23,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="verticalWidget" native="true">
+      <widget class="QWidget" name="leftPanel" native="true">
        <property name="maximumSize">
         <size>
          <width>200</width>
@@ -69,13 +69,6 @@
             </property>
            </spacer>
           </item>
-          <item>
-           <widget class="QPushButton" name="playButton">
-            <property name="text">
-             <string>Play</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -83,7 +76,7 @@
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="OpenGLLayout"/>
       </widget>
-      <widget class="QWidget" name="Components" native="true">
+      <widget class="QWidget" name="rightPanel" native="true">
        <property name="maximumSize">
         <size>
          <width>350</width>
@@ -108,7 +101,7 @@
              <x>0</x>
              <y>0</y>
              <width>330</width>
-             <height>661</height>
+             <height>650</height>
             </rect>
            </property>
           </widget>
@@ -150,8 +143,16 @@
     </property>
     <addaction name="actionToggle_Wireframe"/>
    </widget>
+   <widget class="QMenu" name="menuRun">
+    <property name="title">
+     <string>Run</string>
+    </property>
+    <addaction name="actionPlay"/>
+    <addaction name="actionPlay_in_Editor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuRun"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -160,6 +161,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionPlay"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionToggle_Wireframe">
@@ -194,6 +196,19 @@
   <action name="spawnPlane">
    <property name="text">
     <string>Plane</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="text">
+    <string>Play (Fullscreen)</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+P</string>
+   </property>
+  </action>
+  <action name="actionPlay_in_Editor">
+   <property name="text">
+    <string>Play in Editor</string>
    </property>
   </action>
  </widget>

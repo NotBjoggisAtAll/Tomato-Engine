@@ -28,6 +28,7 @@ public:
     void updateComponentWidgets(Entity entity);
 
     void addEntityToUi(Entity entity);
+    void stopGame();
 signals:
 
     void spawnObject(std::string name, std::string path);
@@ -46,7 +47,9 @@ private slots:
 
     void on_Outliner_itemSelectionChanged();
 
-    void on_playButton_clicked();
+    void on_actionPlay_triggered();
+
+    void on_actionPlay_in_Editor_triggered();
 
 private:
     void init();
@@ -61,6 +64,7 @@ private:
     QWidget* widget{nullptr};
 
     void setupChildren(QTreeWidgetItem *parent);
+    void updatePlayButtons();
 };
 
 #endif // MAINWINDOW_H
