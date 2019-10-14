@@ -8,8 +8,6 @@
 class QWidget;
 class RenderWindow;
 class QTreeWidgetItem;
-class World;
-
 
 namespace Ui {
 class MainWindow;
@@ -28,13 +26,13 @@ public:
     void updateComponentWidgets(Entity entity);
 
     void addEntityToUi(Entity entity);
-    void stopGame();
 signals:
 
     void spawnObject(std::string name, std::string path);
 
 private slots:
     void on_actionToggle_Wireframe_triggered();
+
     void on_actionExit_triggered();
 
     void on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column);
@@ -52,19 +50,18 @@ private slots:
     void on_actionPlay_in_Editor_triggered();
 
 private:
-    void init();
 
     Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
-
-    World* world{};
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
 
     void setupChildren(QTreeWidgetItem *parent);
     void updatePlayButtons();
+    void stopGame();
+    void showPanels();
 };
 
 #endif // MAINWINDOW_H

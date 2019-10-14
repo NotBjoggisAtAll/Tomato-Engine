@@ -16,7 +16,34 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    init();
+    QSurfaceFormat format;
+
+    format.setVersion(4, 1);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+    format.setOption(QSurfaceFormat::DebugContext);
+    format.setDepthBufferSize(24);
+    format.setSamples(8);
+    format.setSwapInterval(0); //Turn off VSync
+
+    mRenderWindow = new RenderWindow(format, this);
+    if (!mRenderWindow->context()) {
+        qDebug() << "Failed to create context. Can not continue. Quits application!";
+        delete mRenderWindow;
+        return;
+    }
+
+    mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
+    ui->OpenGLLayout->addWidget(mRenderWindowContainer);
+
+    mRenderWindowContainer->setFocus();
+
+    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+
+    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->scrollArea->setWidgetResizable(true);
+
+    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 }
 
 MainWindow::~MainWindow()
@@ -28,10 +55,10 @@ MainWindow::~MainWindow()
 void MainWindow::DisplayEntitesInOutliner()
 {
     ui->Outliner->clear();
-    for(auto& Entity : world->getEntities())
+    for(auto& Entity : getWorld()->getEntities())
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
-        auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
+        auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
         item->setText(0, QString::fromStdString(data->name));
         item->setText(1, QString::number(Entity));
         ui->Outliner->addTopLevelItem(item);
@@ -41,75 +68,10 @@ void MainWindow::DisplayEntitesInOutliner()
 void MainWindow::addEntityToUi(Entity entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
-    auto data = world->getComponent<EntityData>(entity).value_or(nullptr);
+    auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
     item->setText(0, QString::fromStdString(data->name));
     item->setText(1, QString::number(entity));
     ui->Outliner->addTopLevelItem(item);
-}
-
-void MainWindow::init()
-{
-    //This will contain the setup of the OpenGL surface we will render into
-    QSurfaceFormat format;
-
-    //OpenGL v 4.1 - (Ole Flatens Mac does not support higher than this...)
-    //you can try other versions, but then have to update RenderWindow and Shader
-    //to inherit from other than QOpenGLFunctions_4_1_Core
-    format.setVersion(4, 1);
-    //Using the main profile for OpenGL - no legacy code permitted
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    //A QSurface can be other types that OpenGL
-    format.setRenderableType(QSurfaceFormat::OpenGL);
-
-    //This should activate OpenGL debug Context used in RenderWindow::startOpenGLDebugger().
-    //This line (and the startOpenGLDebugger() and checkForGLerrors() in RenderWindow class)
-    //can be deleted, but it is nice to have OpenGL debug info!
-    format.setOption(QSurfaceFormat::DebugContext);
-
-    // The renderer will need a depth buffer - (not requiered to set in glfw-tutorials)
-    format.setDepthBufferSize(24);
-
-    //Set the number of samples used for multisampling
-    format.setSamples(8);
-
-    //Turn off VSync. If this is set to 1, VSync is on - default behaviour
-    format.setSwapInterval(0);
-
-    //Just prints out what OpenGL format we will get
-    // - this can be deleted
-    qDebug() << "Requesting surface format: " << format;
-
-    //We have a format for the OpenGL window, so let's make it:
-    mRenderWindow = new RenderWindow(format, this);
-    //Check if renderwindow did initialize, else prints error and quit
-    if (!mRenderWindow->context()) {
-        qDebug() << "Failed to create context. Can not continue. Quits application!";
-        delete mRenderWindow;
-        return;
-    }
-
-    //The OpenGL RenderWindow got made, so continuing the setup:
-    //We put the RenderWindow inside a QWidget so we can put in into a
-    //layout that is made in the .ui-file
-    mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
-    //OpenGLLayout is made in the .ui-file!
-    ui->OpenGLLayout->addWidget(mRenderWindowContainer);
-
-    //sets the keyboard input focus to the RenderWindow when program starts
-    // - can be deleted, but then you have to click inside the renderwindow to get the focus
-    mRenderWindowContainer->setFocus();
-
-    //Set size of program in % of available screen
-    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
-
-
-    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ui->scrollArea->setWidgetResizable(true);
-
-    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
-
-    world = getWorld();
-
 }
 
 void MainWindow::on_actionToggle_Wireframe_triggered()
@@ -119,7 +81,7 @@ void MainWindow::on_actionToggle_Wireframe_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    if(world->bGameRunning)
+    if(getWorld()->bGameRunning)
         stopGame();
     else
         close();
@@ -135,15 +97,15 @@ void MainWindow::updateComponentWidgets(Entity entity)
     QVBoxLayout* layout = new QVBoxLayout();
     widget->setLayout(layout);
 
-    Transform* transform = world->getComponent<Transform>(entity).value_or(nullptr);
+    Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
     if(transform)
         layout->addWidget(new TransformWidget(entity, mRenderWindow->mMovementSystem));
 
-    Mesh* mesh = world->getComponent<Mesh>(entity).value_or(nullptr);
+    Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value_or(nullptr);
     if(mesh)
         layout->addWidget(new MeshWidget(entity));
 
-    Sound* sound = world->getComponent<Sound>(entity).value_or(nullptr);
+    Sound* sound = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
     if(sound)
         layout->addWidget(new SoundWidget(entity));
 
@@ -171,9 +133,9 @@ void MainWindow::on_spawnPlane_triggered()
 
 void MainWindow::on_Outliner_itemSelectionChanged()
 {
-    for(auto& Entity : world->getEntities())
+    for(auto& Entity : getWorld()->getEntities())
     {
-        auto data = world->getComponent<EntityData>(Entity).value_or(nullptr);
+        auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
         if(data)
         {
             data->parent = -1;
@@ -190,11 +152,11 @@ void MainWindow::on_Outliner_itemSelectionChanged()
 void MainWindow::setupChildren(QTreeWidgetItem* parent)
 {
 
-    auto parentData = world->getComponent<EntityData>(parent->text(1).toInt()).value_or(nullptr);
+    auto parentData = getWorld()->getComponent<EntityData>(parent->text(1).toInt()).value_or(nullptr);
 
     for(int j = 0; j < parent->childCount(); ++j)
     {
-        auto childData = world->getComponent<EntityData>((parent->child(j)->text(1).toInt())).value_or(nullptr);
+        auto childData = getWorld()->getComponent<EntityData>((parent->child(j)->text(1).toInt())).value_or(nullptr);
         if(childData)
         {
             parentData->children.push_back((parent->child(j)->text(1).toInt()));
@@ -204,43 +166,46 @@ void MainWindow::setupChildren(QTreeWidgetItem* parent)
     }
 }
 
+void MainWindow::showPanels()
+{
+    ui->leftPanel->show();
+    ui->rightPanel->show();
+}
+
 void MainWindow::on_actionPlay_triggered()
 {
     updatePlayButtons();
-    world->bGameRunning = !world->bGameRunning;
-    if(world->bGameRunning)
+    if(getWorld()->bGameRunning)
+        stopGame();
+    else
     {
+        getWorld()->bGameRunning = true;
         ui->leftPanel->hide();
         ui->rightPanel->hide();
     }
-    else
-    {
-        ui->leftPanel->show();
-        ui->rightPanel->show();
-    }
-
 }
-
 
 void MainWindow::on_actionPlay_in_Editor_triggered()
 {
     updatePlayButtons();
-    world->bGameRunning = !world->bGameRunning;
+    if(getWorld()->bGameRunning)
+        stopGame();
+    else
+        getWorld()->bGameRunning = true;
 }
 
 void MainWindow::updatePlayButtons()
 {
-    QString buttonText = world->bGameRunning ? "Play (Fullscreen)" : "Stop";
+    QString buttonText = getWorld()->bGameRunning ? "Play (Fullscreen)" : "Stop";
     ui->actionPlay->setText(buttonText);
 
-    buttonText = world->bGameRunning ? "Play in Editor" : "Stop";
+    buttonText = getWorld()->bGameRunning ? "Play in Editor" : "Stop";
     ui->actionPlay_in_Editor->setText(buttonText);
 }
 
 void MainWindow::stopGame()
 {
     updatePlayButtons();
-    world->bGameRunning = false;
-    ui->leftPanel->show();
-    ui->rightPanel->show();
+    getWorld()->bGameRunning = false;
+    showPanels();
 }
