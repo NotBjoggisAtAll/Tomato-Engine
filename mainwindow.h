@@ -26,8 +26,10 @@ public:
     void updateComponentWidgets(Entity entity);
 
     void addEntityToUi(Entity entity);
+    void playGame();
 signals:
-
+    void playGame_signal();
+    void stopGame_signal();
     void spawnObject(std::string name, std::string path);
 
 private slots:

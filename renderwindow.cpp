@@ -52,12 +52,13 @@ RenderWindow::~RenderWindow()
     SoundManager::instance()->cleanUp();
 }
 
-/// Sets up the general OpenGL stuff and the buffers needed to render a triangle
 void RenderWindow::init()
 {
     //Connect the gameloop timer to the render function:
     connect(mRenderTimer, SIGNAL(timeout()), this, SLOT(render()));
     connect(mMainWindow, &MainWindow::spawnObject, this, &RenderWindow::spawnObject);
+    connect(mMainWindow, &MainWindow::playGame_signal, this, &RenderWindow::playGame);
+    connect(mMainWindow, &MainWindow::stopGame_signal, this, &RenderWindow::stopGame);
 
 
     //********************** General OpenGL stuff **********************
@@ -203,12 +204,14 @@ void RenderWindow::init()
     mMainWindow->DisplayEntitesInOutliner();
 
     //********************** Set up camera **********************
-    mCurrentCamera = new Camera();
-    mCurrentCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
-    //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
-    for(auto& Shader : ShaderManager::instance()->mShaders){
-        Shader->setCurrentCamera(mCurrentCamera);
-    }
+    mEditorCamera = new Camera();
+    mEditorCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
+
+
+    mGameCamera = new Camera();
+    mGameCamera->setPosition(gsl::Vector3D(0));
+
+    updateCamera(mEditorCamera);
 }
 
 void RenderWindow::render()
@@ -255,6 +258,26 @@ void RenderWindow::spawnObject(std::string name, std::string path)
     mMainWindow->addEntityToUi(entity);
 }
 
+void RenderWindow::updateCamera(Camera *newCamera)
+{
+    mCurrentCamera = newCamera;
+
+    //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
+    for(auto& Shader : ShaderManager::instance()->mShaders){
+        Shader->setCurrentCamera(mCurrentCamera);
+    }
+}
+
+void RenderWindow::playGame()
+{
+    updateCamera(mGameCamera);
+}
+
+void RenderWindow::stopGame()
+{
+    updateCamera(mEditorCamera);
+}
+
 void RenderWindow::fromScreenToWorld(QMouseEvent* event)
 {
 
@@ -272,21 +295,21 @@ void RenderWindow::fromScreenToWorld(QMouseEvent* event)
     view_matrix.inverse();
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
-//    ray_world = ray_world;
+    //    ray_world = ray_world;
 
     qDebug() << ray_world;
-//    std::vector<Vertex> vertices;
-//    vertices.reserve(2);
-//    Vertex vertex;
-//    vertex.set_xyz(mCurrentCamera->position());
-//    vertices.push_back(vertex);
-//    vertex.set_xyz(ray_world);
-//    vertices.push_back(vertex);
-//    Entity entity = world->createEntity();
+    //    std::vector<Vertex> vertices;
+    //    vertices.reserve(2);
+    //    Vertex vertex;
+    //    vertex.set_xyz(mCurrentCamera->position());
+    //    vertices.push_back(vertex);
+    //    vertex.set_xyz(ray_world);
+    //    vertices.push_back(vertex);
+    //    Entity entity = world->createEntity();
 
-//    world->addComponent(entity, Transform());
-//    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
-//    world->addComponent(entity, resourceFactory->createLine("line",vertices));
+    //    world->addComponent(entity, Transform());
+    //    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
+    //    world->addComponent(entity, resourceFactory->createLine("line",vertices));
 }
 
 
@@ -613,6 +636,8 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     }
     mAspectratio = static_cast<float>(width()) / height();
     //    qDebug() << mAspectratio;
-    mCurrentCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 1.f, 100.f);
+    mCurrentCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    mEditorCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    mGameCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
     //    qDebug() << mCamera.mProjectionMatrix;
 }

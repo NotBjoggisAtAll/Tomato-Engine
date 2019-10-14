@@ -179,7 +179,7 @@ void MainWindow::on_actionPlay_triggered()
         stopGame();
     else
     {
-        getWorld()->bGameRunning = true;
+        playGame();
         ui->leftPanel->hide();
         ui->rightPanel->hide();
     }
@@ -191,7 +191,7 @@ void MainWindow::on_actionPlay_in_Editor_triggered()
     if(getWorld()->bGameRunning)
         stopGame();
     else
-        getWorld()->bGameRunning = true;
+        playGame();
 }
 
 void MainWindow::updatePlayButtons()
@@ -203,8 +203,15 @@ void MainWindow::updatePlayButtons()
     ui->actionPlay_in_Editor->setText(buttonText);
 }
 
+void MainWindow::playGame()
+{
+    emit playGame_signal();
+    getWorld()->bGameRunning = true;
+}
+
 void MainWindow::stopGame()
 {
+    emit stopGame_signal();
     updatePlayButtons();
     getWorld()->bGameRunning = false;
     showPanels();

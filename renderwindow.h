@@ -55,6 +55,9 @@ private slots:
     void render();
 
     void spawnObject(std::string name, std::string path);
+
+    void playGame();
+    void stopGame();
 private:
     void init();
     void setCameraSpeed(float value);
@@ -65,6 +68,8 @@ private:
     Texture *mTexture[4]{nullptr}; //We can hold 4 textures
 
     Camera *mCurrentCamera{nullptr};
+    Camera* mEditorCamera = nullptr;
+    Camera *mGameCamera{nullptr};
 
     bool mWireframe{false};
 
@@ -92,6 +97,8 @@ private:
     std::chrono::high_resolution_clock::time_point mLastTime;
 
     void fromScreenToWorld(QMouseEvent *event);
+    void updateCamera(Camera* newCamera);
+    
 protected:
     //The QWindow that we inherit from has these functions to capture
     // mouse and keyboard. Uncomment to use
