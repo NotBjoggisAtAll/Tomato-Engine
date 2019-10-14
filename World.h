@@ -107,6 +107,8 @@ public:
         mSystemManager->setSignature<T>(signature);
     }
 
+    bool bGameRunning = false;
+
 private:
 
     static World* instance;

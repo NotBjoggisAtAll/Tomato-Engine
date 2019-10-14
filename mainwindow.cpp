@@ -200,3 +200,11 @@ void MainWindow::setupChildren(QTreeWidgetItem* parent)
         }
     }
 }
+
+void MainWindow::on_playButton_clicked()
+{
+    QString buttonText = world->bGameRunning ? "Play" : "Stop";
+    ui->playButton->setText(buttonText);
+    world->bGameRunning = !world->bGameRunning;
+
+}

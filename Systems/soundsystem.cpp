@@ -18,23 +18,20 @@ SoundSystem::SoundSystem()
 // TODO Need to find a way to not send in the camera
 void SoundSystem::update(Camera* currCamera)
 {
-    // Updates listener location
-    gsl::Vector3D cameraPos{currCamera->position().getX(),
-                currCamera->position().getY(),
-                currCamera->position().getZ()};
+    if(!world->bGameRunning)
+    {
+        for(auto const& entity : mEntities)
+        {
+            auto sound = world->getComponent<Sound>(entity).value();
+            sound->audio->stop();
+        }
+        return;
+    }
 
-    gsl::Vector3D cameraForward{currCamera->forward().getX(),
-                currCamera->forward().getY(),
-                currCamera->forward().getZ()};
-
-    gsl::Vector3D cameraUp{currCamera->up().getX(),
-                currCamera->up().getY(),
-                currCamera->up().getZ()};
-
-    SoundManager::instance()->updateListener(cameraPos,
+    SoundManager::instance()->updateListener(currCamera->position(),
     {},
-                                             cameraForward,
-                                             cameraUp);
+                                             currCamera->forward(),
+                                             currCamera->up());
 
     for(auto const& entity : mEntities)
     {
@@ -45,8 +42,6 @@ void SoundSystem::update(Camera* currCamera)
 
         //For now loops all the sounds - This is going to change
         if(!sound->audio->isPlaying())
-        {
             sound->audio->play();
-        }
     }
 }

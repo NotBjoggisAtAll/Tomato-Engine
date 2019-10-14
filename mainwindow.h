@@ -46,6 +46,8 @@ private slots:
 
     void on_Outliner_itemSelectionChanged();
 
+    void on_playButton_clicked();
+
 private:
     void init();
 
