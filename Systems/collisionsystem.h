@@ -16,6 +16,7 @@ public:
     void checkCollision();
     Entity checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection);
 
+
 private:
     bool intersect(Collision *collision, Transform *transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, float &distance);
 

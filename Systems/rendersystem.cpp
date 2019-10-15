@@ -48,8 +48,8 @@ void RenderSystem::render()
 
         if(mesh->mIndiceCount > 0)
             glDrawElements(mesh->mDrawType, mesh->mIndiceCount, GL_UNSIGNED_INT, nullptr);
+
         else
             glDrawArrays(mesh->mDrawType, 0, mesh->mVerticeCount);
-
     }
 }

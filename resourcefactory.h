@@ -16,7 +16,7 @@ public:
     static ResourceFactory* instance();
     std::pair<Mesh, Collision> loadMesh(std::string filePath);
 
-    Mesh createLine(std::string filePath, std::vector<Vertex> vertices);
+    Mesh createLine(std::string filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
 private:
     ResourceFactory() = default;

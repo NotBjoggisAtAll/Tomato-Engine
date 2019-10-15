@@ -99,6 +99,8 @@ private:
     void raycastFromMouse(QMouseEvent *event);
     void updateCamera(Camera* newCamera);
     
+    void updateCollisionOutline(Entity newEntity);
+    Entity lastEntityCollision = -1;
 protected:
     //The QWindow that we inherit from has these functions to capture
     // mouse and keyboard. Uncomment to use

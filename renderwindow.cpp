@@ -180,18 +180,18 @@ void RenderWindow::init()
     transform = world->getComponent<Transform>(entity).value();
     transform->position = gsl::Vector3D(1.1f,0.f,0.f);
 
-    //    entity = world->createEntity();
+    entity = world->createEntity();
 
-    ////    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
-    ////    world->addComponent(entity, EntityData("Monkey"));
-    ////    world->addComponent(entity, meshData.first);
-    ////    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
-    ////    world->addComponent(entity, Transform());
-    ////    world->addComponent(entity, meshData.second);
+    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
+    world->addComponent(entity, EntityData("Monkey"));
+    world->addComponent(entity, meshData.first);
+    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    world->addComponent(entity, Transform());
+    world->addComponent(entity, meshData.second);
 
-    //    transform = world->getComponent<Transform>(entity).value();
-    //    transform->scale = {0.5f, 0.5f, 0.5f};
-    //    transform->position = {3.f, 2.f, -2.f};
+    transform = world->getComponent<Transform>(entity).value();
+    transform->scale = {0.5f, 0.5f, 0.5f};
+    transform->position = {3.f, 2.f, -2.f};
 
     entity = world->createEntity();
 
@@ -309,7 +309,82 @@ void RenderWindow::raycastFromMouse(QMouseEvent* event)
 
     Entity entityPicked = mCollisionSystem->checkMouseCollision(mCurrentCamera->position(),ray_world);
 
-        mMainWindow->updateRightPanel(entityPicked);
+    mMainWindow->updateRightPanel(entityPicked);
+
+    //Move this to another place
+    updateCollisionOutline(entityPicked);
+
+}
+void RenderWindow::updateCollisionOutline(Entity newEntity){
+
+    if(lastEntityCollision != -1)
+    {
+        getWorld()->destroyEntity(lastEntityCollision);
+
+        if(newEntity == -1){
+            lastEntityCollision = -1;
+            return;
+        }
+
+    }
+
+    Collision* collision = getWorld()->getComponent<Collision>(newEntity).value_or(nullptr);
+    Transform* transform = getWorld()->getComponent<Transform>(newEntity).value_or(nullptr);
+
+    if(!collision || !transform) return;
+
+    gsl::Vector3D min = collision->scaledMinVector_;
+    gsl::Vector3D max =  collision->scaledMaxVector_;
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    vertices.reserve(8);
+    Vertex vertex;
+    vertex.set_rgb(1,0,0);
+
+    vertex.set_xyz(min);                    // 0
+    vertices.push_back(vertex);
+    vertex.set_xyz(max.x, min.y, min.z);    // 1
+    vertices.push_back(vertex);
+    vertex.set_xyz(max.x, min.y, max.z);    // 2
+    vertices.push_back(vertex);
+    vertex.set_xyz(min.x, min.y, max.z);    // 3
+    vertices.push_back(vertex);
+    vertex.set_xyz(min.x, max.y, min.z);    // 4
+    vertices.push_back(vertex);
+    vertex.set_xyz(max.x, max.y, min.z);    // 5
+    vertices.push_back(vertex);
+    vertex.set_xyz(max);                    // 6
+    vertices.push_back(vertex);
+    vertex.set_xyz(min.x, max.y, max.z);    // 7
+    vertices.push_back(vertex);
+
+    indices = {
+        0,1,
+        1,2,
+        2,3,
+        3,0,
+        0,4,
+        1,5,
+        2,6,
+        3,7,
+        4,5,
+        5,6,
+        6,7,
+        7,4
+
+
+    };
+
+    Mesh mesh = resourceFactory->createLine("test",vertices,indices);
+
+    Entity entity = getWorld()->createEntity();
+
+    getWorld()->addComponent<Transform>(entity, Transform(transform->position));
+    getWorld()->addComponent<Mesh>(entity, mesh);
+    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader()));
+
+    lastEntityCollision = entity;
 
 }
 
