@@ -96,7 +96,7 @@ private:
 
     std::chrono::high_resolution_clock::time_point mLastTime;
 
-    void fromScreenToWorld(QMouseEvent *event);
+    void raycastFromMouse(QMouseEvent *event);
     void updateCamera(Camera* newCamera);
     
 protected:

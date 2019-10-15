@@ -22,6 +22,7 @@ struct Collision
 
     gsl::Vector3D scaledMinVector_ = gsl::Vector3D(0);
     gsl::Vector3D scaledMaxVector_ = gsl::Vector3D(0);
+
 };
 
 #endif // COLLISION_H

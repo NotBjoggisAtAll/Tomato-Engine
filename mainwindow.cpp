@@ -90,7 +90,13 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::updateComponentWidgets(Entity entity)
 {
     if(widget)
+    {
         delete widget;
+        widget = nullptr;
+    }
+
+    if(entity == -1)
+        return;
 
     widget = new QWidget();
     ui->scrollArea->setWidget(widget);
@@ -111,7 +117,7 @@ void MainWindow::updateComponentWidgets(Entity entity)
 
 }
 
-void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int column)
+void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 {
     updateComponentWidgets((item->text(1)).toInt());
 }

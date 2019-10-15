@@ -180,18 +180,18 @@ void RenderWindow::init()
     transform = world->getComponent<Transform>(entity).value();
     transform->position = gsl::Vector3D(1.1f,0.f,0.f);
 
-//    entity = world->createEntity();
+    //    entity = world->createEntity();
 
-////    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
-////    world->addComponent(entity, EntityData("Monkey"));
-////    world->addComponent(entity, meshData.first);
-////    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
-////    world->addComponent(entity, Transform());
-////    world->addComponent(entity, meshData.second);
+    ////    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
+    ////    world->addComponent(entity, EntityData("Monkey"));
+    ////    world->addComponent(entity, meshData.first);
+    ////    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    ////    world->addComponent(entity, Transform());
+    ////    world->addComponent(entity, meshData.second);
 
-//    transform = world->getComponent<Transform>(entity).value();
-//    transform->scale = {0.5f, 0.5f, 0.5f};
-//    transform->position = {3.f, 2.f, -2.f};
+    //    transform = world->getComponent<Transform>(entity).value();
+    //    transform->scale = {0.5f, 0.5f, 0.5f};
+    //    transform->position = {3.f, 2.f, -2.f};
 
     entity = world->createEntity();
 
@@ -289,7 +289,7 @@ void RenderWindow::stopGame()
     updateCamera(mEditorCamera);
 }
 
-void RenderWindow::fromScreenToWorld(QMouseEvent* event)
+void RenderWindow::raycastFromMouse(QMouseEvent* event)
 {
 
     float x = (2.0f * event->pos().x()) / width() - 1.0f;
@@ -306,21 +306,11 @@ void RenderWindow::fromScreenToWorld(QMouseEvent* event)
     view_matrix.inverse();
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
-    //    ray_world = ray_world;
 
-    qDebug() << ray_world;
-    //    std::vector<Vertex> vertices;
-    //    vertices.reserve(2);
-    //    Vertex vertex;
-    //    vertex.set_xyz(mCurrentCamera->position());
-    //    vertices.push_back(vertex);
-    //    vertex.set_xyz(ray_world);
-    //    vertices.push_back(vertex);
-    //    Entity entity = world->createEntity();
+    Entity entityPicked = mCollisionSystem->checkMouseCollision(mCurrentCamera->position(),ray_world);
 
-    //    world->addComponent(entity, Transform());
-    //    world->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
-    //    world->addComponent(entity, resourceFactory->createLine("line",vertices));
+        mMainWindow->updateComponentWidgets(entityPicked);
+
 }
 
 
@@ -491,7 +481,7 @@ void RenderWindow::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         mInput.LMB = true;
-        fromScreenToWorld(event);
+        raycastFromMouse(event);
     }
     if (event->button() == Qt::MiddleButton)
         mInput.MMB = true;

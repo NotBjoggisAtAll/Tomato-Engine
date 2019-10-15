@@ -5,13 +5,20 @@
 
 #include "GSL/vector3d.h"
 
+class Collision;
+class Transform;
+
 class CollisionSystem : public System
 {
 public:
     CollisionSystem();
 
     void checkCollision();
-    void checkMouseCollision(gsl::Vector3D mousePosition);
+    Entity checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection);
+
+private:
+    bool intersect(Collision *collision, Transform *transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, float &distance);
+
 };
 
 #endif // COLLISIONSYSTEM_H
