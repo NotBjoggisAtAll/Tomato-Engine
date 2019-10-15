@@ -11,6 +11,7 @@
 
 #include "Components/allcomponents.h"
 #include "World.h"
+#include "constants.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -124,7 +125,7 @@ void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 
 void MainWindow::on_spawnCube_triggered()
 {
-    emit spawnObject("Cube","box2.txt");
+    emit spawnObject("Cube",gsl::meshFilePath + "box2.txt");
 }
 
 void MainWindow::on_spawnSphere_triggered()

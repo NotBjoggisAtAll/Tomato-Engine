@@ -265,6 +265,7 @@ void RenderWindow::spawnObject(std::string name, std::string path)
     world->addComponent(entity, meshData.first);
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    world->addComponent(entity, meshData.second);
 
     mMainWindow->addEntityToUi(entity);
 }
@@ -372,11 +373,9 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
         5,6,
         6,7,
         7,4
-
-
     };
 
-    Mesh mesh = resourceFactory->createLine("test",vertices,indices);
+    Mesh mesh = resourceFactory->createLine("CollisionBox",vertices,indices);
 
     Entity entity = getWorld()->createEntity();
 
