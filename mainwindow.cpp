@@ -87,7 +87,7 @@ void MainWindow::on_actionExit_triggered()
         close();
 }
 
-void MainWindow::updateComponentWidgets(Entity entity)
+void MainWindow::updateRightPanel(Entity entity)
 {
     if(widget)
     {
@@ -119,7 +119,7 @@ void MainWindow::updateComponentWidgets(Entity entity)
 
 void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 {
-    updateComponentWidgets((item->text(1)).toInt());
+    updateRightPanel((item->text(1)).toInt());
 }
 
 void MainWindow::on_spawnCube_triggered()

@@ -23,7 +23,7 @@ public:
 
     void DisplayEntitesInOutliner();
 
-    void updateComponentWidgets(Entity entity);
+    void updateRightPanel(Entity entity);
 
     void addEntityToUi(Entity entity);
     void playGame();

@@ -309,7 +309,7 @@ void RenderWindow::raycastFromMouse(QMouseEvent* event)
 
     Entity entityPicked = mCollisionSystem->checkMouseCollision(mCurrentCamera->position(),ray_world);
 
-        mMainWindow->updateComponentWidgets(entityPicked);
+        mMainWindow->updateRightPanel(entityPicked);
 
 }
 
