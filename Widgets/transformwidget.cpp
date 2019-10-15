@@ -120,17 +120,17 @@ void TransformWidget::on_zRotation_valueChanged(double arg1)
 void TransformWidget::on_xScale_valueChanged(double arg1)
 {
     auto& s = Component->scale;
-    Component->scale = {static_cast<float>(arg1), s.y, s.z};
+    movementSystem->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
 }
 
 void TransformWidget::on_yScale_valueChanged(double arg1)
 {
     auto& s = Component->scale;
-    Component->scale = {s.x, static_cast<float>(arg1), s.z};
+    movementSystem->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
 }
 
 void TransformWidget::on_zScale_valueChanged(double arg1)
 {
     auto& s = Component->scale;
-    Component->scale = {s.x, s.y, static_cast<float>(arg1)};
+    movementSystem->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
 }

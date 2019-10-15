@@ -12,6 +12,7 @@ public:
     void addPosition(Entity entity, gsl::Vector3D translation);
 
     void setPosition(Entity entity, gsl::Vector3D position);
+    void setScale(Entity entity, gsl::Vector3D scale);
 };
 
 #endif // MOVEMENTSYSTEM_H
