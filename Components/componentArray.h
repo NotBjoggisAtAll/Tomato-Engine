@@ -5,6 +5,7 @@
 #include <optional>
 #include <array>
 #include <unordered_map>
+#include <iostream>
 #include <assert.h>
 
 struct IComponentArray
@@ -38,7 +39,11 @@ public:
 
     void removeData(Entity entity)
     {
-        assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Removing non-existent component.");
+        if(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end())
+        {
+           std::cerr << "Removing non-existent component!";
+           return;
+        }
 
         size_t indexOfRemovedEntity = mEntityToIndexMap[entity];
         size_t indexOfLastElement = mSize - 1;

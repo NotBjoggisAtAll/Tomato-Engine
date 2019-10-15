@@ -88,7 +88,7 @@ void ResourceFactory::createCollision()
             maxVector.z = vertex.mXYZ.z;
     }
     qDebug() << "Min og Max vector " << minVector << "\n" << maxVector;
-     Collision(CollisionType::AABB,minVector,maxVector);
+     currentIt->second.second = Collision(CollisionType::AABB,minVector,maxVector);
 }
 
 

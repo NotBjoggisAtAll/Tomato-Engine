@@ -43,5 +43,7 @@ void MeshWidget::on_changeMeshButton_clicked()
         qDebug() << QString::fromStdString(fileName);
         getWorld()->removeComponent<Mesh>(entity);
         getWorld()->addComponent(entity, meshData.first);
+        getWorld()->removeComponent<Collision>(entity);
+        getWorld()->addComponent(entity, meshData.second);
     }
 }

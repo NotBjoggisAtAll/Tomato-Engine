@@ -166,22 +166,32 @@ void RenderWindow::init()
     world->addComponent(entity, meshData.first);
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     world->addComponent(entity, Transform());
-
-    transform = world->getComponent<Transform>(entity).value();
-    transform->rotation.y = 180.f;
-
+    world->addComponent(entity, meshData.second);
 
     entity = world->createEntity();
 
-    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
-    world->addComponent(entity, EntityData("Monkey"));
+    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
+    world->addComponent(entity, EntityData("Box2"));
     world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     world->addComponent(entity, Transform());
+    world->addComponent(entity, meshData.second);
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->scale = {0.5f, 0.5f, 0.5f};
-    transform->position = {3.f, 2.f, -2.f};
+    transform->position = gsl::Vector3D(1.1f,0.f,0.f);
+
+//    entity = world->createEntity();
+
+////    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
+////    world->addComponent(entity, EntityData("Monkey"));
+////    world->addComponent(entity, meshData.first);
+////    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+////    world->addComponent(entity, Transform());
+////    world->addComponent(entity, meshData.second);
+
+//    transform = world->getComponent<Transform>(entity).value();
+//    transform->scale = {0.5f, 0.5f, 0.5f};
+//    transform->position = {3.f, 2.f, -2.f};
 
     entity = world->createEntity();
 
@@ -226,6 +236,7 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+    mCollisionSystem->checkCollision();
     mSoundSystem->update(mCurrentCamera);
     mRenderSystem->render();
 
