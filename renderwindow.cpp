@@ -379,9 +379,13 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 
     Entity entity = getWorld()->createEntity();
 
-    getWorld()->addComponent<Transform>(entity, Transform(transform->position));
-    getWorld()->addComponent<Mesh>(entity, mesh);
-    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, Transform(transform->position));
+    getWorld()->addComponent(entity, mesh);
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, EntityData("Collision"));
+    EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();
+
+    data->children.push_back(entity);
 
     lastEntityCollision = entity;
 
