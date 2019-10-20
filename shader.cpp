@@ -1,5 +1,6 @@
 #include "shader.h"
 #include <fstream>
+#include <sstream>
 #include "constants.h"
 #include "camera.h"
 
