@@ -5,17 +5,19 @@
 
 class World;
 class Camera;
+class Sound;
 
 class SoundSystem : public System
 {
 public:
     SoundSystem();
 
-    void update(Camera *currCamera);
+    virtual void beginPlay() override;
+    virtual void tick() override;
 
-private:
-
-    World* world{nullptr};
+    static void playSound(Sound* sound);
+    static void pauseSound(Sound* sound);
+    static void stopSound(Sound* sound);
 };
 
 #endif // SOUNDSYSTEM_H

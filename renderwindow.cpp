@@ -237,7 +237,7 @@ void RenderWindow::render()
 
 
     mCollisionSystem->checkCollision();
-    mSoundSystem->update(mCurrentCamera);
+    mSoundSystem->tick();
     mRenderSystem->render();
 
 
@@ -278,6 +278,8 @@ void RenderWindow::updateCamera(Camera *newCamera)
     for(auto& Shader : ShaderManager::instance()->mShaders){
         Shader->setCurrentCamera(mCurrentCamera);
     }
+
+    getWorld()->setCurrentCamera(newCamera);
 }
 
 void RenderWindow::playGame()

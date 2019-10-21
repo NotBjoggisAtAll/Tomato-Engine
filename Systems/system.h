@@ -6,6 +6,12 @@
 
 struct System
 {
+    System();
+    virtual ~System();
+
+    virtual void beginPlay(){}
+    virtual void tick(){}
+
     std::set<Entity> mEntities;
 };
 

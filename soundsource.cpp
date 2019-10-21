@@ -110,32 +110,31 @@ bool SoundSource::loadWave(std::string filePath)
 
 void SoundSource::play()
 {
-    qDebug() <<"Started playing " + QString::fromStdString(mName);
+    qDebug() << QString::fromStdString(mName) + ": Playing!";
     alSourcePlay(mSource);
 }
 void SoundSource::pause()
 {
+    qDebug() << QString::fromStdString(mName) + ": Paused!";
     alSourcePause(mSource);
 }
 void SoundSource::stop()
 {
+    qDebug() << QString::fromStdString(mName) + ": Stopped!";
     alSourceStop(mSource);
 }
 
 bool SoundSource::isPlaying()
 {
     ALenum state;
-
     alGetSourcei(mSource, AL_SOURCE_STATE, &state);
-
     return (state == AL_PLAYING);
 }
 
 void SoundSource::setPosition(gsl::Vector3D newPos)
 {
     mPosition = newPos;
-    ALfloat temp[3] = {mPosition.x, mPosition.y, mPosition.z};
-    alSourcefv(mSource, AL_POSITION, temp);
+    alSourcefv(mSource, AL_POSITION, mPosition.xP());
 }
 void SoundSource::setVelocity(gsl::Vector3D newVel)
 {

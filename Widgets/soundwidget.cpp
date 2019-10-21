@@ -2,6 +2,7 @@
 #include "ui_soundwidget.h"
 #include "Components/soundcomponent.h"
 #include "World.h"
+#include "Systems/soundsystem.h"
 SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SoundWidget)
@@ -17,4 +18,19 @@ SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
 SoundWidget::~SoundWidget()
 {
     delete ui;
+}
+
+void SoundWidget::on_playButton_clicked()
+{
+    SoundSystem::playSound(Component);
+}
+
+void SoundWidget::on_pauseButton_clicked()
+{
+    SoundSystem::pauseSound(Component);
+}
+
+void SoundWidget::on_stopButton_clicked()
+{
+    SoundSystem::stopSound(Component);
 }

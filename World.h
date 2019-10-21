@@ -7,6 +7,8 @@
 #include <memory>
 #include <string>
 
+class Camera;
+
 class World
 {
 public:
@@ -108,6 +110,9 @@ public:
 
     bool bGameRunning = false;
 
+    Camera* getCurrentCamera();
+    void setCurrentCamera(Camera* newCamera);
+
 private:
 
     static World* instance;
@@ -116,6 +121,8 @@ private:
     std::unique_ptr<ComponentManager> mComponentManager;
     std::unique_ptr<EntityManager> mEntityManager;
     std::unique_ptr<SystemManager> mSystemManager;
+
+    Camera* currentCamera_ = nullptr;
 
 };
 

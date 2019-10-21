@@ -84,6 +84,7 @@ SOURCES += main.cpp \
     Managers/soundmanager.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
+    Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \

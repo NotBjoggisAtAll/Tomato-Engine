@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #include "soundsource.h"
-#include "gsl/vector3d.h"
+#include "GSL/vector3d.h"
 
 /// Class handling OpenAL setup and management of sound sources.
 /**
