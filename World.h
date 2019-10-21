@@ -27,7 +27,6 @@ public:
         mSystemManager = std::make_unique<SystemManager>();
     }
 
-
     // Entity methods
     Entity createEntity()
     {

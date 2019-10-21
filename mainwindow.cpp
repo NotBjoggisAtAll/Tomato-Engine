@@ -155,6 +155,12 @@ void MainWindow::on_spawnPlane_triggered()
     emit spawnObject("Plane","plane");
 }
 
+void MainWindow::on_actionEmpty_Entity_triggered()
+{
+    Entity entity = emit createEntity();
+    addEntityToUi(entity);
+}
+
 void MainWindow::on_Outliner_itemSelectionChanged()
 {
     for(auto& Entity : getWorld()->getEntities())
@@ -240,3 +246,4 @@ void MainWindow::stopGame()
     getWorld()->bGameRunning = false;
     showPanels();
 }
+

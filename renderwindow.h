@@ -58,6 +58,7 @@ private slots:
 
     void playGame();
     void stopGame();
+    Entity createEntity();
 private:
     void init();
     void setCameraSpeed(float value);

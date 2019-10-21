@@ -31,6 +31,7 @@ signals:
     void playGame_signal();
     void stopGame_signal();
     void spawnObject(std::string name, std::string path);
+    Entity createEntity();
 
 private slots:
     void on_actionToggle_Wireframe_triggered();
@@ -50,6 +51,8 @@ private slots:
     void on_actionPlay_triggered();
 
     void on_actionPlay_in_Editor_triggered();
+
+    void on_actionEmpty_Entity_triggered();
 
 private:
 

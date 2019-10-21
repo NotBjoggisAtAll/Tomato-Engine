@@ -137,6 +137,7 @@
      <property name="title">
       <string>Create New...</string>
      </property>
+     <addaction name="actionEmpty_Entity"/>
      <addaction name="spawnCube"/>
      <addaction name="spawnSphere"/>
      <addaction name="spawnPlane"/>
@@ -216,6 +217,11 @@
   <action name="actionPlay_in_Editor">
    <property name="text">
     <string>Play in Editor</string>
+   </property>
+  </action>
+  <action name="actionEmpty_Entity">
+   <property name="text">
+    <string>Empty Entity</string>
    </property>
   </action>
  </widget>

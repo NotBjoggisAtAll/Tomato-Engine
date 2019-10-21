@@ -59,7 +59,7 @@ void RenderWindow::init()
     connect(mMainWindow, &MainWindow::spawnObject, this, &RenderWindow::spawnObject);
     connect(mMainWindow, &MainWindow::playGame_signal, this, &RenderWindow::playGame);
     connect(mMainWindow, &MainWindow::stopGame_signal, this, &RenderWindow::stopGame);
-
+    connect(mMainWindow, &MainWindow::createEntity, this, &RenderWindow::createEntity);
 
     //********************** General OpenGL stuff **********************
 
@@ -719,4 +719,11 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     mEditorCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
     mGameCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
     //    qDebug() << mCamera.mProjectionMatrix;
+}
+
+Entity RenderWindow::createEntity()
+{
+    Entity entity = world->createEntity();
+    world->addComponent(entity, EntityData("Empty Entity"));
+    return entity;
 }
