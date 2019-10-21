@@ -42,6 +42,7 @@ HEADERS += \
     Managers/soundmanager.h \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
+    Widgets/addcomponentwidget.h \
     Widgets/soundwidget.h \
     World.h \
     constants.h \
@@ -83,6 +84,7 @@ SOURCES += main.cpp \
     Managers/soundmanager.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
+    Widgets/addcomponentwidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     World.cpp \
@@ -103,6 +105,7 @@ SOURCES += main.cpp \
     phongshader.cpp
 
 FORMS += \
+    Widgets/addcomponentwidget.ui \
     Widgets/soundwidget.ui \
     mainwindow.ui \
     Widgets/meshwidget.ui \

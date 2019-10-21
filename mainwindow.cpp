@@ -7,6 +7,7 @@
 #include "Widgets/transformwidget.h"
 #include "Widgets/meshwidget.h"
 #include "Widgets/soundwidget.h"
+#include "Widgets/addcomponentwidget.h"
 #include "renderwindow.h"
 
 #include "Components/allcomponents.h"
@@ -43,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->scrollArea->setWidgetResizable(true);
+
 
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 }
@@ -96,8 +98,23 @@ void MainWindow::updateRightPanel(Entity entity)
         widget = nullptr;
     }
 
+    if(leftWidget)
+    {
+        delete leftWidget;
+        leftWidget = nullptr;
+    }
+
     if(entity == -1)
         return;
+
+
+
+
+    leftWidget = new QWidget();
+    ui->leftScrollArea->setWidget(leftWidget);
+    QVBoxLayout* leftLayout = new QVBoxLayout(leftWidget);
+    leftLayout->addWidget(new AddComponentWidget());
+
 
     widget = new QWidget();
     ui->scrollArea->setWidget(widget);

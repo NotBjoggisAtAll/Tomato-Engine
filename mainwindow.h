@@ -59,6 +59,7 @@ private:
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
+    QWidget* leftWidget{nullptr};
 
     void setupChildren(QTreeWidgetItem *parent);
     void updatePlayButtons();
