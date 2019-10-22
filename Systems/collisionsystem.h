@@ -11,7 +11,7 @@ class Transform;
 class CollisionSystem : public System
 {
 public:
-    CollisionSystem();
+    CollisionSystem() = default;
 
     void checkCollision();
     Entity checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection);

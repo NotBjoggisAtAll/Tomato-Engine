@@ -5,10 +5,6 @@
 #include "Components/collision.h"
 #include "GSL/matrix4x4.h"
 
-MovementSystem::MovementSystem()
-{
-}
-
 void MovementSystem::addPosition(Entity entity, gsl::Vector3D translation)
 {
     auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);

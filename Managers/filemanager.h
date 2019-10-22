@@ -26,7 +26,7 @@ private:
     const QString m_DirPath = QString::fromStdString(gsl::assetFilePath) + "Meshes/";
     const QString m_DirTexturePath = QString::fromStdString(gsl::assetFilePath) + "Textures/";
 
-    FileManager();
+    FileManager() = default;
     ~FileManager();
 };
 

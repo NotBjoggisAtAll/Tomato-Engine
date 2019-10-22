@@ -4,11 +4,6 @@
 #include "Components/transformcomponent.h"
 #include "Components/entitydata.h"
 
-CollisionSystem::CollisionSystem()
-{
-
-}
-
 void CollisionSystem::checkCollision()
 {
     for (auto const& entity : mEntities)

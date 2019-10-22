@@ -14,7 +14,7 @@ ResourceFactory *ResourceFactory::instance()
     return instance_;
 }
 
-std::pair<Mesh,Collision> ResourceFactory::loadMesh(std::string filePath)
+std::pair<Mesh,Collision> ResourceFactory::loadMesh(const std::string& filePath)
 {
     currentIt = mMeshMap.end();
 
@@ -43,7 +43,7 @@ std::pair<Mesh,Collision> ResourceFactory::loadMesh(std::string filePath)
     return currentIt->second;
 }
 
-Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Mesh ResourceFactory::createLine(const std::string& filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
     auto meshIt = mMeshMap.find(filePath);
     if (meshIt != mMeshMap.end())
@@ -58,8 +58,8 @@ Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> verti
     mIndices.clear();
     initializeOpenGLFunctions();
 
-    mVertices = vertices;
-    mIndices = indices;
+    mVertices = std::move(vertices);
+    mIndices = std::move(indices);
 
     openGLVertexBuffers();
     openGLIndexBuffer();

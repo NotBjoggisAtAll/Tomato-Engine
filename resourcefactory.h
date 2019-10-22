@@ -14,9 +14,9 @@ class ResourceFactory : public QOpenGLFunctions_4_1_Core
 public:
 
     static ResourceFactory* instance();
-    std::pair<Mesh, Collision> loadMesh(std::string filePath);
+    std::pair<Mesh, Collision> loadMesh(const std::string &filePath);
 
-    Mesh createLine(std::string filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    Mesh createLine(const std::string &filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
 private:
     ResourceFactory() = default;

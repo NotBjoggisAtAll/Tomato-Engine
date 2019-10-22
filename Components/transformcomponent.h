@@ -5,7 +5,7 @@
 
 struct Transform
 {
-    Transform(){}
+    Transform() = default;
     Transform(gsl::Vector3D position_, gsl::Vector3D rotation_, gsl::Vector3D scale_) : position(position_), rotation(rotation_), scale(scale_) {}
     Transform(gsl::Vector3D position_) : position(position_) {}
 

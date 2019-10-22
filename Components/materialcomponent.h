@@ -3,11 +3,11 @@
 
 class Shader;
 
-#include "gsl/vector3d.h"
+#include "GSL/vector3d.h"
 
 struct Material
 {
-    Material(){}
+    Material() = default;
     Material(Shader* Shader) : mShader(Shader), mColor(1,1,1) , mTextureUnit(0){}
     Material(Shader* Shader, GLuint TextureUnit) : mShader(Shader), mColor(1,1,1), mTextureUnit(TextureUnit){}
     Material(Shader* Shader, gsl::Vector3D Color) : mShader(Shader), mColor(Color), mTextureUnit(0){}

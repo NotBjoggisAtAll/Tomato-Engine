@@ -6,8 +6,8 @@
 
 struct System
 {
-    System();
-    virtual ~System();
+    System() = default;
+    virtual ~System() = default;
 
     virtual void beginPlay(){}
     virtual void tick(){}

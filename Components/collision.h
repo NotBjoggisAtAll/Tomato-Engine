@@ -13,7 +13,7 @@ enum class CollisionType
 
 struct Collision
 {
-    Collision(){}
+    Collision() = default;
     Collision(CollisionType type, gsl::Vector3D minVector, gsl::Vector3D maxVector) : type_(type), minVector_(minVector), maxVector_(maxVector), scaledMinVector_(minVector), scaledMaxVector_(maxVector) {}
 
     CollisionType type_ = CollisionType::NONE;

@@ -6,7 +6,7 @@
 
 struct Light{
 
-    Light(){}
+    Light() = default;
 
     GLfloat mAmbientStrenght{0.3f};
     gsl::Vector3D mAmbientColor{0.3f, 0.3f, 0.3f};

@@ -6,7 +6,7 @@
 #include <array>
 #include <unordered_map>
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 struct IComponentArray
 {
@@ -20,7 +20,7 @@ class ComponentArray : public IComponentArray
 {
 public:
 
-    ComponentArray(){}
+    ComponentArray() = default;
 
     void insertData(Entity entity, T component)
     {
@@ -32,7 +32,7 @@ public:
 
         mIndexToEntityMap[newIndex] = entity;
 
-        mComponentArray[newIndex] = component;
+        mComponentArray.at(newIndex) = component;
 
         ++mSize;
     }
@@ -47,7 +47,7 @@ public:
 
         size_t indexOfRemovedEntity = mEntityToIndexMap[entity];
         size_t indexOfLastElement = mSize - 1;
-        mComponentArray[indexOfRemovedEntity] = mComponentArray[indexOfLastElement];
+        mComponentArray.at(indexOfRemovedEntity) = mComponentArray.at(indexOfLastElement);
 
         Entity entityOfLastElement = mIndexToEntityMap[indexOfLastElement];
         mEntityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
@@ -67,7 +67,7 @@ public:
         }
 
 
-        return &mComponentArray[mEntityToIndexMap[entity]];
+        return &mComponentArray.at(mEntityToIndexMap[entity]);
     }
 
     void entityDestroyed(Entity entity) override

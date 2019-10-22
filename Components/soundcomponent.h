@@ -4,7 +4,7 @@
 #include "soundsource.h"
 struct Sound
 {
-    Sound(){}
+    Sound() = default;
     Sound(SoundSource* Sound) : audio(Sound){}
     SoundSource* audio{};
 };

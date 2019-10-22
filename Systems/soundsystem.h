@@ -12,8 +12,8 @@ class SoundSystem : public System
 public:
     SoundSystem();
 
-    virtual void beginPlay() override;
-    virtual void tick() override;
+    void beginPlay() override;
+    void tick() override;
 
     static void playSound(Sound* sound);
     static void pauseSound(Sound* sound);

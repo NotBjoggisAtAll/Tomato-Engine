@@ -7,7 +7,7 @@
 class MovementSystem : public System
 {
 public:
-    MovementSystem();
+    MovementSystem() = default;
 
     void addPosition(Entity entity, gsl::Vector3D translation);
 

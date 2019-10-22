@@ -144,8 +144,6 @@ std::shared_ptr<QOpenGLTexture> FileManager::LoadTexture(const QString &File, bo
     return Texture;
 }
 
-FileManager::FileManager()
-= default;
 
 FileManager::~FileManager()
 {

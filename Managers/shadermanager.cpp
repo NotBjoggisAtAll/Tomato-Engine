@@ -14,17 +14,17 @@ ShaderManager* ShaderManager::instance()
 
 PhongShader* ShaderManager::phongShader()
 {
-    return static_cast<PhongShader*>(mShaders.at(2));
+    return dynamic_cast<PhongShader*>(mShaders.at(2));
 }
 
 TextureShader* ShaderManager::textureShader()
 {
-    return static_cast<TextureShader*>(mShaders.at(1));
+    return dynamic_cast<TextureShader*>(mShaders.at(1));
 }
 
 ColorShader* ShaderManager::colorShader()
 {
-    return static_cast<ColorShader*>(mShaders.at(0));
+    return dynamic_cast<ColorShader*>(mShaders.at(0));
 }
 
 ShaderManager::ShaderManager()

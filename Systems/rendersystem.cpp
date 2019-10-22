@@ -7,24 +7,23 @@
 #include "Components/entitydata.h"
 #include "shader.h"
 
-RenderSystem::RenderSystem()
+void RenderSystem::beginPlay()
 {
-    world = getWorld();
 }
 
-void RenderSystem::render()
+void RenderSystem::tick()
 {
     initializeOpenGLFunctions();
 
     for(auto& entity : mEntities)
     {
-        auto mesh = world->getComponent<Mesh>(entity).value();
+        auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 
         if(!mesh->isVisible)
             continue;
 
-        auto material = world->getComponent<Material>(entity).value();
-        auto transform = world->getComponent<Transform>(entity).value();
+        auto material = getWorld()->getComponent<Material>(entity).value();
+        auto transform = getWorld()->getComponent<Transform>(entity).value();
 
         glUseProgram(material->mShader->getProgram());
         glBindVertexArray(mesh->mVAO);

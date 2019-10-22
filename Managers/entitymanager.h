@@ -5,7 +5,7 @@
 #include <queue>
 #include <array>
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 
 class EntityManager
 {
@@ -35,7 +35,7 @@ public:
     {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        mSignatures[entity].reset();
+        mSignatures.at(static_cast<unsigned int>(entity)).reset();
 
         auto entityIt = std::find(mEntities.begin(),mEntities.end(), entity);
         mEntities.erase(entityIt);
@@ -49,7 +49,7 @@ public:
     {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        mSignatures[entity] = signature;
+        mSignatures.at(static_cast<unsigned int>(entity)) = signature;
 
     }
 
@@ -57,7 +57,7 @@ public:
     {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        return mSignatures[entity];
+        return mSignatures.at(static_cast<unsigned int>(entity));
     }
 
     std::vector<Entity> getEntities()

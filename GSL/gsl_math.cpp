@@ -63,8 +63,8 @@ namespace gsl
                 }
                 else
                 {
-                    GLfloat left, right;
-
+                    GLfloat left;
+                    GLfloat right;
                     if (basis[i] != 0.f)
                         left = ((x - t[i]) / (t[i+j] - t[i])) * basis[i];
                     else
@@ -125,14 +125,14 @@ namespace gsl
         return x;
     }
 
-    Vector2D lerp2D(GLfloat time, Vector2D a, Vector2D b)
+    Vector2D lerp2D(GLfloat time, Vector2D start, Vector2D end)
     {
-        return (a * (1.f - time)) + (b * time);
+        return (start * (1.f - time)) + (end * time);
     }
 
-    Vector3D lerp3D(GLfloat time, Vector3D a, Vector3D b)
+    Vector3D lerp3D(GLfloat time, Vector3D start, Vector3D end)
     {
-        return (a * (1.f - time)) + (b * time);
+        return (start * (1.f - time)) + (end * time);
     }
 
     float distanceToPlane(const Vector3D &point, const Vector3D &normal, const Vector3D &pointInPlane)
@@ -175,9 +175,6 @@ namespace gsl
         if (transposedPoint.y <= upright.y && transposedPoint.y >= downleft.y)
             yDirection = true;
 
-        if (xDirection && yDirection)
-            return true;
-        else
-            return false;
+        return xDirection && yDirection;
     }
-} //namespace
+}

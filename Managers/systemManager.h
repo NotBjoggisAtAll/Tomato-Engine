@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include <assert.h>
+#include <cassert>
 #include "types.h"
 #include "Systems/system.h"
 

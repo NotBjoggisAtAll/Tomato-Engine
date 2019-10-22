@@ -238,7 +238,7 @@ void RenderWindow::render()
 
     mCollisionSystem->checkCollision();
     mSoundSystem->tick();
-    mRenderSystem->render();
+    mRenderSystem->tick();
 
 
     calculateFramerate();

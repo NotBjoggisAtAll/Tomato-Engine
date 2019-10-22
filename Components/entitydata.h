@@ -3,11 +3,12 @@
 
 #include "types.h"
 #include <vector>
+#include <utility>
 
 struct EntityData{
 
-    EntityData() {}
-    EntityData(std::string Name) : name(Name) {}
+    EntityData() = default;
+    EntityData(std::string Name) : name(std::move(Name)) {}
 
     std::string name;
 
