@@ -31,6 +31,8 @@ std::pair<Mesh,Collision> ResourceFactory::loadMesh(std::string filePath)
         createObject(filePath);
     if(filePath.find(".txt") != std::string::npos)
         createObject(filePath);
+    if(filePath.find(".terrain") != std::string::npos)
+        createObject(filePath);
     if(filePath == "skybox")
         createSkybox();
     if(filePath == "sphere")
@@ -68,7 +70,7 @@ Mesh ResourceFactory::createLine(std::string filePath, std::vector<Vertex> verti
     return currentIt->second.first;
 }
 
-void ResourceFactory::createCollision()
+void ResourceFactory::createCollision(CollisionType Type = CollisionType::NONE)
 {
     gsl::Vector3D minVector = mVertices.at(0).mXYZ;
     gsl::Vector3D maxVector = mVertices.at(0).mXYZ;
@@ -90,7 +92,7 @@ void ResourceFactory::createCollision()
             maxVector.z = vertex.mXYZ.z;
     }
     qDebug() << "Min og Max vector " << minVector << "\n" << maxVector;
-     currentIt->second.second = Collision(CollisionType::AABB,minVector,maxVector);
+    currentIt->second.second = Collision(Type,minVector,maxVector);
 }
 
 
@@ -275,11 +277,17 @@ void ResourceFactory::createObject(std::string filePath)
     initializeOpenGLFunctions();
 
     if(filePath.find(".obj") != std::string::npos)
+    {
         readOBJFile(filePath);
+    }
     else if(filePath.find(".txt") != std::string::npos)
+    {
         readTXTFile(filePath);
-
-
+    }
+    else if(filePath.find(".terrain") != std::string::npos)
+    {
+        readTerrainFile(filePath);
+    }
     createCollision();
 
     //set up buffers
@@ -315,7 +323,75 @@ void ResourceFactory::readTXTFile(std::string filename)
     {
         qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
     }
+
 }
+
+void ResourceFactory::readTerrainFile(std::string filename)
+{
+    std::ifstream inn;
+    inn.open(filename);
+
+    int TilesX = 0;
+    int TilesZ = 0;
+
+    if (inn.is_open()) {
+        unsigned int n;
+        Vertex vertex;
+        inn >> n;
+        mVertices.reserve(n);
+        inn >> TilesX >> TilesZ;
+        for (unsigned int i=0; i<n; i++) {
+            inn >> vertex;
+            mVertices.push_back(vertex);
+        }
+
+        inn.close();
+        qDebug() << "File read: " << QString::fromStdString(filename);
+    }
+    else
+    {
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
+    }
+
+    calculateIndices(TilesX, TilesZ);
+    calculateNormals();
+}
+
+void ResourceFactory::calculateIndices(int TilesX, int TilesZ)
+{
+    mIndices.clear();
+    for(int i = 0; i < TilesZ*TilesX; ++i)
+    {
+        if(i == (TilesX*TilesZ)-TilesZ) break;
+        if(i > 1 && (i+1) % TilesX == 0)  continue;
+
+        mIndices.emplace_back(i);
+        mIndices.emplace_back(i+1);
+        mIndices.emplace_back(i+TilesZ+1);
+
+        mIndices.emplace_back(i);
+        mIndices.emplace_back(i+TilesZ+1);
+        mIndices.emplace_back(i+TilesZ);
+    }
+}
+
+void ResourceFactory::calculateNormals()
+{
+    for (unsigned int i = 0; i < mIndices.size(); i+=3)
+    {
+        auto pos1 = mVertices[mIndices[i+0]].mXYZ;
+        auto pos2 = mVertices[mIndices[i+1]].mXYZ;
+        auto pos3 = mVertices[mIndices[i+2]].mXYZ;
+
+        auto normal = gsl::Vector3D::cross(pos3-pos1,pos2-pos1);
+        normal.normalize();
+
+        mVertices[mIndices[i+0]].set_normal(normal);
+        mVertices[mIndices[i+1]].set_normal(normal);
+        mVertices[mIndices[i+2]].set_normal(normal);
+    }
+}
+
 
 void ResourceFactory::readOBJFile(std::string filename)
 {
@@ -440,15 +516,15 @@ void ResourceFactory::readOBJFile(std::string filename)
                 if (uv > -1)    //uv present!
                 {
                     Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
-                           tempNormals[static_cast<unsigned int>(normal)],
-                           tempUVs[static_cast<unsigned int>(uv)]);
+                            tempNormals[static_cast<unsigned int>(normal)],
+                            tempUVs[static_cast<unsigned int>(uv)]);
                     mVertices.push_back(tempVert);
                 }
                 else            //no uv in mesh data, use 0, 0 as uv
                 {
                     Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
-                           tempNormals[static_cast<unsigned int>(normal)],
-                           gsl::Vector2D(0.0f, 0.0f));
+                            tempNormals[static_cast<unsigned int>(normal)],
+                            gsl::Vector2D(0.0f, 0.0f));
                     mVertices.push_back(tempVert);
                 }
                 mIndices.push_back(temp_index++);

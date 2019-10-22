@@ -21,7 +21,7 @@ public:
 private:
     ResourceFactory() = default;
 
-    void createCollision();
+    void createCollision(CollisionType Type);
     //Used to check if the mesh is already loaded from file
     std::map<std::string, std::pair<Mesh, Collision>> mMeshMap; //string - filepath, Mesh - Meshdata, Collision - CollisionData
     std::map<std::string, std::pair<Mesh, Collision>>::iterator currentIt{};
@@ -38,9 +38,12 @@ private:
     void createSkybox();
     void createObject(std::string filePath);
     void readTXTFile(std::string filename);
+    void readTerrainFile(std::string filename);
 
     static ResourceFactory* instance_;
 
+    void calculateIndices(int TilesX, int TilesZ);
+    void calculateNormals();
 };
 
 #endif // RESOURCEFACTORY_H
