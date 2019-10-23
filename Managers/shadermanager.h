@@ -2,6 +2,8 @@
 #define SHADERMANAGER_H
 
 #include <vector>
+#include <string>
+#include <unordered_map>
 
 class TextureShader;
 class Shader;
@@ -14,10 +16,12 @@ class ShaderManager
 public:
     static ShaderManager* instance();
     PhongShader *phongShader();
-
     TextureShader *textureShader();
     ColorShader *colorShader();
-    std::vector<Shader*> mShaders;
+
+    Shader* getShader(std::string shaderName);
+    //std::vector<Shader*> mShaders;
+    std::unordered_map<std::string, Shader*> mShaders;
 private:
     ShaderManager();
     ~ShaderManager();

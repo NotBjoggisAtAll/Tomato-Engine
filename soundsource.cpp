@@ -24,6 +24,8 @@ void SoundSource::init(std::string name, bool loop, float gain)
 
 SoundSource::SoundSource(std::string name, bool loop, float gain) :
     mName(name),
+    bLoop(loop),
+    mGain(gain),
     mSource(0),
     mBuffer(0),
     mPosition(0.0f, 0.0f, 0.0f),

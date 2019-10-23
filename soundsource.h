@@ -54,7 +54,9 @@ public:
     void setVelocity(gsl::Vector3D newVel);             ///< Sets source velocity from Vector3.
     gsl::Vector3D getVelocity() {return mVelocity;}     ///< Returns source velocity as Vector3.
 
-    std::string mName;          ///< The name of the sound source (Not used).
+    std::string mName;
+    bool bLoop = false;
+    float mGain = 0.f;
     
     void init(std::string name, bool loop, float gain);
 private:

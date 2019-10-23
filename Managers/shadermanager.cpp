@@ -14,25 +14,30 @@ ShaderManager* ShaderManager::instance()
 
 PhongShader* ShaderManager::phongShader()
 {
-    return dynamic_cast<PhongShader*>(mShaders.at(2));
+    return dynamic_cast<PhongShader*>(mShaders.at("phongshader"));
 }
 
 TextureShader* ShaderManager::textureShader()
 {
-    return dynamic_cast<TextureShader*>(mShaders.at(1));
+    return dynamic_cast<TextureShader*>(mShaders.at("textureshader"));
 }
 
 ColorShader* ShaderManager::colorShader()
 {
-    return dynamic_cast<ColorShader*>(mShaders.at(0));
+    return dynamic_cast<ColorShader*>(mShaders.at("plainshader"));
+}
+
+Shader *ShaderManager::getShader(std::string shaderName)
+{
+    return mShaders.at(shaderName);
 }
 
 ShaderManager::ShaderManager()
 {
     //Compile shaders:
-    mShaders.emplace_back(new ColorShader("plainshader"));
-    mShaders.emplace_back(new TextureShader("textureshader"));
-    mShaders.emplace_back(new PhongShader("phongshader"));
+    mShaders.insert(std::make_pair("plainshader", new ColorShader("plainshader")));
+    mShaders.insert(std::make_pair("textureshader", new TextureShader("textureshader")));
+    mShaders.insert(std::make_pair("phongshader", new PhongShader("phongshader")));
 }
 
 ShaderManager::~ShaderManager()

@@ -3,16 +3,8 @@
 
 #include <QOpenGLFunctions_4_1_Core>
 #include "GSL/matrix4x4.h"
-#include "Components/materialcomponent.h"
 
-//#include "GL/glew.h" //We use QOpenGLFunctions instead, so no need for Glew (or GLAD)!
-
-//This class is pretty much a copy of the shader class at
-//https://github.com/SonarSystems/Modern-OpenGL-Tutorials/blob/master/%5BLIGHTING%5D/%5B8%5D%20Basic%20Lighting/Shader.h
-//which is based on stuff from http://learnopengl.com/ and http://open.gl/.
-
-//must inherit from QOpenGLFunctions_4_1_Core, since we use that instead of glfw/glew/glad
-
+class Material;
 class Camera;
 
 class Shader : protected QOpenGLFunctions_4_1_Core
@@ -33,6 +25,8 @@ public:
     void setCurrentCamera(Camera *currentCamera);
 
     Camera *getCurrentCamera() const;
+
+    std::string mShaderName = "";
 
 protected:
     GLuint program{0};

@@ -12,6 +12,7 @@ struct Mesh
     GLenum mDrawType{0};
 
     bool isVisible{true};
+
 };
 
 #endif // MESHCOMPONENT_H

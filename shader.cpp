@@ -3,8 +3,9 @@
 #include <sstream>
 #include "constants.h"
 #include "camera.h"
+#include "Components/materialcomponent.h"
 
-Shader::Shader(const std::string shaderName, const GLchar *geometryPath)
+Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShaderName(shaderName)
 {
     initializeOpenGLFunctions();    //must do this to get access to OpenGL functions in QOpenGLFunctions
 

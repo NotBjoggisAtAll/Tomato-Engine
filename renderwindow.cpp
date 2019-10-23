@@ -25,6 +25,8 @@
 
 #include "resourcefactory.h"
 #include "World.h"
+
+#include <QJsonDocument>
 #include "constants.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
@@ -193,6 +195,31 @@ void RenderWindow::init()
     transform->scale = {0.5f, 0.5f, 0.5f};
     transform->position = {3.f, 2.f, -2.f};
 
+    int transformtype = static_cast<int>(world->getComponentType<Transform>());
+    int entityType = static_cast<int>(world->getComponentType<EntityData>());
+    int materialType = static_cast<int>(world->getComponentType<Material>());
+
+    QFile file("data.json");
+    QJsonDocument document;
+    file.open(QIODevice::WriteOnly);
+
+
+    QJsonObject transformJs = transform->toJSON();
+    transformJs.insert("Type", transformtype);
+
+    QJsonObject entityJs = world->getComponent<EntityData>(entity).value()->toJSON();
+    entityJs.insert("Type", entityType);
+    QJsonObject materialJs = world->getComponent<Material>(entity).value()->toJSON();
+    materialJs.insert("Type", materialType);
+
+    QJsonObject object;
+    object.insert("Transform", transformJs);
+    object.insert("EntityData", entityJs);
+    object.insert("Material", materialJs);
+    document.setObject(object);
+    file.write(document.toJson());
+    file.close();
+
     entity = world->createEntity();
 
     world->addComponent(entity, EntityData("Sound Source"));
@@ -276,7 +303,7 @@ void RenderWindow::updateCamera(Camera *newCamera)
 
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     for(auto& Shader : ShaderManager::instance()->mShaders){
-        Shader->setCurrentCamera(mCurrentCamera);
+        Shader.second->setCurrentCamera(mCurrentCamera);
     }
 
     getWorld()->setCurrentCamera(newCamera);
