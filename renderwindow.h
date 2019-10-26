@@ -15,6 +15,8 @@ class MainWindow;
 class SoundSystem;
 class MovementSystem;
 class CollisionSystem;
+class SceneSystem;
+
 class EntityManager;
 
 class ResourceFactory;
@@ -44,6 +46,7 @@ public:
     std::shared_ptr<MovementSystem> mMovementSystem;
     std::shared_ptr<SoundSystem> mSoundSystem;
     std::shared_ptr<CollisionSystem> mCollisionSystem;
+    std::shared_ptr<SceneSystem> mSceneSystem;
 
     World* world;
     ResourceFactory* resourceFactory;

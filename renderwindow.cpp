@@ -27,6 +27,8 @@
 #include "World.h"
 
 #include <QJsonDocument>
+
+#include "Systems/scenesystem.h"
 #include "constants.h"
 
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
@@ -115,6 +117,7 @@ void RenderWindow::init()
     mSoundSystem = world->registerSystem<SoundSystem>();
     mMovementSystem = world->registerSystem<MovementSystem>();
     mCollisionSystem = world->registerSystem<CollisionSystem>();
+    mSceneSystem = world->registerSystem<SceneSystem>();
 
     // Setter opp hvilke komponenter de ulike systemene trenger
     Signature renderSign;
@@ -138,6 +141,11 @@ void RenderWindow::init()
     collisionSign.set(world->getComponentType<EntityData>());
     collisionSign.set(world->getComponentType<Transform>());
     world->setSystemSignature<MovementSystem>(collisionSign);
+
+    Signature sceneSign;
+    for(const auto& type : world->getComponentTypes())
+        sceneSign.set(type.second);
+
 
     //********************** Making the objects to be drawn **********************
 
@@ -195,28 +203,46 @@ void RenderWindow::init()
     transform->scale = {0.5f, 0.5f, 0.5f};
     transform->position = {3.f, 2.f, -2.f};
 
-    int transformtype = static_cast<int>(world->getComponentType<Transform>());
-    int entityType = static_cast<int>(world->getComponentType<EntityData>());
-    int materialType = static_cast<int>(world->getComponentType<Material>());
 
     QFile file("data.json");
-    QJsonDocument document;
+    if(file.exists())
+    {
+        qDebug() << "JSON file removed";
+        file.remove();
+    }
+
     file.open(QIODevice::WriteOnly);
 
+    QJsonDocument document;
+    QJsonObject docuemntObject;
+
+    QJsonValue SceneName = "Scene Name";
+    docuemntObject.insert("scene", SceneName);
+
+    QJsonArray Entities;
 
     QJsonObject transformJs = transform->toJSON();
-    transformJs.insert("Type", transformtype);
 
     QJsonObject entityJs = world->getComponent<EntityData>(entity).value()->toJSON();
-    entityJs.insert("Type", entityType);
     QJsonObject materialJs = world->getComponent<Material>(entity).value()->toJSON();
-    materialJs.insert("Type", materialType);
 
-    QJsonObject object;
-    object.insert("Transform", transformJs);
-    object.insert("EntityData", entityJs);
-    object.insert("Material", materialJs);
-    document.setObject(object);
+
+
+    QJsonObject EntityObject;
+    EntityObject.insert("id", entity);
+
+    QJsonObject Components;
+    Components.insert("transform", transformJs);
+    Components.insert("entitydata", entityJs);
+    Components.insert("material", materialJs);
+    EntityObject.insert("components", Components);
+
+
+    Entities.push_back(EntityObject);
+    Entities.push_back(EntityObject);
+
+    docuemntObject.insert("entities", Entities);
+    document.setObject(docuemntObject);
     file.write(document.toJson());
     file.close();
 

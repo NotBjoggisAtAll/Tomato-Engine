@@ -63,6 +63,11 @@ public:
         }
     }
 
+    std::unordered_map<std::string, ComponentType> getComponentTypes()
+    {
+        return mComponentTypes;
+    }
+
 private:
 
 

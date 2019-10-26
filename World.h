@@ -94,6 +94,10 @@ public:
         return mComponentManager->getComponentType<T>();
     }
 
+    std::unordered_map<std::string, ComponentType> getComponentTypes()
+    {
+        return mComponentManager->getComponentTypes();
+    }
 
     // System methods
     template<typename T>

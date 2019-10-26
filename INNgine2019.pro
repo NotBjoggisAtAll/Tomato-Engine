@@ -42,6 +42,7 @@ HEADERS += \
     Managers/soundmanager.h \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
+    Systems/scenesystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/soundwidget.h \
     World.h \
@@ -84,6 +85,7 @@ SOURCES += main.cpp \
     Managers/soundmanager.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
+    Systems/scenesystem.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/soundwidget.cpp \
