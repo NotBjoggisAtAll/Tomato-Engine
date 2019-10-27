@@ -2,7 +2,7 @@
 #include "octahedronball.h"
 #include "fstream"
 #include "constants.h"
-#include "Components/meshcomponent.h"
+
 #include <sstream>
 
 ResourceFactory* ResourceFactory::instance_ = nullptr;
@@ -42,6 +42,7 @@ std::pair<Mesh,Collision> ResourceFactory::loadMesh(const std::string& filePath)
         createPlane();
 
     currentIt->second.first.filepath_ = filePath;
+    currentIt->second.second.filepath_ = filePath;
 
     return currentIt->second;
 }
@@ -73,7 +74,7 @@ Mesh ResourceFactory::createLine(const std::string& filePath, std::vector<Vertex
     return currentIt->second.first;
 }
 
-void ResourceFactory::createCollision(CollisionType Type = CollisionType::NONE)
+void ResourceFactory::createCollision()
 {
     gsl::Vector3D minVector = mVertices.at(0).mXYZ;
     gsl::Vector3D maxVector = mVertices.at(0).mXYZ;
@@ -95,7 +96,7 @@ void ResourceFactory::createCollision(CollisionType Type = CollisionType::NONE)
             maxVector.z = vertex.mXYZ.z;
     }
     qDebug() << "Min og Max vector " << minVector << "\n" << maxVector;
-    currentIt->second.second = Collision(Type,minVector,maxVector);
+    currentIt->second.second = Collision(minVector,maxVector);
 }
 
 

@@ -16,6 +16,9 @@ void CollisionSystem::checkCollision()
         if(!collision || !transform || !data)
             continue;
 
+        if(collision->minVector_ == gsl::Vector3D(0) && collision->maxVector_ == gsl::Vector3D(0))
+            continue;
+
         for(auto const& otherEntity : mEntities)
         {
             if(otherEntity == entity)
@@ -28,7 +31,8 @@ void CollisionSystem::checkCollision()
             if(!otherCollision || !otherTransform || !otherData)
                 continue;
 
-
+            if(otherCollision->minVector_ == gsl::Vector3D(0) && otherCollision->maxVector_ == gsl::Vector3D(0))
+                continue;
 
             auto Cube1Max = transform->position + (collision->scaledMaxVector_ );
             auto Cube1Min = transform->position + collision->scaledMinVector_;

@@ -49,6 +49,19 @@ void JsonScene::addObject(Entity entity)
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value_or(nullptr);
     if(mesh)
         components.insert("mesh", mesh->toJSON());
+
+    Collision* collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
+    if(collision)
+        components.insert("collision", collision->toJSON());
+
+    Light* light = getWorld()->getComponent<Light>(entity).value_or(nullptr);
+    if(light)
+        components.insert("light", light->toJSON());
+
+    Sound* sound = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
+    if(sound)
+        components.insert("sound", sound->toJSON());
+
     // Legg til flere komponenter her etterhvert
     entityObject.insert("id", entity);
     entityObject.insert("components", components);

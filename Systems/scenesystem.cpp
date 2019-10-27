@@ -5,6 +5,7 @@
 #include <cassert>
 #include "Components/allcomponents.h"
 #include <QFile>
+#include <QJsonDocument>
 void SceneSystem::clearScene()
 {
 
@@ -26,52 +27,53 @@ void SceneSystem::loadScene(QString filepath)
     if(entities != QJsonValue::Undefined)
     {
 
-        Entity newEntity = getWorld()->createEntity();
-
         //Array of Entities
         QJsonArray entitiesArray = entities.toArray();
 
-        //Current Entity Object Should loop from here
-        QJsonObject JSONentity = entitiesArray.first().toObject();
-        entitiesArray.removeFirst();
-
-        QJsonObject components = JSONentity.take("components").toObject();
-
-        QJsonObject entityData = components.take("entitydata").toObject();
-
-        if(!entityData.empty())
+        for(const auto entity : entitiesArray)
         {
-            EntityData data(entityData);
-            getWorld()->addComponent(newEntity,data);
-        }
-        //Try to get the material component from JSON
-        QJsonObject materialData = components.take("material").toObject();
+            QJsonObject JSONentity = entity.toObject();
 
-        //If its not there the entity doesnt have one
-        if(!materialData.empty())
-        {
-            Material material(materialData);
-            getWorld()->addComponent(newEntity,material);
+            Entity newEntity = getWorld()->createEntity();
 
-        }
 
-        QJsonObject transformData = components.take("transform").toObject();
+            //Current Entity Object Should loop from here
 
-        if(!transformData.empty())
-        {
-            Transform transform(transformData);
-            getWorld()->addComponent(newEntity,transform);
-        }
+            QJsonObject components = JSONentity.take("components").toObject();
 
-        QJsonObject meshData = components.take("mesh").toObject();
-        if(!meshData.empty())
-        {
-            Mesh mesh(meshData);
-            getWorld()->addComponent(newEntity,mesh);
+
+            QJsonObject entityData = components.take("entitydata").toObject();
+            if(!entityData.empty())
+                getWorld()->addComponent(newEntity,EntityData(entityData));
+
+            //Try to get the material component from JSON
+            QJsonObject materialData = components.take("material").toObject();
+            //If its not there the entity doesnt have one
+            if(!materialData.empty())
+                getWorld()->addComponent(newEntity,Material(materialData));
+
+            QJsonObject transformData = components.take("transform").toObject();
+            if(!transformData.empty())
+                getWorld()->addComponent(newEntity,Transform(transformData));
+
+            QJsonObject meshData = components.take("mesh").toObject();
+            if(!meshData.empty())
+                getWorld()->addComponent(newEntity,Mesh(meshData));
+
+            QJsonObject collisionData = components.take("collision").toObject();
+            if(!collisionData.empty())
+                getWorld()->addComponent(newEntity,Collision(collisionData));
+
+            QJsonObject lightData = components.take("light").toObject();
+            if(!lightData.empty())
+                getWorld()->addComponent(newEntity,Light(lightData));
+
+            QJsonObject soundData = components.take("sound").toObject();
+            if(!soundData.empty())
+                getWorld()->addComponent(newEntity,Sound(soundData));
+
         }
     }
-
-
 }
 
 SceneSystem::SceneSystem()

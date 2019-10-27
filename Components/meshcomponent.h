@@ -3,7 +3,6 @@
 
 #include "gltypes.h"
 #include <QJsonObject>
-#include "resourcefactory.h"
 
 struct Mesh
 {
@@ -18,19 +17,9 @@ struct Mesh
 
     std::string filepath_ = "";
 
-    Mesh(QJsonObject JSON)
-    {
-        *this = ResourceFactory::instance()->loadMesh(JSON.take("filepath").toString().toStdString()).first;
-    }
+    Mesh(QJsonObject JSON);
 
-    QJsonObject toJSON()
-    {
-        QJsonObject object;
-        object.insert("visible", isVisible);
-        object.insert("filepath", QString::fromStdString(filepath_));
-
-        return object;
-    }
+    QJsonObject toJSON();
 };
 
 #endif // MESHCOMPONENT_H

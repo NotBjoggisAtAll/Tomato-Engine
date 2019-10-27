@@ -2,13 +2,15 @@
 #define RESOURCEFACTORY_H
 
 #include <QOpenGLFunctions_4_1_Core>
-#include "Components/collision.h"
 #include <map>
 #include <vector>
 #include "vertex.h"
 #include <utility>
+#include "Components/meshcomponent.h"
+#include "Components/collision.h"
 
 class Mesh;
+class Collision;
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:
@@ -21,7 +23,7 @@ public:
 private:
     ResourceFactory() = default;
 
-    void createCollision(CollisionType Type);
+    void createCollision();
     //Used to check if the mesh is already loaded from file
     std::map<std::string, std::pair<Mesh, Collision>> mMeshMap; //string - filepath, Mesh - Meshdata, Collision - CollisionData
     std::map<std::string, std::pair<Mesh, Collision>>::iterator currentIt{};

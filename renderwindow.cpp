@@ -148,6 +148,7 @@ void RenderWindow::init()
 
 
     //********************** Making the objects to be drawn **********************
+    jba::JsonScene scene("newScene");
 
     Entity entity = world->createEntity();
 
@@ -156,6 +157,8 @@ void RenderWindow::init()
     world->addComponent(entity, meshData.first);
     world->addComponent(entity, Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+
+    scene.addObject(entity);
 
     entity = world->createEntity();
 
@@ -168,6 +171,7 @@ void RenderWindow::init()
     auto transform = world->getComponent<Transform>(entity).value();
     transform->scale = {15.f,15.f,15.f};
 
+    scene.addObject(entity);
 
     entity = world->createEntity();
 
@@ -178,6 +182,8 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
     world->addComponent(entity, meshData.second);
 
+    scene.addObject(entity);
+
     entity = world->createEntity();
 
     meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
@@ -187,8 +193,11 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
     world->addComponent(entity, meshData.second);
 
+
     transform = world->getComponent<Transform>(entity).value();
     transform->position = gsl::Vector3D(1.1f,0.f,0.f);
+
+    scene.addObject(entity);
 
     entity = world->createEntity();
 
@@ -203,53 +212,8 @@ void RenderWindow::init()
     transform->scale = {0.5f, 0.5f, 0.5f};
     transform->position = {3.f, 2.f, -2.f};
 
-
-    jba::JsonScene scene("newScene");
-
     scene.addObject(entity);
 
-    scene.makeFile("data2.json", true);
-//    QFile file("data.json");
-//    if(file.exists())
-//    {
-//        qDebug() << "JSON file removed";
-//        file.remove();
-//    }
-
-//    file.open(QIODevice::WriteOnly);
-
-//    QJsonDocument document;
-//    QJsonObject docuemntObject;
-
-//    QJsonValue SceneName = "Scene Name";
-//    docuemntObject.insert("scene", SceneName);
-
-//    QJsonArray Entities;
-
-//    QJsonObject transformJs = transform->toJSON();
-
-//    QJsonObject entityJs = world->getComponent<EntityData>(entity).value()->toJSON();
-//    QJsonObject materialJs = world->getComponent<Material>(entity).value()->toJSON();
-
-
-
-//    QJsonObject EntityObject;
-//    EntityObject.insert("id", entity);
-
-//    QJsonObject Components;
-//    Components.insert("transform", transformJs);
-//    Components.insert("entitydata", entityJs);
-//    Components.insert("material", materialJs);
-//    EntityObject.insert("components", Components);
-
-
-//    Entities.push_back(EntityObject);
-//    Entities.push_back(EntityObject);
-
-//    docuemntObject.insert("entities", Entities);
-//    document.setObject(docuemntObject);
-//    file.write(document.toJson());
-//    file.close();
 
     entity = world->createEntity();
 
@@ -257,6 +221,8 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
+    scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
+    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
     entity = world->createEntity();
     meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
@@ -265,10 +231,14 @@ void RenderWindow::init()
     world->addComponent(entity, Light());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
     world->addComponent(entity, meshData.first);
+
+    scene.addObject(entity);
+
     ShaderManager::instance()->phongShader()->setLight(entity);
 
     //********************** System stuff **********************
 
+    scene.makeFile("data2.json", true);
     mSceneSystem->loadScene("data2.json");
     mMainWindow->DisplayEntitesInOutliner();
 

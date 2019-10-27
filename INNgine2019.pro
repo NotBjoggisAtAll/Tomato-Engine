@@ -73,6 +73,8 @@ HEADERS += \
 
 
 SOURCES += main.cpp \
+    Components/collision.cpp \
+    Components/meshcomponent.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
