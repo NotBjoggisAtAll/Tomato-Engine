@@ -2,13 +2,13 @@
 #define RESOURCEFACTORY_H
 
 #include <QOpenGLFunctions_4_1_Core>
-#include "Components/meshcomponent.h"
 #include "Components/collision.h"
 #include <map>
 #include <vector>
 #include "vertex.h"
 #include <utility>
 
+class Mesh;
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {
 public:

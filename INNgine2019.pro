@@ -50,6 +50,7 @@ HEADERS += \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
     Systems/rendersystem.h \
+    jsonscene.h \
     renderwindow.h \
     resourcefactory.h \
     shader.h \
@@ -92,6 +93,7 @@ SOURCES += main.cpp \
     Widgets/meshwidget.cpp \
     World.cpp \
     Systems/rendersystem.cpp \
+    jsonscene.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \

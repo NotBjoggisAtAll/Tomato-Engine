@@ -2,6 +2,7 @@
 #include "octahedronball.h"
 #include "fstream"
 #include "constants.h"
+#include "Components/meshcomponent.h"
 #include <sstream>
 
 ResourceFactory* ResourceFactory::instance_ = nullptr;
@@ -39,6 +40,8 @@ std::pair<Mesh,Collision> ResourceFactory::loadMesh(const std::string& filePath)
         createSphere();
     if(filePath == "plane")
         createPlane();
+
+    currentIt->second.first.filepath_ = filePath;
 
     return currentIt->second;
 }

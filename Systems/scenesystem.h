@@ -10,14 +10,13 @@ class SceneSystem : public System
 public:
 
     SceneSystem();
-    void loadScene(QJsonObject JSON);
+    void loadScene(QString filepath);
 
 
 private:
 
     void clearScene();
 
-    std::string findComponentNameByValue(std::unordered_map<std::string, ComponentType> &ComponentTypes, ComponentType TypeToFind);
 };
 
 #endif // SCENESYSTEM_H

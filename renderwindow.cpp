@@ -27,7 +27,7 @@
 #include "World.h"
 
 #include <QJsonDocument>
-
+#include "jsonscene.h"
 #include "Systems/scenesystem.h"
 #include "constants.h"
 
@@ -204,47 +204,52 @@ void RenderWindow::init()
     transform->position = {3.f, 2.f, -2.f};
 
 
-    QFile file("data.json");
-    if(file.exists())
-    {
-        qDebug() << "JSON file removed";
-        file.remove();
-    }
+    jba::JsonScene scene("newScene");
 
-    file.open(QIODevice::WriteOnly);
+    scene.addObject(entity);
 
-    QJsonDocument document;
-    QJsonObject docuemntObject;
+    scene.makeFile("data2.json", true);
+//    QFile file("data.json");
+//    if(file.exists())
+//    {
+//        qDebug() << "JSON file removed";
+//        file.remove();
+//    }
 
-    QJsonValue SceneName = "Scene Name";
-    docuemntObject.insert("scene", SceneName);
+//    file.open(QIODevice::WriteOnly);
 
-    QJsonArray Entities;
+//    QJsonDocument document;
+//    QJsonObject docuemntObject;
 
-    QJsonObject transformJs = transform->toJSON();
+//    QJsonValue SceneName = "Scene Name";
+//    docuemntObject.insert("scene", SceneName);
 
-    QJsonObject entityJs = world->getComponent<EntityData>(entity).value()->toJSON();
-    QJsonObject materialJs = world->getComponent<Material>(entity).value()->toJSON();
+//    QJsonArray Entities;
 
+//    QJsonObject transformJs = transform->toJSON();
 
-
-    QJsonObject EntityObject;
-    EntityObject.insert("id", entity);
-
-    QJsonObject Components;
-    Components.insert("transform", transformJs);
-    Components.insert("entitydata", entityJs);
-    Components.insert("material", materialJs);
-    EntityObject.insert("components", Components);
+//    QJsonObject entityJs = world->getComponent<EntityData>(entity).value()->toJSON();
+//    QJsonObject materialJs = world->getComponent<Material>(entity).value()->toJSON();
 
 
-    Entities.push_back(EntityObject);
-    Entities.push_back(EntityObject);
 
-    docuemntObject.insert("entities", Entities);
-    document.setObject(docuemntObject);
-    file.write(document.toJson());
-    file.close();
+//    QJsonObject EntityObject;
+//    EntityObject.insert("id", entity);
+
+//    QJsonObject Components;
+//    Components.insert("transform", transformJs);
+//    Components.insert("entitydata", entityJs);
+//    Components.insert("material", materialJs);
+//    EntityObject.insert("components", Components);
+
+
+//    Entities.push_back(EntityObject);
+//    Entities.push_back(EntityObject);
+
+//    docuemntObject.insert("entities", Entities);
+//    document.setObject(docuemntObject);
+//    file.write(document.toJson());
+//    file.close();
 
     entity = world->createEntity();
 
@@ -264,6 +269,7 @@ void RenderWindow::init()
 
     //********************** System stuff **********************
 
+    mSceneSystem->loadScene("data2.json");
     mMainWindow->DisplayEntitesInOutliner();
 
     //********************** Set up camera **********************
@@ -275,6 +281,7 @@ void RenderWindow::init()
     mGameCamera->setPosition(gsl::Vector3D(0));
 
     updateCamera(mEditorCamera);
+
 }
 
 void RenderWindow::render()

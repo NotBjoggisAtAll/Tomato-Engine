@@ -19,9 +19,9 @@ struct EntityData{
 
     EntityData(QJsonObject JSON)
     {
-        name = JSON.take("Name").toString().toStdString();
-        parent = JSON.take("Parent").toInt();
-        QJsonArray array =  JSON.take("Children").toArray();
+        name = JSON.take("name").toString().toStdString();
+        parent = JSON.take("parent").toInt();
+        QJsonArray array =  JSON.take("children").toArray();
         for(QJsonValue val : array)
             children.push_back(val.toInt());
     }
@@ -29,12 +29,12 @@ struct EntityData{
     QJsonObject toJSON()
     {
         QJsonObject Object;
-        Object.insert("Name", QString::fromStdString(name));
-        Object.insert("Parent", parent);
+        Object.insert("name", QString::fromStdString(name));
+        Object.insert("parent", parent);
         QJsonArray childrenArray;
         for(unsigned int i = 0; i < children.size(); ++i)
             childrenArray.insert(static_cast<int>(i),children.at(i));
-        Object.insert("Children", childrenArray);
+        Object.insert("children", childrenArray);
         return Object;
     }
 };
