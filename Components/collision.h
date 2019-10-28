@@ -2,12 +2,12 @@
 #define COLLISION_H
 
 #include "GSL/vector3d.h"
-#include <QJsonObject>
 
-
+class QJsonObject;
 struct Collision
 {
     Collision() = default;
+    Collision(QJsonObject JSON);
     Collision(gsl::Vector3D minVector, gsl::Vector3D maxVector) : minVector_(minVector), maxVector_(maxVector), scaledMinVector_(minVector), scaledMaxVector_(maxVector) {}
 
     gsl::Vector3D minVector_ = gsl::Vector3D(0);
@@ -18,7 +18,6 @@ struct Collision
 
     std::string filepath_ = "";
 
-    Collision(QJsonObject JSON);
 
     QJsonObject toJSON();
 };

@@ -2,7 +2,7 @@
 #define PHYSICSCOMPONENT_H
 
 
-struct PhysicsComponent
+struct Physics
 {
 
 };

@@ -1,12 +1,12 @@
 #include "textureshader.h"
-#include "Components/materialcomponent.h"
+#include "Components/material.h"
 
 TextureShader::TextureShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
 {
-    mMatrixUniform = glGetUniformLocation( program, "mMatrix" );
-    vMatrixUniform = glGetUniformLocation( program, "vMatrix" );
-    pMatrixUniform = glGetUniformLocation( program, "pMatrix" );
+    mMatrixUniform_ = glGetUniformLocation( program, "mMatrix" );
+    vMatrixUniform_ = glGetUniformLocation( program, "vMatrix" );
+    pMatrixUniform_ = glGetUniformLocation( program, "pMatrix" );
     objectColorUniform = glGetUniformLocation( program, "objectColor" );
     textureUniform = glGetUniformLocation(program, "textureSampler");
 }
@@ -20,6 +20,6 @@ void TextureShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *m
 {
     Shader::transmitUniformData(modelMatrix);
 
-    glUniform1i(textureUniform, material->mTextureUnit); //TextureUnit = 0 as default);
-    glUniform3f(objectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
+    glUniform1i(textureUniform, material->textureUnit_); //TextureUnit = 0 as default);
+    glUniform3f(objectColorUniform, material->color_.x, material->color_.y, material->color_.z);
 }

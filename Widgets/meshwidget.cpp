@@ -1,7 +1,7 @@
 #include "meshwidget.h"
 #include "ui_meshwidget.h"
-#include "Components/meshcomponent.h"
-#include "World.h"
+#include "Components/mesh.h"
+#include "world.h"
 #include "resourcefactory.h"
 #include <QFileDialog>
 
@@ -15,7 +15,7 @@ MeshWidget::MeshWidget(Entity entity_, QWidget *parent) :
 
     Component = getWorld()->getComponent<Mesh>(entity).value();
 
-    ui->isVisible->setChecked(Component->isVisible);
+    ui->isVisible->setChecked(Component->isVisible_);
 
 }
 
@@ -27,7 +27,7 @@ MeshWidget::~MeshWidget()
 
 void MeshWidget::on_isVisible_toggled(bool checked)
 {
-    Component->isVisible = checked;
+    Component->isVisible_ = checked;
 }
 
 void MeshWidget::on_changeMeshButton_clicked()

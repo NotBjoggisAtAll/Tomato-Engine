@@ -24,7 +24,7 @@
 #include "Components/allcomponents.h"
 
 #include "resourcefactory.h"
-#include "World.h"
+#include "world.h"
 
 #include <QJsonDocument>
 #include "jsonscene.h"
@@ -169,7 +169,7 @@ void RenderWindow::init()
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
 
     auto transform = world->getComponent<Transform>(entity).value();
-    transform->scale = {15.f,15.f,15.f};
+    transform->scale_ = {15.f,15.f,15.f};
 
     scene.addObject(entity);
 
@@ -195,7 +195,7 @@ void RenderWindow::init()
 
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->position = gsl::Vector3D(1.1f,0.f,0.f);
+    transform->position_ = gsl::Vector3D(1.1f,0.f,0.f);
 
     scene.addObject(entity);
 
@@ -209,8 +209,8 @@ void RenderWindow::init()
     world->addComponent(entity, meshData.second);
 
     transform = world->getComponent<Transform>(entity).value();
-    transform->scale = {0.5f, 0.5f, 0.5f};
-    transform->position = {3.f, 2.f, -2.f};
+    transform->scale_ = {0.5f, 0.5f, 0.5f};
+    transform->position_ = {3.f, 2.f, -2.f};
 
     scene.addObject(entity);
 
@@ -326,12 +326,12 @@ void RenderWindow::raycastFromMouse(QMouseEvent* event)
     float z = 1.0f;
     gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
     gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
-    gsl::Matrix4x4 projection_matrix = mCurrentCamera->mProjectionMatrix;
+    gsl::Matrix4x4 projection_matrix = mCurrentCamera->projectionMatrix_;
     projection_matrix.inverse();
     gsl::Vector4D ray_eye = projection_matrix * ray_clip;
     ray_eye.z = -1.0f;
     ray_eye.w = 0.0f;
-    gsl::Matrix4x4 view_matrix = mCurrentCamera->mViewMatrix;
+    gsl::Matrix4x4 view_matrix = mCurrentCamera->viewMatrix_;
     view_matrix.inverse();
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
@@ -407,13 +407,13 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 
     Entity entity = getWorld()->createEntity();
 
-    getWorld()->addComponent(entity, Transform(transform->position));
+    getWorld()->addComponent(entity, Transform(transform->position_));
     getWorld()->addComponent(entity, mesh);
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, EntityData("Collision"));
     EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();
 
-    data->children.push_back(entity);
+    data->children_.push_back(entity);
 
     lastEntityCollision = entity;
 
@@ -434,21 +434,21 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 void RenderWindow::handleInput()
 {
     //Camera
-    mCurrentCamera->setSpeed(0.f);  //cancel last frame movement
+    mCurrentCamera->moveForward(0.f);  //cancel last frame movement
     if(mInput.RMB)
     {
         if(mInput.W)
-            mCurrentCamera->setSpeed(-mCameraSpeed);
+            mCurrentCamera->moveForward(-mCameraSpeed);
         if(mInput.S)
-            mCurrentCamera->setSpeed(mCameraSpeed);
+            mCurrentCamera->moveForward(mCameraSpeed);
         if(mInput.D)
             mCurrentCamera->moveRight(mCameraSpeed);
         if(mInput.A)
             mCurrentCamera->moveRight(-mCameraSpeed);
         if(mInput.Q)
-            mCurrentCamera->updateHeigth(-mCameraSpeed);
+            mCurrentCamera->moveUp(-mCameraSpeed);
         if(mInput.E)
-            mCurrentCamera->updateHeigth(mCameraSpeed);
+            mCurrentCamera->moveUp(mCameraSpeed);
     }
     else
     {
@@ -743,9 +743,9 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     }
     mAspectratio = static_cast<float>(width()) / height();
     //    qDebug() << mAspectratio;
-    mCurrentCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
-    mEditorCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
-    mGameCamera->mProjectionMatrix.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    mCurrentCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    mEditorCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    mGameCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
     //    qDebug() << mCamera.mProjectionMatrix;
 }
 

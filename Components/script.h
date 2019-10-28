@@ -2,7 +2,7 @@
 #define SCRIPTCOMPONENT_H
 
 
-struct ScriptComponent
+struct Script
 {
 
 };

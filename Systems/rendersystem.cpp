@@ -1,9 +1,9 @@
 #include "rendersystem.h"
 
-#include "World.h"
-#include "Components/meshcomponent.h"
-#include "Components/transformcomponent.h"
-#include "Components/materialcomponent.h"
+#include "world.h"
+#include "Components/mesh.h"
+#include "Components/transform.h"
+#include "Components/material.h"
 #include "Components/entitydata.h"
 #include "shader.h"
 
@@ -19,36 +19,36 @@ void RenderSystem::tick()
     {
         auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 
-        if(!mesh->isVisible)
+        if(!mesh->isVisible_)
             continue;
 
         auto material = getWorld()->getComponent<Material>(entity).value();
         auto transform = getWorld()->getComponent<Transform>(entity).value();
 
-        glUseProgram(material->mShader->getProgram());
-        glBindVertexArray(mesh->mVAO);
+        glUseProgram(material->shader_->getProgram());
+        glBindVertexArray(mesh->VAO_);
 
         gsl::Matrix4x4 posMatrix;
-        posMatrix.setPosition(transform->position);
+        posMatrix.setPosition(transform->position_);
 
         gsl::Matrix4x4 rotMatrix;
-        rotMatrix.rotateX(transform->rotation.x);
-        rotMatrix.rotateY(transform->rotation.y);
-        rotMatrix.rotateZ(transform->rotation.z);
+        rotMatrix.rotateX(transform->rotation_.x);
+        rotMatrix.rotateY(transform->rotation_.y);
+        rotMatrix.rotateZ(transform->rotation_.z);
 
         gsl::Matrix4x4 scaleMatrix;
-        scaleMatrix.scale(transform->scale);
+        scaleMatrix.scale(transform->scale_);
 
         gsl::Matrix4x4 modelMatrix;
         modelMatrix = posMatrix * rotMatrix * scaleMatrix;
 
-        material->mShader->transmitUniformData(&modelMatrix, material);
+        material->shader_->transmitUniformData(&modelMatrix, material);
 
 
-        if(mesh->mIndiceCount > 0)
-            glDrawElements(mesh->mDrawType, mesh->mIndiceCount, GL_UNSIGNED_INT, nullptr);
+        if(mesh->indiceCount_ > 0)
+            glDrawElements(mesh->drawType_, mesh->indiceCount_, GL_UNSIGNED_INT, nullptr);
 
         else
-            glDrawArrays(mesh->mDrawType, 0, mesh->mVerticeCount);
+            glDrawArrays(mesh->drawType_, 0, mesh->verticeCount_);
     }
 }

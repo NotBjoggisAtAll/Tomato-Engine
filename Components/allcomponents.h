@@ -1,15 +1,15 @@
 #ifndef ALLCOMPONENTS_H
 #define ALLCOMPONENTS_H
 
-#include "materialcomponent.h"
-#include "meshcomponent.h"
-#include "physicscomponent.h"
-#include "scriptcomponent.h"
-#include "soundcomponent.h"
-#include "transformcomponent.h"
+#include "material.h"
+#include "mesh.h"
+#include "physics.h"
+#include "script.h"
+#include "sound.h"
+#include "transform.h"
 #include "entitydata.h"
 #include "collision.h"
-#include "lightcomponent.h"
+#include "light.h"
 
 
 #endif // ALLCOMPONENTS_H

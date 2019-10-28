@@ -1,14 +1,14 @@
 #include "phongshader.h"
-#include "Components/materialcomponent.h"
-#include "Components/lightcomponent.h"
-#include "Components/transformcomponent.h"
-#include "World.h"
+#include "Components/material.h"
+#include "Components/light.h"
+#include "Components/transform.h"
+#include "world.h"
 PhongShader::PhongShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
 {
-    mMatrixUniform = glGetUniformLocation( program, "mMatrix" );
-    vMatrixUniform = glGetUniformLocation( program, "vMatrix" );
-    pMatrixUniform = glGetUniformLocation( program, "pMatrix" );
+    mMatrixUniform_ = glGetUniformLocation( program, "mMatrix" );
+    vMatrixUniform_ = glGetUniformLocation( program, "vMatrix" );
+    pMatrixUniform_ = glGetUniformLocation( program, "pMatrix" );
 
     //    textureUniform = glGetUniformLocation(program, "textureSampler");
     mLightColorUniform = glGetUniformLocation( program, "lightColor" );
@@ -33,11 +33,11 @@ void PhongShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *mat
     if(!lightComponent || !lightTransformComponent)
         return;
 
-    glUniform1f(mAmbientLightStrengthUniform, lightComponent->mAmbientStrenght);
-    glUniform1f(mLightPowerUniform, lightComponent->mLightStrenght);
-    glUniform3f(mLightColorUniform, lightComponent->mLightColor.x, lightComponent->mLightColor.y, lightComponent->mLightColor.z);
-    glUniform3f(mLightPositionUniform, lightTransformComponent->position.x, lightTransformComponent->position.y,lightTransformComponent->position.z);
-    glUniform3f(mObjectColorUniform, material->mColor.x, material->mColor.y, material->mColor.z);
+    glUniform1f(mAmbientLightStrengthUniform, lightComponent->ambientStrength_);
+    glUniform1f(mLightPowerUniform, lightComponent->lightStrength_);
+    glUniform3f(mLightColorUniform, lightComponent->lightColor_.x, lightComponent->lightColor_.y, lightComponent->lightColor_.z);
+    glUniform3f(mLightPositionUniform, lightTransformComponent->position_.x, lightTransformComponent->position_.y,lightTransformComponent->position_.z);
+    glUniform3f(mObjectColorUniform, material->color_.x, material->color_.y, material->color_.z);
 }
 
 void PhongShader::setLight(Entity entity)

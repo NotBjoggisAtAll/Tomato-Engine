@@ -6,7 +6,7 @@
 #include <vector>
 #include "vertex.h"
 #include <utility>
-#include "Components/meshcomponent.h"
+#include "Components/mesh.h"
 #include "Components/collision.h"
 
 class Mesh;

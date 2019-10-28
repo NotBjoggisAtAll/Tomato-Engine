@@ -12,38 +12,35 @@ public:
 
     void pitch(float degrees);
     void yaw(float degrees);
-    void updateRightVector();
-    void updateForwardVector();
     void update();
-
-    gsl::Matrix4x4 mViewMatrix;
-    gsl::Matrix4x4 mProjectionMatrix;
 
     void setPosition(const gsl::Vector3D &position);
 
-    void setSpeed(float speed);
-    void updateHeigth(float deltaHeigth);
-    void moveRight(float delta);
+    void moveUp(float speed);
+    void moveForward(float speed);
+    void moveRight(float speed);
 
     gsl::Vector3D position() const;
     gsl::Vector3D up() const;
     gsl::Vector3D forward() const;
 
+    gsl::Matrix4x4 viewMatrix_;
+    gsl::Matrix4x4 projectionMatrix_;
     QJsonObject toJson();
 
 private:
-    gsl::Vector3D mForward{0.f, 0.f, -1.f};
-    gsl::Vector3D mRight{1.f, 0.f, 0.f};
-    gsl::Vector3D mUp{0.f, 1.f, 0.f};
+    void updateRightVector();
+    void updateForwardVector();
 
-    gsl::Vector3D mPosition{0.f, 0.f, 0.f};
-    float mPitch{0.f};
-    float mYaw{0.f};
+    gsl::Vector3D forward_{0.f, 0.f, -1.f};
+    gsl::Vector3D right_{1.f, 0.f, 0.f};
+    gsl::Vector3D up_{0.f, 1.f, 0.f};
 
-    gsl::Matrix4x4 mYawMatrix;
-    gsl::Matrix4x4 mPitchMatrix;
+    gsl::Vector3D position_{0.f, 0.f, 0.f};
+    float pitch_{0.f};
+    float yaw_{0.f};
 
-    float mSpeed{0.f}; //camera will move by this speed along the mForward vector
+    float speed_{0.f}; //camera will move by this speed along the mForward vector
 };
 
 #endif // CAMERA_H

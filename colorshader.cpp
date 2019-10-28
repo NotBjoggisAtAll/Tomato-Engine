@@ -1,12 +1,12 @@
 #include "colorshader.h"
-#include "Components/materialcomponent.h"
+#include "Components/material.h"
 
 ColorShader::ColorShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
 {
-    mMatrixUniform = glGetUniformLocation( program, "mMatrix" );
-    vMatrixUniform = glGetUniformLocation( program, "vMatrix" );
-    pMatrixUniform = glGetUniformLocation( program, "pMatrix" );
+    mMatrixUniform_ = glGetUniformLocation( program, "mMatrix" );
+    vMatrixUniform_ = glGetUniformLocation( program, "vMatrix" );
+    pMatrixUniform_ = glGetUniformLocation( program, "pMatrix" );
 }
 
 ColorShader::~ColorShader()

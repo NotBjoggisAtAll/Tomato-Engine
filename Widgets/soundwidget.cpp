@@ -1,8 +1,9 @@
 #include "soundwidget.h"
 #include "ui_soundwidget.h"
-#include "Components/soundcomponent.h"
-#include "World.h"
+#include "Components/sound.h"
+#include "world.h"
 #include "Systems/soundsystem.h"
+#include "soundsource.h"
 SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SoundWidget)
@@ -12,7 +13,7 @@ SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
     Component = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
 
     if(Component)
-        ui->fileNameHere->setText(QString::fromStdString(Component->audio->mName));
+        ui->fileNameHere->setText(QString::fromStdString(Component->audio_->mName));
 }
 
 SoundWidget::~SoundWidget()

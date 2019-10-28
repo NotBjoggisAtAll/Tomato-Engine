@@ -1,5 +1,5 @@
 #include "scenesystem.h"
-#include "World.h"
+#include "world.h"
 #include "types.h"
 #include <QJsonArray>
 #include <cassert>

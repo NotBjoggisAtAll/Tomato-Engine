@@ -1,7 +1,7 @@
 #include "collisionsystem.h"
-#include "World.h"
+#include "world.h"
 #include "Components/collision.h"
-#include "Components/transformcomponent.h"
+#include "Components/transform.h"
 #include "Components/entitydata.h"
 
 void CollisionSystem::checkCollision()
@@ -34,16 +34,16 @@ void CollisionSystem::checkCollision()
             if(otherCollision->minVector_ == gsl::Vector3D(0) && otherCollision->maxVector_ == gsl::Vector3D(0))
                 continue;
 
-            auto Cube1Max = transform->position + (collision->scaledMaxVector_ );
-            auto Cube1Min = transform->position + collision->scaledMinVector_;
-            auto Cube2Max = otherTransform->position + otherCollision->scaledMaxVector_;
-            auto Cube2Min = otherTransform->position + otherCollision->scaledMinVector_;
+            auto Cube1Max = transform->position_ + (collision->scaledMaxVector_ );
+            auto Cube1Min = transform->position_ + collision->scaledMinVector_;
+            auto Cube2Max = otherTransform->position_ + otherCollision->scaledMaxVector_;
+            auto Cube2Min = otherTransform->position_ + otherCollision->scaledMinVector_;
 
             if ((Cube1Min.x <= Cube2Max.x && Cube1Max.x >= Cube2Min.x) &&
                     (Cube1Min.y <= Cube2Max.y && Cube1Max.y >= Cube2Min.y) &&
                     (Cube1Min.z <= Cube2Max.z && Cube1Max.z >= Cube2Min.z))
             {
-                qDebug() << QString::fromStdString(data->name + " collides with " + otherData->name);
+                qDebug() << QString::fromStdString(data->name_ + " collides with " + otherData->name_);
                 break;
             }
 
@@ -87,8 +87,8 @@ bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl:
     dirfrac.y = 1.0f / rayDirection.y;
     dirfrac.z = 1.0f / rayDirection.z;
 
-    gsl::Vector3D lb = transform->position + collision->scaledMinVector_;
-    gsl::Vector3D rb = transform->position + collision->scaledMaxVector_;
+    gsl::Vector3D lb = transform->position_ + collision->scaledMinVector_;
+    gsl::Vector3D rb = transform->position_ + collision->scaledMaxVector_;
 
     // lb is the corner of AABB with minimal coordinates - left bottom, rt is maximal corner
     // r.org is origin of ray

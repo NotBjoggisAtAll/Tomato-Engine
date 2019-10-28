@@ -1,9 +1,9 @@
 #include "soundsystem.h"
 #include "camera.h"
 #include "Managers/soundmanager.h"
-#include "World.h"
-#include "Components/soundcomponent.h"
-#include "Components/transformcomponent.h"
+#include "world.h"
+#include "Components/sound.h"
+#include "Components/transform.h"
 
 /**
  * TODO
@@ -21,7 +21,7 @@ void SoundSystem::beginPlay()
     for(auto const& entity : mEntities)
     {
         auto sound = getWorld()->getComponent<Sound>(entity).value();
-        sound->audio->stop();
+        sound->audio_->stop();
     }
 }
 
@@ -37,23 +37,23 @@ void SoundSystem::tick()
     {
         auto sound = getWorld()->getComponent<Sound>(entity).value();
         auto transform = getWorld()->getComponent<Transform>(entity).value();
-        sound->audio->setPosition(transform->position);
+        sound->audio_->setPosition(transform->position_);
     }
 }
 
 void SoundSystem::playSound(Sound *sound)
 {
-    if(!sound->audio->isPlaying())
-        sound->audio->play();
+    if(!sound->audio_->isPlaying())
+        sound->audio_->play();
 }
 
 void SoundSystem::pauseSound(Sound *sound)
 {
-    if(sound->audio->isPlaying())
-        sound->audio->pause();
+    if(sound->audio_->isPlaying())
+        sound->audio_->pause();
 }
 
 void SoundSystem::stopSound(Sound *sound)
 {
-        sound->audio->stop();
+        sound->audio_->stop();
 }

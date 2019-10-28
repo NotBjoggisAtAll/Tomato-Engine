@@ -68,9 +68,9 @@ Mesh ResourceFactory::createLine(const std::string& filePath, std::vector<Vertex
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.first.mDrawType = GL_LINES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.drawType_ = GL_LINES;
     return currentIt->second.first;
 }
 
@@ -102,8 +102,8 @@ void ResourceFactory::createCollision()
 
 void ResourceFactory::openGLVertexBuffers()
 {
-    glGenVertexArrays( 1, &currentIt->second.first.mVAO );
-    glBindVertexArray( currentIt->second.first.mVAO );
+    glGenVertexArrays( 1, &currentIt->second.first.VAO_ );
+    glBindVertexArray( currentIt->second.first.VAO_ );
 
     GLuint mVBO;
 
@@ -157,9 +157,9 @@ void ResourceFactory::createPlane()
 
     openGLVertexBuffers();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.first.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.drawType_ = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 
@@ -178,9 +178,9 @@ void ResourceFactory::createSphere()
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.first.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.drawType_ = GL_TRIANGLES;
     glBindVertexArray(0);
 
 }
@@ -243,9 +243,9 @@ void ResourceFactory::createSkybox()
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.first.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.drawType_ = GL_TRIANGLES;
 
     glBindVertexArray(0);
 }
@@ -266,9 +266,9 @@ void ResourceFactory::createAxis()
     //set up buffers
     openGLVertexBuffers();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = 0;
-    currentIt->second.first.mDrawType = GL_LINES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = 0;
+    currentIt->second.first.drawType_ = GL_LINES;
 
     glBindVertexArray(0);
 }
@@ -298,9 +298,9 @@ void ResourceFactory::createObject(std::string filePath)
     openGLVertexBuffers();
     openGLIndexBuffer();
 
-    currentIt->second.first.mVerticeCount = static_cast<unsigned int>(mVertices.size());
-    currentIt->second.first.mIndiceCount = static_cast<unsigned int>(mIndices.size());
-    currentIt->second.first.mDrawType = GL_TRIANGLES;
+    currentIt->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
+    currentIt->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
+    currentIt->second.first.drawType_ = GL_TRIANGLES;
     glBindVertexArray(0);
 }
 

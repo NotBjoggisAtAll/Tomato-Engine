@@ -30,9 +30,9 @@ public:
 
 protected:
     GLuint program{0};
-    GLint mMatrixUniform{-1};
-    GLint vMatrixUniform{-1};
-    GLint pMatrixUniform{-1};
+    GLint mMatrixUniform_{-1};
+    GLint vMatrixUniform_{-1};
+    GLint pMatrixUniform_{-1};
 
     Camera *mCurrentCamera{nullptr};
 

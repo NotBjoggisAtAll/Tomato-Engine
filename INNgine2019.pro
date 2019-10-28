@@ -20,13 +20,13 @@ HEADERS += \
     Components/collision.h \
     Components/componentArray.h \
     Components/entitydata.h \
-    Components/lightcomponent.h \
-    Components/materialcomponent.h \
-    Components/meshcomponent.h \
-    Components/physicscomponent.h \
-    Components/scriptcomponent.h \
-    Components/soundcomponent.h \
-    Components/transformcomponent.h \
+    Components/light.h \
+    Components/material.h \
+    Components/mesh.h \
+    Components/physics.h \
+    Components/script.h \
+    Components/sound.h \
+    Components/transform.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -45,7 +45,6 @@ HEADERS += \
     Systems/scenesystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/soundwidget.h \
-    World.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -69,12 +68,18 @@ HEADERS += \
     input.h \
     colorshader.h \
     textureshader.h \
-    phongshader.h
+    phongshader.h \
+    world.h
 
 
 SOURCES += main.cpp \
     Components/collision.cpp \
-    Components/meshcomponent.cpp \
+    Components/entitydata.cpp \
+    Components/light.cpp \
+    Components/material.cpp \
+    Components/mesh.cpp \
+    Components/sound.cpp \
+    Components/transform.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
@@ -93,7 +98,6 @@ SOURCES += main.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
-    World.cpp \
     Systems/rendersystem.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
@@ -109,7 +113,8 @@ SOURCES += main.cpp \
     octahedronball.cpp \
     colorshader.cpp \
     textureshader.cpp \
-    phongshader.cpp
+    phongshader.cpp \
+    world.cpp
 
 FORMS += \
     Widgets/addcomponentwidget.ui \

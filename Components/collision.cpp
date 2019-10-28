@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "resourcefactory.h"
+#include <QJsonObject>
 
 Collision::Collision(QJsonObject JSON)
 {

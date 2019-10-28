@@ -11,7 +11,7 @@
 #include "renderwindow.h"
 
 #include "Components/allcomponents.h"
-#include "World.h"
+#include "world.h"
 #include "constants.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -62,7 +62,7 @@ void MainWindow::DisplayEntitesInOutliner()
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
         auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
-        item->setText(0, QString::fromStdString(data->name));
+        item->setText(0, QString::fromStdString(data->name_));
         item->setText(1, QString::number(Entity));
         ui->Outliner->addTopLevelItem(item);
     }
@@ -72,7 +72,7 @@ void MainWindow::addEntityToUi(Entity entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
     auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
-    item->setText(0, QString::fromStdString(data->name));
+    item->setText(0, QString::fromStdString(data->name_));
     item->setText(1, QString::number(entity));
     ui->Outliner->addTopLevelItem(item);
 }
@@ -168,8 +168,8 @@ void MainWindow::on_Outliner_itemSelectionChanged()
         auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
         if(data)
         {
-            data->parent = -1;
-            data->children.clear();
+            data->parent_ = -1;
+            data->children_.clear();
         }
     }
 
@@ -189,8 +189,8 @@ void MainWindow::setupChildren(QTreeWidgetItem* parent)
         auto childData = getWorld()->getComponent<EntityData>((parent->child(j)->text(1).toInt())).value_or(nullptr);
         if(childData)
         {
-            parentData->children.push_back((parent->child(j)->text(1).toInt()));
-            childData->parent = parent->text(1).toInt();
+            parentData->children_.push_back((parent->child(j)->text(1).toInt()));
+            childData->parent_ = parent->text(1).toInt();
             setupChildren(parent->child(j));
         }
     }
