@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include "World.h"
 #include "Components/allcomponents.h"
+#include "camera.h"
 namespace jba {
 
 
@@ -14,14 +15,18 @@ JsonScene::JsonScene(QString SceneName)
 void JsonScene::makeFile(QString FilePath, bool overwrite)
 {
     QFile file(FilePath);
-    QJsonDocument doc;
-    sceneObject_.insert("entities", entities_);
-    doc.setObject(sceneObject_);
-
     if(file.exists() && !overwrite)
         return;
     else
         file.remove();
+
+
+    QJsonDocument doc;
+    sceneObject_.insert("entities", entities_);
+    sceneObject_.insert("cameras", cameras_);
+
+    doc.setObject(sceneObject_);
+
 
     file.open(QFile::WriteOnly);
     file.write(doc.toJson());
@@ -68,5 +73,11 @@ void JsonScene::addObject(Entity entity)
 
     entities_.push_back(entityObject);
 
+}
+
+void JsonScene::addCamera(Camera* Camera)
+{
+    QJsonObject object = Camera->toJson();
+    cameras_.push_back(object);
 }
 }

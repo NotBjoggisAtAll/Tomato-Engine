@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include "types.h"
 
+class Camera;
 namespace jba {
 
 class JsonScene
@@ -15,11 +16,13 @@ public:
 
     void makeFile(QString FilePath, bool overwrite);
     void addObject(Entity entity);
+    void addCamera(Camera* Camera);
 
 private:
 
     QJsonObject sceneObject_ = QJsonObject();
     QJsonArray entities_ = QJsonArray();
+    QJsonArray cameras_ = QJsonArray();
 
 };
 }

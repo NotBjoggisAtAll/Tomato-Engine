@@ -1,13 +1,8 @@
 #include "camera.h"
+#include <QJsonObject>
+#include <QJsonArray>
 
-Camera::Camera()
-{
-    mViewMatrix.setToIdentity();
-    mProjectionMatrix.setToIdentity();
-
-    mYawMatrix.setToIdentity();
-    mPitchMatrix.setToIdentity();
-}
+Camera::Camera(gsl::Vector3D position) : mPosition(position){}
 
 void Camera::pitch(float degrees)
 {
@@ -95,4 +90,25 @@ gsl::Vector3D Camera::up() const
 gsl::Vector3D Camera::forward() const
 {
     return mForward;
+}
+
+
+Camera::Camera(QJsonObject Json)
+{
+    QJsonArray position = Json.take("position").toArray();
+    mPosition.x = static_cast<float>(position.at(0).toDouble());
+    mPosition.y = static_cast<float>(position.at(1).toDouble());
+    mPosition.z = static_cast<float>(position.at(2).toDouble());
+}
+
+QJsonObject Camera::toJson()
+{
+    QJsonObject object;
+    QJsonArray position;
+    position.insert(0, static_cast<double>(mPosition.x));
+    position.insert(1, static_cast<double>(mPosition.y));
+    position.insert(2, static_cast<double>(mPosition.z));
+
+    object.insert("position", position);
+    return object;
 }

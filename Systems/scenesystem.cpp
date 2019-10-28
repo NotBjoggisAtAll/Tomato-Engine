@@ -5,6 +5,7 @@
 #include <cassert>
 #include "Components/allcomponents.h"
 #include <QFile>
+#include "camera.h"
 #include <QJsonDocument>
 void SceneSystem::clearScene()
 {
@@ -22,6 +23,12 @@ void SceneSystem::loadScene(QString filepath)
 
 
     std::unordered_map<std::string, ComponentType> ComponentTypes = getWorld()->getComponentTypes();
+
+    QJsonArray camera = JSON.take("cameras").toArray();
+    if(!camera.empty())
+    {
+        getWorld()->setCurrentCamera(new Camera(camera.takeAt(0).toObject()));
+    }
 
     QJsonValue entities = JSON.take("entities");
     if(entities != QJsonValue::Undefined)

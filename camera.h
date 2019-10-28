@@ -6,7 +6,9 @@
 class Camera
 {
 public:
-    Camera();
+    Camera() = default;
+    Camera(gsl::Vector3D position);
+    Camera(QJsonObject Json);
 
     void pitch(float degrees);
     void yaw(float degrees);
@@ -25,8 +27,9 @@ public:
 
     gsl::Vector3D position() const;
     gsl::Vector3D up() const;
-
     gsl::Vector3D forward() const;
+
+    QJsonObject toJson();
 
 private:
     gsl::Vector3D mForward{0.f, 0.f, -1.f};

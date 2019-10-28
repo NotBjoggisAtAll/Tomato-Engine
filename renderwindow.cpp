@@ -232,26 +232,22 @@ void RenderWindow::init()
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
     world->addComponent(entity, meshData.first);
 
+    ShaderManager::instance()->phongShader()->setLight(entity);
     scene.addObject(entity);
 
-    ShaderManager::instance()->phongShader()->setLight(entity);
-
-    //********************** System stuff **********************
-
-    scene.makeFile("data2.json", true);
-    mSceneSystem->loadScene("data2.json");
-    mMainWindow->DisplayEntitesInOutliner();
-
     //********************** Set up camera **********************
-    mEditorCamera = new Camera();
-    mEditorCamera->setPosition(gsl::Vector3D(1.f, 1.f, 4.4f));
+    mEditorCamera = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
+    scene.addCamera(mEditorCamera);
 
-
-    mGameCamera = new Camera();
-    mGameCamera->setPosition(gsl::Vector3D(0));
+    mGameCamera = new Camera(gsl::Vector3D(0));
+    scene.addCamera(mGameCamera);
 
     updateCamera(mEditorCamera);
 
+    //********************** System stuff **********************
+    scene.makeFile("data2.json", true);
+    mSceneSystem->loadScene("data2.json");
+    mMainWindow->DisplayEntitesInOutliner();
 }
 
 void RenderWindow::render()
