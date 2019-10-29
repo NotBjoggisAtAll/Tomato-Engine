@@ -25,8 +25,8 @@ private:
 
     void createCollision();
     //Used to check if the mesh is already loaded from file
-    std::map<std::string, std::pair<Mesh, Collision>> mMeshMap; //string - filepath, Mesh - Meshdata, Collision - CollisionData
-    std::map<std::string, std::pair<Mesh, Collision>>::iterator currentIt{};
+    std::map<std::string, std::pair<Mesh, Collision>> meshMap_; //string - filepath, Mesh - Meshdata, Collision - CollisionData
+    std::map<std::string, std::pair<Mesh, Collision>>::iterator currentIt_{};
 
     void readOBJFile(std::string filename);
     std::vector<Vertex> mVertices;
@@ -38,7 +38,7 @@ private:
     void createSphere();
     void createAxis();
     void createSkybox();
-    void createObject(std::string filePath);
+    void createObject(const std::string &filePath);
     void readTXTFile(std::string filename);
     void readTerrainFile(std::string filename);
 
