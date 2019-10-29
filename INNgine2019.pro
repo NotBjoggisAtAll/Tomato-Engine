@@ -23,6 +23,7 @@ HEADERS += \
     Components/light.h \
     Components/material.h \
     Components/mesh.h \
+    Components/npc.h \
     Components/physics.h \
     Components/script.h \
     Components/sound.h \
@@ -78,6 +79,7 @@ SOURCES += main.cpp \
     Components/light.cpp \
     Components/material.cpp \
     Components/mesh.cpp \
+    Components/npc.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
     GSL/matrix2x2.cpp \
