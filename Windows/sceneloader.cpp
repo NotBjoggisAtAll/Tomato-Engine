@@ -11,6 +11,8 @@ SceneLoader::SceneLoader(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowTitle("Scene Loader");
+
     QDirIterator dirIterator(QString::fromStdString(gsl::jsonFilePath), QDir::AllEntries | QDir::NoDotAndDotDot);
     while(dirIterator.hasNext())
     {
