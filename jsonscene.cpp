@@ -4,8 +4,8 @@
 #include "world.h"
 #include "Components/allcomponents.h"
 #include "camera.h"
+#include "constants.h"
 namespace jba {
-
 
 JsonScene::JsonScene(QString SceneName)
 {
@@ -14,7 +14,7 @@ JsonScene::JsonScene(QString SceneName)
 
 void JsonScene::makeFile(QString FilePath, bool overwrite)
 {
-    QFile file(FilePath);
+    QFile file(QString::fromStdString(gsl::jsonFilePath) + FilePath);
     if(file.exists() && !overwrite)
         return;
     else

@@ -31,7 +31,7 @@ class RenderWindow : public QWindow, protected QOpenGLFunctions_4_1_Core
 {
     Q_OBJECT
 public:
-    RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow);
+    RenderWindow(QString jsonToLoad, const QSurfaceFormat &format, MainWindow *mainWindow);
     ~RenderWindow() override;
 
     QOpenGLContext *context() { return mContext; }
@@ -63,6 +63,9 @@ private slots:
     void stopGame();
     Entity createEntity();
 private:
+
+    QString fileToLoad_ = "";
+
     void init();
     void setCameraSpeed(float value);
 

@@ -14,7 +14,7 @@
 #include "world.h"
 #include "constants.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QString jsonFileToLoad, QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     format.setSamples(8);
     format.setSwapInterval(0); //Turn off VSync
 
-    mRenderWindow = new RenderWindow(format, this);
+    mRenderWindow = new RenderWindow(jsonFileToLoad, format, this);
     if (!mRenderWindow->context()) {
         qDebug() << "Failed to create context. Can not continue. Quits application!";
         delete mRenderWindow;
@@ -54,6 +54,7 @@ MainWindow::~MainWindow()
     delete mRenderWindow;
     delete ui;
 }
+
 
 void MainWindow::DisplayEntitesInOutliner()
 {

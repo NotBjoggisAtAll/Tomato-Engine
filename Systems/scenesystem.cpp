@@ -2,11 +2,11 @@
 #include "world.h"
 #include "types.h"
 #include <QJsonArray>
-#include <cassert>
 #include "Components/allcomponents.h"
 #include <QFile>
 #include "camera.h"
 #include <QJsonDocument>
+#include "constants.h"
 void SceneSystem::clearScene()
 {
 
@@ -16,7 +16,7 @@ void SceneSystem::loadScene(QString filepath)
 {
     //   clearScene();
 
-    QFile file(filepath);
+    QFile file(QString::fromStdString(gsl::jsonFilePath) + filepath);
     file.open(QFile::ReadOnly);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject JSON = doc.object();

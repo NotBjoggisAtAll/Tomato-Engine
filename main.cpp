@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "mainwindow.h"
+#include "Windows/loadscene.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +12,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Makes the Qt MainWindow and shows it.
-    MainWindow w;
-    w.show();
+    LoadScene l;
+    l.show();
+    //MainWindow w;
+   // w.show();
 
     return a.exec();
 }

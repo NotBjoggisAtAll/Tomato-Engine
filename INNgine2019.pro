@@ -46,6 +46,7 @@ HEADERS += \
     Systems/scenesystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/soundwidget.h \
+    Windows/loadscene.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -101,6 +102,7 @@ SOURCES += main.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     Systems/rendersystem.cpp \
+    Windows/loadscene.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \
@@ -121,6 +123,7 @@ SOURCES += main.cpp \
 FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/soundwidget.ui \
+    Windows/loadscene.ui \
     mainwindow.ui \
     Widgets/meshwidget.ui \
     Widgets/transformwidget.ui

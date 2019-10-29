@@ -31,8 +31,8 @@
 #include "Systems/scenesystem.h"
 #include "constants.h"
 
-RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
-    : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
+RenderWindow::RenderWindow(QString jsonToLoad, const QSurfaceFormat &format, MainWindow *mainWindow)
+    : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow), fileToLoad_(jsonToLoad)
 {
     //This is sent to QWindow:
     setSurfaceType(QWindow::OpenGLSurface);
@@ -152,71 +152,6 @@ void RenderWindow::init()
 
     Entity entity = world->createEntity();
 
-    std::pair<Mesh, Collision> meshData = resourceFactory->loadMesh("axis");
-    world->addComponent(entity, EntityData("Axis"));
-    world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
-    scene.addObject(entity);
-
-    entity = world->createEntity();
-
-    meshData = resourceFactory->loadMesh("skybox");
-    world->addComponent(entity, EntityData("Skybox"));
-    world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),2));
-
-    auto transform = world->getComponent<Transform>(entity).value();
-    transform->scale_ = {15.f,15.f,15.f};
-
-    scene.addObject(entity);
-
-    entity = world->createEntity();
-
-    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
-    world->addComponent(entity, EntityData("Box"));
-    world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, meshData.second);
-
-    scene.addObject(entity);
-
-    entity = world->createEntity();
-
-    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
-    world->addComponent(entity, EntityData("Box2"));
-    world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, meshData.second);
-
-
-    transform = world->getComponent<Transform>(entity).value();
-    transform->position_ = gsl::Vector3D(1.1f,0.f,0.f);
-
-    scene.addObject(entity);
-
-    entity = world->createEntity();
-
-    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "monkey.obj");
-    world->addComponent(entity, EntityData("Monkey"));
-    world->addComponent(entity, meshData.first);
-    world->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, meshData.second);
-
-    transform = world->getComponent<Transform>(entity).value();
-    transform->scale_ = {0.5f, 0.5f, 0.5f};
-    transform->position_ = {3.f, 2.f, -2.f};
-
-    scene.addObject(entity);
-
-
-    entity = world->createEntity();
-
     world->addComponent(entity, EntityData("Sound Source"));
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
@@ -225,7 +160,7 @@ void RenderWindow::init()
     // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
     entity = world->createEntity();
-    meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
+    auto meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
     world->addComponent(entity, EntityData("Light Source"));
     world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     world->addComponent(entity, Light());
@@ -245,8 +180,9 @@ void RenderWindow::init()
     updateCamera(mEditorCamera);
 
     //********************** System stuff **********************
-    scene.makeFile("data2.json", true);
-    mSceneSystem->loadScene("data2.json");
+
+    scene.makeFile("default.json", false);
+    mSceneSystem->loadScene(fileToLoad_);
     mMainWindow->DisplayEntitesInOutliner();
 }
 
