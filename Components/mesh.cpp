@@ -4,7 +4,7 @@
 
 Mesh::Mesh(QJsonObject JSON)
 {
-    *this = ResourceFactory::instance()->loadMesh(JSON.take("filepath").toString().toStdString()).first;
+    *this = ResourceFactory::get()->loadMesh(JSON.take("filepath").toString().toStdString());
 }
 
 QJsonObject Mesh::toJson()

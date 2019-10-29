@@ -3,6 +3,7 @@
 #include "Components/collision.h"
 #include "Components/transform.h"
 #include "Components/entitydata.h"
+#include "GSL/matrix4x4.h"
 
 void CollisionSystem::checkCollision()
 {
@@ -18,6 +19,16 @@ void CollisionSystem::checkCollision()
 
         if(collision->minVector_ == gsl::Vector3D(0) && collision->maxVector_ == gsl::Vector3D(0))
             continue;
+
+        if(collision->scaledMaxVector_ == gsl::Vector3D(0) && collision->scaledMinVector_ == gsl::Vector3D(0))
+        {
+            //Hvis disse for en eller annen grunn er 0 lag nye
+            gsl::Matrix4x4 tempMatrix;
+            tempMatrix.scale(transform->scale_);
+
+            collision->scaledMaxVector_ = (tempMatrix * gsl::Vector4D(collision->maxVector_,0)).getXYZ();
+            collision->scaledMinVector_ = (tempMatrix * gsl::Vector4D(collision->minVector_,0)).getXYZ();
+        }
 
         for(auto const& otherEntity : mEntities)
         {
@@ -63,6 +74,16 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
 
         if(!collision || !transform || !data)
             continue;
+
+        if(collision->scaledMaxVector_ == gsl::Vector3D(0) && collision->scaledMinVector_ == gsl::Vector3D(0))
+        {
+            //Hvis disse for en eller annen grunn er 0 lag nye
+            gsl::Matrix4x4 tempMatrix;
+            tempMatrix.scale(transform->scale_);
+
+            collision->scaledMaxVector_ = (tempMatrix * gsl::Vector4D(collision->maxVector_,0)).getXYZ();
+            collision->scaledMinVector_ = (tempMatrix * gsl::Vector4D(collision->minVector_,0)).getXYZ();
+        }
 
         float tempDistance = 0.f;
 

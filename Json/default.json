@@ -101,7 +101,7 @@
         {
             "components": {
                 "collision": {
-                    "filepath": "../INNgine2019/Assets/Meshes/box2.txt"
+                    "filepath": "box2.txt"
                 },
                 "entitydata": {
                     "children": [
@@ -119,7 +119,7 @@
                     "Textureunit": 0
                 },
                 "mesh": {
-                    "filepath": "../INNgine2019/Assets/Meshes/box2.txt",
+                    "filepath": "box2.txt",
                     "visible": true
                 },
                 "transform": {
@@ -145,7 +145,7 @@
         {
             "components": {
                 "collision": {
-                    "filepath": "../INNgine2019/Assets/Meshes/box2.txt"
+                    "filepath": "box2.txt"
                 },
                 "entitydata": {
                     "children": [
@@ -163,7 +163,7 @@
                     "Textureunit": 0
                 },
                 "mesh": {
-                    "filepath": "../INNgine2019/Assets/Meshes/box2.txt",
+                    "filepath": "box2.txt",
                     "visible": true
                 },
                 "transform": {
@@ -189,7 +189,7 @@
         {
             "components": {
                 "collision": {
-                    "filepath": "../INNgine2019/Assets/Meshes/monkey.obj"
+                    "filepath": "monkey.obj"
                 },
                 "entitydata": {
                     "children": [
@@ -207,7 +207,7 @@
                     "Textureunit": 0
                 },
                 "mesh": {
-                    "filepath": "../INNgine2019/Assets/Meshes/monkey.obj",
+                    "filepath": "monkey.obj",
                     "visible": true
                 },
                 "transform": {
@@ -303,7 +303,7 @@
                     "Textureunit": 0
                 },
                 "mesh": {
-                    "filepath": "../INNgine2019/Assets/Meshes/box2.txt",
+                    "filepath": "box2.txt",
                     "visible": true
                 },
                 "transform": {

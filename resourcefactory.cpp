@@ -7,192 +7,144 @@
 
 ResourceFactory* ResourceFactory::instance_ = nullptr;
 
-ResourceFactory *ResourceFactory::instance()
+ResourceFactory *ResourceFactory::get()
 {
     if(!instance_)
         instance_ = new ResourceFactory();
     return instance_;
 }
 
-std::pair<Mesh,Collision> ResourceFactory::loadMesh(const std::string& filePath)
+Mesh ResourceFactory::loadMesh(std::string file)
 {
-    currentIt_ = meshMap_.end();
-
-    auto meshIt = meshMap_.find(filePath);
-    if (meshIt != meshMap_.end())
-        return meshIt->second;
-
-    meshMap_.insert({filePath, {Mesh(),Collision()}});
-    currentIt_ = meshMap_.find(filePath);
-
-    if(filePath == "axis")
-        createAxis();
-    if(filePath.find(".obj") != std::string::npos)
-        createObject(filePath);
-    if(filePath.find(".txt") != std::string::npos)
-        createObject(filePath);
-    if(filePath.find(".terrain") != std::string::npos)
-        createObject(filePath);
-    if(filePath == "skybox")
-        createSkybox();
-    if(filePath == "sphere")
-        createSphere();
-    if(filePath == "plane")
-        createPlane();
-
-    currentIt_->second.first.filepath_ = filePath;
-    currentIt_->second.second.filepath_ = filePath;
-
-    return currentIt_->second;
-}
-
-Mesh ResourceFactory::createLine(const std::string& filePath, std::vector<Vertex> vertices, std::vector<unsigned int> indices)
-{
-    auto meshIt = meshMap_.find(filePath);
-    if (meshIt != meshMap_.end())
+    if(file == "")
     {
-        currentIt_ = meshIt;
-    }else
-    {
-        meshMap_.insert({filePath, {Mesh(),Collision()}});
-        currentIt_ = meshMap_.find(filePath);
+        qDebug() << "Tried to run loadMesh without passing a file";
+        return {};
     }
-    mVertices.clear();
-    mIndices.clear();
-    initializeOpenGLFunctions();
+    //Sett file_ til ny filepath, sånn at andre funksjoner kan lage den
+    file_ = file;
+    //Let etter mesh i map, hvis man finner den returner en kopi av den
+    auto meshIterator = meshUMap_.find(file);
+    if(meshIterator != meshUMap_.end())
+        return meshIterator->second;
 
-    mVertices = std::move(vertices);
-    mIndices = std::move(indices);
-
-    openGLVertexBuffers();
-    openGLIndexBuffer();
-
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
-    currentIt_->second.first.drawType_ = GL_LINES;
-    return currentIt_->second.first;
+    //Hvis man ikke finner den lag en ny mesh
+    Mesh mesh = createMesh();
+    mesh.filepath_ = file;
+    //Til slutt legg den til og returner
+    meshUMap_.insert({file,mesh});
+    return mesh;
 }
 
-void ResourceFactory::createCollision()
+Collision  ResourceFactory::getCollision(std::string file)
 {
-    gsl::Vector3D minVector = mVertices.at(0).mXYZ;
-    gsl::Vector3D maxVector = mVertices.at(0).mXYZ;
-
-    for(auto const& vertex : mVertices)
+    if(file == "")
     {
-        if(vertex.mXYZ.x < minVector.x)
-            minVector.x = vertex.mXYZ.x;
-        if(vertex.mXYZ.y < minVector.y)
-            minVector.y = vertex.mXYZ.y;
-        if(vertex.mXYZ.z < minVector.z)
-            minVector.z = vertex.mXYZ.z;
-
-        if(vertex.mXYZ.x > maxVector.x)
-            maxVector.x = vertex.mXYZ.x;
-        if(vertex.mXYZ.y > maxVector.y)
-            maxVector.y = vertex.mXYZ.y;
-        if(vertex.mXYZ.z > maxVector.z)
-            maxVector.z = vertex.mXYZ.z;
+        qDebug() << "Tried to run getCollision without passing a file";
+        return {};
     }
-    qDebug() << "Min og Max vector " << minVector << "\n" << maxVector;
-    currentIt_->second.second = Collision(minVector,maxVector);
+    // Sjekker om den finner en eksisterende collision  i mappet
+    auto collisionIterator = collisionUMap_.find(file);
+    if(collisionIterator == collisionUMap_.end())
+    {
+        qDebug() << "Couldn't find the collision for mesh:" + QString::fromStdString(file);
+        return {};
+    }
+    return collisionIterator->second;
 }
 
-
-void ResourceFactory::openGLVertexBuffers()
+Mesh ResourceFactory::createCollisionbox(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
-    glGenVertexArrays( 1, &currentIt_->second.first.VAO_ );
-    glBindVertexArray( currentIt_->second.first.VAO_ );
+    Mesh box;
 
-    GLuint mVBO;
-
-    //Vertex Buffer Object to hold vertices - VBO
-    glGenBuffers( 1, &mVBO );
-    glBindBuffer( GL_ARRAY_BUFFER, mVBO );
-
-    glBufferData( GL_ARRAY_BUFFER, static_cast<int>(mVertices.size()*sizeof(Vertex)), mVertices.data(), GL_STATIC_DRAW );
-
-    // 1rst attribute buffer : vertices
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex), (GLvoid*)nullptr);
-    glEnableVertexAttribArray(0);
-
-    // 2nd attribute buffer : colors
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,  sizeof(Vertex),  (GLvoid*)(3 * sizeof(GLfloat)) );
-    glEnableVertexAttribArray(1);
-
-    // 3rd attribute buffer : uvs
-    glVertexAttribPointer(2, 2,  GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)( 6 * sizeof(GLfloat)) );
-    glEnableVertexAttribArray(2);
-}
-
-void ResourceFactory::openGLIndexBuffer()
-{
-    GLuint mEAB;
-    glGenBuffers(1, &mEAB);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEAB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<int>(mIndices.size() * sizeof(GLuint)), mIndices.data(), GL_STATIC_DRAW);
-}
-
-void ResourceFactory::createPlane()
-{
-    mVertices.clear();
-    mIndices.clear();
+    vertices_ = vertices;
+    indices_ = indices;
     initializeOpenGLFunctions();
 
-    Vertex v;
-    v.set_xyz(0,0,0); v.set_rgb(1,0,0);
-    mVertices.push_back(v);
-    v.set_xyz(1,0,1); v.set_rgb(0,0,1);
-    mVertices.push_back(v);
-    v.set_xyz(1,0,0); v.set_rgb(0,1,0);
-    mVertices.push_back(v);
-    v.set_xyz(0,0,0); v.set_rgb(0,1,0);
-    mVertices.push_back(v);
-    v.set_xyz(0,0,1); v.set_rgb(0,0,1);
-    mVertices.push_back(v);
-    v.set_xyz(1,0,1); v.set_rgb(1,0,0);
-    mVertices.push_back(v);
-
-    openGLVertexBuffers();
-
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
-    currentIt_->second.first.drawType_ = GL_TRIANGLES;
-    glBindVertexArray(0);
-}
-
-
-void ResourceFactory::createSphere()
-{
-    mVertices.clear();
-    mIndices.clear();
-    initializeOpenGLFunctions();
-
-    OctahedronBall ball(3);
-    mVertices = ball.mVertices;
-    mIndices = ball.mIndices;
-
-    //set up buffers
-    openGLVertexBuffers();
+    box.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
-
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
-    currentIt_->second.first.drawType_ = GL_TRIANGLES;
+    box.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    box.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    box.drawType_ = GL_LINES;
     glBindVertexArray(0);
 
+    return box;
 }
 
-
-void ResourceFactory::createSkybox()
+Mesh ResourceFactory::createMesh()
 {
-    mVertices.clear();
-    mIndices.clear();
+    Mesh mesh;
+
+    vertices_.clear();
+    indices_.clear();
     initializeOpenGLFunctions();
 
+    if(file_.find(".obj") != std::string::npos || file_.find(".txt") != std::string::npos || file_.find(".terrain") != std::string::npos)
+        mesh = createObject();
+    else if(file_.find("axis") != std::string::npos)
+        mesh = createAxis();
+    else if(file_ == "skybox")
+        mesh = createSkybox();
+    else if(file_ == "sphere")
+        mesh =  createSphere();
+    else if(file_ == "plane")
+        mesh = createPlane();
 
-    mVertices.insert( mVertices.end(),
+    glBindVertexArray(0);
+
+    return mesh;
+}
+
+Mesh ResourceFactory::createAxis() //Kom tilbake her og gjør om til indices
+{
+    Mesh mesh;
+
+    vertices_.push_back({0.f, 0.f, 0.f, 1.f, 0.f, 0.f});
+    vertices_.push_back({1000.f, 0.f, 0.f, 1.f, 0.f, 0.f});
+    vertices_.push_back({0.f, 0.f, 0.f, 0.f, 1.f, 0.f});
+    vertices_.push_back({0.f, 1000.f, 0.f, 0.f, 1.f, 0.f});
+    vertices_.push_back({0.f, 0.f, 0.f, 0.f, 0.f, 1.f});
+    vertices_.push_back({0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
+
+    mesh.VAO_ = openGLVertexBuffers();
+    // openGLIndexBuffer();
+    mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    mesh.drawType_ = GL_LINES;
+
+    return mesh;
+}
+
+Mesh ResourceFactory::createObject()
+{
+
+    Mesh mesh;
+
+    if(file_.find(".obj") != std::string::npos)
+        readOBJFile();
+
+    else if(file_.find(".txt") != std::string::npos)
+        readTXTFile();
+
+    else if(file_.find(".terrain") != std::string::npos)
+        readTerrainFile();
+
+    createCollision();
+
+    mesh.VAO_ = openGLVertexBuffers();
+    openGLIndexBuffer();
+    mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    mesh.drawType_ = GL_TRIANGLES;
+
+    return mesh;
+}
+
+Mesh ResourceFactory::createSkybox()
+{
+    Mesh mesh;
+
+    vertices_ =
     {//Vertex data for front
      Vertex{gsl::Vector3D(-1.f, -1.f, 1.f),    gsl::Vector3D(0.f, 0.f, 1.0f),  gsl::Vector2D(0.25f, 0.333f)},  //v0
      Vertex{gsl::Vector3D( 1.f, -1.f, 1.f),    gsl::Vector3D(0.f, 0.f, 1.0f),  gsl::Vector2D(0.5f,  0.333f)},  //v1
@@ -228,9 +180,9 @@ void ResourceFactory::createSkybox()
      Vertex{gsl::Vector3D( 1.f, 1.f,  1.f),    gsl::Vector3D(0.f, 1.f, 0.f),   gsl::Vector2D(0.5f,  0.666f)},    //v21
      Vertex{gsl::Vector3D(-1.f, 1.f, -1.f),    gsl::Vector3D(0.f, 1.f, 0.f),   gsl::Vector2D(0.25f, 0.999f)},      //v22
      Vertex{gsl::Vector3D( 1.f, 1.f, -1.f),    gsl::Vector3D(0.f, 1.f, 0.f),   gsl::Vector2D(0.5f,  0.999f)}       //v23
-                      });
+    };
 
-    mIndices.insert( mIndices.end(),
+    indices_.insert( indices_.end(),
     { 0,  2,  1,  1,  2,  3,      //Face 0 - triangle strip (v0,  v1,  v2,  v3)
       4,  6,  5,  5,  6,  7,      //Face 1 - triangle strip (v4,  v5,  v6,  v7)
       8,  10,  9, 9, 10, 11,      //Face 2 - triangle strip (v8,  v9, v10,  v11)
@@ -239,100 +191,156 @@ void ResourceFactory::createSkybox()
       20, 22, 21, 21, 22, 23      //Face 5 - triangle strip (v20, v21, v22, v23)
                      });
 
-    openGLVertexBuffers();
+    mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
+    mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    mesh.drawType_ = GL_TRIANGLES;
 
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
-    currentIt_->second.first.drawType_ = GL_TRIANGLES;
-
-    glBindVertexArray(0);
+    return mesh;
 }
-void ResourceFactory::createAxis()
+
+Mesh ResourceFactory::createSphere()
 {
-    mVertices.clear();
-    mIndices.clear();
+    Mesh mesh;
+    vertices_.clear();
+    indices_.clear();
     initializeOpenGLFunctions();
 
+    OctahedronBall ball(3);
+    vertices_ = ball.mVertices;
+    indices_ = ball.mIndices;
 
-    mVertices.push_back(Vertex{0.f, 0.f, 0.f, 1.f, 0.f, 0.f});
-    mVertices.push_back(Vertex{1000.f, 0.f, 0.f, 1.f, 0.f, 0.f});
-    mVertices.push_back(Vertex{0.f, 0.f, 0.f, 0.f, 1.f, 0.f});
-    mVertices.push_back(Vertex{0.f, 1000.f, 0.f, 0.f, 1.f, 0.f});
-    mVertices.push_back(Vertex{0.f, 0.f, 0.f, 0.f, 0.f, 1.f});
-    mVertices.push_back(Vertex{0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
-
-    //set up buffers
-    openGLVertexBuffers();
-
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = 0;
-    currentIt_->second.first.drawType_ = GL_LINES;
-
-    glBindVertexArray(0);
-}
-
-
-void ResourceFactory::createObject(const std::string& filePath)
-{
-    mVertices.clear();
-    mIndices.clear();
-    initializeOpenGLFunctions();
-
-    if(filePath.find(".obj") != std::string::npos)
-    {
-        readOBJFile(filePath);
-    }
-    else if(filePath.find(".txt") != std::string::npos)
-    {
-        readTXTFile(filePath);
-    }
-    else if(filePath.find(".terrain") != std::string::npos)
-    {
-        readTerrainFile(filePath);
-    }
-    createCollision();
-
-    //set up buffers
-    openGLVertexBuffers();
+    mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
+    mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    mesh.drawType_ = GL_TRIANGLES;
 
-    currentIt_->second.first.verticeCount_ = static_cast<unsigned int>(mVertices.size());
-    currentIt_->second.first.indiceCount_ = static_cast<unsigned int>(mIndices.size());
-    currentIt_->second.first.drawType_ = GL_TRIANGLES;
-    glBindVertexArray(0);
+    return mesh;
 }
 
-void ResourceFactory::readTXTFile(std::string filename)
+Mesh ResourceFactory::createPlane()
 {
+    Mesh mesh;
+
+    Vertex v;
+    v.set_xyz(0,0,0); v.set_rgb(1,0,0);
+    vertices_.push_back(v);
+    v.set_xyz(1,0,1); v.set_rgb(0,0,1);
+    vertices_.push_back(v);
+    v.set_xyz(1,0,0); v.set_rgb(0,1,0);
+    vertices_.push_back(v);
+    v.set_xyz(0,0,0); v.set_rgb(0,1,0);
+    vertices_.push_back(v);
+    v.set_xyz(0,0,1); v.set_rgb(0,0,1);
+    vertices_.push_back(v);
+    v.set_xyz(1,0,1); v.set_rgb(1,0,0);
+    vertices_.push_back(v);
+
+    mesh.VAO_ = openGLVertexBuffers();
+    mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    mesh.drawType_ = GL_TRIANGLES;
+
+    return mesh;
+}
+
+unsigned int ResourceFactory::openGLVertexBuffers()
+{
+    unsigned int VAO;
+    glGenVertexArrays( 1, &VAO);
+    glBindVertexArray(VAO);
+
+    GLuint VBO;
+
+    //Vertex Buffer Object to hold vertices - VBO
+    glGenBuffers( 1, &VBO );
+    glBindBuffer( GL_ARRAY_BUFFER, VBO );
+    glBufferData( GL_ARRAY_BUFFER, static_cast<int>(vertices_.size()*sizeof(Vertex)), vertices_.data(), GL_STATIC_DRAW );
+
+    // 1rst attribute buffer : vertices
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex), (GLvoid*)nullptr);
+    glEnableVertexAttribArray(0);
+
+    // 2nd attribute buffer : colors
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,  sizeof(Vertex),  (GLvoid*)(3 * sizeof(GLfloat)) );
+    glEnableVertexAttribArray(1);
+
+    // 3rd attribute buffer : uvs
+    glVertexAttribPointer(2, 2,  GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)( 6 * sizeof(GLfloat)) );
+    glEnableVertexAttribArray(2);
+
+    return VAO;
+}
+
+void ResourceFactory::openGLIndexBuffer()
+{
+    GLuint EAB;
+    glGenBuffers(1, &EAB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EAB);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<int>(indices_.size() * sizeof(GLuint)), indices_.data(), GL_STATIC_DRAW);
+}
+
+void ResourceFactory::createCollision()
+{
+
+    Collision collision;
+
+    gsl::Vector3D minVector = vertices_.at(0).mXYZ;
+    gsl::Vector3D maxVector = vertices_.at(0).mXYZ;
+
+    for(auto const& vertex : vertices_)
+    {
+        if(vertex.mXYZ.x < minVector.x)
+            minVector.x = vertex.mXYZ.x;
+        if(vertex.mXYZ.y < minVector.y)
+            minVector.y = vertex.mXYZ.y;
+        if(vertex.mXYZ.z < minVector.z)
+            minVector.z = vertex.mXYZ.z;
+
+        if(vertex.mXYZ.x > maxVector.x)
+            maxVector.x = vertex.mXYZ.x;
+        if(vertex.mXYZ.y > maxVector.y)
+            maxVector.y = vertex.mXYZ.y;
+        if(vertex.mXYZ.z > maxVector.z)
+            maxVector.z = vertex.mXYZ.z;
+    }
+    collision.minVector_ = minVector;
+    collision.maxVector_ = maxVector;
+
+    collisionUMap_[file_] = collision;
+}
+
+void ResourceFactory::readTXTFile()
+{
+    std::string fileWithPath = gsl::meshFilePath + file_;
     std::ifstream inn;
-    // std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
-
-    inn.open(filename);
-
+    inn.open(fileWithPath);
     if (inn.is_open()) {
         unsigned int n;
         Vertex vertex;
         inn >> n;
-        mVertices.reserve(n);
+        vertices_.reserve(n);
         for (unsigned int i=0; i<n; i++) {
             inn >> vertex;
-            mVertices.push_back(vertex);
+            vertices_.push_back(vertex);
         }
         inn.close();
-        qDebug() << "File read: " << QString::fromStdString(filename);
+        qDebug() << "File read: " << QString::fromStdString(fileWithPath);
     }
     else
     {
-        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(fileWithPath);
     }
-
 }
 
-void ResourceFactory::readTerrainFile(std::string filename)
+void ResourceFactory::readTerrainFile()
 {
+    std::string fileWithPath = gsl::meshFilePath + file_;
     std::ifstream inn;
-    inn.open(filename);
+    inn.open(fileWithPath);
 
     int TilesX = 0;
     int TilesZ = 0;
@@ -341,69 +349,68 @@ void ResourceFactory::readTerrainFile(std::string filename)
         unsigned int n;
         Vertex vertex;
         inn >> n;
-        mVertices.reserve(n);
+        vertices_.reserve(n);
         inn >> TilesX >> TilesZ;
         for (unsigned int i=0; i<n; i++) {
             inn >> vertex;
-            mVertices.push_back(vertex);
+            vertices_.push_back(vertex);
         }
 
         inn.close();
-        qDebug() << "File read: " << QString::fromStdString(filename);
+        qDebug() << "File read: " << QString::fromStdString(fileWithPath);
     }
     else
     {
-        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(fileWithPath);
     }
 
-    calculateIndices(TilesX, TilesZ);
-    calculateNormals();
+    calculateTerrainIndices(TilesX, TilesZ);
+    calculateTerrainNormals();
 }
 
-void ResourceFactory::calculateIndices(int TilesX, int TilesZ)
+void ResourceFactory::calculateTerrainIndices(int TilesX, int TilesZ)
 {
-    mIndices.clear();
+    indices_.clear();
     for(int i = 0; i < TilesZ*TilesX; ++i)
     {
         if(i == (TilesX*TilesZ)-TilesZ) break;
         if(i > 1 && (i+1) % TilesX == 0)  continue;
 
-        mIndices.emplace_back(i);
-        mIndices.emplace_back(i+1);
-        mIndices.emplace_back(i+TilesZ+1);
+        indices_.emplace_back(i);
+        indices_.emplace_back(i+1);
+        indices_.emplace_back(i+TilesZ+1);
 
-        mIndices.emplace_back(i);
-        mIndices.emplace_back(i+TilesZ+1);
-        mIndices.emplace_back(i+TilesZ);
+        indices_.emplace_back(i);
+        indices_.emplace_back(i+TilesZ+1);
+        indices_.emplace_back(i+TilesZ);
     }
 }
 
-void ResourceFactory::calculateNormals()
+void ResourceFactory::calculateTerrainNormals()
 {
-    for (unsigned int i = 0; i < mIndices.size(); i+=3)
+    for (unsigned int i = 0; i < indices_.size(); i+=3)
     {
-        auto pos1 = mVertices[mIndices[i+0]].mXYZ;
-        auto pos2 = mVertices[mIndices[i+1]].mXYZ;
-        auto pos3 = mVertices[mIndices[i+2]].mXYZ;
+        auto pos1 = vertices_[indices_[i+0]].mXYZ;
+        auto pos2 = vertices_[indices_[i+1]].mXYZ;
+        auto pos3 = vertices_[indices_[i+2]].mXYZ;
 
         auto normal = gsl::Vector3D::cross(pos3-pos1,pos2-pos1);
         normal.normalize();
 
-        mVertices[mIndices[i+0]].set_normal(normal);
-        mVertices[mIndices[i+1]].set_normal(normal);
-        mVertices[mIndices[i+2]].set_normal(normal);
+        vertices_[indices_[i+0]].set_normal(normal);
+        vertices_[indices_[i+1]].set_normal(normal);
+        vertices_[indices_[i+2]].set_normal(normal);
     }
 }
 
-
-void ResourceFactory::readOBJFile(std::string filename)
+void ResourceFactory::readOBJFile()
 {
     //Open File
-    //  std::string fileWithPath = gsl::assetFilePath + "Meshes/" + filename;
+    std::string fileWithPath = gsl::meshFilePath + file_;
     std::ifstream fileIn;
-    fileIn.open (filename, std::ifstream::in);
+    fileIn.open (fileWithPath, std::ifstream::in);
     if(!fileIn)
-        qDebug() << "Could not open file for reading: " << QString::fromStdString(filename);
+        qDebug() << "Could not open file for reading: " << QString::fromStdString(fileWithPath);
 
     //One line at a time-variable
     std::string oneLine;
@@ -521,20 +528,20 @@ void ResourceFactory::readOBJFile(std::string filename)
                     Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
                             tempNormals[static_cast<unsigned int>(normal)],
                             tempUVs[static_cast<unsigned int>(uv)]);
-                    mVertices.push_back(tempVert);
+                    vertices_.push_back(tempVert);
                 }
                 else            //no uv in mesh data, use 0, 0 as uv
                 {
                     Vertex tempVert(tempVertecies[static_cast<unsigned int>(index)],
                             tempNormals[static_cast<unsigned int>(normal)],
                             gsl::Vector2D(0.0f, 0.0f));
-                    mVertices.push_back(tempVert);
+                    vertices_.push_back(tempVert);
                 }
-                mIndices.push_back(temp_index++);
+                indices_.push_back(temp_index++);
             }
             continue;
         }
     }
     fileIn.close();
-    qDebug() << "Obj file read: " << QString::fromStdString(filename);
+    qDebug() << "Obj file read: " << QString::fromStdString(fileWithPath);
 }

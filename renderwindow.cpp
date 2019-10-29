@@ -103,7 +103,7 @@ void RenderWindow::init()
 
     world = getWorld();
 
-    resourceFactory = ResourceFactory::instance();
+    resourceFactory = ResourceFactory::get();
 
     world->registerComponent<Transform>();
     world->registerComponent<Mesh>();
@@ -160,12 +160,11 @@ void RenderWindow::init()
     // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
     entity = world->createEntity();
-    auto meshData = resourceFactory->loadMesh(gsl::meshFilePath + "box2.txt");
     world->addComponent(entity, EntityData("Light Source"));
     world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     world->addComponent(entity, Light());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    world->addComponent(entity, meshData.first);
+    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
 
     ShaderManager::instance()->phongShader()->setLight(entity);
     scene.addObject(entity);
@@ -229,12 +228,11 @@ void RenderWindow::spawnObject(std::string name, std::string path)
 {
     auto entity = world->createEntity();
 
-    std::pair<Mesh, Collision> meshData = resourceFactory->loadMesh(path);
     world->addComponent(entity, EntityData(name));
-    world->addComponent(entity, meshData.first);
+    world->addComponent(entity, resourceFactory->loadMesh(path));
     world->addComponent(entity,Transform());
     world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    world->addComponent(entity, meshData.second);
+    world->addComponent(entity, resourceFactory->getCollision(path));
 
     mMainWindow->addEntityToUi(entity);
 }
@@ -346,12 +344,10 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
         7,4
     };
 
-    Mesh mesh = resourceFactory->createLine("CollisionBox",vertices,indices);
-
     Entity entity = getWorld()->createEntity();
 
     getWorld()->addComponent(entity, Transform(transform->position_));
-    getWorld()->addComponent(entity, mesh);
+    getWorld()->addComponent(entity, resourceFactory->createCollisionbox(vertices,indices));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, EntityData("Collision"));
     EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();

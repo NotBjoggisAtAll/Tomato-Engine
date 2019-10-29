@@ -4,7 +4,7 @@
 
 Collision::Collision(QJsonObject JSON)
 {
-    *this = ResourceFactory::instance()->loadMesh(JSON.take("filepath").toString().toStdString()).second;
+    *this = ResourceFactory::get()->getCollision(JSON.take("filepath").toString().toStdString());
 }
 
 QJsonObject Collision::toJSON()
