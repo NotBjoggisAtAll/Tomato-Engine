@@ -31,8 +31,8 @@
 #include "Systems/scenesystem.h"
 #include "constants.h"
 
-RenderWindow::RenderWindow(QString jsonToLoad, const QSurfaceFormat &format, MainWindow *mainWindow)
-    : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow), fileToLoad_(jsonToLoad)
+RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
+    : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
 {
     //This is sent to QWindow:
     setSurfaceType(QWindow::OpenGLSurface);
@@ -184,6 +184,7 @@ void RenderWindow::init()
     scene.makeFile("default.json", false);
     mSceneSystem->loadScene(fileToLoad_);
     mMainWindow->DisplayEntitesInOutliner();
+
 }
 
 void RenderWindow::render()
@@ -205,6 +206,12 @@ void RenderWindow::render()
 
     calculateFramerate();
     mContext->swapBuffers(this);
+}
+
+void RenderWindow::recieveJsonPath(QString JsonPath)
+{
+    fileToLoad_ = JsonPath;
+    exposeEvent(nullptr);
 }
 
 void RenderWindow::setCameraSpeed(float value)
@@ -608,7 +615,7 @@ void RenderWindow::calculateFramerate()
             mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
                                                   QString::number(nsecElapsed/1000000., 'g', 4) + " ms  |  " +
                                                   "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
-            frameCount = 0;     //reset to show a new message in 60 frames
+            frameCount = 0;     //reset to show a new message in 60
         }
     }
 }
@@ -661,6 +668,9 @@ void RenderWindow::startOpenGLDebugger()
 //exposeEvent is a overridden function from QWindow that we inherit from
 void RenderWindow::exposeEvent(QExposeEvent *)
 {
+    if(fileToLoad_ == "")
+        return;
+
     if (!mInitialized)
         init();
 

@@ -9,15 +9,34 @@
 #include "Widgets/soundwidget.h"
 #include "Widgets/addcomponentwidget.h"
 #include "renderwindow.h"
-
+#include "Windows/sceneloader.h"
 #include "Components/allcomponents.h"
 #include "world.h"
 #include "constants.h"
 
-MainWindow::MainWindow(QString jsonFileToLoad, QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+
+    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->scrollArea->setWidgetResizable(true);
+
+
+    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
+
+    show();
+    sceneLoader_ = new SceneLoader();
+    sceneLoader_->show();
+    makeRenderWindow();
+    connect(sceneLoader_, &SceneLoader::sendJsonPath, mRenderWindow, &RenderWindow::recieveJsonPath);
+
+}
+
+void MainWindow::makeRenderWindow()
+{
     QSurfaceFormat format;
 
     format.setVersion(4, 1);
@@ -28,7 +47,7 @@ MainWindow::MainWindow(QString jsonFileToLoad, QWidget *parent) :
     format.setSamples(8);
     format.setSwapInterval(0); //Turn off VSync
 
-    mRenderWindow = new RenderWindow(jsonFileToLoad, format, this);
+    mRenderWindow = new RenderWindow(format, this);
     if (!mRenderWindow->context()) {
         qDebug() << "Failed to create context. Can not continue. Quits application!";
         delete mRenderWindow;
@@ -40,13 +59,6 @@ MainWindow::MainWindow(QString jsonFileToLoad, QWidget *parent) :
 
     mRenderWindowContainer->setFocus();
 
-    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
-
-    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ui->scrollArea->setWidgetResizable(true);
-
-
-    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 }
 
 MainWindow::~MainWindow()

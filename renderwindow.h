@@ -31,7 +31,7 @@ class RenderWindow : public QWindow, protected QOpenGLFunctions_4_1_Core
 {
     Q_OBJECT
 public:
-    RenderWindow(QString jsonToLoad, const QSurfaceFormat &format, MainWindow *mainWindow);
+    RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow);
     ~RenderWindow() override;
 
     QOpenGLContext *context() { return mContext; }
@@ -54,8 +54,12 @@ public:
 
     std::vector<Entity> entities;
 
+public slots:
+    void recieveJsonPath(QString JsonPath);
+
 private slots:
     void render();
+
 
     void spawnObject(std::string name, std::string path);
 

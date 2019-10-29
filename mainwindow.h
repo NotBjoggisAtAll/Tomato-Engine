@@ -7,6 +7,7 @@
 
 class QWidget;
 class RenderWindow;
+class SceneLoader;
 class QTreeWidgetItem;
 
 namespace Ui {
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QString jsonFileToLoad, QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void DisplayEntitesInOutliner();
@@ -57,17 +58,20 @@ private slots:
 private:
 
     Ui::MainWindow *ui;
-    QWidget *mRenderWindowContainer;
-    RenderWindow *mRenderWindow;
+    QWidget *mRenderWindowContainer = nullptr;
+    RenderWindow *mRenderWindow = nullptr;
+    SceneLoader* sceneLoader_ = nullptr;
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
+
     QWidget* leftWidget{nullptr};
 
     void setupChildren(QTreeWidgetItem *parent);
     void updatePlayButtons();
     void stopGame();
     void showPanels();
+    void makeRenderWindow();
 };
 
 #endif // MAINWINDOW_H

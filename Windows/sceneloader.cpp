@@ -1,20 +1,15 @@
-#include "loadscene.h"
-#include "ui_loadscene.h"
+#include "sceneloader.h"
+#include "ui_sceneloader.h"
 #include "constants.h"
-#include <QFile>
 #include <QDirIterator>
-#include <QDir>
-#include <QDebug>
+#include <QListWidgetItem>
 #include <QFileInfo>
 #include "mainwindow.h"
-LoadScene::LoadScene(QWidget *parent) :
+SceneLoader::SceneLoader(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::loadScene)
 {
     ui->setupUi(this);
-
-    //    QDir directory (QString::fromStdString(gsl::jsonFilePath));
-    //    qDebug() << directory.entryList();
 
     QDirIterator dirIterator(QString::fromStdString(gsl::jsonFilePath), QDir::AllEntries | QDir::NoDotAndDotDot);
     while(dirIterator.hasNext())
@@ -24,16 +19,20 @@ LoadScene::LoadScene(QWidget *parent) :
         if(info.isFile())
             ui->jsonList->addItem(info.baseName());
     }
-
 }
 
-LoadScene::~LoadScene()
+SceneLoader::~SceneLoader()
 {
     delete ui;
 }
 
-void LoadScene::on_buttonBox_accepted()
+void SceneLoader::on_buttonBox_accepted()
 {
-    MainWindow* w = new MainWindow(ui->jsonList->currentItem()->text() + ".json");
-    w->show();
+    emit sendJsonPath(ui->jsonList->currentItem()->text() + ".json");
+}
+
+void SceneLoader::on_jsonList_itemDoubleClicked(QListWidgetItem *item)
+{
+    emit sendJsonPath(item->text() + ".json");
+    close();
 }
