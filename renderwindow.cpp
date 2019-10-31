@@ -146,11 +146,6 @@ void RenderWindow::init()
     collisionSign.set(world->getComponentType<Transform>());
     world->setSystemSignature<CollisionSystem>(collisionSign);
 
-    Signature sceneSign;
-    for(const auto& type : world->getComponentTypes())
-        sceneSign.set(type.second);
-    world->setSystemSignature<SceneSystem>(sceneSign);
-
     Signature scriptSign;
     scriptSign.set(world->getComponentType<Script>());
     world->setSystemSignature<ScriptSystem>(scriptSign);
