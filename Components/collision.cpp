@@ -2,9 +2,11 @@
 #include "resourcefactory.h"
 #include <QJsonObject>
 
-Collision::Collision(QJsonObject JSON)
+Collision::Collision(gsl::Vector3D minVector, gsl::Vector3D maxVector) : minVector_(minVector), maxVector_(maxVector), scaledMinVector_(minVector), scaledMaxVector_(maxVector) {}
+
+Collision::Collision(QJsonObject Json)
 {
-    *this = ResourceFactory::get()->getCollision(JSON.take("filepath").toString().toStdString());
+    fromJson(Json);
 }
 
 QJsonObject Collision::toJSON()
@@ -12,4 +14,9 @@ QJsonObject Collision::toJSON()
     QJsonObject object;
     object.insert("filepath", QString::fromStdString(filepath_));
     return object;
+}
+
+void Collision::fromJson(QJsonObject Json)
+{
+    *this = ResourceFactory::get()->getCollision(Json.take("filepath").toString().toStdString());
 }

@@ -38,12 +38,12 @@ public:
     void entityDestroyed(Entity entity)
     {
         // Erase a destroyed entity from all system lists
-        // mEntities is a set so no check needed
+        // entities_ is a set so no check needed
         for (auto const& pair : mSystems)
         {
             auto const& system = pair.second;
 
-            system->mEntities.erase(entity);
+            system->entities_.erase(entity);
         }
     }
 
@@ -59,12 +59,12 @@ public:
             // Entity signature matches system signature - insert into set
             if ((entitySignature & systemSignature) == systemSignature)
             {
-                system->mEntities.insert(entity);
+                system->entities_.insert(entity);
             }
             // Entity signature does not match system signature - erase from set
             else
             {
-                system->mEntities.erase(entity);
+                system->entities_.erase(entity);
             }
         }
     }
