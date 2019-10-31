@@ -155,7 +155,7 @@ void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 
 void MainWindow::on_spawnCube_triggered()
 {
-    emit spawnObject("Cube",gsl::meshFilePath + "box2.txt");
+    emit spawnObject("Cube","box2.txt");
 }
 
 void MainWindow::on_spawnSphere_triggered()
@@ -260,3 +260,11 @@ void MainWindow::stopGame()
     showPanels();
 }
 
+
+void MainWindow::on_actionOpen_Scene_triggered()
+{
+    sceneLoader_ = new SceneLoader();
+    sceneLoader_->show();
+    connect(sceneLoader_, &SceneLoader::sendJsonPath, mRenderWindow, &RenderWindow::recieveJsonPath);
+
+}

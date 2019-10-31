@@ -9,12 +9,13 @@
 #include "constants.h"
 void SceneSystem::clearScene()
 {
-
+    for(auto entity : mEntities)
+        getWorld()->destroyEntity(entity);
 }
 
 void SceneSystem::loadScene(QString filepath)
 {
-    //   clearScene();
+      clearScene();
 
     QFile file(QString::fromStdString(gsl::jsonFilePath) + filepath);
     file.open(QFile::ReadOnly);

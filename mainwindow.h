@@ -55,6 +55,8 @@ private slots:
 
     void on_actionEmpty_Entity_triggered();
 
+    void on_actionOpen_Scene_triggered();
+
 private:
 
     Ui::MainWindow *ui;

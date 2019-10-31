@@ -181,7 +181,6 @@ void RenderWindow::init()
     //********************** System stuff **********************
 
     scene.makeFile("default.json", false);
-    mSceneSystem->loadScene(fileToLoad_);
     mMainWindow->DisplayEntitesInOutliner();
 
 }
@@ -210,7 +209,8 @@ void RenderWindow::render()
 void RenderWindow::recieveJsonPath(QString JsonPath)
 {
     fileToLoad_ = JsonPath;
-    exposeEvent(nullptr);
+    mSceneSystem->loadScene(fileToLoad_);
+    mMainWindow->DisplayEntitesInOutliner();
 }
 
 void RenderWindow::setCameraSpeed(float value)
@@ -664,8 +664,6 @@ void RenderWindow::startOpenGLDebugger()
 //exposeEvent is a overridden function from QWindow that we inherit from
 void RenderWindow::exposeEvent(QExposeEvent *)
 {
-    if(fileToLoad_ == "")
-        return;
 
     if (!mInitialized)
         init();
