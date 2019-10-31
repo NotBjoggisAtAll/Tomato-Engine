@@ -6,16 +6,20 @@
 #include <QFile>
 #include "camera.h"
 #include <QJsonDocument>
+#include "Managers/shadermanager.h"
+#include "phongshader.h"
 #include "constants.h"
 void SceneSystem::clearScene()
 {
-    for(auto entity : mEntities)
+    auto lol = mEntities;
+    for(auto entity : lol)
         getWorld()->destroyEntity(entity);
+
 }
 
 void SceneSystem::loadScene(QString filepath)
 {
-      clearScene();
+    clearScene();
 
     QFile file(QString::fromStdString(gsl::jsonFilePath) + filepath);
     file.open(QFile::ReadOnly);
@@ -74,8 +78,10 @@ void SceneSystem::loadScene(QString filepath)
 
             QJsonObject lightData = components.take("light").toObject();
             if(!lightData.empty())
+            {
                 getWorld()->addComponent(newEntity,Light(lightData));
-
+                        ShaderManager::instance()->phongShader()->setLight(newEntity);
+            }
             QJsonObject soundData = components.take("sound").toObject();
             if(!soundData.empty())
                 getWorld()->addComponent(newEntity,Sound(soundData));
