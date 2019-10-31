@@ -1,0 +1,363 @@
+{
+    "cameras": [
+    ],
+    "entities": [
+        {
+            "components": {
+                "entitydata": {
+                    "children": [
+                    ],
+                    "name": "Axis",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "axis",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "id": 11
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "children": [
+                    ],
+                    "name": "Skybox",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "textureshader",
+                    "Textureunit": 2
+                },
+                "mesh": {
+                    "filepath": "skybox",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        15,
+                        15,
+                        15
+                    ]
+                }
+            },
+            "id": 12
+        },
+        {
+            "components": {
+                "collision": {
+                    "filepath": "box2.txt"
+                },
+                "entitydata": {
+                    "children": [
+                        20
+                    ],
+                    "name": "Box",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "box2.txt",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "id": 13
+        },
+        {
+            "components": {
+                "collision": {
+                    "filepath": "box2.txt"
+                },
+                "entitydata": {
+                    "children": [
+                        19,
+                        21
+                    ],
+                    "name": "Box2",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "box2.txt",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        1.100000023841858,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "id": 14
+        },
+        {
+            "components": {
+                "collision": {
+                    "filepath": "monkey.obj"
+                },
+                "entitydata": {
+                    "children": [
+                        18,
+                        22
+                    ],
+                    "name": "Monkey",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "phongshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "monkey.obj",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        3,
+                        2,
+                        -2
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                }
+            },
+            "id": 15
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "children": [
+                    ],
+                    "name": "Sound Source",
+                    "parent": -1
+                },
+                "sound": {
+                    "filepath": "../INNgine2019/Assets/Sounds/Caravan",
+                    "gain": 0.5,
+                    "loop": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "id": 16
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "children": [
+                    ],
+                    "name": "Light Source",
+                    "parent": -1
+                },
+                "light": {
+                    "ambient": {
+                        "color": [
+                            0.30000001192092896,
+                            0.30000001192092896,
+                            0.30000001192092896
+                        ],
+                        "strength": 0.30000001192092896
+                    },
+                    "light": {
+                        "color": [
+                            0.30000001192092896,
+                            0.30000001192092896,
+                            0.30000001192092896
+                        ],
+                        "strength": 0.699999988079071
+                    },
+                    "specular": {
+                        "exponent": 4,
+                        "strength": 0.30000001192092896
+                    }
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "textureshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "box2.txt",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        2.5,
+                        3,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                }
+            },
+            "id": 17
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "children": [
+                    ],
+                    "name": "Collision",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        3,
+                        2,
+                        -2
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            "id": 22
+        }
+    ],
+    "scene": "test2"
+}

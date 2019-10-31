@@ -56,7 +56,7 @@ public:
 
 public slots:
     void recieveJsonPath(QString JsonPath);
-
+    void newScene(QString sceneName);
 private slots:
     void render();
 

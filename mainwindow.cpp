@@ -13,6 +13,8 @@
 #include "Components/allcomponents.h"
 #include "world.h"
 #include "constants.h"
+#include "Systems/scenesystem.h"
+#include "Windows/scenesaver.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -68,7 +70,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::DisplayEntitesInOutliner()
+void MainWindow::DisplayEntitiesInOutliner()
 {
     ui->Outliner->clear();
     for(auto& Entity : getWorld()->getEntities())
@@ -261,10 +263,16 @@ void MainWindow::stopGame()
 }
 
 
-void MainWindow::on_actionOpen_Scene_triggered()
+void MainWindow::on_sceneOpen_triggered()
 {
     sceneLoader_ = new SceneLoader();
     sceneLoader_->show();
     connect(sceneLoader_, &SceneLoader::sendJsonPath, mRenderWindow, &RenderWindow::recieveJsonPath);
+}
 
+void MainWindow::on_sceneCreateNew_triggered()
+{
+    sceneSaver_ = new SceneSaver();
+    sceneSaver_->show();
+    connect(sceneSaver_, &SceneSaver::onSave, mRenderWindow, &RenderWindow::newScene);
 }

@@ -9,6 +9,7 @@
 #include "Managers/shadermanager.h"
 #include "phongshader.h"
 #include "constants.h"
+#include "jsonscene.h"
 void SceneSystem::clearScene()
 {
     auto lol = mEntities;
@@ -17,11 +18,11 @@ void SceneSystem::clearScene()
 
 }
 
-void SceneSystem::loadScene(QString filepath)
+void SceneSystem::loadScene(QString sceneName)
 {
     clearScene();
 
-    QFile file(QString::fromStdString(gsl::jsonFilePath) + filepath);
+    QFile file(QString::fromStdString(gsl::jsonFilePath) + sceneName);
     file.open(QFile::ReadOnly);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject JSON = doc.object();
@@ -80,7 +81,7 @@ void SceneSystem::loadScene(QString filepath)
             if(!lightData.empty())
             {
                 getWorld()->addComponent(newEntity,Light(lightData));
-                        ShaderManager::instance()->phongShader()->setLight(newEntity);
+                ShaderManager::instance()->phongShader()->setLight(newEntity);
             }
             QJsonObject soundData = components.take("sound").toObject();
             if(!soundData.empty())
@@ -88,6 +89,17 @@ void SceneSystem::loadScene(QString filepath)
 
         }
     }
+}
+
+void SceneSystem::saveScene(QString sceneName)
+{
+    jba::JsonScene scene(sceneName);
+    for(auto entity : mEntities)
+        scene.addObject(entity);
+    // scene.addCamera()
+    //TODO Få til kamera her!! Lage det som en komponent kanskje?
+
+    scene.makeFile(sceneName);
 }
 
 SceneSystem::SceneSystem()

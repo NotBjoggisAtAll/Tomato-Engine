@@ -10,8 +10,8 @@ class SceneSystem : public System
 public:
 
     SceneSystem();
-    void loadScene(QString filepath);
-
+    void loadScene(QString sceneName);
+    void saveScene(QString sceneName);
 
 private:
 

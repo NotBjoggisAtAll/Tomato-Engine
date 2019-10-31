@@ -9,7 +9,7 @@ class QWidget;
 class RenderWindow;
 class SceneLoader;
 class QTreeWidgetItem;
-
+class SceneSaver;
 namespace Ui {
 class MainWindow;
 }
@@ -22,7 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayEntitesInOutliner();
+    void DisplayEntitiesInOutliner();
 
     void updateRightPanel(Entity entity);
 
@@ -55,7 +55,9 @@ private slots:
 
     void on_actionEmpty_Entity_triggered();
 
-    void on_actionOpen_Scene_triggered();
+    void on_sceneOpen_triggered();
+
+    void on_sceneCreateNew_triggered();
 
 private:
 
@@ -63,6 +65,7 @@ private:
     QWidget *mRenderWindowContainer = nullptr;
     RenderWindow *mRenderWindow = nullptr;
     SceneLoader* sceneLoader_ = nullptr;
+    SceneSaver* sceneSaver_ = nullptr;
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};

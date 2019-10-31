@@ -148,7 +148,7 @@ void RenderWindow::init()
 
 
     //********************** Making the objects to be drawn **********************
-    jba::JsonScene scene("newScene");
+   // jba::JsonScene scene("newScene");
 
     Entity entity = world->createEntity();
 
@@ -156,7 +156,7 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
-    scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
+  //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
     // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
     entity = world->createEntity();
@@ -167,21 +167,21 @@ void RenderWindow::init()
     world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
 
     ShaderManager::instance()->phongShader()->setLight(entity);
-    scene.addObject(entity);
+  //  scene.addObject(entity);
 
     //********************** Set up camera **********************
     mEditorCamera = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-    scene.addCamera(mEditorCamera);
+  //  scene.addCamera(mEditorCamera);
 
     mGameCamera = new Camera(gsl::Vector3D(0));
-    scene.addCamera(mGameCamera);
+  //  scene.addCamera(mGameCamera);
 
     updateCamera(mEditorCamera);
 
     //********************** System stuff **********************
 
-    scene.makeFile("default.json", false);
-    mMainWindow->DisplayEntitesInOutliner();
+  //  scene.makeFile("default", false);
+    mMainWindow->DisplayEntitiesInOutliner();
 
 }
 
@@ -210,7 +210,7 @@ void RenderWindow::recieveJsonPath(QString JsonPath)
 {
     fileToLoad_ = JsonPath;
     mSceneSystem->loadScene(fileToLoad_);
-    mMainWindow->DisplayEntitesInOutliner();
+    mMainWindow->DisplayEntitiesInOutliner();
 }
 
 void RenderWindow::setCameraSpeed(float value)
@@ -694,4 +694,9 @@ Entity RenderWindow::createEntity()
     Entity entity = world->createEntity();
     world->addComponent(entity, EntityData("Empty Entity"));
     return entity;
+}
+
+void RenderWindow::newScene(QString sceneName)
+{
+    mSceneSystem->saveScene(sceneName);
 }

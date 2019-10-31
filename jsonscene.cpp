@@ -12,9 +12,9 @@ JsonScene::JsonScene(QString SceneName)
     sceneObject_.insert("scene", SceneName);
 }
 
-void JsonScene::makeFile(QString FilePath, bool overwrite)
+void JsonScene::makeFile(QString sceneName, bool overwrite)
 {
-    QFile file(QString::fromStdString(gsl::jsonFilePath) + FilePath);
+    QFile file(QString::fromStdString(gsl::jsonFilePath) + sceneName + ".json");
     if(file.exists() && !overwrite)
         return;
     else

@@ -14,7 +14,7 @@ class JsonScene
 public:
     JsonScene(QString SceneName);
 
-    void makeFile(QString FilePath, bool overwrite);
+    void makeFile(QString sceneName, bool overwrite = false);
     void addObject(Entity entity);
     void addCamera(Camera* Camera);
 

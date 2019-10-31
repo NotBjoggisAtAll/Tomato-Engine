@@ -309,6 +309,7 @@ void ResourceFactory::createCollision()
     }
     collision.minVector_ = minVector;
     collision.maxVector_ = maxVector;
+    collision.filepath_ = file_;
 
     collisionUMap_[file_] = collision;
 }

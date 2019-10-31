@@ -144,7 +144,6 @@
     </widget>
     <addaction name="menuCreate_New"/>
     <addaction name="actionExit"/>
-    <addaction name="actionOpen_Scene"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -159,8 +158,18 @@
     <addaction name="actionPlay"/>
     <addaction name="actionPlay_in_Editor"/>
    </widget>
+   <widget class="QMenu" name="menuScene">
+    <property name="title">
+     <string>Scene</string>
+    </property>
+    <addaction name="sceneCreateNew"/>
+    <addaction name="sceneOpen"/>
+    <addaction name="sceneSave"/>
+    <addaction name="sceneSaveAs"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuScene"/>
    <addaction name="menuRun"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -225,9 +234,29 @@
     <string>Empty Entity</string>
    </property>
   </action>
-  <action name="actionOpen_Scene">
+  <action name="actionCreate_New">
    <property name="text">
-    <string>Open Scene</string>
+    <string>Create New...</string>
+   </property>
+  </action>
+  <action name="sceneCreateNew">
+   <property name="text">
+    <string>Create New...</string>
+   </property>
+  </action>
+  <action name="sceneOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="sceneSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="sceneSaveAs">
+   <property name="text">
+    <string>Save as</string>
    </property>
   </action>
  </widget>
