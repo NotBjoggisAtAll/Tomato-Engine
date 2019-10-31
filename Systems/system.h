@@ -3,9 +3,11 @@
 
 #include <set>
 #include "types.h"
-
-struct System
+#include <QObject>
+struct System : public QObject
 {
+    Q_OBJECT
+public:
     System() = default;
     virtual ~System() = default;
 

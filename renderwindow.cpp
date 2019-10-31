@@ -17,6 +17,7 @@
 #include "Systems/soundsystem.h"
 #include "Systems/movementsystem.h"
 #include "Systems/collisionsystem.h"
+#include "Systems/scriptsystem.h"
 
 #include "Managers/entitymanager.h"
 #include "Managers/shadermanager.h"
@@ -112,12 +113,14 @@ void RenderWindow::init()
     world->registerComponent<EntityData>();
     world->registerComponent<Light>();
     world->registerComponent<Collision>();
+    world->registerComponent<Script>();
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
     mMovementSystem = world->registerSystem<MovementSystem>();
     mCollisionSystem = world->registerSystem<CollisionSystem>();
     mSceneSystem = world->registerSystem<SceneSystem>();
+    scriptSystem_ = world->registerSystem<ScriptSystem>();
 
     // Setter opp hvilke komponenter de ulike systemene trenger
     Signature renderSign;
@@ -134,17 +137,23 @@ void RenderWindow::init()
     Signature movementSign;
     movementSign.set(world->getComponentType<Transform>());
     movementSign.set(world->getComponentType<EntityData>());
+    movementSign.set(world->getComponentType<Collision>());
     world->setSystemSignature<MovementSystem>(movementSign);
 
     Signature collisionSign;
     collisionSign.set(world->getComponentType<Collision>());
     collisionSign.set(world->getComponentType<EntityData>());
     collisionSign.set(world->getComponentType<Transform>());
-    world->setSystemSignature<MovementSystem>(collisionSign);
+    world->setSystemSignature<CollisionSystem>(collisionSign);
 
     Signature sceneSign;
     for(const auto& type : world->getComponentTypes())
         sceneSign.set(type.second);
+    world->setSystemSignature<SceneSystem>(sceneSign);
+
+    Signature scriptSign;
+    scriptSign.set(world->getComponentType<Script>());
+    world->setSystemSignature<ScriptSystem>(scriptSign);
 
 
     //********************** Making the objects to be drawn **********************
@@ -165,6 +174,8 @@ void RenderWindow::init()
     world->addComponent(entity, Light());
     world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
     world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
+    world->addComponent(entity, Script("testScript.js"));
+    scriptSystem_->componentAdded(world->getComponent<Script>(entity).value());
 
     ShaderManager::instance()->phongShader()->setLight(entity);
   //  scene.addObject(entity);
@@ -188,6 +199,9 @@ void RenderWindow::init()
 void RenderWindow::render()
 {
     handleInput();
+    if(getWorld()->bGameRunning)
+        scriptSystem_->tick();
+
     mCurrentCamera->update();
 
     mTimeStart.restart(); //restart FPS clock
@@ -200,6 +214,7 @@ void RenderWindow::render()
     mCollisionSystem->checkCollision();
     mSoundSystem->tick();
     mRenderSystem->tick();
+
 
 
     calculateFramerate();
@@ -252,6 +267,7 @@ void RenderWindow::updateCamera(Camera *newCamera)
 void RenderWindow::playGame()
 {
     updateCamera(mGameCamera);
+    scriptSystem_->beginPlay();
 }
 
 void RenderWindow::stopGame()

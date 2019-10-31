@@ -1,4 +1,4 @@
-QT          += core gui widgets
+QT          += core gui widgets qml
 
 TEMPLATE    = app
 CONFIG      += c++17
@@ -44,6 +44,7 @@ HEADERS += \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
     Systems/scenesystem.h \
+    Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/soundwidget.h \
     Windows/sceneloader.h \
@@ -98,6 +99,7 @@ SOURCES += main.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/scenesystem.cpp \
+    Systems/scriptsystem.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/soundwidget.cpp \

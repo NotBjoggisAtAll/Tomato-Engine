@@ -10,6 +10,7 @@ namespace gsl  //Game School Lib
     const std::string meshFilePath{projectFolderName + "Assets/Meshes/"};
     const std::string soundFilePath{projectFolderName + "Assets/Sounds/"};
     const std::string jsonFilePath{projectFolderName + "Json/"};
+    const std::string scriptFilePath{projectFolderName + "Assets/Scripts/"};
     const std::string shaderFilePath{projectFolderName + "Shaders/"};
 }
 
