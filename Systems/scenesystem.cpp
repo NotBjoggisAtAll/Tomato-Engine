@@ -12,7 +12,7 @@
 #include "jsonscene.h"
 void SceneSystem::clearScene()
 {
-    auto lol = mEntities;
+    auto lol = entities_;
     for(auto entity : lol)
         getWorld()->destroyEntity(entity);
 
@@ -94,7 +94,7 @@ void SceneSystem::loadScene(QString sceneName)
 void SceneSystem::saveScene(QString sceneName)
 {
     jba::JsonScene scene(sceneName);
-    for(auto entity : mEntities)
+    for(auto entity : entities_)
         scene.addObject(entity);
     // scene.addCamera()
     //TODO Få til kamera her!! Lage det som en komponent kanskje?

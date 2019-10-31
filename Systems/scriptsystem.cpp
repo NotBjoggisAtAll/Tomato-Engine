@@ -1,6 +1,6 @@
 #include "scriptsystem.h"
 #include <QDebug>
-#include "Components/allcomponents.h"
+#include "Components/script.h"
 #include "world.h"
 #include "constants.h"
 #include <QFile>
@@ -15,7 +15,7 @@ ScriptSystem::~ScriptSystem()
 }
 void ScriptSystem::beginPlay()
 {
-    for(auto entity : mEntities)
+    for(auto entity : entities_)
     {
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
@@ -26,7 +26,7 @@ void ScriptSystem::beginPlay()
 
 void ScriptSystem::tick()
 {
-    for(auto entity : mEntities)
+    for(auto entity : entities_)
     {
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)

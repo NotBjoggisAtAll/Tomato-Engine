@@ -18,7 +18,7 @@ SoundSystem::SoundSystem()
 
 void SoundSystem::beginPlay()
 {
-    for(auto const& entity : mEntities)
+    for(auto const& entity : entities_)
     {
         auto sound = getWorld()->getComponent<Sound>(entity).value();
         sound->audio_->stop();
@@ -33,7 +33,7 @@ void SoundSystem::tick()
                                              currCamera->forward(),
                                              currCamera->up());
 
-    for(auto const& entity : mEntities)
+    for(auto const& entity : entities_)
     {
         auto sound = getWorld()->getComponent<Sound>(entity).value();
         auto transform = getWorld()->getComponent<Transform>(entity).value();

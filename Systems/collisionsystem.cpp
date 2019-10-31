@@ -7,7 +7,7 @@
 
 void CollisionSystem::checkCollision()
 {
-    for (auto const& entity : mEntities)
+    for (auto const& entity : entities_)
     {
 
         auto collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
@@ -30,7 +30,7 @@ void CollisionSystem::checkCollision()
             collision->scaledMinVector_ = (tempMatrix * gsl::Vector4D(collision->minVector_,0)).getXYZ();
         }
 
-        for(auto const& otherEntity : mEntities)
+        for(auto const& otherEntity : entities_)
         {
             if(otherEntity == entity)
                 continue;
@@ -66,7 +66,7 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
 {
     Entity entityToReturn = -1;
     float distance = 999999999.f;
-    for (auto& entity : mEntities)
+    for (auto& entity : entities_)
     {
         auto collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
         auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);

@@ -14,7 +14,7 @@ public:
     virtual void beginPlay(){}
     virtual void tick(){}
 
-    std::set<Entity> mEntities;
+    std::set<Entity> entities_;
 };
 
 #endif // SYSTEM_H

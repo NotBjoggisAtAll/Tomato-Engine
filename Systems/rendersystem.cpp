@@ -15,7 +15,7 @@ void RenderSystem::tick()
 {
     initializeOpenGLFunctions();
 
-    for(auto& entity : mEntities)
+    for(auto& entity : entities_)
     {
         auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 
