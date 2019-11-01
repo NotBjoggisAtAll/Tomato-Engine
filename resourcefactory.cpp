@@ -53,7 +53,7 @@ Collision  ResourceFactory::getCollision(std::string file)
     return collisionIterator->second;
 }
 
-Mesh ResourceFactory::createCollisionbox(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Mesh ResourceFactory::createLines(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
     Mesh box;
 
@@ -62,10 +62,30 @@ Mesh ResourceFactory::createCollisionbox(std::vector<Vertex> vertices, std::vect
     initializeOpenGLFunctions();
 
     box.VAO_ = openGLVertexBuffers();
-    openGLIndexBuffer();
+    if(indices_.size() != 0)
+        openGLIndexBuffer();
     box.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     box.indiceCount_ = static_cast<unsigned int>(indices_.size());
     box.drawType_ = GL_LINES;
+    glBindVertexArray(0);
+
+    return box;
+}
+
+Mesh ResourceFactory::createLineStrip(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+{
+    Mesh box;
+
+    vertices_ = vertices;
+    indices_ = indices;
+    initializeOpenGLFunctions();
+
+    box.VAO_ = openGLVertexBuffers();
+    if(indices_.size() != 0)
+        openGLIndexBuffer();
+    box.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    box.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    box.drawType_ = GL_LINE_STRIP;
     glBindVertexArray(0);
 
     return box;

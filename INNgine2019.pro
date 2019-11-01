@@ -49,6 +49,7 @@ HEADERS += \
     Widgets/soundwidget.h \
     Windows/sceneloader.h \
     Windows/scenesaver.h \
+    bsplinecurve.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -107,6 +108,7 @@ SOURCES += main.cpp \
     Systems/rendersystem.cpp \
     Windows/sceneloader.cpp \
     Windows/scenesaver.cpp \
+    bsplinecurve.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \

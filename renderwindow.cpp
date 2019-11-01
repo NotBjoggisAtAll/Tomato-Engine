@@ -23,7 +23,7 @@
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
 #include "Components/allcomponents.h"
-
+#include "bsplinecurve.h"
 #include "resourcefactory.h"
 #include "world.h"
 
@@ -189,6 +189,26 @@ void RenderWindow::init()
   //  scene.makeFile("default", false);
     mMainWindow->DisplayEntitiesInOutliner();
 
+
+    curve = new BSplineCurve();
+    curve->addControlPoint(gsl::Vector3D(0,0,0));
+    curve->addControlPoint(gsl::Vector3D(1,0,0));
+    curve->addControlPoint(gsl::Vector3D(1,1,0));
+    curve->addControlPoint(gsl::Vector3D(4,2,0));
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, Transform());
+    getWorld()->addComponent(entity, resourceFactory->createLineStrip(curve->getCurveVertices(),{}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, Transform());
+    getWorld()->addComponent(entity, resourceFactory->createLineStrip(curve->getControlVertices(),{}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+
+
 }
 
 void RenderWindow::render()
@@ -196,6 +216,10 @@ void RenderWindow::render()
     handleInput();
     if(getWorld()->bGameRunning)
         scriptSystem_->tick();
+
+  //  qDebug() << curve->GetCurvePosition();
+    auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
+    trans->position_ = curve->curvePosition();
 
     mCurrentCamera->update();
 
@@ -358,7 +382,7 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
     Entity entity = getWorld()->createEntity();
 
     getWorld()->addComponent(entity, Transform(transform->position_));
-    getWorld()->addComponent(entity, resourceFactory->createCollisionbox(vertices,indices));
+    getWorld()->addComponent(entity, resourceFactory->createLines(vertices,indices));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, EntityData("Collision"));
     EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();

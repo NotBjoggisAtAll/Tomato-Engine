@@ -21,6 +21,7 @@ class ScriptSystem;
 class EntityManager;
 
 class ResourceFactory;
+class BSplineCurve;
 class World;
 
 class RenderSystem;
@@ -41,6 +42,8 @@ public:
     void toggleWireframe();
 
     void checkForGLerrors();
+
+    BSplineCurve* curve = nullptr;
 
 
     std::shared_ptr<RenderSystem> mRenderSystem;

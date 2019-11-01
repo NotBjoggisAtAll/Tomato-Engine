@@ -16,9 +16,10 @@ public:
 
     static ResourceFactory* get();
     Mesh loadMesh(std::string file);
-    Mesh createCollisionbox(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    Mesh createLines(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     Collision getCollision(std::string file);
 
+    Mesh createLineStrip(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 private:
     ResourceFactory() = default;
 
