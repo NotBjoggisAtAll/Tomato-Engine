@@ -9,13 +9,13 @@ gsl::Vector3D BSplineCurve::curvePosition()
     if(currentT_<0)
     {
         bIncrementT = true;
-        randomizeControlpoints();
+        //randomizeControlpoints();
         currentT_ = 0;
     }
     if(currentT_>1)
     {
         bIncrementT = false;
-        randomizeControlpoints();
+        //randomizeControlpoints();
         currentT_ = 1;
     }
     if (bIncrementT)
