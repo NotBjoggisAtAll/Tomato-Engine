@@ -51,6 +51,7 @@ HEADERS += \
     Widgets/soundwidget.h \
     Windows/sceneloader.h \
     Windows/scenesaver.h \
+    Windows/vector3dpicker.h \
     bsplinecurve.h \
     constants.h \
     Managers/entitymanager.h \
@@ -112,6 +113,7 @@ SOURCES += main.cpp \
     Systems/rendersystem.cpp \
     Windows/sceneloader.cpp \
     Windows/scenesaver.cpp \
+    Windows/vector3dpicker.cpp \
     bsplinecurve.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
@@ -136,6 +138,7 @@ FORMS += \
     Widgets/soundwidget.ui \
     Windows/sceneloader.ui \
     Windows/scenesaver.ui \
+    Windows/vector3dpicker.ui \
     mainwindow.ui \
     Widgets/meshwidget.ui \
     Widgets/transformwidget.ui

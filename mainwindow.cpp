@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->scrollArea->setWidgetResizable(true);
-
+    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 

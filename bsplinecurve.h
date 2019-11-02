@@ -23,7 +23,7 @@ public:
     ///Degree
     unsigned int degree_ = 2;
 
-    bool checkRandomized();
+    bool checkPathChanged();
 
     std::vector<gsl::Vector3D> &getControlPoints();
 
@@ -42,7 +42,7 @@ private:
     float currentT_ = 0;
     bool bIncrementT = true;
 
-    bool bRandomized_ = false;
+    bool bPathChanged = false;
 };
 
 #endif // BSPLINECURVE_H

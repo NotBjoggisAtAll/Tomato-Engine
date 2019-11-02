@@ -52,11 +52,11 @@ std::pair<std::vector<Vertex>,std::vector<unsigned int>> BSplineCurve::getVertic
 
 }
 
-bool BSplineCurve::checkRandomized()
+bool BSplineCurve::checkPathChanged()
 {
-    if(bRandomized_)
+    if(bPathChanged)
     {
-        bRandomized_ = false;
+        bPathChanged = false;
         return true;
     }
     return false;
@@ -132,10 +132,19 @@ void BSplineCurve::addControlPoint(gsl::Vector3D controlPoint)
 {
     controlPoints_.push_back(controlPoint);
     createKnots();
+    bPathChanged = true;
+}
+
+void BSplineCurve::removeControlPoint(gsl::Vector3D controlPoint)
+{
+    auto it = std::find(controlPoints_.begin(), controlPoints_.end(), controlPoint);
+    controlPoints_.erase(it);
+    createKnots();
+    bPathChanged = true;
 }
 
 void BSplineCurve::randomizeControlpoints()
 {
     std::random_shuffle(controlPoints_.begin() + 1, controlPoints_.end() - 1);
-    bRandomized_ = true;
+    bPathChanged = true;
 }

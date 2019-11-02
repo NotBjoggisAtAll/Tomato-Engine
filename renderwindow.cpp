@@ -211,7 +211,7 @@ void RenderWindow::render()
     auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
     auto spline = getWorld()->getComponent<BSpline>(2).value_or(nullptr);
 
-    if(spline->curve_.checkRandomized())
+    if(spline->curve_.checkPathChanged())
     {
         getWorld()->removeComponent<Mesh>(2);
         getWorld()->addComponent(2, resourceFactory->createLines(spline->curve_.getVerticesAndIndices()));
