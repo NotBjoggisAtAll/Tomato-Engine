@@ -15,6 +15,7 @@
 #include "constants.h"
 #include "Systems/scenesystem.h"
 #include "Windows/scenesaver.h"
+#include "Widgets/bsplinewidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -147,6 +148,10 @@ void MainWindow::updateRightPanel(Entity entity)
     Sound* sound = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
     if(sound)
         layout->addWidget(new SoundWidget(entity));
+
+    BSpline* spline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+    if(spline)
+        layout->addWidget(new BSplineWidget(entity));
 
 }
 

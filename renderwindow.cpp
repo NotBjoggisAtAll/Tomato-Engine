@@ -182,7 +182,6 @@ void RenderWindow::init()
 
     //********************** System stuff **********************
 
-    mMainWindow->DisplayEntitiesInOutliner();
 
 
     BSpline spline = BSpline(.05f);
@@ -199,7 +198,8 @@ void RenderWindow::init()
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, resourceFactory->createLines(spline.curve_.getVerticesAndIndices()));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
+    getWorld()->addComponent(entity, EntityData("BSpline"));
+    mMainWindow->DisplayEntitiesInOutliner();
 }
 
 void RenderWindow::render()

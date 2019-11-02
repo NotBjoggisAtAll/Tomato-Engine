@@ -47,6 +47,7 @@ HEADERS += \
     Systems/scenesystem.h \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
+    Widgets/bsplinewidget.h \
     Widgets/soundwidget.h \
     Windows/sceneloader.h \
     Windows/scenesaver.h \
@@ -105,6 +106,7 @@ SOURCES += main.cpp \
     Systems/scriptsystem.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
+    Widgets/bsplinewidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     Systems/rendersystem.cpp \
@@ -130,6 +132,7 @@ SOURCES += main.cpp \
 
 FORMS += \
     Widgets/addcomponentwidget.ui \
+    Widgets/bsplinewidget.ui \
     Widgets/soundwidget.ui \
     Windows/sceneloader.ui \
     Windows/scenesaver.ui \

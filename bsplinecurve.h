@@ -25,6 +25,8 @@ public:
 
     bool checkRandomized();
 
+    std::vector<gsl::Vector3D> &getControlPoints();
+
 private:
     gsl::Vector3D evaluateBSpline(unsigned int nearestKnot, float x);
 

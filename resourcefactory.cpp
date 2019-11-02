@@ -55,7 +55,7 @@ Collision  ResourceFactory::getCollision(std::string file)
 
 Mesh ResourceFactory::createLines(std::pair<std::vector<Vertex>, std::vector<unsigned int> > verticesAndIndices)
 {
-    return createLineStrip(verticesAndIndices.first, verticesAndIndices.second);
+    return createLines(verticesAndIndices.first, verticesAndIndices.second);
 }
 
 Mesh ResourceFactory::createLines(std::vector<Vertex> vertices, std::vector<unsigned int> indices)

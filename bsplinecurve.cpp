@@ -62,6 +62,11 @@ bool BSplineCurve::checkRandomized()
     return false;
 }
 
+std::vector<gsl::Vector3D>& BSplineCurve::getControlPoints()
+{
+    return controlPoints_;
+}
+
 gsl::Vector3D BSplineCurve::evaluateBSpline(unsigned int nearestKnot, float t)
 {
     gsl::Vector3D positionOnBSpline[20]; // forutsetter da at n+d+1 <= 20

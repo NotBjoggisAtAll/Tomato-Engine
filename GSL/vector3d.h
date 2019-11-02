@@ -74,6 +74,10 @@ public:
         return QVector3D(x, y, z);
     }   //for use with qDebug()
 
+    QString toQString() const
+    {
+        return QString("(" + QString::number(x) + "," + QString::number(y) + "," + QString::number(z) + ")");
+    }
     //private:  //Making these public to avoid having to do things like setY(getY()+3) etc.
     GLfloat x;
     GLfloat y;
