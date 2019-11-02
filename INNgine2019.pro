@@ -17,6 +17,7 @@ win32 {
 
 HEADERS += \
     Components/allcomponents.h \
+    Components/bspline.h \
     Components/collision.h \
     Components/componentArray.h \
     Components/entitydata.h \
@@ -78,6 +79,7 @@ HEADERS += \
 
 
 SOURCES += main.cpp \
+    Components/bspline.cpp \
     Components/collision.cpp \
     Components/entitydata.cpp \
     Components/light.cpp \

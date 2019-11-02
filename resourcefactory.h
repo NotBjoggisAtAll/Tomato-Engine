@@ -17,9 +17,9 @@ public:
     static ResourceFactory* get();
     Mesh loadMesh(std::string file);
     Mesh createLines(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    Mesh createLines(std::pair<std::vector<Vertex>,std::vector<unsigned int>> verticesAndIndices);
     Collision getCollision(std::string file);
 
-    Mesh createLineStrip(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 private:
     ResourceFactory() = default;
 

@@ -23,7 +23,6 @@
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
 #include "Components/allcomponents.h"
-#include "bsplinecurve.h"
 #include "resourcefactory.h"
 #include "world.h"
 
@@ -114,6 +113,7 @@ void RenderWindow::init()
     world->registerComponent<Light>();
     world->registerComponent<Collision>();
     world->registerComponent<Script>();
+    world->registerComponent<BSpline>();
 
     mRenderSystem = world->registerSystem<RenderSystem>();
     mSoundSystem = world->registerSystem<SoundSystem>();
@@ -152,7 +152,6 @@ void RenderWindow::init()
 
 
     //********************** Making the objects to be drawn **********************
-   // jba::JsonScene scene("newScene");
 
     Entity entity = world->createEntity();
 
@@ -173,41 +172,33 @@ void RenderWindow::init()
     scriptSystem_->componentAdded(world->getComponent<Script>(entity).value());
 
     ShaderManager::instance()->phongShader()->setLight(entity);
-  //  scene.addObject(entity);
 
     //********************** Set up camera **********************
     mEditorCamera = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-  //  scene.addCamera(mEditorCamera);
 
     mGameCamera = new Camera(gsl::Vector3D(0));
-  //  scene.addCamera(mGameCamera);
 
     updateCamera(mEditorCamera);
 
     //********************** System stuff **********************
 
-  //  scene.makeFile("default", false);
     mMainWindow->DisplayEntitiesInOutliner();
 
 
-    curve = new BSplineCurve();
-    curve->addControlPoint(gsl::Vector3D(0,0,0));
-    curve->addControlPoint(gsl::Vector3D(1,0,0));
-    curve->addControlPoint(gsl::Vector3D(1,1,0));
-    curve->addControlPoint(gsl::Vector3D(4,2,0));
+    BSpline spline = BSpline(.05f);
+
+     spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
+     spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
+     spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
+     spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
+     spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
 
     entity = getWorld()->createEntity();
 
+    getWorld()->addComponent(entity, spline);
     getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, resourceFactory->createLineStrip(curve->getCurveVertices(),{}));
+    getWorld()->addComponent(entity, resourceFactory->createLines(spline.curve_.getVerticesAndIndices()));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
-    entity = getWorld()->createEntity();
-
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, resourceFactory->createLineStrip(curve->getControlVertices(),{}));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-
 
 }
 
@@ -217,9 +208,17 @@ void RenderWindow::render()
     if(getWorld()->bGameRunning)
         scriptSystem_->tick();
 
-  //  qDebug() << curve->GetCurvePosition();
     auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
-    trans->position_ = curve->curvePosition();
+    auto spline = getWorld()->getComponent<BSpline>(2).value_or(nullptr);
+
+    if(spline->curve_.checkRandomized())
+    {
+        getWorld()->removeComponent<Mesh>(2);
+        getWorld()->addComponent(2, resourceFactory->createLines(spline->curve_.getVerticesAndIndices()));
+    }
+    trans->position_ = spline->curve_.curvePosition();
+
+
 
     mCurrentCamera->update();
 

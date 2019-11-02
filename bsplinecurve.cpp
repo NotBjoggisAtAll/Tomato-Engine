@@ -1,22 +1,20 @@
 #include "bsplinecurve.h"
 #include "vertex.h"
 
-BSplineCurve::BSplineCurve(float speed, unsigned int degree) : speed_(speed), degrees_(degree){}
+BSplineCurve::BSplineCurve(float speed, unsigned int degree) : speed_(speed), degree_(degree){}
 
 gsl::Vector3D BSplineCurve::curvePosition()
 {
 
-    if(currentT_<0)
+    if(currentT_<0.01f)
     {
         bIncrementT = true;
-        //randomizeControlpoints();
-        currentT_ = 0;
+        randomizeControlpoints();
     }
     if(currentT_>1)
     {
         bIncrementT = false;
-        //randomizeControlpoints();
-        currentT_ = 1;
+        randomizeControlpoints();
     }
     if (bIncrementT)
         currentT_+=speed_/60;
@@ -26,31 +24,53 @@ gsl::Vector3D BSplineCurve::curvePosition()
     return evaluateBSpline(findKnotInterval(currentT_),currentT_);
 }
 
-std::vector<Vertex> BSplineCurve::getCurveVertices()
+std::pair<std::vector<Vertex>,std::vector<unsigned int>> BSplineCurve::getVerticesAndIndices()
 {
     std::vector<Vertex> curveVertices;
+    std::vector<unsigned int> indices;
+
+    for(const auto& pos : controlPoints_)
+        curveVertices.push_back(Vertex(pos,{1,0,0},{}));
+
     for (float i = 0; i <= 1; i+= 0.01f)
         curveVertices.push_back(Vertex(evaluateBSpline(findKnotInterval(i),i), {0,1,0}, {}));
-    return curveVertices;
+
+    for(unsigned int i = 0; i < curveVertices.size(); ++i)
+    {
+        if(i == controlPoints_.size()-1)
+        {
+            indices.push_back(i);
+            indices.push_back(i+1);
+            continue;
+        }
+        indices.push_back(i);
+        if(i == 0) continue;
+        indices.push_back(i);
+
+    }
+    return {curveVertices,indices};
+
 }
 
-std::vector<Vertex> BSplineCurve::getControlVertices()
+bool BSplineCurve::checkRandomized()
 {
-    std::vector<Vertex> controlVertices;
-    for(const auto& pos : controlPoints_)
-        controlVertices.push_back(Vertex(pos,{1,0,0},{}));
-    return controlVertices;
+    if(bRandomized_)
+    {
+        bRandomized_ = false;
+        return true;
+    }
+    return false;
 }
 
 gsl::Vector3D BSplineCurve::evaluateBSpline(unsigned int nearestKnot, float t)
 {
     gsl::Vector3D positionOnBSpline[20]; // forutsetter da at n+d+1 <= 20
-    for (unsigned int j = 0; j <= degrees_; j++)
+    for (unsigned int j = 0; j <= degree_; j++)
     {
-        positionOnBSpline[degrees_ - j] = controlPoints_[nearestKnot - j];
+        positionOnBSpline[degree_ - j] = controlPoints_[nearestKnot - j];
     }
 
-    for (unsigned int k = degrees_; k > 0; k--)
+    for (unsigned int k = degree_; k > 0; k--)
     {
         unsigned int j = nearestKnot - k;
         for (unsigned int i = 0; i < k; i++)
@@ -66,18 +86,18 @@ gsl::Vector3D BSplineCurve::evaluateBSpline(unsigned int nearestKnot, float t)
 void BSplineCurve::createKnots()
 {
     knots_.clear();
-    unsigned int numberOfKnots = degrees_ + static_cast<unsigned int>(controlPoints_.size()) + 1;
-    unsigned int numberOfEndKnots = degrees_ + 1;
+    unsigned int numberOfKnots = degree_ + static_cast<unsigned int>(controlPoints_.size()) + 1;
+    unsigned int numberOfEndKnots = degree_ + 1;
     unsigned int numberOfMiddleKnots = numberOfKnots - (numberOfEndKnots * 2);
 
     for(unsigned int i = 1; i < numberOfKnots + 1; i++)
     {
-        if(i <= degrees_ + 1)
+        if(i <= degree_ + 1)
         {
             knots_.push_back(0);
             continue;
         }
-        else if(i > numberOfKnots - (degrees_ + 1))
+        else if(i > numberOfKnots - (degree_ + 1))
         {
             knots_.push_back(1);
             continue;
@@ -112,4 +132,5 @@ void BSplineCurve::addControlPoint(gsl::Vector3D controlPoint)
 void BSplineCurve::randomizeControlpoints()
 {
     std::random_shuffle(controlPoints_.begin() + 1, controlPoints_.end() - 1);
+    bRandomized_ = true;
 }

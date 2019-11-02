@@ -10,6 +10,7 @@
 #include "entitydata.h"
 #include "collision.h"
 #include "light.h"
+#include "bspline.h"
 
 
 #endif // ALLCOMPONENTS_H
