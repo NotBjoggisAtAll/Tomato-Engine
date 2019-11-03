@@ -17,7 +17,7 @@ public slots:
     void beginPlay() override;
     void tick() override;
 
-    void lolFunk(int tall);
+    int createEntity();
 
 private:
     void call(Script *script, QString function);

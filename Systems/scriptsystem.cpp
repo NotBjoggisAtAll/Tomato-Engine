@@ -35,6 +35,11 @@ void ScriptSystem::tick()
     }
 }
 
+int ScriptSystem::createEntity()
+{
+    return getWorld()->createEntity();
+}
+
 void ScriptSystem::componentAdded(Script *script)
 {
     if(!script)
@@ -42,11 +47,6 @@ void ScriptSystem::componentAdded(Script *script)
 
     script->engine_->globalObject().setProperty("engine", script->engine_->newQObject(this));
 
-}
-
-void ScriptSystem::lolFunk(int tall)
-{
-    qDebug() << tall;
 }
 
 void ScriptSystem::call(Script * script, QString function)
