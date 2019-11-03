@@ -53,9 +53,6 @@ public:
     World* world;
     ResourceFactory* resourceFactory;
 
-
-    std::vector<Entity> entities;
-
 public slots:
     void recieveJsonPath(QString JsonPath);
     void newScene(QString sceneName);

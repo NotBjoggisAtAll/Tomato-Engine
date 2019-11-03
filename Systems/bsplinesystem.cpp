@@ -9,24 +9,22 @@ BSplineSystem::BSplineSystem()
 
 }
 
-
 void BSplineSystem::beginPlay()
 {
 }
 
 void BSplineSystem::tick()
 {
-    for(auto Entity : entities_)
+    for(auto const& entity : entities_)
     {
-        auto spline = getWorld()->getComponent<BSpline>(Entity).value_or(nullptr);
-        if(spline)
+        auto spline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+        auto mesh = getWorld()->getComponent<Mesh>(entity).value_or(nullptr);
+        if(spline && mesh)
         {
             if(spline->curve_.checkPathChanged())
             {
-                getWorld()->removeComponent<Mesh>(Entity);
-                getWorld()->addComponent(Entity, ResourceFactory::get()->createLines(spline->curve_.getVerticesAndIndices()));
+                *mesh = ResourceFactory::get()->createLines(spline->curve_.getVerticesAndIndices());
             }
-           // trans->position_ = spline->curve_.curvePosition();
         }
     }
 }
