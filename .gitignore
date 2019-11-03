@@ -62,5 +62,5 @@ Assets/*
 !Assets/Scripts
 
 #Docs
-Docs/*
-!Docs/Doxyfile.dox
+Docs/*/*
+!Docs/*
