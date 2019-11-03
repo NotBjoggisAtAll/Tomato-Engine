@@ -26,6 +26,9 @@ gsl::Vector3D BSplineCurve::curvePosition()
 
 std::pair<std::vector<Vertex>,std::vector<unsigned int>> BSplineCurve::getVerticesAndIndices()
 {
+    if(controlPoints_.empty())
+        return {};
+
     std::vector<Vertex> curveVertices;
     std::vector<unsigned int> indices;
 
@@ -69,6 +72,9 @@ std::vector<gsl::Vector3D>& BSplineCurve::getControlPoints()
 
 gsl::Vector3D BSplineCurve::evaluateBSpline(unsigned int nearestKnot, float t)
 {
+    if(controlPoints_.size() == 0)
+        return {};
+
     gsl::Vector3D positionOnBSpline[20]; // forutsetter da at n+d+1 <= 20
     for (unsigned int j = 0; j <= degree_; j++)
     {
@@ -90,6 +96,7 @@ gsl::Vector3D BSplineCurve::evaluateBSpline(unsigned int nearestKnot, float t)
 
 void BSplineCurve::createKnots()
 {
+
     knots_.clear();
     unsigned int numberOfKnots = degree_ + static_cast<unsigned int>(controlPoints_.size()) + 1;
     unsigned int numberOfEndKnots = degree_ + 1;
@@ -145,6 +152,8 @@ void BSplineCurve::removeControlPoint(gsl::Vector3D controlPoint)
 
 void BSplineCurve::randomizeControlpoints()
 {
+    if(controlPoints_.size() < 3)
+        return;
     std::random_shuffle(controlPoints_.begin() + 1, controlPoints_.end() - 1);
     bPathChanged = true;
 }

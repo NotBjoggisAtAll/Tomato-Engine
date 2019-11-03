@@ -16,6 +16,7 @@
 #include "Systems/scenesystem.h"
 #include "Windows/scenesaver.h"
 #include "Widgets/bsplinewidget.h"
+#include "Windows/vector3dpicker.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -280,4 +281,9 @@ void MainWindow::on_sceneCreateNew_triggered()
     sceneSaver_ = new SceneSaver();
     sceneSaver_->show();
     connect(sceneSaver_, &SceneSaver::onSave, mRenderWindow, &RenderWindow::newScene);
+}
+
+void MainWindow::on_createBSpline_triggered()
+{
+   emit spawnObject("BSpline", "BSpline");
 }

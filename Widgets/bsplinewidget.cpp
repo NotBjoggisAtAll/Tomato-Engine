@@ -12,11 +12,9 @@ BSplineWidget::BSplineWidget(Entity entityIn, QWidget *parent) :
     ui->setupUi(this);
 
     component_ = getWorld()->getComponent<BSpline>(entityIn).value();
-
-    ui->startPos->setText(component_->curve_.getControlPoints().front().toQString());
-    ui->endPos->setText(component_->curve_.getControlPoints().back().toQString());
-
-    for(auto it = component_->curve_.getControlPoints().begin() + 1; it != component_->curve_.getControlPoints().end() - 1; ++it)
+    if(component_->curve_.getControlPoints().size() == 0)
+        return;
+    for(auto it = component_->curve_.getControlPoints().begin(); it != component_->curve_.getControlPoints().end(); ++it)
     {
         ui->pointList->addItem(it->toQString());
     }
@@ -36,7 +34,7 @@ void BSplineWidget::vector3DRecieved(gsl::Vector3D vector)
 
 void BSplineWidget::on_addPoint_clicked()
 {
-    vector3DPicker_ = new Vector3DPicker();
+    vector3DPicker_ = new Vector3DPicker("Add point");
     connect(vector3DPicker_, &Vector3DPicker::sendVector3D, this, &BSplineWidget::vector3DRecieved);
     vector3DPicker_->show();
 }

@@ -13,7 +13,7 @@ class Vector3DPicker : public QDialog
     Q_OBJECT
 
 public:
-    explicit Vector3DPicker(QWidget *parent = nullptr);
+    explicit Vector3DPicker(QString windowTitle, QWidget *parent = nullptr);
     ~Vector3DPicker();
 
 signals:

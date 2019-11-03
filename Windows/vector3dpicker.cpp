@@ -1,11 +1,17 @@
 #include "vector3dpicker.h"
 #include "ui_vector3dpicker.h"
 
-Vector3DPicker::Vector3DPicker(QWidget *parent) :
+Vector3DPicker::Vector3DPicker(QString windowTitle, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Vector3DPicker)
 {
     ui->setupUi(this);
+
+    setWindowTitle(windowTitle);
+
+    ui->x->setRange(-1000,1000);
+    ui->y->setRange(-1000,1000);
+    ui->z->setRange(-1000,1000);
 }
 
 Vector3DPicker::~Vector3DPicker()

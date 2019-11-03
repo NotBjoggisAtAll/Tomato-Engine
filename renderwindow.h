@@ -17,7 +17,7 @@ class MovementSystem;
 class CollisionSystem;
 class SceneSystem;
 class ScriptSystem;
-
+class BSplineSystem;
 class EntityManager;
 
 class ResourceFactory;
@@ -48,6 +48,7 @@ public:
     std::shared_ptr<CollisionSystem> mCollisionSystem;
     std::shared_ptr<SceneSystem> mSceneSystem;
     std::shared_ptr<ScriptSystem> scriptSystem_;
+    std::shared_ptr<BSplineSystem> bsplineSystem_;
 
     World* world;
     ResourceFactory* resourceFactory;

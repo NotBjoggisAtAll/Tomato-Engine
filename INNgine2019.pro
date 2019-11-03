@@ -42,6 +42,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Systems/bsplinesystem.h \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
     Systems/scenesystem.h \
@@ -101,6 +102,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Systems/bsplinesystem.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/scenesystem.cpp \

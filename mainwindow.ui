@@ -141,6 +141,7 @@
      <addaction name="spawnCube"/>
      <addaction name="spawnSphere"/>
      <addaction name="spawnPlane"/>
+     <addaction name="createBSpline"/>
     </widget>
     <addaction name="menuCreate_New"/>
     <addaction name="actionExit"/>
@@ -257,6 +258,11 @@
   <action name="sceneSaveAs">
    <property name="text">
     <string>Save as</string>
+   </property>
+  </action>
+  <action name="createBSpline">
+   <property name="text">
+    <string>BSpline</string>
    </property>
   </action>
  </widget>

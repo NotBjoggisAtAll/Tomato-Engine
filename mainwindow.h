@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "Components/bspline.h"
 #include "types.h"
 
 class QWidget;
@@ -10,6 +10,7 @@ class RenderWindow;
 class SceneLoader;
 class QTreeWidgetItem;
 class SceneSaver;
+
 namespace Ui {
 class MainWindow;
 }
@@ -59,6 +60,7 @@ private slots:
 
     void on_sceneCreateNew_triggered();
 
+    void on_createBSpline_triggered();
 private:
 
     Ui::MainWindow *ui;

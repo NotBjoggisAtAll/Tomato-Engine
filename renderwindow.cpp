@@ -18,6 +18,7 @@
 #include "Systems/movementsystem.h"
 #include "Systems/collisionsystem.h"
 #include "Systems/scriptsystem.h"
+#include "Systems/bsplinesystem.h"
 
 #include "Managers/entitymanager.h"
 #include "Managers/shadermanager.h"
@@ -121,6 +122,7 @@ void RenderWindow::init()
     mCollisionSystem = world->registerSystem<CollisionSystem>();
     mSceneSystem = world->registerSystem<SceneSystem>();
     scriptSystem_ = world->registerSystem<ScriptSystem>();
+    bsplineSystem_ = world->registerSystem<BSplineSystem>();
 
     // Setter opp hvilke komponenter de ulike systemene trenger
     Signature renderSign;
@@ -150,6 +152,11 @@ void RenderWindow::init()
     scriptSign.set(world->getComponentType<Script>());
     world->setSystemSignature<ScriptSystem>(scriptSign);
 
+    Signature bsplineSign;
+    bsplineSign.set(world->getComponentType<BSpline>());
+    bsplineSign.set(world->getComponentType<Mesh>());
+    world->setSystemSignature<BSplineSystem>(bsplineSign);
+
 
     //********************** Making the objects to be drawn **********************
 
@@ -159,7 +166,7 @@ void RenderWindow::init()
     world->addComponent(entity, Transform());
     world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
-  //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
+    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
     // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
     entity = world->createEntity();
@@ -186,11 +193,11 @@ void RenderWindow::init()
 
     BSpline spline = BSpline(.05f);
 
-     spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
-     spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
-     spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
-     spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
-     spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
+    spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
+    spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
+    spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
+    spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
+    spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
 
     entity = getWorld()->createEntity();
 
@@ -208,17 +215,8 @@ void RenderWindow::render()
     if(getWorld()->bGameRunning)
         scriptSystem_->tick();
 
-    auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
-    auto spline = getWorld()->getComponent<BSpline>(2).value_or(nullptr);
-
-    if(spline->curve_.checkPathChanged())
-    {
-        getWorld()->removeComponent<Mesh>(2);
-        getWorld()->addComponent(2, resourceFactory->createLines(spline->curve_.getVerticesAndIndices()));
-    }
-    trans->position_ = spline->curve_.curvePosition();
-
-
+   // auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
+    bsplineSystem_->tick();
 
     mCurrentCamera->update();
 
@@ -259,7 +257,20 @@ void RenderWindow::setCameraSpeed(float value)
 
 void RenderWindow::spawnObject(std::string name, std::string path)
 {
-    auto entity = world->createEntity();
+    if(name == "BSpline")
+    {
+        Entity entity = getWorld()->createEntity();
+        BSpline spline;
+
+        getWorld()->addComponent(entity, spline);
+        getWorld()->addComponent(entity, Transform());
+        getWorld()->addComponent(entity, resourceFactory->createLines(spline.curve_.getVerticesAndIndices()));
+        getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+        getWorld()->addComponent(entity, EntityData("BSpline"));
+        mMainWindow->addEntityToUi(entity);
+        return;
+    }
+    Entity  entity = world->createEntity();
 
     world->addComponent(entity, EntityData(name));
     world->addComponent(entity, resourceFactory->loadMesh(path));
