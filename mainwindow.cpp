@@ -78,9 +78,13 @@ void MainWindow::DisplayEntitiesInOutliner()
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
         auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
+        if(data)
+        {
+
         item->setText(0, QString::fromStdString(data->name_));
         item->setText(1, QString::number(Entity));
         ui->Outliner->addTopLevelItem(item);
+        }
     }
 }
 

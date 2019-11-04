@@ -13,6 +13,8 @@ public:
 
     virtual void beginPlay(){}
     virtual void tick(){}
+    virtual void endPlay(){}
+
 
     std::set<Entity> entities_;
 };

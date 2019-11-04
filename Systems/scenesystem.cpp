@@ -12,17 +12,33 @@
 #include "jsonscene.h"
 void SceneSystem::clearScene()
 {
-    auto lol = entities_;
-    for(auto entity : lol)
+    auto tempEntities = entities_;
+    for(auto entity : tempEntities)
         getWorld()->destroyEntity(entity);
 
+}
+
+void SceneSystem::beginPlay()
+{
+    saveScene(currentScene_);
+}
+
+void SceneSystem::tick()
+{
+}
+
+void SceneSystem::endPlay()
+{
+    loadScene(currentScene_);
 }
 
 void SceneSystem::loadScene(QString sceneName)
 {
     clearScene();
 
-    QFile file(QString::fromStdString(gsl::jsonFilePath) + sceneName);
+    currentScene_ = sceneName;
+
+    QFile file(QString::fromStdString(gsl::jsonFilePath) + sceneName + ".json");
     file.open(QFile::ReadOnly);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject JSON = doc.object();
@@ -87,6 +103,10 @@ void SceneSystem::loadScene(QString sceneName)
             if(!soundData.empty())
                 getWorld()->addComponent(newEntity,Sound(soundData));
 
+            QJsonObject scriptData = components.take("script").toObject();
+            if(!scriptData.empty())
+                getWorld()->addComponent(newEntity,Script(scriptData));
+
         }
     }
 }
@@ -99,7 +119,7 @@ void SceneSystem::saveScene(QString sceneName)
     // scene.addCamera()
     //TODO Få til kamera her!! Lage det som en komponent kanskje?
 
-    scene.makeFile(sceneName);
+    scene.makeFile(sceneName,true);
 }
 
 SceneSystem::SceneSystem()

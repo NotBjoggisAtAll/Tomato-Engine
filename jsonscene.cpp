@@ -67,6 +67,10 @@ void JsonScene::addObject(Entity entity)
     if(sound)
         components.insert("sound", sound->toJson());
 
+    Script* script = getWorld()->getComponent<Script>(entity).value_or(nullptr);
+    if(script)
+        components.insert("script", script->toJson());
+
     // Legg til flere komponenter her etterhvert
     entityObject.insert("id", entity);
     entityObject.insert("components", components);

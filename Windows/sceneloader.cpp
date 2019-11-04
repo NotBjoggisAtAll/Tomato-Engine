@@ -31,11 +31,11 @@ SceneLoader::~SceneLoader()
 
 void SceneLoader::on_buttonBox_accepted()
 {
-    emit sendJsonPath(ui->jsonList->currentItem()->text() + ".json");
+    emit sendJsonPath(ui->jsonList->currentItem()->text());
 }
 
 void SceneLoader::on_jsonList_itemDoubleClicked(QListWidgetItem *item)
 {
-    emit sendJsonPath(item->text() + ".json");
+    emit sendJsonPath(item->text());
     close();
 }

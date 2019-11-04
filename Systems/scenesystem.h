@@ -10,13 +10,18 @@ class SceneSystem : public System
 public:
 
     SceneSystem();
+    void beginPlay() override;
+    void tick() override;
+    void endPlay() override;
+
     void loadScene(QString sceneName);
     void saveScene(QString sceneName);
 
 private:
 
-    void clearScene();
+    QString currentScene_ = "";
 
+    void clearScene();
 };
 
 #endif // SCENESYSTEM_H

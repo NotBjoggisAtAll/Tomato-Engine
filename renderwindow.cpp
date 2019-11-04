@@ -295,12 +295,15 @@ void RenderWindow::updateCamera(Camera *newCamera)
 
 void RenderWindow::playGame()
 {
+
+    mSceneSystem->beginPlay();
     updateCamera(mGameCamera);
     scriptSystem_->beginPlay();
 }
 
 void RenderWindow::stopGame()
 {
+    mSceneSystem->endPlay();
     updateCamera(mEditorCamera);
 }
 
