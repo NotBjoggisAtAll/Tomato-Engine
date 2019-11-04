@@ -1,6 +1,6 @@
 #include "scriptsystem.h"
 #include <QDebug>
-#include "Components/script.h"
+#include "Components/allcomponents.h"
 #include "world.h"
 #include "constants.h"
 #include <QFile>
@@ -38,6 +38,27 @@ void ScriptSystem::tick()
 int ScriptSystem::createEntity()
 {
     return getWorld()->createEntity();
+}
+
+QJsonValue ScriptSystem::getComponent(QString name , int entity)
+{
+    if(name == "Transform")
+    {
+        auto ptr = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+        if(ptr)
+            return ptr->toJson();
+    }
+    return 0;
+}
+
+void ScriptSystem::setComponent(QString name, int entity, QJsonObject Json)
+{
+    if(name == "Transform")
+    {
+        auto ptr = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+        if(ptr)
+            ptr->fromJson(Json);
+    }
 }
 
 void ScriptSystem::componentAdded(Script *script)
