@@ -2,7 +2,6 @@
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLDebugLogger>
-#include "Managers/shadermanager.h"
 #include "Components/allcomponents.h"
 #include "Systems/rendersystem.h"
 #include "resourcefactory.h"
@@ -91,16 +90,6 @@ void RenderWindow::tick()
     context_->swapBuffers(this);
 }
 
-void RenderWindow::setCamera(Camera *newCamera)
-{
-    //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
-    for(auto& Shader : ShaderManager::instance()->mShaders){
-        Shader.second->setCurrentCamera(newCamera);
-    }
-
-    getWorld()->setCurrentCamera(newCamera);
-}
-
 void RenderWindow::makeCollisionBorder(Entity newEntity){
 
     if(lastCollisionEntity != -1)
@@ -111,7 +100,6 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
             lastCollisionEntity = -1;
             return;
         }
-
     }
 
     Collision* collision = getWorld()->getComponent<Collision>(newEntity).value_or(nullptr);

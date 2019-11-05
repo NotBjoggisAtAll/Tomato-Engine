@@ -20,7 +20,7 @@ void SceneSystem::clearScene()
 
 void SceneSystem::beginPlay()
 {
-    saveScene(currentScene_);
+    saveScene("temp");
 }
 
 void SceneSystem::tick()
@@ -29,7 +29,7 @@ void SceneSystem::tick()
 
 void SceneSystem::endPlay()
 {
-    loadScene(currentScene_);
+    loadScene("temp");
 }
 
 void SceneSystem::loadScene(QString sceneName)

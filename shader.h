@@ -5,7 +5,6 @@
 #include "GSL/matrix4x4.h"
 
 class Material;
-class Camera;
 
 class Shader : protected QOpenGLFunctions_4_1_Core
 {
@@ -22,10 +21,6 @@ public:
 
     virtual void transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material = nullptr);
 
-    void setCurrentCamera(Camera *currentCamera);
-
-    Camera *getCurrentCamera() const;
-
     std::string mShaderName = "";
 
 protected:
@@ -33,9 +28,6 @@ protected:
     GLint mMatrixUniform_{-1};
     GLint vMatrixUniform_{-1};
     GLint pMatrixUniform_{-1};
-
-    Camera *mCurrentCamera{nullptr};
-
 };
 
 #endif

@@ -142,19 +142,13 @@ void App::postInit()
     getWorld()->addComponent(entity, EntityData("BSpline"));
     mainWindow_->DisplayEntitiesInOutliner();
 
-
     //********************** Set up camera **********************
     editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
     gameCamera_ = new Camera(gsl::Vector3D(0));
-    renderWindow_->setCamera(editorCamera_);
+    getWorld()->setCurrentCamera(editorCamera_);
+
 }
 
-Entity App::createEntity()
-{
-    Entity entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Empty Entity"));
-    return entity;
-}
 
 void App::tick()
 {
@@ -174,6 +168,12 @@ void App::tick()
     renderWindow_->tick();
 }
 
+Entity App::createEntity()
+{
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Empty Entity"));
+    return entity;
+}
 Entity App::spawnObject(std::string name, std::string path)
 {
     Entity entity = getWorld()->createEntity();
@@ -193,26 +193,25 @@ Entity App::spawnObject(std::string name, std::string path)
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision(path));
     return entity;
-
 }
 
 void App::playGame()
 {
     getWorld()->getSystem<SceneSystem>()->beginPlay();
-    renderWindow_->setCamera(gameCamera_);
+    getWorld()->setCurrentCamera(gameCamera_);
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 }
 
 void App::stopGame()
 {
     getWorld()->getSystem<SceneSystem>()->endPlay();
-    renderWindow_->setCamera(editorCamera_);
+    getWorld()->setCurrentCamera(editorCamera_);
 }
 
 void App::updateCameraPerspectives(float aspectRatio)
 {
-    editorCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 1000.f);
-    gameCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 1000.f);
+    editorCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 10000.f);
+    gameCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 10000.f);
 }
 void App::calculateFramerate()
 {

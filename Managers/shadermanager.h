@@ -21,12 +21,12 @@ public:
 
     Shader* getShader(std::string shaderName);
     //std::vector<Shader*> mShaders;
-    std::unordered_map<std::string, Shader*> mShaders;
+    std::unordered_map<std::string, Shader*> shaders_;
 private:
     ShaderManager();
     ~ShaderManager();
 
-    static ShaderManager* m_Instance;
+    static ShaderManager* instance_;
 };
 
 #endif // SHADERMANAGER_H

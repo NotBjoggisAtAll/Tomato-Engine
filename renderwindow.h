@@ -3,7 +3,6 @@
 
 #include <QWindow>
 #include "texture.h"
-#include "camera.h"
 #include "types.h"
 #include <memory>
 
@@ -26,7 +25,6 @@ public:
     void makeCollisionBorder(Entity newEntity);
 
     void tick();
-    void setCamera(Camera* newCamera);
 
 signals:
     void updateCameraPerspectives(float aspectRatio);
