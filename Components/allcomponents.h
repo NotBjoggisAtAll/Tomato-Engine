@@ -11,6 +11,7 @@
 #include "collision.h"
 #include "light.h"
 #include "bspline.h"
+#include "npc.h"
 
 
 #endif // ALLCOMPONENTS_H

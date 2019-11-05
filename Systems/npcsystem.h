@@ -4,6 +4,7 @@
 #include "Systems/system.h"
 
 class Npc;
+class Transform;
 
 class NpcSystem : public System
 {
@@ -17,7 +18,7 @@ public:
     void endPlay() override;
 
 
-    void patrol(Npc *npc);
+    void patrol(Entity entity, Npc *npc);
     void learn();
     void notify(Entity entity, std::optional<unsigned int> index = std::nullopt);
 

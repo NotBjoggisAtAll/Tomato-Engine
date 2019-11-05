@@ -17,7 +17,7 @@ struct Npc
     NPCstates state;
     NPCevents event;
     float speed_ = 0.1f;
-
+    float currentT_ = 0;
 };
 
 #endif // NPC_H

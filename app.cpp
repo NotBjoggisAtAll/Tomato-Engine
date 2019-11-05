@@ -10,14 +10,13 @@
 #include "Systems/collisionsystem.h"
 #include "Systems/scriptsystem.h"
 #include "Systems/bsplinesystem.h"
+#include "Systems/npcsystem.h"
 #include "Systems/rendersystem.h"
 #include "Systems/scenesystem.h"
 #include "camera.h"
 #include "eventhandler.h"
 #include "Windows/sceneloader.h"
 #include "Windows/scenesaver.h"
-
-
 
 App::App()
 {
@@ -30,6 +29,7 @@ App::App()
     getWorld()->registerComponent<Collision>();
     getWorld()->registerComponent<Script>();
     getWorld()->registerComponent<BSpline>();
+    getWorld()->registerComponent<Npc>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -38,6 +38,7 @@ App::App()
     getWorld()->registerSystem<ScriptSystem>();
     getWorld()->registerSystem<BSplineSystem>();
     getWorld()->registerSystem<RenderSystem>();
+    getWorld()->registerSystem<NpcSystem>();
 
     Signature renderSign;
     renderSign.set(getWorld()->getComponentType<Transform>());
@@ -70,6 +71,11 @@ App::App()
     bsplineSign.set(getWorld()->getComponentType<BSpline>());
     bsplineSign.set(getWorld()->getComponentType<Mesh>());
     getWorld()->setSystemSignature<BSplineSystem>(bsplineSign);
+
+    Signature npcSign;
+    npcSign.set(getWorld()->getComponentType<Npc>());
+    npcSign.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<NpcSystem>(npcSign);
 
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
@@ -140,6 +146,19 @@ void App::postInit()
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, EntityData("BSpline"));
+
+
+    BSpline* splineptr = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, EntityData("Enemy Box"));
+    getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, Npc(&splineptr->curve_));
+
+
     mainWindow_->DisplayEntitiesInOutliner();
 
     //********************** Set up camera **********************
@@ -163,6 +182,7 @@ void App::tick()
     getWorld()->getSystem<BSplineSystem>()->tick();
     getWorld()->getSystem<CollisionSystem>()->tick();
     getWorld()->getSystem<SoundSystem>()->tick();
+    getWorld()->getSystem<NpcSystem>()->tick();
 
     getWorld()->getCurrentCamera()->update();
     renderWindow_->tick();
