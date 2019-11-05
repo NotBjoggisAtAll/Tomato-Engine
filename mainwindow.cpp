@@ -30,11 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 
-    renderWindow_ = std::make_shared<RenderWindow>(this);
+    renderWindow_ = std::make_shared<RenderWindow>();
     mRenderWindowContainer = QWidget::createWindowContainer(renderWindow_.get());
     ui->OpenGLLayout->addWidget(mRenderWindowContainer);
     mRenderWindowContainer->setFocus();
-
 }
 
 MainWindow::~MainWindow()
@@ -46,15 +45,14 @@ MainWindow::~MainWindow()
 void MainWindow::DisplayEntitiesInOutliner()
 {
     ui->Outliner->clear();
-    for(auto& Entity : getWorld()->getEntities())
+    for(auto& entity : getWorld()->getEntities())
     {
         QTreeWidgetItem* item = new QTreeWidgetItem();
-        auto data = getWorld()->getComponent<EntityData>(Entity).value_or(nullptr);
+        auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
         if(data)
         {
-
         item->setText(0, QString::fromStdString(data->name_));
-        item->setText(1, QString::number(Entity));
+        item->setText(1, QString::number(entity));
         ui->Outliner->addTopLevelItem(item);
         }
     }

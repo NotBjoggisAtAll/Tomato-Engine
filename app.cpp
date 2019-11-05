@@ -79,8 +79,6 @@ App::App()
 
     mainWindow_->show();
 
-
-
     //Connect the gameloop timer to the render function:
     connect(&tickTimer_, &QTimer::timeout, this, &App::tick);
     tickTimer_.start(16);
@@ -99,6 +97,11 @@ App::App()
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
+}
+
+App::~App()
+{
+    SoundManager::instance()->cleanUp();
 }
 void App::postInit()
 {
@@ -143,7 +146,7 @@ void App::postInit()
     //********************** Set up camera **********************
     editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
     gameCamera_ = new Camera(gsl::Vector3D(0));
-    renderWindow_->updateCamera(editorCamera_);
+    renderWindow_->setCamera(editorCamera_);
 }
 
 Entity App::createEntity()
@@ -186,7 +189,7 @@ Entity App::spawnObject(std::string name, std::string path)
     }
 
     getWorld()->addComponent(entity, EntityData(name));
-    getWorld()->addComponent(entity,Transform());
+    getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision(path));
     return entity;
@@ -195,16 +198,15 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-
     getWorld()->getSystem<SceneSystem>()->beginPlay();
-    renderWindow_->updateCamera(gameCamera_);
+    renderWindow_->setCamera(gameCamera_);
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 }
 
 void App::stopGame()
 {
     getWorld()->getSystem<SceneSystem>()->endPlay();
-    renderWindow_->updateCamera(editorCamera_);
+    renderWindow_->setCamera(editorCamera_);
 }
 
 void App::updateCameraPerspectives(float aspectRatio)
@@ -301,6 +303,6 @@ void App::raycastFromMouse()
     Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(getWorld()->getCurrentCamera()->position(),ray_world);
 
     mainWindow_->updateRightPanel(entityPicked);
-    renderWindow_->updateCollisionOutline(entityPicked);
+    renderWindow_->makeCollisionBorder(entityPicked);
 
 }

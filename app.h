@@ -19,6 +19,7 @@ class App : public QObject
 
 public:
     App();
+    ~App();
 
 private slots:
     Entity createEntity();

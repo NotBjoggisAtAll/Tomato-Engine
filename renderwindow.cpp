@@ -2,24 +2,13 @@
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLDebugLogger>
-
-#include "mainwindow.h"
-
-#include "Managers/entitymanager.h"
 #include "Managers/shadermanager.h"
-#include "Managers/soundmanager.h"
 #include "Components/allcomponents.h"
+#include "Systems/rendersystem.h"
 #include "resourcefactory.h"
 #include "World.h"
 
-#include <QJsonDocument>
-#include "jsonscene.h"
-#include "constants.h"
-
-#include "Systems/rendersystem.h"
-
-RenderWindow::RenderWindow(MainWindow *mainWindow)
-    : context_(nullptr), initialized_(false), mMainWindow(mainWindow)
+RenderWindow::RenderWindow()
 {
     QSurfaceFormat format;
 
@@ -43,12 +32,18 @@ RenderWindow::RenderWindow(MainWindow *mainWindow)
         context_ = nullptr;
         qDebug() << "Context could not be made - quitting this application";
     }
-
 }
 
 RenderWindow::~RenderWindow()
 {
-    SoundManager::instance()->cleanUp();
+}
+void RenderWindow::exposeEvent(QExposeEvent *)
+{
+    if (!initialized_)
+        init();
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
+    emit updateCameraPerspectives(static_cast<float>(width()) / height());
 }
 
 void RenderWindow::init()
@@ -96,7 +91,7 @@ void RenderWindow::tick()
     context_->swapBuffers(this);
 }
 
-void RenderWindow::updateCamera(Camera *newCamera)
+void RenderWindow::setCamera(Camera *newCamera)
 {
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     for(auto& Shader : ShaderManager::instance()->mShaders){
@@ -106,14 +101,14 @@ void RenderWindow::updateCamera(Camera *newCamera)
     getWorld()->setCurrentCamera(newCamera);
 }
 
-void RenderWindow::updateCollisionOutline(Entity newEntity){
+void RenderWindow::makeCollisionBorder(Entity newEntity){
 
-    if(lastEntityCollision != -1)
+    if(lastCollisionEntity != -1)
     {
-        getWorld()->destroyEntity(lastEntityCollision);
+        getWorld()->destroyEntity(lastCollisionEntity);
 
         if(newEntity == -1){
-            lastEntityCollision = -1;
+            lastCollisionEntity = -1;
             return;
         }
 
@@ -175,7 +170,7 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 
     data->children_.push_back(entity);
 
-    lastEntityCollision = entity;
+    lastCollisionEntity = entity;
 
 }
 
@@ -193,13 +188,10 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 
 // The stuff below this line should be somewhere else in the future.
 
-//Simple way to turn on/off wireframe mode
-//Not totally accurate, but draws the objects with
-//lines instead of filled polygons
 void RenderWindow::toggleWireframe()
 {
-    mWireframe = !mWireframe;
-    if (mWireframe)
+    wireframe_ = !wireframe_;
+    if (wireframe_)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);    //turn on wireframe mode
         glDisable(GL_CULL_FACE);
@@ -211,19 +203,13 @@ void RenderWindow::toggleWireframe()
     }
 }
 
-//The way this is set up is that we start the clock before doing the draw call,
-//and check the time right after it is finished (done in the render function)
-//This will approximate what framerate we COULD have.
-//The actual frame rate on your monitor is limited by the vsync and is probably 60Hz
-
-
 /// Uses QOpenGLDebugLogger if this is present
 /// Reverts to glGetError() if not
 void RenderWindow::checkForGLerrors()
 {
-    if(mOpenGLDebugLogger)
+    if(openGLDebugLogger_)
     {
-        const QList<QOpenGLDebugMessage> messages = mOpenGLDebugLogger->loggedMessages();
+        const QList<QOpenGLDebugMessage> messages = openGLDebugLogger_->loggedMessages();
         for (const QOpenGLDebugMessage &message : messages)
             qDebug() << message;
     }
@@ -250,31 +236,11 @@ void RenderWindow::startOpenGLDebugger()
         if(temp->hasExtension(QByteArrayLiteral("GL_KHR_debug")))
         {
             qDebug() << "System can log OpenGL errors!";
-            mOpenGLDebugLogger = new QOpenGLDebugLogger(this);
-            if (mOpenGLDebugLogger->initialize()) // initializes in the current context
+            openGLDebugLogger_ = new QOpenGLDebugLogger(this);
+            if (openGLDebugLogger_->initialize()) // initializes in the current context
                 qDebug() << "Started OpenGL debug logger!";
         }
-
-        if(mOpenGLDebugLogger)
-            mOpenGLDebugLogger->disableMessages(QOpenGLDebugMessage::APISource, QOpenGLDebugMessage::OtherType, QOpenGLDebugMessage::NotificationSeverity);
+        if(openGLDebugLogger_)
+            openGLDebugLogger_->disableMessages(QOpenGLDebugMessage::APISource, QOpenGLDebugMessage::OtherType, QOpenGLDebugMessage::NotificationSeverity);
     }
 }
-
-//This function is called from Qt when window is exposed (shown)
-//and when it is resized
-//exposeEvent is a overridden function from QWindow that we inherit from
-void RenderWindow::exposeEvent(QExposeEvent *)
-{
-
-    if (!initialized_)
-        init();
-
-    //This is just to support modern screens with "double" pixels
-    const qreal retinaScale = devicePixelRatio();
-    glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
-
-    emit updateCameraPerspectives(static_cast<float>(width()) / height());
-
-    //    qDebug() << mCamera.mProjectionMatrix;
-}
-
