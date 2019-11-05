@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Components/bspline.h"
 #include "types.h"
+#include <memory>
 
 class QWidget;
 class RenderWindow;
@@ -28,12 +29,18 @@ public:
     void updateRightPanel(Entity entity);
 
     void addEntityToUi(Entity entity);
-    void playGame();
+
+    void updateStatusbar(float timePerFrame, float frameCounter);
+
+    std::shared_ptr<RenderWindow> renderWindow_ = nullptr;
 signals:
     void playGame_signal();
     void stopGame_signal();
-    void spawnObject(std::string name, std::string path);
+    Entity spawnObject(std::string name, std::string path);
     Entity createEntity();
+    void loadScene();
+    void newScene();
+    void saveScene();
 
 private slots:
     void on_actionToggle_Wireframe_triggered();
@@ -61,13 +68,15 @@ private slots:
     void on_sceneCreateNew_triggered();
 
     void on_createBSpline_triggered();
+    void on_sceneSave_triggered();
+
 private:
 
     Ui::MainWindow *ui;
     QWidget *mRenderWindowContainer = nullptr;
-    RenderWindow *mRenderWindow = nullptr;
     SceneLoader* sceneLoader_ = nullptr;
     SceneSaver* sceneSaver_ = nullptr;
+    void playGame();
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
@@ -78,7 +87,6 @@ private:
     void updatePlayButtons();
     void stopGame();
     void showPanels();
-    void makeRenderWindow();
 };
 
 #endif // MAINWINDOW_H

@@ -13,7 +13,7 @@ class CollisionSystem : public System
 public:
     CollisionSystem() = default;
 
-    void checkCollision();
+    void tick() override;
     Entity checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection);
 
 

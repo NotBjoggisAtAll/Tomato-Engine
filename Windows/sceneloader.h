@@ -18,7 +18,7 @@ public:
     ~SceneLoader();
 
 signals:
-    void sendJsonPath(QString);
+    void onLoad(QString);
 
 private slots:
     void on_buttonBox_accepted();

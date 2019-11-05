@@ -1,24 +1,9 @@
 #include "renderwindow.h"
-#include <QTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLDebugLogger>
-#include <QKeyEvent>
-#include <QStatusBar>
-#include <chrono>
 
 #include "mainwindow.h"
-
-#include "colorshader.h"
-#include "textureshader.h"
-#include "phongshader.h"
-
-#include "Systems/rendersystem.h"
-#include "Systems/soundsystem.h"
-#include "Systems/movementsystem.h"
-#include "Systems/collisionsystem.h"
-#include "Systems/scriptsystem.h"
-#include "Systems/bsplinesystem.h"
 
 #include "Managers/entitymanager.h"
 #include "Managers/shadermanager.h"
@@ -29,27 +14,36 @@
 
 #include <QJsonDocument>
 #include "jsonscene.h"
-#include "Systems/scenesystem.h"
 #include "constants.h"
 
-RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
-    : mContext(nullptr), mInitialized(false), mMainWindow(mainWindow)
+#include "Systems/rendersystem.h"
+
+RenderWindow::RenderWindow(MainWindow *mainWindow)
+    : context_(nullptr), initialized_(false), mMainWindow(mainWindow)
 {
+    QSurfaceFormat format;
+
+    format.setVersion(4, 1);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+    format.setOption(QSurfaceFormat::DebugContext);
+    format.setDepthBufferSize(24);
+    format.setSamples(8);
+    format.setSwapInterval(0); //Turn off VSync
+
     //This is sent to QWindow:
     setSurfaceType(QWindow::OpenGLSurface);
     setFormat(format);
     //Make the OpenGL context
-    mContext = new QOpenGLContext(this);
+    context_ = new QOpenGLContext(this);
     //Give the context the wanted OpenGL format (v4.1 Core)
-    mContext->setFormat(requestedFormat());
-    if (!mContext->create()) {
-        delete mContext;
-        mContext = nullptr;
+    context_->setFormat(requestedFormat());
+    if (!context_->create()) {
+        delete context_;
+        context_ = nullptr;
         qDebug() << "Context could not be made - quitting this application";
     }
 
-    //Make the gameloop timer:
-    mRenderTimer = new QTimer(this);
 }
 
 RenderWindow::~RenderWindow()
@@ -59,21 +53,12 @@ RenderWindow::~RenderWindow()
 
 void RenderWindow::init()
 {
-    //Connect the gameloop timer to the render function:
-    connect(mRenderTimer, SIGNAL(timeout()), this, SLOT(render()));
-    connect(mMainWindow, &MainWindow::spawnObject, this, &RenderWindow::spawnObject);
-    connect(mMainWindow, &MainWindow::playGame_signal, this, &RenderWindow::playGame);
-    connect(mMainWindow, &MainWindow::stopGame_signal, this, &RenderWindow::stopGame);
-    connect(mMainWindow, &MainWindow::createEntity, this, &RenderWindow::createEntity);
-
-    //********************** General OpenGL stuff **********************
-
-    if (!mContext->makeCurrent(this)) {
+    if (!context_->makeCurrent(this)) {
         qDebug() << "makeCurrent() failed";
         return;
     }
-    if (!mInitialized)
-        mInitialized = true;
+    if (!initialized_)
+        initialized_ = true;
 
     initializeOpenGLFunctions();
 
@@ -89,250 +74,38 @@ void RenderWindow::init()
 
     //**********************  Texture stuff: **********************
 
-    mTexture[0] = new Texture("white.bmp");
-    mTexture[1] = new Texture("hund.bmp", 1);
-    mTexture[2] = new Texture("skybox.bmp", 2);
+    texture_[0] = new Texture("white.bmp");
+    texture_[1] = new Texture("hund.bmp", 1);
+    texture_[2] = new Texture("skybox.bmp", 2);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTexture[0]->id());
+    glBindTexture(GL_TEXTURE_2D, texture_[0]->id());
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, mTexture[1]->id());
+    glBindTexture(GL_TEXTURE_2D, texture_[1]->id());
     glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
+    glBindTexture(GL_TEXTURE_2D, texture_[2]->id());
 
-    //********************** Creating Systems *********************
-
-    world = getWorld();
-
-    resourceFactory = ResourceFactory::get();
-
-    world->registerComponent<Transform>();
-    world->registerComponent<Mesh>();
-    world->registerComponent<Material>();
-    world->registerComponent<Sound>();
-    world->registerComponent<EntityData>();
-    world->registerComponent<Light>();
-    world->registerComponent<Collision>();
-    world->registerComponent<Script>();
-    world->registerComponent<BSpline>();
-
-    mRenderSystem = world->registerSystem<RenderSystem>();
-    mSoundSystem = world->registerSystem<SoundSystem>();
-    mMovementSystem = world->registerSystem<MovementSystem>();
-    mCollisionSystem = world->registerSystem<CollisionSystem>();
-    mSceneSystem = world->registerSystem<SceneSystem>();
-    scriptSystem_ = world->registerSystem<ScriptSystem>();
-    bsplineSystem_ = world->registerSystem<BSplineSystem>();
-
-    // Setter opp hvilke komponenter de ulike systemene trenger
-    Signature renderSign;
-    renderSign.set(world->getComponentType<Transform>());
-    renderSign.set(world->getComponentType<Mesh>());
-    renderSign.set(world->getComponentType<Material>());
-    world->setSystemSignature<RenderSystem>(renderSign);
-
-    Signature soundSign;
-    soundSign.set(world->getComponentType<Transform>());
-    soundSign.set(world->getComponentType<Sound>());
-    world->setSystemSignature<SoundSystem>(soundSign);
-
-    Signature movementSign;
-    movementSign.set(world->getComponentType<Transform>());
-    movementSign.set(world->getComponentType<EntityData>());
-    movementSign.set(world->getComponentType<Collision>());
-    world->setSystemSignature<MovementSystem>(movementSign);
-
-    Signature collisionSign;
-    collisionSign.set(world->getComponentType<Collision>());
-    collisionSign.set(world->getComponentType<EntityData>());
-    collisionSign.set(world->getComponentType<Transform>());
-    world->setSystemSignature<CollisionSystem>(collisionSign);
-
-    Signature scriptSign;
-    scriptSign.set(world->getComponentType<Script>());
-    world->setSystemSignature<ScriptSystem>(scriptSign);
-
-    Signature bsplineSign;
-    bsplineSign.set(world->getComponentType<BSpline>());
-    bsplineSign.set(world->getComponentType<Mesh>());
-    world->setSystemSignature<BSplineSystem>(bsplineSign);
-
-
-    //********************** Making the objects to be drawn **********************
-
-    Entity entity = world->createEntity();
-
-    world->addComponent(entity, EntityData("Sound Source"));
-    world->addComponent(entity, Transform());
-    world->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
-
-    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
-    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
-
-    entity = world->createEntity();
-    world->addComponent(entity, EntityData("Light Source"));
-    world->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
-    world->addComponent(entity, Light());
-    world->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    world->addComponent(entity, resourceFactory->loadMesh("box2.txt"));
-    world->addComponent(entity, Script("testScript.js"));
-    scriptSystem_->componentAdded(world->getComponent<Script>(entity).value());
-
-    ShaderManager::instance()->phongShader()->setLight(entity);
-
-    //********************** Set up camera **********************
-    mEditorCamera = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-
-    mGameCamera = new Camera(gsl::Vector3D(0));
-
-    updateCamera(mEditorCamera);
-
-    //********************** System stuff **********************
-
-
-
-    BSpline spline = BSpline(.05f);
-
-    spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
-
-    entity = getWorld()->createEntity();
-
-    getWorld()->addComponent(entity, spline);
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, resourceFactory->createLines(spline.curve_.getVerticesAndIndices()));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    getWorld()->addComponent(entity, EntityData("BSpline"));
-    mMainWindow->DisplayEntitiesInOutliner();
+    emit initDone();
 }
 
-void RenderWindow::render()
+void RenderWindow::tick()
 {
-    handleInput();
-    if(getWorld()->bGameRunning)
-        scriptSystem_->tick();
-
-   // auto trans = getWorld()->getComponent<Transform>(1).value_or(nullptr);
-    bsplineSystem_->tick();
-
-    mCurrentCamera->update();
-
-    mTimeStart.restart(); //restart FPS clock
-    mContext->makeCurrent(this); //must be called every frame (every time mContext->swapBuffers is called)
-
-    //to clear the screen for each redraw
+    context_->makeCurrent(this);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-    mCollisionSystem->checkCollision();
-    mSoundSystem->tick();
-    mRenderSystem->tick();
-
-
-
-    calculateFramerate();
-    mContext->swapBuffers(this);
-}
-
-void RenderWindow::recieveJsonPath(QString JsonPath)
-{
-    fileToLoad_ = JsonPath;
-    mSceneSystem->loadScene(fileToLoad_);
-    mMainWindow->DisplayEntitiesInOutliner();
-}
-
-void RenderWindow::setCameraSpeed(float value)
-{
-    mCameraSpeed += value;
-
-    //Keep within min and max values
-    if(mCameraSpeed < 0.01f)
-        mCameraSpeed = 0.01f;
-    if (mCameraSpeed > 0.3f)
-        mCameraSpeed = 0.3f;
-}
-
-void RenderWindow::spawnObject(std::string name, std::string path)
-{
-    if(name == "BSpline")
-    {
-        Entity entity = getWorld()->createEntity();
-        BSpline spline;
-
-        getWorld()->addComponent(entity, spline);
-        getWorld()->addComponent(entity, Transform());
-        getWorld()->addComponent(entity, resourceFactory->createLines(spline.curve_.getVerticesAndIndices()));
-        getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-        getWorld()->addComponent(entity, EntityData("BSpline"));
-        mMainWindow->addEntityToUi(entity);
-        return;
-    }
-    Entity  entity = world->createEntity();
-
-    world->addComponent(entity, EntityData(name));
-    world->addComponent(entity, resourceFactory->loadMesh(path));
-    world->addComponent(entity,Transform());
-    world->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    world->addComponent(entity, resourceFactory->getCollision(path));
-
-    mMainWindow->addEntityToUi(entity);
+    getWorld()->getSystem<RenderSystem>()->tick();
+    context_->swapBuffers(this);
 }
 
 void RenderWindow::updateCamera(Camera *newCamera)
 {
-    mCurrentCamera = newCamera;
-
     //new system - shader sends uniforms so needs to get the view and projection matrixes from camera
     for(auto& Shader : ShaderManager::instance()->mShaders){
-        Shader.second->setCurrentCamera(mCurrentCamera);
+        Shader.second->setCurrentCamera(newCamera);
     }
 
     getWorld()->setCurrentCamera(newCamera);
 }
 
-void RenderWindow::playGame()
-{
-
-    mSceneSystem->beginPlay();
-    updateCamera(mGameCamera);
-    scriptSystem_->beginPlay();
-}
-
-void RenderWindow::stopGame()
-{
-    mSceneSystem->endPlay();
-    updateCamera(mEditorCamera);
-}
-
-void RenderWindow::raycastFromMouse(QMouseEvent* event)
-{
-
-    float x = (2.0f * event->pos().x()) / width() - 1.0f;
-    float y = 1.0f - (2.0f * event->pos().y()) / height();
-    float z = 1.0f;
-    gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
-    gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
-    gsl::Matrix4x4 projection_matrix = mCurrentCamera->projectionMatrix_;
-    projection_matrix.inverse();
-    gsl::Vector4D ray_eye = projection_matrix * ray_clip;
-    ray_eye.z = -1.0f;
-    ray_eye.w = 0.0f;
-    gsl::Matrix4x4 view_matrix = mCurrentCamera->viewMatrix_;
-    view_matrix.inverse();
-    gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
-    ray_world.normalize();
-
-    Entity entityPicked = mCollisionSystem->checkMouseCollision(mCurrentCamera->position(),ray_world);
-
-    mMainWindow->updateRightPanel(entityPicked);
-
-    //Move this to another place
-    updateCollisionOutline(entityPicked);
-
-}
 void RenderWindow::updateCollisionOutline(Entity newEntity){
 
     if(lastEntityCollision != -1)
@@ -395,7 +168,7 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
     Entity entity = getWorld()->createEntity();
 
     getWorld()->addComponent(entity, Transform(transform->position_));
-    getWorld()->addComponent(entity, resourceFactory->createLines(vertices,indices));
+    getWorld()->addComponent(entity, ResourceFactory::get()->createLines(vertices,indices));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, EntityData("Collision"));
     EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();
@@ -418,209 +191,6 @@ void RenderWindow::updateCollisionOutline(Entity newEntity){
 //    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
 //    mVisualObjects.push_back(temp);
 
-void RenderWindow::handleInput()
-{
-    //Camera
-    mCurrentCamera->moveForward(0.f);  //cancel last frame movement
-    if(mInput.RMB)
-    {
-        if(mInput.W)
-            mCurrentCamera->moveForward(-mCameraSpeed);
-        if(mInput.S)
-            mCurrentCamera->moveForward(mCameraSpeed);
-        if(mInput.D)
-            mCurrentCamera->moveRight(mCameraSpeed);
-        if(mInput.A)
-            mCurrentCamera->moveRight(-mCameraSpeed);
-        if(mInput.Q)
-            mCurrentCamera->moveUp(-mCameraSpeed);
-        if(mInput.E)
-            mCurrentCamera->moveUp(mCameraSpeed);
-    }
-    else
-    {
-        //        if(mInput.W)
-        //            mLight->mMatrix.translateZ(-mCameraSpeed);
-        //        if(mInput.S)
-        //            mLight->mMatrix.translateZ(mCameraSpeed);
-        //        if(mInput.D)
-        //            mLight->mMatrix.translateX(mCameraSpeed);
-        //        if(mInput.A)
-        //            mLight->mMatrix.translateX(-mCameraSpeed);
-        //        if(mInput.Q)
-        //            mLight->mMatrix.translateY(mCameraSpeed);
-        //        if(mInput.E)
-        //            mLight->mMatrix.translateY(-mCameraSpeed);
-    }
-}
-
-void RenderWindow::keyPressEvent(QKeyEvent *event)
-{
-    //    You get the keyboard input like this
-    if(event->key() == Qt::Key_W)
-    {
-        mInput.W = true;
-    }
-    if(event->key() == Qt::Key_S)
-    {
-        mInput.S = true;
-    }
-    if(event->key() == Qt::Key_D)
-    {
-        mInput.D = true;
-    }
-    if(event->key() == Qt::Key_A)
-    {
-        mInput.A = true;
-    }
-    if(event->key() == Qt::Key_Q)
-    {
-        mInput.Q = true;
-    }
-    if(event->key() == Qt::Key_E)
-    {
-        mInput.E = true;
-    }
-    if(event->key() == Qt::Key_Z)
-    {
-    }
-    if(event->key() == Qt::Key_X)
-    {
-    }
-    if(event->key() == Qt::Key_Up)
-    {
-        mInput.UP = true;
-    }
-    if(event->key() == Qt::Key_Down)
-    {
-        mInput.DOWN = true;
-    }
-    if(event->key() == Qt::Key_Left)
-    {
-        mInput.LEFT = true;
-    }
-    if(event->key() == Qt::Key_Right)
-    {
-        mInput.RIGHT = true;
-    }
-    if(event->key() == Qt::Key_U)
-    {
-    }
-    if(event->key() == Qt::Key_O)
-    {
-    }
-}
-
-void RenderWindow::keyReleaseEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_W)
-    {
-        mInput.W = false;
-    }
-    if(event->key() == Qt::Key_S)
-    {
-        mInput.S = false;
-    }
-    if(event->key() == Qt::Key_D)
-    {
-        mInput.D = false;
-    }
-    if(event->key() == Qt::Key_A)
-    {
-        mInput.A = false;
-    }
-    if(event->key() == Qt::Key_Q)
-    {
-        mInput.Q = false;
-    }
-    if(event->key() == Qt::Key_E)
-    {
-        mInput.E = false;
-    }
-    if(event->key() == Qt::Key_Z)
-    {
-    }
-    if(event->key() == Qt::Key_X)
-    {
-    }
-    if(event->key() == Qt::Key_Up)
-    {
-        mInput.UP = false;
-    }
-    if(event->key() == Qt::Key_Down)
-    {
-        mInput.DOWN = false;
-    }
-    if(event->key() == Qt::Key_Left)
-    {
-        mInput.LEFT = false;
-    }
-    if(event->key() == Qt::Key_Right)
-    {
-        mInput.RIGHT = false;
-    }
-    if(event->key() == Qt::Key_U)
-    {
-    }
-    if(event->key() == Qt::Key_O)
-    {
-    }
-}
-
-void RenderWindow::mousePressEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::RightButton)
-        mInput.RMB = true;
-    if (event->button() == Qt::LeftButton)
-    {
-        mInput.LMB = true;
-        raycastFromMouse(event);
-    }
-    if (event->button() == Qt::MiddleButton)
-        mInput.MMB = true;
-}
-
-void RenderWindow::mouseReleaseEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::RightButton)
-        mInput.RMB = false;
-    if (event->button() == Qt::LeftButton)
-        mInput.LMB = false;
-    if (event->button() == Qt::MiddleButton)
-        mInput.MMB = false;
-}
-
-void RenderWindow::wheelEvent(QWheelEvent *event)
-{
-    QPoint numDegrees = event->angleDelta() / 8;
-
-    //if RMB, change the speed of the camera
-    if (mInput.RMB)
-    {
-        if (numDegrees.y() < 1)
-            setCameraSpeed(0.001f);
-        if (numDegrees.y() > 1)
-            setCameraSpeed(-0.001f);
-    }
-    event->accept();
-}
-
-void RenderWindow::mouseMoveEvent(QMouseEvent *event)
-{
-    if (mInput.RMB)
-    {
-        //Using mMouseXYlast as deltaXY so we don't need extra variables
-        mMouseXlast = event->pos().x() - mMouseXlast;
-        mMouseYlast = event->pos().y() - mMouseYlast;
-
-        if (mMouseXlast != 0)
-            mCurrentCamera->yaw(mCameraRotateSpeed * mMouseXlast);
-        if (mMouseYlast != 0)
-            mCurrentCamera->pitch(mCameraRotateSpeed * mMouseYlast);
-    }
-    mMouseXlast = event->pos().x();
-    mMouseYlast = event->pos().y();
-}
 // The stuff below this line should be somewhere else in the future.
 
 //Simple way to turn on/off wireframe mode
@@ -645,24 +215,7 @@ void RenderWindow::toggleWireframe()
 //and check the time right after it is finished (done in the render function)
 //This will approximate what framerate we COULD have.
 //The actual frame rate on your monitor is limited by the vsync and is probably 60Hz
-void RenderWindow::calculateFramerate()
-{
-    long long nsecElapsed = mTimeStart.nsecsElapsed();
-    static int frameCount{0};                       //counting actual frames for a quick "timer" for the statusbar
 
-    if (mMainWindow)    //if no mainWindow, something is really wrong...
-    {
-        ++frameCount;
-        if (frameCount > 30) //once pr 30 frames = update the message twice pr second (on a 60Hz monitor)
-        {
-            //showing some statistics in status bar
-            mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
-                                                  QString::number(nsecElapsed/1000000., 'g', 4) + " ms  |  " +
-                                                  "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
-            frameCount = 0;     //reset to show a new message in 60
-        }
-    }
-}
 
 /// Uses QOpenGLDebugLogger if this is present
 /// Reverts to glGetError() if not
@@ -713,38 +266,15 @@ void RenderWindow::startOpenGLDebugger()
 void RenderWindow::exposeEvent(QExposeEvent *)
 {
 
-    if (!mInitialized)
+    if (!initialized_)
         init();
 
     //This is just to support modern screens with "double" pixels
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
 
-    //If the window actually is exposed to the screen we start the main loop
-    //isExposed() is a function in QWindow
-    if (isExposed())
-    {
-        //This timer runs the actual MainLoop
-        //16 means 16ms = 60 Frames pr second (should be 16.6666666 to be exact..)
-        mRenderTimer->start(1);
-        mTimeStart.start();
-    }
-    mAspectratio = static_cast<float>(width()) / height();
-    //    qDebug() << mAspectratio;
-    mCurrentCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
-    mEditorCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
-    mGameCamera->projectionMatrix_.perspective(45.f, mAspectratio, 0.1f, 1000.f);
+    emit updateCameraPerspectives(static_cast<float>(width()) / height());
+
     //    qDebug() << mCamera.mProjectionMatrix;
 }
 
-Entity RenderWindow::createEntity()
-{
-    Entity entity = world->createEntity();
-    world->addComponent(entity, EntityData("Empty Entity"));
-    return entity;
-}
-
-void RenderWindow::newScene(QString sceneName)
-{
-    mSceneSystem->saveScene(sceneName);
-}

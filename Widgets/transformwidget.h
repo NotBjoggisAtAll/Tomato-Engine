@@ -4,8 +4,9 @@
 #include <QWidget>
 #include "types.h"
 #include <memory>
+
 class Transform;
-class MovementSystem;
+
 namespace Ui {
 class TransformWidget;
 }
@@ -15,7 +16,7 @@ class TransformWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit TransformWidget(Entity entityIn, std::shared_ptr<MovementSystem> system, QWidget *parent = nullptr);
+    explicit TransformWidget(Entity entityIn, QWidget *parent = nullptr);
     ~TransformWidget();
 
 private slots:
@@ -40,8 +41,6 @@ private slots:
 
 private:
     Ui::TransformWidget *ui;
-
-    std::shared_ptr<MovementSystem> movementSystem;
     Entity entity;
     Transform* Component {nullptr};
 

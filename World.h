@@ -107,6 +107,12 @@ public:
     }
 
     template<typename T>
+    std::shared_ptr<T> getSystem()
+    {
+        return mSystemManager->getSystem<T>();
+    }
+
+    template<typename T>
     void setSystemSignature(Signature signature)
     {
         mSystemManager->setSignature<T>(signature);

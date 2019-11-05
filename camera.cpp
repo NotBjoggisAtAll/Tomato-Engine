@@ -7,14 +7,14 @@ Camera::Camera(gsl::Vector3D position) : position_(position){}
 void Camera::pitch(float degrees)
 {
     //  rotate around mRight
-    pitch_ -= degrees;
+    pitch_ -= degrees * rotateSpeed_;
     updateForwardVector();
 }
 
 void Camera::yaw(float degrees)
 {
     // rotate around mUp
-    yaw_ -= degrees;
+    yaw_ -= degrees * rotateSpeed_;
     updateForwardVector();
 }
 
@@ -90,6 +90,22 @@ gsl::Vector3D Camera::up() const
 gsl::Vector3D Camera::forward() const
 {
     return forward_;
+}
+
+void Camera::setSpeed(float value)
+{
+    speed_ += value;
+
+    //Keep within min and max values
+    if(speed_ < 0.01f)
+        speed_ = 0.01f;
+    if (speed_ > 0.3f)
+        speed_ = 0.3f;
+}
+
+float Camera::getSpeed() const
+{
+    return speed_;
 }
 
 

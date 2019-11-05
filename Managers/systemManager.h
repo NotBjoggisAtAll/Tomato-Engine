@@ -25,6 +25,16 @@ public:
     }
 
     template<typename T>
+    std::shared_ptr<T> getSystem()
+    {
+        std::string typeName = typeid(T).name();
+
+        assert(mSystems.find(typeName) != mSystems.end() && std::string("System " + typeName + " doesnt exist.").c_str());
+
+        return std::static_pointer_cast<T>(mSystems[typeName]);
+    }
+
+    template<typename T>
     void setSignature(Signature signature)
     {
         std::string typeName = typeid(T).name();

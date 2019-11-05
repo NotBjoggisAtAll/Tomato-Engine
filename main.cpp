@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "mainwindow.h"
+#include "app.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     //Makes the Qt MainWindow and shows it.
 
-    MainWindow w;
+    App app;
 
     return a.exec();
 }

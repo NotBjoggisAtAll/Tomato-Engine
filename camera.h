@@ -28,6 +28,8 @@ public:
     gsl::Matrix4x4 projectionMatrix_;
     QJsonObject toJson();
 
+    void setSpeed(float value);
+    float getSpeed() const;
 private:
     void updateRightVector();
     void updateForwardVector();
@@ -40,7 +42,8 @@ private:
     float pitch_{0.f};
     float yaw_{0.f};
 
-    float speed_{0.f}; //camera will move by this speed along the mForward vector
+    float speed_{0.01f}; //camera will move by this speed along the mForward vector
+    float rotateSpeed_{0.1f};
 };
 
 #endif // CAMERA_H

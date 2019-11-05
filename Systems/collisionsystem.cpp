@@ -5,7 +5,7 @@
 #include "Components/entitydata.h"
 #include "GSL/matrix4x4.h"
 
-void CollisionSystem::checkCollision()
+void CollisionSystem::tick()
 {
     for (auto const& entity : entities_)
     {

@@ -1,8 +1,5 @@
 #include "shadermanager.h"
 
-#include "colorshader.h"
-#include "textureshader.h"
-#include "phongshader.h"
 ShaderManager* ShaderManager::m_Instance = nullptr;
 
 ShaderManager* ShaderManager::instance()

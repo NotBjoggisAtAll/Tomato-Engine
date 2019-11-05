@@ -1,7 +1,7 @@
 #include "jsonscene.h"
 #include <QFile>
 #include <QJsonDocument>
-#include "world.h"
+#include "World.h"
 #include "Components/allcomponents.h"
 #include "camera.h"
 #include "constants.h"

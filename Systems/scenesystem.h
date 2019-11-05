@@ -14,6 +14,7 @@ public:
     void tick() override;
     void endPlay() override;
 
+    void clearScene();
     void loadScene(QString sceneName);
     void saveScene(QString sceneName);
 
@@ -21,7 +22,6 @@ private:
 
     QString currentScene_ = "";
 
-    void clearScene();
 };
 
 #endif // SCENESYSTEM_H

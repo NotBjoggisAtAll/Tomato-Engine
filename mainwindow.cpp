@@ -30,43 +30,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 
-    show();
-    sceneLoader_ = new SceneLoader();
-    sceneLoader_->show();
-    makeRenderWindow();
-    connect(sceneLoader_, &SceneLoader::sendJsonPath, mRenderWindow, &RenderWindow::recieveJsonPath);
-
-}
-
-void MainWindow::makeRenderWindow()
-{
-    QSurfaceFormat format;
-
-    format.setVersion(4, 1);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setRenderableType(QSurfaceFormat::OpenGL);
-    format.setOption(QSurfaceFormat::DebugContext);
-    format.setDepthBufferSize(24);
-    format.setSamples(8);
-    format.setSwapInterval(0); //Turn off VSync
-
-    mRenderWindow = new RenderWindow(format, this);
-    if (!mRenderWindow->context()) {
-        qDebug() << "Failed to create context. Can not continue. Quits application!";
-        delete mRenderWindow;
-        return;
-    }
-
-    mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
+    renderWindow_ = std::make_shared<RenderWindow>(this);
+    mRenderWindowContainer = QWidget::createWindowContainer(renderWindow_.get());
     ui->OpenGLLayout->addWidget(mRenderWindowContainer);
-
     mRenderWindowContainer->setFocus();
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete mRenderWindow;
     delete ui;
 }
 
@@ -97,9 +69,17 @@ void MainWindow::addEntityToUi(Entity entity)
     ui->Outliner->addTopLevelItem(item);
 }
 
+void MainWindow::updateStatusbar(float timePerFrame, float frameCounter)
+{
+    statusBar()->showMessage(" | Time pr FrameDraw: "
+                                 + QString::number(static_cast<double>(timePerFrame), 'g', 4)
+                                 + " s  |  " + "FPS: "
+                                 + QString::number(static_cast<double>(frameCounter), 'g', 4));
+}
+
 void MainWindow::on_actionToggle_Wireframe_triggered()
 {
-    mRenderWindow->toggleWireframe();
+    renderWindow_->toggleWireframe();
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -144,7 +124,7 @@ void MainWindow::updateRightPanel(Entity entity)
 
     Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
     if(transform)
-        layout->addWidget(new TransformWidget(entity, mRenderWindow->mMovementSystem));
+        layout->addWidget(new TransformWidget(entity));
 
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value_or(nullptr);
     if(mesh)
@@ -167,17 +147,23 @@ void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 
 void MainWindow::on_spawnCube_triggered()
 {
-    emit spawnObject("Cube","box2.txt");
+    Entity entity = emit spawnObject("Cube","box2.txt");
+    addEntityToUi(entity);
+
 }
 
 void MainWindow::on_spawnSphere_triggered()
 {
-    emit spawnObject("Sphere","sphere");
+    Entity entity = emit spawnObject("Sphere","sphere");
+    addEntityToUi(entity);
+
 }
 
 void MainWindow::on_spawnPlane_triggered()
 {
-    emit spawnObject("Plane","plane");
+    Entity entity = emit spawnObject("Plane","plane");
+    addEntityToUi(entity);
+
 }
 
 void MainWindow::on_actionEmpty_Entity_triggered()
@@ -275,19 +261,20 @@ void MainWindow::stopGame()
 
 void MainWindow::on_sceneOpen_triggered()
 {
-    sceneLoader_ = new SceneLoader();
-    sceneLoader_->show();
-    connect(sceneLoader_, &SceneLoader::sendJsonPath, mRenderWindow, &RenderWindow::recieveJsonPath);
+    emit loadScene();
 }
 
 void MainWindow::on_sceneCreateNew_triggered()
 {
-    sceneSaver_ = new SceneSaver();
-    sceneSaver_->show();
-    connect(sceneSaver_, &SceneSaver::onSave, mRenderWindow, &RenderWindow::newScene);
+   emit newScene();
 }
 
 void MainWindow::on_createBSpline_triggered()
 {
    emit spawnObject("BSpline", "BSpline");
+}
+
+void MainWindow::on_sceneSave_triggered()
+{
+    emit saveScene();
 }

@@ -5,11 +5,11 @@
 #include <string>
 #include <unordered_map>
 
-class TextureShader;
-class Shader;
-class PhongShader;
-class ColorShader;
+#include "colorshader.h"
+#include "textureshader.h"
+#include "phongshader.h"
 
+class TextureShader;
 
 class ShaderManager
 {

@@ -4,14 +4,9 @@
 #include "Components/transform.h"
 #include "Systems/movementsystem.h"
 
-/// Trenger egentlig ikke tilgang til transformcomponenten. Kan få denne gjennom movement systemet!!
-///
-///
-///
-TransformWidget::TransformWidget(Entity entityIn, std::shared_ptr<MovementSystem> system, QWidget *parent) :
+TransformWidget::TransformWidget(Entity entityIn, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TransformWidget),
-    movementSystem(system),
     entity(entityIn)
 {
     ui->setupUi(this);
@@ -77,7 +72,7 @@ void TransformWidget::on_xPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        movementSystem->addPosition(entity, {static_cast<float>(arg1 - p.x),0,0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {static_cast<float>(arg1 - p.x),0,0});
     }
 }
 
@@ -86,7 +81,7 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        movementSystem->addPosition(entity, {0,static_cast<float>(arg1 - p.y),0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,static_cast<float>(arg1 - p.y),0});
     }
 }
 
@@ -95,7 +90,7 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        movementSystem->addPosition(entity, {0,0,static_cast<float>(arg1 - p.z)});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,0,static_cast<float>(arg1 - p.z)});
     }
 }
 
@@ -120,17 +115,17 @@ void TransformWidget::on_zRotation_valueChanged(double arg1)
 void TransformWidget::on_xScale_valueChanged(double arg1)
 {
     auto& s = Component->scale_;
-    movementSystem->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
+    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
 }
 
 void TransformWidget::on_yScale_valueChanged(double arg1)
 {
     auto& s = Component->scale_;
-    movementSystem->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
+    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
 }
 
 void TransformWidget::on_zScale_valueChanged(double arg1)
 {
     auto& s = Component->scale_;
-    movementSystem->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
+    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
 }

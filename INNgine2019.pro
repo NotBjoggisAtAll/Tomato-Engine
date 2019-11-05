@@ -54,11 +54,13 @@ HEADERS += \
     Windows/sceneloader.h \
     Windows/scenesaver.h \
     Windows/vector3dpicker.h \
+    app.h \
     bsplinecurve.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
     Systems/rendersystem.h \
+    eventhandler.h \
     jsonscene.h \
     renderwindow.h \
     resourcefactory.h \
@@ -75,7 +77,6 @@ HEADERS += \
     octahedronball.h \
     camera.h \
     gltypes.h \
-    input.h \
     colorshader.h \
     textureshader.h \
     phongshader.h \
@@ -118,7 +119,9 @@ SOURCES += main.cpp \
     Windows/sceneloader.cpp \
     Windows/scenesaver.cpp \
     Windows/vector3dpicker.cpp \
+    app.cpp \
     bsplinecurve.cpp \
+    eventhandler.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \
