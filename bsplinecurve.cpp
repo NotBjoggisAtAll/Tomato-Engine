@@ -3,25 +3,9 @@
 
 BSplineCurve::BSplineCurve(float speed, unsigned int degree) : speed_(speed), degree_(degree){}
 
-gsl::Vector3D BSplineCurve::curvePosition()
+gsl::Vector3D BSplineCurve::curvePosition(float t)
 {
-
-    if(currentT_<0.01f)
-    {
-        bIncrementT = true;
-        randomizeControlpoints();
-    }
-    if(currentT_>1)
-    {
-        bIncrementT = false;
-        randomizeControlpoints();
-    }
-    if (bIncrementT)
-        currentT_+=speed_/60;
-    else
-        currentT_-=speed_/60;
-
-    return evaluateBSpline(findKnotInterval(currentT_),currentT_);
+    return evaluateBSpline(findKnotInterval(t),t);
 }
 
 std::pair<std::vector<Vertex>,std::vector<unsigned int>> BSplineCurve::getVerticesAndIndices()
@@ -138,6 +122,14 @@ unsigned int BSplineCurve::findKnotInterval(float positionOnBSpline)
 void BSplineCurve::addControlPoint(gsl::Vector3D controlPoint)
 {
     controlPoints_.push_back(controlPoint);
+    createKnots();
+    bPathChanged = true;
+}
+
+void BSplineCurve::removeControlPoint(unsigned int index)
+{
+    if(!(index < controlPoints_.size())) return;
+    controlPoints_.erase(controlPoints_.begin() + index);
     createKnots();
     bPathChanged = true;
 }

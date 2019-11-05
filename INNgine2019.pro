@@ -45,6 +45,7 @@ HEADERS += \
     Systems/bsplinesystem.h \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
+    Systems/npcsystem.h \
     Systems/scenesystem.h \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
@@ -105,6 +106,7 @@ SOURCES += main.cpp \
     Systems/bsplinesystem.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
+    Systems/npcsystem.cpp \
     Systems/scenesystem.cpp \
     Systems/scriptsystem.cpp \
     Systems/system.cpp \

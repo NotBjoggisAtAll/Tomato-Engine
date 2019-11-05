@@ -39,9 +39,15 @@ public:
 
     /**
      * Removes a control point from the BSpline.
-     * @param controlPoint - gsl::Vector3D
+     * @param controlPoint - gsl::Vector3D.
      */
     void removeControlPoint(gsl::Vector3D controlPoint);
+
+    /**
+     * Removes a control point from the BSpline.
+     * @param index - unsigned int.
+     */
+    void removeControlPoint(unsigned int index);
 
     /**
      * Randomizes the order of the controlpoints.
@@ -51,10 +57,10 @@ public:
 
     /**
      * Calculates the next position on the BSpline.
-     * Each time the function is called the position on the BSpline increases with the speed value set when creating this object.
+     * Based on t. A value between 0 and 1.
      * @return gsl::Vector3D with the next position on the BSpline.
      */
-    gsl::Vector3D curvePosition();
+    gsl::Vector3D curvePosition(float t);
 
     /**
      * Calculates vertices and indces based on the control points.
@@ -111,13 +117,6 @@ private:
      * @return unsigned int. Returns the index of the closest knot.
      */
     unsigned int findKnotInterval(float x);
-
-    /// Stores the current position on the BSpline (from 0 to 1)
-    float currentT_ = 0;
-
-    /// If true the currentT increments when curvePosition() is called.
-    /// Otherwise the currentT decrements.
-    bool bIncrementT = true;
 
     /// Is set to true when the path is changed.
     bool bPathChanged = false;

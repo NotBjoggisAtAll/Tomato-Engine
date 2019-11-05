@@ -25,7 +25,7 @@
 #include "Managers/soundmanager.h"
 #include "Components/allcomponents.h"
 #include "resourcefactory.h"
-#include "world.h"
+#include "World.h"
 
 #include <QJsonDocument>
 #include "jsonscene.h"
