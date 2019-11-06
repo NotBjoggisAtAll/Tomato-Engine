@@ -96,36 +96,55 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
 
 void TransformWidget::on_xRotation_valueChanged(double arg1)
 {
-    auto& r = Component->rotation_;
-    Component->rotation_ = {static_cast<float>(arg1), r.y, r.z};
+    if(initDone)
+    {
+        auto& r = Component->rotation_;
+        Component->rotation_ = {static_cast<float>(arg1), r.y, r.z};
+    }
 }
 
 void TransformWidget::on_yRotation_valueChanged(double arg1)
 {
-    auto& r = Component->rotation_;
-    Component->rotation_ = {r.x, static_cast<float>(arg1), r.z};
+    if(initDone)
+    {
+        auto& r = Component->rotation_;
+        Component->rotation_ = {r.x, static_cast<float>(arg1), r.z};
+    }
 }
 
 void TransformWidget::on_zRotation_valueChanged(double arg1)
 {
-    auto& r = Component->rotation_;
-    Component->rotation_ = {r.x, r.y, static_cast<float>(arg1)};
+    if(initDone)
+    {
+        auto& r = Component->rotation_;
+        Component->rotation_ = {r.x, r.y, static_cast<float>(arg1)};
+    }
 }
 
 void TransformWidget::on_xScale_valueChanged(double arg1)
 {
-    auto& s = Component->scale_;
-    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
+    if(initDone)
+    {
+        auto& s = Component->scale_;
+        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
+    }
 }
 
 void TransformWidget::on_yScale_valueChanged(double arg1)
 {
-    auto& s = Component->scale_;
-    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
+    if(initDone)
+    {
+
+        auto& s = Component->scale_;
+        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
+    }
 }
 
 void TransformWidget::on_zScale_valueChanged(double arg1)
 {
-    auto& s = Component->scale_;
-    getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
+    if(initDone)
+    {
+        auto& s = Component->scale_;
+        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
+    }
 }

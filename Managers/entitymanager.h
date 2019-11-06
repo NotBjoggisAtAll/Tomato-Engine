@@ -38,11 +38,13 @@ public:
         mSignatures.at(static_cast<unsigned int>(entity)).reset();
 
         auto entityIt = std::find(mEntities.begin(),mEntities.end(), entity);
-        mEntities.erase(entityIt);
+        if(entityIt != std::end(mEntities))
+        {
+            mEntities.erase(entityIt);
 
-        mUnusedEntityPool.push(entity);
-        --mLivingEntites;
-
+            mUnusedEntityPool.push(entity);
+            --mLivingEntites;
+        }
     }
 
     void setSignature(Entity entity, Signature signature)

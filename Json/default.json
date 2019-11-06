@@ -1,26 +1,15 @@
 {
-    "cameras": [
-        {
-            "position": [
-                1,
-                1,
-                4.400000095367432
-            ]
-        },
-        {
-            "position": [
-                0,
-                0,
-                0
-            ]
-        }
-    ],
+    "camera": {
+        "position": [
+            1,
+            1,
+            4.400000095367432
+        ]
+    },
     "entities": [
         {
             "components": {
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Axis",
                     "parent": -1
                 },
@@ -60,8 +49,6 @@
         {
             "components": {
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Skybox",
                     "parent": -1
                 },
@@ -104,8 +91,6 @@
                     "filepath": "box2.txt"
                 },
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Box",
                     "parent": -1
                 },
@@ -148,8 +133,6 @@
                     "filepath": "box2.txt"
                 },
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Box2",
                     "parent": -1
                 },
@@ -192,8 +175,6 @@
                     "filepath": "monkey.obj"
                 },
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Monkey",
                     "parent": -1
                 },
@@ -233,8 +214,6 @@
         {
             "components": {
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Sound Source",
                     "parent": -1
                 },
@@ -266,8 +245,6 @@
         {
             "components": {
                 "entitydata": {
-                    "children": [
-                    ],
                     "name": "Light Source",
                     "parent": -1
                 },

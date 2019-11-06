@@ -128,3 +128,11 @@ QJsonObject Camera::toJson()
     object.insert("position", position);
     return object;
 }
+
+void Camera::fromJson(QJsonObject Json)
+{
+    QJsonArray position = Json.take("position").toArray();
+    position_.x = static_cast<float>(position.at(0).toDouble());
+    position_.y = static_cast<float>(position.at(1).toDouble());
+    position_.z = static_cast<float>(position.at(2).toDouble());
+}

@@ -27,6 +27,7 @@ public:
     gsl::Matrix4x4 viewMatrix_;
     gsl::Matrix4x4 projectionMatrix_;
     QJsonObject toJson();
+    void fromJson(QJsonObject Json);
 
     void setSpeed(float value);
     float getSpeed() const;
