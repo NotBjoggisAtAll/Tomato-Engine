@@ -2,15 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Components/bspline.h"
 #include "types.h"
 #include <memory>
 
 class QWidget;
 class RenderWindow;
-class SceneLoader;
 class QTreeWidgetItem;
-class SceneSaver;
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayEntitiesInOutliner();
+    void displayEntitiesInOutliner();
 
     void updateRightPanel(Entity entity);
 
@@ -73,10 +70,9 @@ private slots:
 private:
 
     Ui::MainWindow *ui;
-    QWidget *mRenderWindowContainer = nullptr;
-    SceneLoader* sceneLoader_ = nullptr;
-    SceneSaver* sceneSaver_ = nullptr;
+    QWidget *renderWindowContainer_ = nullptr;
     void playGame();
+    void stopGame();
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};
@@ -85,7 +81,6 @@ private:
 
     void setupChildren(QTreeWidgetItem *parent);
     void updatePlayButtons();
-    void stopGame();
     void showPanels();
 };
 

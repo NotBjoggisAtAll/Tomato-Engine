@@ -1,20 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QSurfaceFormat>
 #include <QDesktopWidget>
-
 #include "Widgets/transformwidget.h"
 #include "Widgets/meshwidget.h"
 #include "Widgets/soundwidget.h"
 #include "Widgets/addcomponentwidget.h"
 #include "renderwindow.h"
-#include "Windows/sceneloader.h"
 #include "Components/allcomponents.h"
 #include "world.h"
 #include "constants.h"
-#include "Systems/scenesystem.h"
-#include "Windows/scenesaver.h"
 #include "Widgets/bsplinewidget.h"
 #include "Windows/vector3dpicker.h"
 
@@ -31,9 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 
     renderWindow_ = std::make_shared<RenderWindow>();
-    mRenderWindowContainer = QWidget::createWindowContainer(renderWindow_.get());
-    ui->OpenGLLayout->addWidget(mRenderWindowContainer);
-    mRenderWindowContainer->setFocus();
+    renderWindowContainer_ = QWidget::createWindowContainer(renderWindow_.get());
+    ui->OpenGLLayout->addWidget(renderWindowContainer_);
+    renderWindowContainer_->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -42,7 +37,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::DisplayEntitiesInOutliner()
+void MainWindow::displayEntitiesInOutliner()
 {
     ui->Outliner->clear();
     for(auto& entity : getWorld()->getEntities())

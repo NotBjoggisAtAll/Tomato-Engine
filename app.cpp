@@ -159,7 +159,7 @@ void App::postInit()
     getWorld()->addComponent(entity, Npc(&splineptr->curve_));
 
 
-    mainWindow_->DisplayEntitiesInOutliner();
+    mainWindow_->displayEntitiesInOutliner();
 
     //********************** Set up camera **********************
     editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
@@ -272,7 +272,7 @@ void App::handleInput()
 void App::loadScene(QString JsonPath)
 {
     getWorld()->getSystem<SceneSystem>()->loadScene(JsonPath);
-    mainWindow_->DisplayEntitiesInOutliner();
+    mainWindow_->displayEntitiesInOutliner();
 }
 
 void App::openSceneLoader()
