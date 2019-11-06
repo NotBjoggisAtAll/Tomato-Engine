@@ -3,7 +3,6 @@
 
 #include "material.h"
 #include "mesh.h"
-#include "physics.h"
 #include "script.h"
 #include "sound.h"
 #include "transform.h"

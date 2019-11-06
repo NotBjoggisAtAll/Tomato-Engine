@@ -19,13 +19,13 @@ HEADERS += \
     Components/allcomponents.h \
     Components/bspline.h \
     Components/collision.h \
+    Components/component.h \
     Components/componentArray.h \
     Components/entitydata.h \
     Components/light.h \
     Components/material.h \
     Components/mesh.h \
     Components/npc.h \
-    Components/physics.h \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
@@ -86,6 +86,7 @@ HEADERS += \
 SOURCES += main.cpp \
     Components/bspline.cpp \
     Components/collision.cpp \
+    Components/component.cpp \
     Components/entitydata.cpp \
     Components/light.cpp \
     Components/material.cpp \

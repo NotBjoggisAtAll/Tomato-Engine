@@ -2,28 +2,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-Light::Light(QJsonObject JSON)
+Light::Light(QJsonObject Json)
 {
-    QJsonObject ambientObject = JSON.take("ambient").toObject();
-
-    ambientStrength_ = static_cast<float>(ambientObject.take("strength").toDouble());
-    QJsonArray ambientColor = ambientObject.take("color").toArray();
-    ambientColor_.x = static_cast<float>(ambientColor.at(0).toDouble());
-    ambientColor_.y = static_cast<float>(ambientColor.at(1).toDouble());
-    ambientColor_.z = static_cast<float>(ambientColor.at(2).toDouble());
-
-    QJsonObject lightObject = JSON.take("light").toObject();
-
-    lightStrength_ = static_cast<float>(lightObject.take("strength").toDouble());
-    QJsonArray lightColor = lightObject.take("color").toArray();
-    lightColor_.x = static_cast<float>(lightColor.at(0).toDouble());
-    lightColor_.y = static_cast<float>(lightColor.at(1).toDouble());
-    lightColor_.z = static_cast<float>(lightColor.at(2).toDouble());
-
-    QJsonObject specularObject = JSON.take("specular").toObject();
-
-    specularStrength_ = static_cast<float>(specularObject.take("strength").toDouble());
-    specularExponent_ = specularObject.take("exponent").toInt();
+    fromJson(Json);
 }
 
 QJsonObject Light::toJson()
@@ -57,4 +38,29 @@ QJsonObject Light::toJson()
     object.insert("specular", specularObject);
 
     return object;
+}
+
+
+void Light::fromJson(QJsonObject Json)
+{
+    QJsonObject ambientObject = Json.take("ambient").toObject();
+
+    ambientStrength_ = static_cast<float>(ambientObject.take("strength").toDouble());
+    QJsonArray ambientColor = ambientObject.take("color").toArray();
+    ambientColor_.x = static_cast<float>(ambientColor.at(0).toDouble());
+    ambientColor_.y = static_cast<float>(ambientColor.at(1).toDouble());
+    ambientColor_.z = static_cast<float>(ambientColor.at(2).toDouble());
+
+    QJsonObject lightObject = Json.take("light").toObject();
+
+    lightStrength_ = static_cast<float>(lightObject.take("strength").toDouble());
+    QJsonArray lightColor = lightObject.take("color").toArray();
+    lightColor_.x = static_cast<float>(lightColor.at(0).toDouble());
+    lightColor_.y = static_cast<float>(lightColor.at(1).toDouble());
+    lightColor_.z = static_cast<float>(lightColor.at(2).toDouble());
+
+    QJsonObject specularObject = Json.take("specular").toObject();
+
+    specularStrength_ = static_cast<float>(specularObject.take("strength").toDouble());
+    specularExponent_ = specularObject.take("exponent").toInt();
 }

@@ -1,15 +1,14 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
+#include "component.h"
 #include "GSL/vector3d.h"
-
-class QJsonObject;
 
 /**
  * The Collision component contains information regarding the object's collision.
  * Contains a min and a max gsl::Vector3D for storing the size of the collision box.
  */
-struct Collision
+struct Collision : public Component
 {
     /**
       * Default Constructor.
@@ -35,7 +34,7 @@ struct Collision
      * The QJsonObject only contains the filepath to the Mesh.
      * @return Returns a QJsonObject
      */
-    QJsonObject toJSON();
+    QJsonObject toJson() override;
 
     /**
      * Takes in a QJsonObject
@@ -43,7 +42,7 @@ struct Collision
      * It uses the filepath to get the data from the ResourceFactory.
      * @param Json
      */
-    void fromJson(QJsonObject Json);
+    void fromJson(QJsonObject Json) override;
 
     ///Min vector
     gsl::Vector3D minVector_ = gsl::Vector3D(0);

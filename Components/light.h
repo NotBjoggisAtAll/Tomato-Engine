@@ -1,15 +1,15 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+#include "component.h"
 #include "gltypes.h"
 #include "GSL/vector3d.h"
 
-class QJsonObject;
-
-struct Light{
+struct Light : public Component
+{
 
     Light() = default;
-    Light(QJsonObject JSON);
+    Light(QJsonObject Json);
 
     GLfloat ambientStrength_{0.3f};
     gsl::Vector3D ambientColor_{0.3f, 0.3f, 0.3f};
@@ -20,6 +20,7 @@ struct Light{
     GLfloat specularStrength_{0.3f};
     GLint specularExponent_{4};
 
-    QJsonObject toJson();
+    QJsonObject toJson() override;
+    virtual void fromJson(QJsonObject Json) override;
 };
 #endif // LIGHT_H

@@ -1,16 +1,15 @@
 #ifndef MESHCOMPONENT_H
 #define MESHCOMPONENT_H
 
+#include "component.h"
 #include "gltypes.h"
 #include <string>
 
-class QJsonObject;
-
-struct Mesh
+struct Mesh : public Component
 {
 
     Mesh() = default;
-    Mesh(QJsonObject JSON);
+    Mesh(QJsonObject Json);
 
     GLuint VAO_{0};
     GLuint verticeCount_{0};
@@ -21,7 +20,8 @@ struct Mesh
 
     std::string filepath_ = "";
 
-    QJsonObject toJson();
+    QJsonObject toJson() override;
+    virtual void fromJson(QJsonObject Json) override;
 };
 
 #endif // MESHCOMPONENT_H

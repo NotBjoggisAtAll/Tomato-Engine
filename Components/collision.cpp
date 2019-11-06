@@ -9,7 +9,7 @@ Collision::Collision(QJsonObject Json)
     fromJson(Json);
 }
 
-QJsonObject Collision::toJSON()
+QJsonObject Collision::toJson()
 {
     QJsonObject object;
     object.insert("filepath", QString::fromStdString(filepath_));

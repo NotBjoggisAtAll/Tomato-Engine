@@ -1,14 +1,13 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
+#include "component.h"
 #include "GSL/vector3d.h"
-
-class QJsonObject;
 
 /**
  * The Transform component contains information regarding the Entity's position, rotation and scale.
  */
-struct Transform
+struct Transform : public Component
 {
     /**
       * Default Constructor.
@@ -47,7 +46,7 @@ struct Transform
      * Makes a QJsonObject containing the Transform data.
      * @return Returns a QJsonObject
      */
-    QJsonObject toJson();
+    QJsonObject toJson() override;
 
     /**
      * Takes in a QJsonObject.
@@ -55,7 +54,7 @@ struct Transform
      * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
      * @param Json - QJsonObject
      */
-    void fromJson(QJsonObject Json);
+    void fromJson(QJsonObject Json) override;
     ///Position.
     gsl::Vector3D position_ = {0,0,0};
     ///Rotation

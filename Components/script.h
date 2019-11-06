@@ -1,10 +1,11 @@
 #ifndef SCRIPTCOMPONENT_H
 #define SCRIPTCOMPONENT_H
 
+#include "component.h"
 #include <QJSEngine>
 #include <QString>
-#include <QJsonObject>
-struct Script
+
+struct Script : public Component
 {
     Script(QString fileName) : file_(fileName)
     {
@@ -17,13 +18,13 @@ struct Script
     {
         fromJson(Json);
     }
-    ~Script()
+    ~Script() override
     {
     }
     QString file_ = "";
     QJSEngine* engine_ = nullptr;
 
-    void fromJson(QJsonObject Json)
+    void fromJson(QJsonObject Json) override
     {
         if(engine_)
             delete engine_;
@@ -33,7 +34,7 @@ struct Script
         file_ = Json.take("file").toString();
     }
 
-    QJsonObject toJson()
+    QJsonObject toJson() override
     {
         QJsonObject object;
         object.insert("file", file_);

@@ -57,7 +57,7 @@ void JsonScene::addObject(Entity entity)
 
     Collision* collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
     if(collision)
-        components.insert("collision", collision->toJSON());
+        components.insert("collision", collision->toJson());
 
     Light* light = getWorld()->getComponent<Light>(entity).value_or(nullptr);
     if(light)

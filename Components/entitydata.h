@@ -1,15 +1,15 @@
 #ifndef ENTITYDATA_H
 #define ENTITYDATA_H
 
+#include "component.h"
 #include "types.h"
 #include <vector>
-
-class QJsonObject;
 
 /**
  * The EntityData contains information like the Entity's name and parent/child relationship.
  */
-struct EntityData{
+struct EntityData : public Component
+{
 
     /**
       * Default Constructor.
