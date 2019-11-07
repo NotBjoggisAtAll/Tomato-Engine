@@ -20,6 +20,7 @@ void ScriptSystem::beginPlay()
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
             continue;
+        load(scriptComp);
         call(scriptComp, "beginPlay");
     }
 }
@@ -70,10 +71,11 @@ void ScriptSystem::componentAdded(Script *script)
 
 }
 
-void ScriptSystem::call(Script * script, QString function)
+void ScriptSystem::load(Script* script)
 {
-    if(!script || !function.size() || !script->engine_ || !script->file_.size())
+    if(!script || !script->engine_ || !script->file_.size())
         return;
+
 
     QFile file(QString::fromStdString(gsl::scriptFilePath) + script->file_);
     file.open(QFile::ReadOnly);
@@ -90,6 +92,14 @@ void ScriptSystem::call(Script * script, QString function)
         qDebug() << error;
         return;
     }
+}
+
+void ScriptSystem::call(Script * script, QString function)
+{
+    if(!script || !function.size() || !script->engine_ || !script->file_.size())
+        return;
+
+
     QJSValue evaluation = script->engine_->evaluate(function);
     if(evaluation.isError())
     {
