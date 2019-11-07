@@ -133,7 +133,6 @@ private:
     std::unique_ptr<SystemManager> mSystemManager;
 
     Camera* currentCamera_ = nullptr;
-
 };
 
 World* getWorld();

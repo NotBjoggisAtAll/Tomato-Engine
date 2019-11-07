@@ -101,6 +101,10 @@ void JsonScene::addObject(Entity entity)
     if(npc)
         components.insert("npc", npc->toJson());
 
+    Input* input = getWorld()->getComponent<Input>(entity).value_or(nullptr);
+    if(input)
+        components.insert("input", input->toJson());
+
     // Legg til flere komponenter her etterhvert
     entityObject.insert("id", entity);
     entityObject.insert("components", components);

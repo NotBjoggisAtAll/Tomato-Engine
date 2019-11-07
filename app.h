@@ -54,10 +54,8 @@ private:
     Camera* editorCamera_ = nullptr;
     Camera* gameCamera_{nullptr};
 
-    void handleInput();
     void calculateFramerate();
 
-    float cameraSpeed = 0.01f;
 };
 
 #endif // APP_H

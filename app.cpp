@@ -1,6 +1,6 @@
 #include "app.h"
 #include "renderwindow.h"
-#include "World.h"
+#include "world.h"
 #include "Components/allcomponents.h"
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
@@ -13,6 +13,7 @@
 #include "Systems/npcsystem.h"
 #include "Systems/rendersystem.h"
 #include "Systems/scenesystem.h"
+#include "Systems/inputsystem.h"
 #include "camera.h"
 #include "eventhandler.h"
 #include "Windows/sceneloader.h"
@@ -30,6 +31,7 @@ App::App()
     getWorld()->registerComponent<Script>();
     getWorld()->registerComponent<BSpline>();
     getWorld()->registerComponent<Npc>();
+    getWorld()->registerComponent<Input>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -39,6 +41,7 @@ App::App()
     getWorld()->registerSystem<BSplineSystem>();
     getWorld()->registerSystem<RenderSystem>();
     getWorld()->registerSystem<NpcSystem>();
+    getWorld()->registerSystem<InputSystem>();
 
     Signature renderSign;
     renderSign.set(getWorld()->getComponentType<Transform>());
@@ -77,11 +80,18 @@ App::App()
     npcSign.set(getWorld()->getComponentType<Transform>());
     getWorld()->setSystemSignature<NpcSystem>(npcSign);
 
+    Signature inputSign;
+    inputSign.set(getWorld()->getComponentType<Input>());
+    inputSign.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<InputSystem>(inputSign);
+
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
     eventHandler_ = std::make_shared<EventHandler>();
     renderWindow_->installEventFilter(eventHandler_.get());
     connect(eventHandler_.get(), &EventHandler::leftMouseButtonPressed, this, &App::raycastFromMouse);
+
+    getWorld()->getSystem<InputSystem>()->setEventHandler(eventHandler_);
 
     mainWindow_->show();
 
@@ -124,8 +134,6 @@ void App::postInit()
     getWorld()->addComponent(entity, EntityData("Light Source"));
     getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     getWorld()->addComponent(entity, Light());
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
     getWorld()->addComponent(entity, Script("testScript.js"));
     getWorld()->getSystem<ScriptSystem>()->componentAdded(getWorld()->getComponent<Script>(entity).value());
 
@@ -133,11 +141,11 @@ void App::postInit()
 
     BSpline spline = BSpline(.05f);
 
-    spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
+    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(-2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(0,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-5));
 
     entity = getWorld()->createEntity();
 
@@ -156,14 +164,25 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Npc(&splineptr->curve_));
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Player"));
+    getWorld()->addComponent(entity, Transform({0,0,1},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Input(true));
 
 
     mainWindow_->displayEntitiesInOutliner();
 
     //********************** Set up camera **********************
     editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-    gameCamera_ = new Camera(gsl::Vector3D(0));
+    gameCamera_ = new Camera(gsl::Vector3D(0, 12.f, -1));
+    gameCamera_->yaw_ = (-180.f);
+    gameCamera_->pitch_ = (-90.f);
     getWorld()->setCurrentCamera(editorCamera_);
 
 }
@@ -171,10 +190,13 @@ void App::postInit()
 
 void App::tick()
 {
+    qDebug() << gameCamera_->position();
+    qDebug() << "Yaw: " << gameCamera_->yaw_ << ". Pitch: " << gameCamera_->pitch_;
+
     deltaTime_ = deltaTimer_.restart() / 1000.f;
     calculateFramerate();
 
-    handleInput();
+    getWorld()->getSystem<InputSystem>()->tick();
 
     if(getWorld()->bGameRunning)
     {
@@ -219,14 +241,15 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-    getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->setCurrentCamera(gameCamera_);
+    getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 }
 
 void App::stopGame()
 {
     getWorld()->getSystem<SceneSystem>()->endPlay();
+    mainWindow_->displayEntitiesInOutliner();
     getWorld()->setCurrentCamera(editorCamera_);
 }
 
@@ -249,27 +272,6 @@ void App::calculateFramerate()
     }
 }
 
-void App::handleInput()
-{
-    auto camera = getWorld()->getCurrentCamera();
-
-    camera->moveForward(0.f);  //cancel last frame movement
-    if(eventHandler_->keys_[Qt::MouseButton::RightButton] == true)
-    {
-        if(eventHandler_->keys_[Qt::Key_W] == true)
-            camera->moveForward(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_S] == true)
-            camera->moveForward(cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_D] == true)
-            camera->moveRight(cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_A] == true)
-            camera->moveRight(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_Q] == true)
-            camera->moveUp(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_E] == true)
-            camera->moveUp(cameraSpeed);
-    }
-}
 
 void App::loadScene(QString JsonPath)
 {

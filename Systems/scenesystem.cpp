@@ -116,6 +116,9 @@ void SceneSystem::endPlay()
                 npc.fromJson(npcData);
                 getWorld()->addComponent(newEntity,npc);
             }
+            QJsonObject inputData = components.take("input").toObject();
+            if(!inputData.empty())
+                getWorld()->addComponent(newEntity, Input(inputData));
         }
     }
 }
@@ -188,6 +191,24 @@ void SceneSystem::loadScene(QString sceneName)
             QJsonObject scriptData = components.take("script").toObject();
             if(!scriptData.empty())
                 getWorld()->addComponent(newEntity,Script(scriptData));
+
+            QJsonObject bsplineData = components.take("bspline").toObject();
+            if(!bsplineData.empty())
+            {
+                BSpline spline;
+                spline.fromJson(bsplineData);
+                getWorld()->addComponent(newEntity,spline);
+            }
+            QJsonObject npcData = components.take("npc").toObject();
+            if(!npcData.empty())
+            {
+                Npc npc;
+                npc.fromJson(npcData);
+                getWorld()->addComponent(newEntity,npc);
+            }
+            QJsonObject inputData = components.take("input").toObject();
+            if(!inputData.empty())
+                getWorld()->addComponent(newEntity, Input(inputData));
         }
     }
 }

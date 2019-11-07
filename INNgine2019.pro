@@ -22,6 +22,7 @@ HEADERS += \
     Components/component.h \
     Components/componentArray.h \
     Components/entitydata.h \
+    Components/input.h \
     Components/light.h \
     Components/material.h \
     Components/mesh.h \
@@ -44,6 +45,7 @@ HEADERS += \
     Managers/soundmanager.h \
     Systems/bsplinesystem.h \
     Systems/collisionsystem.h \
+    Systems/inputsystem.h \
     Systems/movementsystem.h \
     Systems/npcsystem.h \
     Systems/scenesystem.h \
@@ -88,6 +90,7 @@ SOURCES += main.cpp \
     Components/collision.cpp \
     Components/component.cpp \
     Components/entitydata.cpp \
+    Components/input.cpp \
     Components/light.cpp \
     Components/material.cpp \
     Components/mesh.cpp \
@@ -107,6 +110,7 @@ SOURCES += main.cpp \
     Managers/soundmanager.cpp \
     Systems/bsplinesystem.cpp \
     Systems/collisionsystem.cpp \
+    Systems/inputsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
     Systems/scenesystem.cpp \

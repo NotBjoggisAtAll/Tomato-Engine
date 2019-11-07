@@ -11,6 +11,7 @@
 #include "light.h"
 #include "bspline.h"
 #include "npc.h"
+#include "input.h"
 
 
 #endif // ALLCOMPONENTS_H
