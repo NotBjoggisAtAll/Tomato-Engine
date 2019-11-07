@@ -67,6 +67,8 @@ public:
 
     Vector4D operator*(const Vector4D &other);
 
+    GLfloat operator[](unsigned int i);
+
     friend std::ostream& operator<<(std::ostream &output, const Matrix4x4 &mIn)
     {
         output << std::setprecision(4) <<
@@ -77,6 +79,8 @@ public:
         return output;
     }
     GLfloat getFloat(int space);
+
+
 private:
     GLfloat matrix[16];
 };

@@ -5,6 +5,7 @@
 #include "Components/transform.h"
 #include "Components/material.h"
 #include "Components/entitydata.h"
+#include "camera.h"
 #include "shader.h"
 
 void RenderSystem::beginPlay()
@@ -15,6 +16,8 @@ void RenderSystem::tick()
 {
     initializeOpenGLFunctions();
 
+    totalVerticeCount = 0;
+
     for(auto& entity : entities_)
     {
         auto mesh = getWorld()->getComponent<Mesh>(entity).value();
@@ -24,6 +27,8 @@ void RenderSystem::tick()
 
         auto material = getWorld()->getComponent<Material>(entity).value();
         auto transform = getWorld()->getComponent<Transform>(entity).value();
+
+        if(!sphereInsideFrustum(transform->position_, 1)) continue;
 
         glUseProgram(material->shader_->getProgram());
         glBindVertexArray(mesh->VAO_);
@@ -44,6 +49,7 @@ void RenderSystem::tick()
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 
+        totalVerticeCount += mesh->verticeCount_;
 
         if(mesh->indiceCount_ > 0)
             glDrawElements(mesh->drawType_, mesh->indiceCount_, GL_UNSIGNED_INT, nullptr);
@@ -51,4 +57,15 @@ void RenderSystem::tick()
         else
             glDrawArrays(mesh->drawType_, 0, mesh->verticeCount_);
     }
+}
+
+bool RenderSystem::sphereInsideFrustum(const gsl::Vector3D vecCenter, float radius)
+{
+    const auto& frustum = getWorld()->getCurrentCamera()->frustum_;
+    for(unsigned int i = 0; i < 6; i++)
+    {
+        if(gsl::Vector3D::dot(vecCenter, frustum[i].normal_) + frustum[i].distance_ + radius <= 0)
+            return false;
+    }
+    return true;
 }

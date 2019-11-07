@@ -3,6 +3,7 @@
 
 #include <QOpenGLFunctions_4_1_Core>
 #include "system.h"
+#include "GSL/vector3d.h"
 
 struct RenderSystem : public QOpenGLFunctions_4_1_Core, public System
 {
@@ -11,6 +12,10 @@ struct RenderSystem : public QOpenGLFunctions_4_1_Core, public System
 
      void beginPlay() override;
      void tick() override;
+     int totalVerticeCount = 0;
+private:
+    bool sphereInsideFrustum(const gsl::Vector3D vecCenter, float radius);
+
 };
 
 #endif // RENDERSYSTEM_H

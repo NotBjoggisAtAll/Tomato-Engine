@@ -1,6 +1,7 @@
 #include "camera.h"
 #include <QJsonObject>
 #include <QJsonArray>
+#include "GSL/gsl_math.h"
 
 Camera::Camera(gsl::Vector3D position) : position_(position){}
 
@@ -38,6 +39,36 @@ void Camera::updateForwardVector()
     updateRightVector();
 }
 
+void Camera::calculateFrustum()
+{
+    auto vpMatrix = projectionMatrix_ * viewMatrix_;
+
+    gsl::Vector3D col1(vpMatrix[0], vpMatrix[2], vpMatrix[2]);
+    gsl::Vector3D col2(vpMatrix[4], vpMatrix[5], vpMatrix[6]);
+    gsl::Vector3D col3(vpMatrix[8], vpMatrix[9], vpMatrix[10]);
+    gsl::Vector3D col4(vpMatrix[12], vpMatrix[13], vpMatrix[14]);
+
+    frustum_[0].normal_ = col4 + col1;
+    frustum_[1].normal_ = col4 - col1;
+    frustum_[2].normal_ = col4 - col2;
+    frustum_[3].normal_ = col4 + col2;
+    frustum_[4].normal_ = col4 - col3;
+    frustum_[5].normal_ = col3;
+    frustum_[0].distance_ = vpMatrix[15] + vpMatrix[3];
+    frustum_[1].distance_ = vpMatrix[15] - vpMatrix[3];
+    frustum_[2].distance_ = vpMatrix[15] - vpMatrix[7];
+    frustum_[3].distance_ = vpMatrix[15] + vpMatrix[7];
+    frustum_[4].distance_ = vpMatrix[15] - vpMatrix[11];
+    frustum_[5].distance_ = vpMatrix[11];
+    for (unsigned int i = 0; i < 6; ++i) {
+        float magnitude = 1.0f /
+        frustum_[i].normal_.length();
+        frustum_[i].normal_ = frustum_[i].normal_ * magnitude;
+        frustum_[i].distance_ = frustum_[i].distance_ * magnitude;
+    }
+
+}
+
 void Camera::update()
 {
     gsl::Matrix4x4 yawMatrix;
@@ -50,6 +81,7 @@ void Camera::update()
 
     viewMatrix_ = pitchMatrix* yawMatrix;
     viewMatrix_.translate(-position_);
+    calculateFrustum();
 }
 
 void Camera::setPosition(const gsl::Vector3D &position)

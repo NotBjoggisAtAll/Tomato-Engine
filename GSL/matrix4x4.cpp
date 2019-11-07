@@ -520,4 +520,9 @@ Vector4D Matrix4x4::operator*(const Vector4D &v)
             matrix[12]*v.getX() + matrix[13]*v.getY() + matrix[14]*v.getZ() + matrix[15] *v.getW());
 }
 
+GLfloat Matrix4x4::operator[](unsigned int i)
+{
+    return matrix[i];
+}
+
 } //namespace

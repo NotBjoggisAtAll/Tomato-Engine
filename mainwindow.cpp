@@ -62,12 +62,14 @@ void MainWindow::addEntityToUi(Entity entity)
     ui->Outliner->addTopLevelItem(item);
 }
 
-void MainWindow::updateStatusbar(float timePerFrame, float frameCounter)
+void MainWindow::updateStatusbar(float timePerFrame, float frameCounter, int verticeCounter)
 {
     statusBar()->showMessage(" | Time pr FrameDraw: "
                                  + QString::number(static_cast<double>(timePerFrame), 'g', 4)
                                  + " s  |  " + "FPS: "
-                                 + QString::number(static_cast<double>(frameCounter), 'g', 4));
+                                 + QString::number(static_cast<double>(frameCounter), 'g', 4)
+                                 + " | Vertice count: "
+                                 + QString::number(verticeCounter));
 }
 
 void MainWindow::on_actionToggle_Wireframe_triggered()
