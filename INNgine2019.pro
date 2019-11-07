@@ -30,6 +30,7 @@ HEADERS += \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
+    Components/vertexdata.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -97,6 +98,7 @@ SOURCES += main.cpp \
     Components/npc.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
+    Components/vertexdata.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \

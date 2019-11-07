@@ -2,6 +2,7 @@
 #include "renderwindow.h"
 #include "world.h"
 #include "Components/allcomponents.h"
+#include "Components/vertexdata.h"
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
@@ -32,6 +33,7 @@ App::App()
     getWorld()->registerComponent<BSpline>();
     getWorld()->registerComponent<Npc>();
     getWorld()->registerComponent<Input>();
+    getWorld()->registerComponent<VertexData>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -123,14 +125,14 @@ void App::postInit()
 {
     Entity entity = getWorld()->createEntity();
 
-    getWorld()->addComponent(entity, EntityData("Sound Source"));
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
+//    getWorld()->addComponent(entity, EntityData("Sound Source"));
+//    getWorld()->addComponent(entity, Transform());
+//    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
-    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
-    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
+//    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
+//    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
-    entity = getWorld()->createEntity();
+//    entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Light Source"));
     getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     getWorld()->addComponent(entity, Light());
@@ -166,6 +168,7 @@ void App::postInit()
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Npc(&splineptr->curve_));
+    Npc* npc = getWorld()->getComponent<Npc>(entity).value();
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Player"));
@@ -175,6 +178,16 @@ void App::postInit()
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Input(true));
 
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, EntityData("Terrain"));
+    getWorld()->addComponent(entity, Transform({-400,-75,-100},{},{1,1,1}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("terrainData.terrain"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getLastTerrainImported());
+
+    npc->terrainId = entity;
+    getWorld()->getSystem<InputSystem>()->setTerrainId(entity);
 
     mainWindow_->displayEntitiesInOutliner();
 
@@ -187,11 +200,8 @@ void App::postInit()
 
 }
 
-
 void App::tick()
 {
-    qDebug() << gameCamera_->position();
-    qDebug() << "Yaw: " << gameCamera_->yaw_ << ". Pitch: " << gameCamera_->pitch_;
 
     deltaTime_ = deltaTimer_.restart() / 1000.f;
     calculateFramerate();
@@ -251,6 +261,42 @@ void App::stopGame()
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
     getWorld()->setCurrentCamera(editorCamera_);
+
+    Entity bsplineID = -1;
+    Entity npcID = -1;
+    Entity terrainID = -1;
+    Entity playerID = -1;
+
+    for(auto entity : getWorld()->getEntities())
+    {
+        BSpline* bspline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+        if(bspline)
+            bsplineID = entity;
+
+        Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+        if(npc)
+            npcID = entity;
+
+        VertexData* terrain = getWorld()->getComponent<VertexData>(entity).value_or(nullptr);
+        if(terrain)
+            terrainID = entity;
+
+        Input* input = getWorld()->getComponent<Input>(entity).value_or(nullptr);
+        if(input)
+            playerID = entity;
+    }
+    if(bsplineID == -1 || npcID == -1 || terrainID == -1 || playerID == -1) return;
+
+
+    Npc* npc = getWorld()->getComponent<Npc>(npcID).value_or(nullptr);
+    BSpline* bspline = getWorld()->getComponent<BSpline>(bsplineID).value_or(nullptr);
+
+    npc->terrainId = terrainID;
+    npc->bSplineCurve = &bspline->curve_;
+
+    getWorld()->getSystem<InputSystem>()->setTerrainId(terrainID);
+
+
 }
 
 void App::updateCameraPerspectives(float aspectRatio)

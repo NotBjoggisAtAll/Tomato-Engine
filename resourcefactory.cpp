@@ -131,15 +131,20 @@ Mesh ResourceFactory::createObject()
     Mesh mesh;
 
     if(file_.find(".obj") != std::string::npos)
+    {
         readOBJFile();
+        createCollision();
+    }
 
     else if(file_.find(".txt") != std::string::npos)
+    {
         readTXTFile();
+        createCollision();
+    }
 
     else if(file_.find(".terrain") != std::string::npos)
         readTerrainFile();
 
-    createCollision();
 
     mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
@@ -412,6 +417,13 @@ void ResourceFactory::calculateTerrainNormals()
         vertices_[indices_[i+1]].set_normal(normal);
         vertices_[indices_[i+2]].set_normal(normal);
     }
+    lastTerrainImported.vertices_ = vertices_;
+    lastTerrainImported.indices_ = indices_;
+}
+
+VertexData ResourceFactory::getLastTerrainImported() const
+{
+    return lastTerrainImported;
 }
 
 void ResourceFactory::readOBJFile()

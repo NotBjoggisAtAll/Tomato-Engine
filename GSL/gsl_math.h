@@ -28,6 +28,7 @@ namespace gsl
     Vector3D bezierCurve(std::vector<Vector3D> points, GLfloat t, unsigned long long degree = 3);
     Vector3D bSpline(const std::vector<Vector3D> &points, const std::vector<GLfloat> &t, GLfloat x, unsigned long long degree = 3);
 
+
     //Basic vector directions
     Vector3D up();
     Vector3D right();

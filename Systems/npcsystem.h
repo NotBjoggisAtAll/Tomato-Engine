@@ -4,8 +4,6 @@
 #include "Systems/system.h"
 
 class Npc;
-class Transform;
-
 class NpcSystem : public System
 {
 public:
@@ -37,6 +35,8 @@ public:
     /// If true the currentT increments when curvePosition() is called.
     /// Otherwise the currentT decrements.
     bool bIncrementT = true;
+private:
+    float getHeightBaryc(Entity npc, Entity terrain);
 };
 
 #endif // NPCSYSTEM_H

@@ -3,6 +3,7 @@
 
 #include "component.h"
 #include "GSL/vector3d.h"
+#include "types.h"
 
 class BSplineCurve;
 
@@ -14,6 +15,7 @@ struct Npc : public Component
     Npc();
     Npc(BSplineCurve* Curve);
     BSplineCurve* bSplineCurve = nullptr;
+    Entity terrainId = -1;
 
     NPCevents event;
     NPCstates state_;

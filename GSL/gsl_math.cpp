@@ -178,3 +178,4 @@ namespace gsl
         return xDirection && yDirection;
     }
 }
+

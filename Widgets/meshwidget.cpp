@@ -34,8 +34,9 @@ void MeshWidget::on_changeMeshButton_clicked()
 {
     QFileDialog fileDialog;
     fileDialog.setNameFilter("*.obj");
-    QString QfileName = fileDialog.getOpenFileName(this,"Open file","../INNgine2019/Assets","*.obj *.txt *.terrain");
-    std::string fileName = QfileName.toStdString();
+    QFileInfo fileInfo = fileDialog.getOpenFileName(this,"Open file","../INNgine2019/Assets","*.obj *.txt *.terrain");
+
+    std::string fileName =  fileInfo.fileName().toStdString();
 
     if(!fileName.empty())
     {

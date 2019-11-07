@@ -10,6 +10,7 @@
 #include "phongshader.h"
 #include "constants.h"
 #include "jsonscene.h"
+#include "resourcefactory.h"
 
 SceneSystem::SceneSystem() {}
 
@@ -82,7 +83,13 @@ void SceneSystem::endPlay()
 
             QJsonObject meshData = components.take("mesh").toObject();
             if(!meshData.empty())
+            {
                 getWorld()->addComponent(newEntity,Mesh(meshData));
+                if(meshData["filepath"].toString().toStdString().find(".terrain") != std::string::npos)
+                {
+                    getWorld()->addComponent(newEntity, ResourceFactory::get()->getLastTerrainImported());
+                }
+            }
 
             QJsonObject collisionData = components.take("collision").toObject();
             if(!collisionData.empty())
@@ -172,8 +179,13 @@ void SceneSystem::loadScene(QString sceneName)
 
             QJsonObject meshData = components.take("mesh").toObject();
             if(!meshData.empty())
+            {
                 getWorld()->addComponent(newEntity,Mesh(meshData));
-
+                if(meshData["filepath"].toString().toStdString().find(".terrain") != std::string::npos)
+                {
+                    getWorld()->addComponent(newEntity, ResourceFactory::get()->getLastTerrainImported());
+                }
+            }
             QJsonObject collisionData = components.take("collision").toObject();
             if(!collisionData.empty())
                 getWorld()->addComponent(newEntity,Collision(collisionData));
