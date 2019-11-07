@@ -74,6 +74,8 @@ Mesh ResourceFactory::createLines(std::vector<Vertex> vertices, std::vector<unsi
     box.drawType_ = GL_LINES;
     glBindVertexArray(0);
 
+    box.filepath_ = "line";
+
     return box;
 }
 
@@ -95,6 +97,8 @@ Mesh ResourceFactory::createMesh()
         mesh =  createSphere();
     else if(file_ == "plane")
         mesh = createPlane();
+    else if(file_ == "line")
+
 
     glBindVertexArray(0);
 

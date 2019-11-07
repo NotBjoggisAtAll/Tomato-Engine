@@ -177,12 +177,14 @@ void App::tick()
     handleInput();
 
     if(getWorld()->bGameRunning)
+    {
         getWorld()->getSystem<ScriptSystem>()->tick();
+        getWorld()->getSystem<NpcSystem>()->tick();
+    }
 
     getWorld()->getSystem<BSplineSystem>()->tick();
     getWorld()->getSystem<CollisionSystem>()->tick();
     getWorld()->getSystem<SoundSystem>()->tick();
-    getWorld()->getSystem<NpcSystem>()->tick();
 
     getWorld()->getCurrentCamera()->update();
     renderWindow_->tick();

@@ -93,6 +93,14 @@ void JsonScene::addObject(Entity entity)
     if(script)
         components.insert("script", script->toJson());
 
+    BSpline* bspline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+    if(bspline)
+        components.insert("bspline", bspline->toJson());
+
+    Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+    if(npc)
+        components.insert("npc", npc->toJson());
+
     // Legg til flere komponenter her etterhvert
     entityObject.insert("id", entity);
     entityObject.insert("components", components);

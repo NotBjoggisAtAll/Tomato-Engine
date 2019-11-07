@@ -21,9 +21,10 @@ void NpcSystem::tick()
         auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
 
         if(!npc) continue;
+        if(!npc->bSplineCurve) continue;
 
-        npc->state = NPCstates::PATROL;
-        switch (npc->state) {
+        npc->state_ = NPCstates::PATROL;
+        switch (npc->state_) {
         case NPCstates::PATROL:
             patrol(entity, npc);
             break;

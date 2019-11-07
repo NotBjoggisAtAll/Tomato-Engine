@@ -13,10 +13,10 @@ struct Npc : public Component
 {
     Npc();
     Npc(BSplineCurve* Curve);
-    BSplineCurve* bSplineCurve;
+    BSplineCurve* bSplineCurve = nullptr;
 
-    NPCstates state;
     NPCevents event;
+    NPCstates state_;
     float speed_ = 0.1f;
     float currentT_ = 0;
 
