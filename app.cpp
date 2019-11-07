@@ -1,6 +1,6 @@
 #include "app.h"
 #include "renderwindow.h"
-#include "World.h"
+#include "world.h"
 #include "Components/allcomponents.h"
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"

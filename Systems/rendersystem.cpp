@@ -28,7 +28,7 @@ void RenderSystem::tick()
         auto material = getWorld()->getComponent<Material>(entity).value();
         auto transform = getWorld()->getComponent<Transform>(entity).value();
 
-        if(!sphereInsideFrustum(transform->position_, 1)) continue;
+        if(!sphereInsideFrustum(transform->position_, 1) && mesh->isAffectedByFrustum_) continue;
 
         glUseProgram(material->shader_->getProgram());
         glBindVertexArray(mesh->VAO_);
