@@ -30,6 +30,9 @@ public:
     void updateStatusbar(float timePerFrame, float frameCounter);
 
     std::shared_ptr<RenderWindow> renderWindow_ = nullptr;
+
+    void playGame();
+    void stopGame();
 signals:
     void playGame_signal();
     void stopGame_signal();
@@ -71,8 +74,7 @@ private:
 
     Ui::MainWindow *ui;
     QWidget *renderWindowContainer_ = nullptr;
-    void playGame();
-    void stopGame();
+
 
     //Parent to all componentwidgets
     QWidget* widget{nullptr};

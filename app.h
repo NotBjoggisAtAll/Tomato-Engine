@@ -36,6 +36,7 @@ private slots:
     void raycastFromMouse();
 
     void postInit();
+    void entitiesCollided(Entity entity1, Entity entity2);
 
 private:
 
@@ -56,6 +57,7 @@ private:
 
     void calculateFramerate();
 
+    void setupVisimOblig();
 };
 
 #endif // APP_H

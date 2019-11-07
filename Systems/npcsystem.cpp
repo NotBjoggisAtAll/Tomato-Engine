@@ -37,6 +37,7 @@ void NpcSystem::tick()
 
 void NpcSystem::endPlay()
 {
+    currentT_ = 0;
 }
 
 void NpcSystem::patrol(Entity entity, Npc* npc)
@@ -55,22 +56,32 @@ void NpcSystem::patrol(Entity entity, Npc* npc)
         npc->event = NPCevents::ENDPOINT_ARRIVED;
         notify(entity);
     }
-
 }
 
-void NpcSystem::notify(Entity entity, std::optional<unsigned int> index)
+void NpcSystem::notify(Entity entity, std::optional<gsl::Vector3D> index)
 {
     auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
     if(!npc) return;
 
     switch (npc->event) {
     case NPCevents::ITEM_TAKEN:
-        if(index.has_value())
-            npc->bSplineCurve->removeControlPoint(index.value() + 1);
+        if(index.has_value()){
+            removePoints = true;
+            pointIndices.push(index.value());
+        }
         break;
     case NPCevents::ENDPOINT_ARRIVED:
-       // npc->bSplineCurve->randomizeControlpoints();
+        npc->bSplineCurve->randomizeControlpoints();
         npc->speed_ = -npc->speed_;
+        if(removePoints == true)
+        {
+            while(!pointIndices.empty())
+            {
+                npc->bSplineCurve->removeControlPoint(pointIndices.front());
+                pointIndices.pop();
+            }
+            removePoints = false;
+        }
         break;
     default:
         break;

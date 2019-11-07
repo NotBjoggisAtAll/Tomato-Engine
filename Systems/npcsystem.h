@@ -2,6 +2,8 @@
 #define NPCSYSTEM_H
 
 #include "Systems/system.h"
+#include "GSL/vector3d.h"
+#include <queue>
 
 class Npc;
 class NpcSystem : public System
@@ -18,7 +20,7 @@ public:
 
     void patrol(Entity entity, Npc *npc);
     void learn();
-    void notify(Entity entity, std::optional<unsigned int> index = std::nullopt);
+    void notify(Entity entity, std::optional<gsl::Vector3D> index = std::nullopt);
 
     float elapsed_time;
     //B-spline kurven har en skjøtvektor, f.eks {0,0,0,1,2,3,3,3}
@@ -32,9 +34,9 @@ public:
     /// Stores the current position on the BSpline (from 0 to 1)
     float currentT_ = 0;
 
-    /// If true the currentT increments when curvePosition() is called.
-    /// Otherwise the currentT decrements.
-    bool bIncrementT = true;
+    bool removePoints;
+    std::queue<gsl::Vector3D> pointIndices;
+
 private:
     float getHeightBaryc(Entity npc, Entity terrain);
 };

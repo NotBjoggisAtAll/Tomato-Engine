@@ -34,6 +34,7 @@ App::App()
     getWorld()->registerComponent<Npc>();
     getWorld()->registerComponent<Input>();
     getWorld()->registerComponent<VertexData>();
+    getWorld()->registerComponent<Destructable>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -115,6 +116,7 @@ App::App()
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
+    connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
 }
 
 App::~App()
@@ -136,10 +138,34 @@ void App::postInit()
     getWorld()->addComponent(entity, EntityData("Light Source"));
     getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     getWorld()->addComponent(entity, Light());
-    getWorld()->addComponent(entity, Script("testScript.js"));
-    getWorld()->getSystem<ScriptSystem>()->componentAdded(getWorld()->getComponent<Script>(entity).value());
 
     ShaderManager::instance()->phongShader()->setLight(entity);
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({-2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({0,0,-5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
 
     BSpline spline = BSpline(.05f);
 
@@ -148,6 +174,7 @@ void App::postInit()
     spline.curve_.addControlPoint(gsl::Vector3D(0,0,-5));
     spline.curve_.addControlPoint(gsl::Vector3D(2.5,0,2.5));
     spline.curve_.addControlPoint(gsl::Vector3D(5,0,-5));
+
 
     entity = getWorld()->createEntity();
 
@@ -162,7 +189,7 @@ void App::postInit()
 
     entity = getWorld()->createEntity();
 
-    getWorld()->addComponent(entity, EntityData("Enemy Box"));
+    getWorld()->addComponent(entity, EntityData("Enemy"));
     getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
@@ -189,15 +216,46 @@ void App::postInit()
     npc->terrainId = entity;
     getWorld()->getSystem<InputSystem>()->setTerrainId(entity);
 
+    for(auto& point : splineptr->curve_.getControlPoints())
+    {
+        point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
+    }
+
     mainWindow_->displayEntitiesInOutliner();
 
     //********************** Set up camera **********************
     editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-    gameCamera_ = new Camera(gsl::Vector3D(0, 12.f, -1));
+    gameCamera_ = new Camera(gsl::Vector3D(0, 0 , -1));
     gameCamera_->yaw_ = (-180.f);
     gameCamera_->pitch_ = (-90.f);
     getWorld()->setCurrentCamera(editorCamera_);
 
+}
+
+void App::entitiesCollided(Entity entity1, Entity entity2)
+{
+    Input* player = getWorld()->getComponent<Input>(entity1).value_or(nullptr);
+    if(player)
+    {
+        Destructable* item = getWorld()->getComponent<Destructable>(entity2).value_or(nullptr);
+        if(item)
+        {
+            Transform* data = getWorld()->getComponent<Transform>(entity2).value_or(nullptr);
+            gsl::Vector3D pos = data->position_;
+            getWorld()->destroyEntity(entity2);
+            for(const auto& entity : getWorld()->getSystem<NpcSystem>()->entities_)
+            {
+                Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+                npc->event = NPCevents::ITEM_TAKEN;
+                getWorld()->getSystem<NpcSystem>()->notify(entity, pos);
+            }
+        }
+        Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
+        if(npc)
+        {
+           getWorld()->destroyEntity(entity1);
+        }
+    }
 }
 
 void App::tick()
@@ -251,9 +309,12 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
+    setupVisimOblig();
+
     getWorld()->setCurrentCamera(gameCamera_);
     getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
+
 }
 
 void App::stopGame()
@@ -261,14 +322,29 @@ void App::stopGame()
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
     getWorld()->setCurrentCamera(editorCamera_);
+    getWorld()->getSystem<NpcSystem>()->endPlay();
 
+    setupVisimOblig();
+}
+
+void App::setupVisimOblig()
+{
     Entity bsplineID = -1;
     Entity npcID = -1;
     Entity terrainID = -1;
     Entity playerID = -1;
 
+    std::vector<Entity> itemsIDs;
+
     for(auto entity : getWorld()->getEntities())
     {
+        EntityData* entityData = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
+        if(entityData)
+        {
+            if(entityData->name_ == "Item")
+                itemsIDs.push_back(entity);
+        }
+
         BSpline* bspline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
         if(bspline)
             bsplineID = entity;
@@ -296,7 +372,12 @@ void App::stopGame()
 
     getWorld()->getSystem<InputSystem>()->setTerrainId(terrainID);
 
-
+    for(auto entity : itemsIDs)
+    {
+        Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+        if(!transform) return;
+        transform->position_.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(entity, terrainID);
+    }
 }
 
 void App::updateCameraPerspectives(float aspectRatio)

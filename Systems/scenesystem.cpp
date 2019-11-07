@@ -126,6 +126,11 @@ void SceneSystem::endPlay()
             QJsonObject inputData = components.take("input").toObject();
             if(!inputData.empty())
                 getWorld()->addComponent(newEntity, Input(inputData));
+
+            QJsonObject destData = components.take("destructable").toObject();
+            if(!destData.empty())
+                getWorld()->addComponent(newEntity, Destructable(destData));
+
         }
     }
 }
@@ -221,6 +226,10 @@ void SceneSystem::loadScene(QString sceneName)
             QJsonObject inputData = components.take("input").toObject();
             if(!inputData.empty())
                 getWorld()->addComponent(newEntity, Input(inputData));
+
+            QJsonObject destData = components.take("destructable").toObject();
+            if(!destData.empty())
+                getWorld()->addComponent(newEntity, Destructable(destData));
         }
     }
 }

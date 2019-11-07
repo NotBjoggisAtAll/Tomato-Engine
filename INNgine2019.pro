@@ -21,6 +21,7 @@ HEADERS += \
     Components/collision.h \
     Components/component.h \
     Components/componentArray.h \
+    Components/destructable.h \
     Components/entitydata.h \
     Components/input.h \
     Components/light.h \
