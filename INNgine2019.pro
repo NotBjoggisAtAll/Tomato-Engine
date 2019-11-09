@@ -22,7 +22,9 @@ HEADERS += \
     Components/collision.h \
     Components/component.h \
     Components/componentArray.h \
+    Components/destructable.h \
     Components/entitydata.h \
+    Components/input.h \
     Components/light.h \
     Components/material.h \
     Components/mesh.h \
@@ -30,6 +32,7 @@ HEADERS += \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
+    Components/vertexdata.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -46,6 +49,7 @@ HEADERS += \
     Systems/bsplinesystem.h \
     Systems/camerasystem.h \
     Systems/collisionsystem.h \
+    Systems/inputsystem.h \
     Systems/movementsystem.h \
     Systems/npcsystem.h \
     Systems/scenesystem.h \
@@ -91,12 +95,14 @@ SOURCES += main.cpp \
     Components/collision.cpp \
     Components/component.cpp \
     Components/entitydata.cpp \
+    Components/input.cpp \
     Components/light.cpp \
     Components/material.cpp \
     Components/mesh.cpp \
     Components/npc.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
+    Components/vertexdata.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
@@ -111,6 +117,7 @@ SOURCES += main.cpp \
     Systems/bsplinesystem.cpp \
     Systems/camerasystem.cpp \
     Systems/collisionsystem.cpp \
+    Systems/inputsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
     Systems/scenesystem.cpp \

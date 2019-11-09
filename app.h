@@ -36,6 +36,7 @@ private slots:
     void raycastFromMouse();
 
     void postInit();
+    void entitiesCollided(Entity entity1, Entity entity2);
 
 private:
 
@@ -54,10 +55,9 @@ private:
     CameraClass* editorCamera_ = nullptr;
     CameraClass* gameCamera_{nullptr};
 
-    void handleInput();
     void calculateFramerate();
 
-    float cameraSpeed = 0.01f;
+    void setupVisimOblig();
 };
 
 #endif // APP_H

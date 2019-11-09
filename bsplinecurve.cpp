@@ -20,7 +20,7 @@ std::pair<std::vector<Vertex>,std::vector<unsigned int>> BSplineCurve::getVertic
         curveVertices.push_back(Vertex(pos,{1,0,0},{}));
 
     for (float i = 0; i <= 1; i+= 0.01f)
-        curveVertices.push_back(Vertex(evaluateBSpline(findKnotInterval(i),i), {0,1,0}, {}));
+        curveVertices.push_back(Vertex(evaluateBSpline(findKnotInterval(i),i), {0,0,0}, {}));
 
     for(unsigned int i = 0; i < curveVertices.size(); ++i)
     {

@@ -8,6 +8,7 @@
 #include "Components/mesh.h"
 #include "Components/collision.h"
 #include "Components/sound.h"
+#include "Components/vertexdata.h"
 #include <unordered_map>
 
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
@@ -19,6 +20,8 @@ public:
     Mesh createLines(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     Mesh createLines(std::pair<std::vector<Vertex>,std::vector<unsigned int>> verticesAndIndices);
     Collision getCollision(std::string file);
+
+    VertexData getLastTerrainImported() const;
 
 private:
     ResourceFactory() = default;
@@ -51,6 +54,8 @@ private:
     std::vector<Vertex> vertices_;
     std::vector<unsigned int> indices_;
     static ResourceFactory* instance_;
+
+    VertexData lastTerrainImported;
 
 };
 

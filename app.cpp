@@ -2,6 +2,7 @@
 #include "renderwindow.h"
 #include "world.h"
 #include "Components/allcomponents.h"
+#include "Components/vertexdata.h"
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
@@ -14,7 +15,7 @@
 #include "Systems/rendersystem.h"
 #include "Systems/scenesystem.h"
 #include "cameraclass.h"
-#include "eventhandler.h"
+#include "Systems/inputsystem.h"
 #include "Windows/sceneloader.h"
 #include "Windows/scenesaver.h"
 
@@ -30,6 +31,9 @@ App::App()
     getWorld()->registerComponent<Script>();
     getWorld()->registerComponent<BSpline>();
     getWorld()->registerComponent<Npc>();
+    getWorld()->registerComponent<Input>();
+    getWorld()->registerComponent<VertexData>();
+    getWorld()->registerComponent<Destructable>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -39,6 +43,7 @@ App::App()
     getWorld()->registerSystem<BSplineSystem>();
     getWorld()->registerSystem<RenderSystem>();
     getWorld()->registerSystem<NpcSystem>();
+    getWorld()->registerSystem<InputSystem>();
 
     Signature renderSign;
     renderSign.set(getWorld()->getComponentType<Transform>());
@@ -77,11 +82,18 @@ App::App()
     npcSign.set(getWorld()->getComponentType<Transform>());
     getWorld()->setSystemSignature<NpcSystem>(npcSign);
 
+    Signature inputSign;
+    inputSign.set(getWorld()->getComponentType<Input>());
+    inputSign.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<InputSystem>(inputSign);
+
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
     eventHandler_ = std::make_shared<EventHandler>();
     renderWindow_->installEventFilter(eventHandler_.get());
     connect(eventHandler_.get(), &EventHandler::leftMouseButtonPressed, this, &App::raycastFromMouse);
+
+    getWorld()->getSystem<InputSystem>()->setEventHandler(eventHandler_);
 
     mainWindow_->show();
 
@@ -103,6 +115,7 @@ App::App()
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
+    connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
 }
 
 App::~App()
@@ -113,31 +126,54 @@ void App::postInit()
 {
     Entity entity = getWorld()->createEntity();
 
-    getWorld()->addComponent(entity, EntityData("Sound Source"));
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
+//    getWorld()->addComponent(entity, EntityData("Sound Source"));
+//    getWorld()->addComponent(entity, Transform());
+//    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan",{}, "caravan_mono.wav", true, .5f)));
 
-    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
-    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
+//    //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
+//    // TODO Fix so the JSON Sound filepath is the actual path and not just the name
 
-    entity = getWorld()->createEntity();
+//    entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Light Source"));
     getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     getWorld()->addComponent(entity, Light());
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->textureShader(),{1},0));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    getWorld()->addComponent(entity, Script("testScript.js"));
-    getWorld()->getSystem<ScriptSystem>()->componentAdded(getWorld()->getComponent<Script>(entity).value());
 
     ShaderManager::instance()->phongShader()->setLight(entity);
 
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({-2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({0,0,-5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
+
+
     BSpline spline = BSpline(.05f);
 
-    spline.curve_.addControlPoint(gsl::Vector3D(0,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,0,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(1,1,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(4,2,0));
-    spline.curve_.addControlPoint(gsl::Vector3D(10,2,5));
+    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(-2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(0,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-5));
+
 
     entity = getWorld()->createEntity();
 
@@ -152,29 +188,82 @@ void App::postInit()
 
     entity = getWorld()->createEntity();
 
-    getWorld()->addComponent(entity, EntityData("Enemy Box"));
+    getWorld()->addComponent(entity, EntityData("Enemy"));
     getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Npc(&splineptr->curve_));
+    Npc* npc = getWorld()->getComponent<Npc>(entity).value();
 
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Player"));
+    getWorld()->addComponent(entity, Transform({0,0,1},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Input(true));
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, EntityData("Terrain"));
+    getWorld()->addComponent(entity, Transform({-400,-75,-100},{},{1,1,1}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("terrainData.terrain"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getLastTerrainImported());
+
+    npc->terrainId = entity;
+    getWorld()->getSystem<InputSystem>()->setTerrainId(entity);
+
+    for(auto& point : splineptr->curve_.getControlPoints())
+    {
+        point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
+    }
 
     mainWindow_->displayEntitiesInOutliner();
 
     //********************** Set up camera **********************
     editorCamera_ = new CameraClass(gsl::Vector3D(1.f, 1.f, 4.4f));
-    gameCamera_ = new CameraClass(gsl::Vector3D(0));
+    gameCamera_ = new CameraClass(gsl::Vector3D(0, 0 , -1));
+    gameCamera_->yaw_ = (-180.f);
+    gameCamera_->pitch_ = (-90.f);
     getWorld()->setCurrentCamera(editorCamera_);
 
 }
 
+void App::entitiesCollided(Entity entity1, Entity entity2)
+{
+    Input* player = getWorld()->getComponent<Input>(entity1).value_or(nullptr);
+    if(player)
+    {
+        Destructable* item = getWorld()->getComponent<Destructable>(entity2).value_or(nullptr);
+        if(item)
+        {
+            Transform* data = getWorld()->getComponent<Transform>(entity2).value_or(nullptr);
+            gsl::Vector3D pos = data->position_;
+            getWorld()->destroyEntity(entity2);
+            for(const auto& entity : getWorld()->getSystem<NpcSystem>()->entities_)
+            {
+                Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+                npc->event = NPCevents::ITEM_TAKEN;
+                getWorld()->getSystem<NpcSystem>()->notify(entity, pos);
+            }
+        }
+        Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
+        if(npc)
+        {
+           getWorld()->destroyEntity(entity1);
+        }
+    }
+}
 
 void App::tick()
 {
+
     deltaTime_ = deltaTimer_.restart() / 1000.f;
     calculateFramerate();
 
-    handleInput();
+    getWorld()->getSystem<InputSystem>()->tick();
 
     if(getWorld()->bGameRunning)
     {
@@ -219,15 +308,75 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-    getWorld()->getSystem<SceneSystem>()->beginPlay();
+    setupVisimOblig();
+
     getWorld()->setCurrentCamera(gameCamera_);
+    getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
+
 }
 
 void App::stopGame()
 {
     getWorld()->getSystem<SceneSystem>()->endPlay();
+    mainWindow_->displayEntitiesInOutliner();
     getWorld()->setCurrentCamera(editorCamera_);
+    getWorld()->getSystem<NpcSystem>()->endPlay();
+
+    setupVisimOblig();
+}
+
+void App::setupVisimOblig()
+{
+    Entity bsplineID = -1;
+    Entity npcID = -1;
+    Entity terrainID = -1;
+    Entity playerID = -1;
+
+    std::vector<Entity> itemsIDs;
+
+    for(auto entity : getWorld()->getEntities())
+    {
+        EntityData* entityData = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
+        if(entityData)
+        {
+            if(entityData->name_ == "Item")
+                itemsIDs.push_back(entity);
+        }
+
+        BSpline* bspline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+        if(bspline)
+            bsplineID = entity;
+
+        Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+        if(npc)
+            npcID = entity;
+
+        VertexData* terrain = getWorld()->getComponent<VertexData>(entity).value_or(nullptr);
+        if(terrain)
+            terrainID = entity;
+
+        Input* input = getWorld()->getComponent<Input>(entity).value_or(nullptr);
+        if(input)
+            playerID = entity;
+    }
+    if(bsplineID == -1 || npcID == -1 || terrainID == -1 || playerID == -1) return;
+
+
+    Npc* npc = getWorld()->getComponent<Npc>(npcID).value_or(nullptr);
+    BSpline* bspline = getWorld()->getComponent<BSpline>(bsplineID).value_or(nullptr);
+
+    npc->terrainId = terrainID;
+    npc->bSplineCurve = &bspline->curve_;
+
+    getWorld()->getSystem<InputSystem>()->setTerrainId(terrainID);
+
+    for(auto entity : itemsIDs)
+    {
+        Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+        if(!transform) return;
+        transform->position_.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(entity, terrainID);
+    }
 }
 
 void App::updateCameraPerspectives(float aspectRatio)
@@ -254,27 +403,6 @@ void App::calculateFramerate()
     }
 }
 
-void App::handleInput()
-{
-    auto camera = getWorld()->getCurrentCamera();
-
-    camera->moveForward(0.f);  //cancel last frame movement
-    if(eventHandler_->keys_[Qt::MouseButton::RightButton] == true)
-    {
-        if(eventHandler_->keys_[Qt::Key_W] == true)
-            camera->moveForward(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_S] == true)
-            camera->moveForward(cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_D] == true)
-            camera->moveRight(cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_A] == true)
-            camera->moveRight(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_Q] == true)
-            camera->moveUp(-cameraSpeed);
-        if(eventHandler_->keys_[Qt::Key_E] == true)
-            camera->moveUp(cameraSpeed);
-    }
-}
 
 void App::loadScene(QString JsonPath)
 {

@@ -25,6 +25,7 @@ public slots:
     void setComponent(QString name, int entity, QJsonObject Json);
 private:
     void call(Script *script, QString function);
+    void load(Script *script);
 };
 
 #endif // SCRIPTSYSTEM_H

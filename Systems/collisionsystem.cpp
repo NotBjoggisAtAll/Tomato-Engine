@@ -54,7 +54,7 @@ void CollisionSystem::tick()
                     (Cube1Min.y <= Cube2Max.y && Cube1Max.y >= Cube2Min.y) &&
                     (Cube1Min.z <= Cube2Max.z && Cube1Max.z >= Cube2Min.z))
             {
-                qDebug() << QString::fromStdString(data->name_ + " collides with " + otherData->name_);
+                emit entitiesCollided(entity, otherEntity);
                 break;
             }
 

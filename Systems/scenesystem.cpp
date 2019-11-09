@@ -10,6 +10,7 @@
 #include "phongshader.h"
 #include "constants.h"
 #include "jsonscene.h"
+#include "resourcefactory.h"
 
 SceneSystem::SceneSystem() {}
 
@@ -82,7 +83,13 @@ void SceneSystem::endPlay()
 
             QJsonObject meshData = components.take("mesh").toObject();
             if(!meshData.empty())
+            {
                 getWorld()->addComponent(newEntity,Mesh(meshData));
+                if(meshData["filepath"].toString().toStdString().find(".terrain") != std::string::npos)
+                {
+                    getWorld()->addComponent(newEntity, ResourceFactory::get()->getLastTerrainImported());
+                }
+            }
 
             QJsonObject collisionData = components.take("collision").toObject();
             if(!collisionData.empty())
@@ -116,6 +123,14 @@ void SceneSystem::endPlay()
                 npc.fromJson(npcData);
                 getWorld()->addComponent(newEntity,npc);
             }
+            QJsonObject inputData = components.take("input").toObject();
+            if(!inputData.empty())
+                getWorld()->addComponent(newEntity, Input(inputData));
+
+            QJsonObject destData = components.take("destructable").toObject();
+            if(!destData.empty())
+                getWorld()->addComponent(newEntity, Destructable(destData));
+
         }
     }
 }
@@ -169,8 +184,13 @@ void SceneSystem::loadScene(QString sceneName)
 
             QJsonObject meshData = components.take("mesh").toObject();
             if(!meshData.empty())
+            {
                 getWorld()->addComponent(newEntity,Mesh(meshData));
-
+                if(meshData["filepath"].toString().toStdString().find(".terrain") != std::string::npos)
+                {
+                    getWorld()->addComponent(newEntity, ResourceFactory::get()->getLastTerrainImported());
+                }
+            }
             QJsonObject collisionData = components.take("collision").toObject();
             if(!collisionData.empty())
                 getWorld()->addComponent(newEntity,Collision(collisionData));
@@ -188,6 +208,28 @@ void SceneSystem::loadScene(QString sceneName)
             QJsonObject scriptData = components.take("script").toObject();
             if(!scriptData.empty())
                 getWorld()->addComponent(newEntity,Script(scriptData));
+
+            QJsonObject bsplineData = components.take("bspline").toObject();
+            if(!bsplineData.empty())
+            {
+                BSpline spline;
+                spline.fromJson(bsplineData);
+                getWorld()->addComponent(newEntity,spline);
+            }
+            QJsonObject npcData = components.take("npc").toObject();
+            if(!npcData.empty())
+            {
+                Npc npc;
+                npc.fromJson(npcData);
+                getWorld()->addComponent(newEntity,npc);
+            }
+            QJsonObject inputData = components.take("input").toObject();
+            if(!inputData.empty())
+                getWorld()->addComponent(newEntity, Input(inputData));
+
+            QJsonObject destData = components.take("destructable").toObject();
+            if(!destData.empty())
+                getWorld()->addComponent(newEntity, Destructable(destData));
         }
     }
 }

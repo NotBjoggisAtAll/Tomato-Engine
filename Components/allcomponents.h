@@ -11,6 +11,9 @@
 #include "light.h"
 #include "bspline.h"
 #include "npc.h"
+#include "input.h"
+#include "vertexdata.h"
+#include "destructable.h"
 
 
 #endif // ALLCOMPONENTS_H

@@ -38,6 +38,8 @@ public:
 
     void setSpeed(float value);
     float getSpeed() const;
+    float pitch_{0.f};
+    float yaw_{0.f};
 private:
     void updateRightVector();
     void updateForwardVector();
@@ -47,8 +49,6 @@ private:
     gsl::Vector3D up_{0.f, 1.f, 0.f};
 
     gsl::Vector3D position_{0.f, 0.f, 0.f};
-    float pitch_{0.f};
-    float yaw_{0.f};
 
     float speed_{0.01f}; //camera will move by this speed along the mForward vector
     float rotateSpeed_{0.1f};
