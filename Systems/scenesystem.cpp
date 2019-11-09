@@ -77,8 +77,14 @@ void SceneSystem::endPlay()
 
 void SceneSystem::loadScene(QString sceneName)
 {
+    editorCamera_.camera_    = *getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value();
+    editorCamera_.transform_ = *getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value();
     loadScenePriv(QString::fromStdString(gsl::jsonFilePath) + sceneName + ".json");
-}
+    //Resets to the editor camera
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, editorCamera_.camera_);
+    getWorld()->addComponent(entity, editorCamera_.transform_);
+    getWorld()->setCurrentCamera(entity);}
 
 void SceneSystem::saveScene(QString sceneName)
 {
