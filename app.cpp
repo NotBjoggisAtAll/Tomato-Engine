@@ -320,6 +320,7 @@ Entity App::spawnObject(std::string name, std::string path)
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision(path));
+    mainWindow_->addEntityToUi(entity);
     return entity;
 }
 
