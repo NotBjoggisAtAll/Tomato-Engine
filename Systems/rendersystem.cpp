@@ -56,6 +56,8 @@ void RenderSystem::tick()
 
         else
             glDrawArrays(mesh->drawType_, 0, mesh->verticeCount_);
+
+        bool b;
     }
 }
 

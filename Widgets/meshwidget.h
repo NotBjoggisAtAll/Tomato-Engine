@@ -23,10 +23,12 @@ private slots:
 
     void on_changeMeshButton_clicked();
 
+    void ProvideContextMenu(const QPoint &point);
+    void Remove();
 private:
     Ui::MeshWidget *ui;
     Mesh* Component = nullptr;
-    Entity entity = -1;
+    Entity entity_ = -1;
 };
 
 #endif // MESHWIDGET_H
