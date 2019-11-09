@@ -13,7 +13,7 @@
 #include "Systems/npcsystem.h"
 #include "Systems/rendersystem.h"
 #include "Systems/scenesystem.h"
-#include "camera.h"
+#include "cameraclass.h"
 #include "eventhandler.h"
 #include "Windows/sceneloader.h"
 #include "Windows/scenesaver.h"
@@ -162,8 +162,8 @@ void App::postInit()
     mainWindow_->displayEntitiesInOutliner();
 
     //********************** Set up camera **********************
-    editorCamera_ = new Camera(gsl::Vector3D(1.f, 1.f, 4.4f));
-    gameCamera_ = new Camera(gsl::Vector3D(0));
+    editorCamera_ = new CameraClass(gsl::Vector3D(1.f, 1.f, 4.4f));
+    gameCamera_ = new CameraClass(gsl::Vector3D(0));
     getWorld()->setCurrentCamera(editorCamera_);
 
 }
@@ -232,7 +232,7 @@ void App::stopGame()
 
 void App::updateCameraPerspectives(float aspectRatio)
 {
-    float fov = 35.f;
+    float fov = 45.f;
     editorCamera_->aspectRatio_ = aspectRatio;
     editorCamera_->fieldOfView_ = fov;
     editorCamera_->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);

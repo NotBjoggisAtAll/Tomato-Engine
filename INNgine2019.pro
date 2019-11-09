@@ -18,6 +18,7 @@ win32 {
 HEADERS += \
     Components/allcomponents.h \
     Components/bspline.h \
+    Components/camera.h \
     Components/collision.h \
     Components/component.h \
     Components/componentArray.h \
@@ -43,6 +44,7 @@ HEADERS += \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
     Systems/bsplinesystem.h \
+    Systems/camerasystem.h \
     Systems/collisionsystem.h \
     Systems/movementsystem.h \
     Systems/npcsystem.h \
@@ -56,6 +58,7 @@ HEADERS += \
     Windows/vector3dpicker.h \
     app.h \
     bsplinecurve.h \
+    cameraclass.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -75,7 +78,6 @@ HEADERS += \
     types.h \
     vertex.h \
     octahedronball.h \
-    camera.h \
     gltypes.h \
     colorshader.h \
     textureshader.h \
@@ -85,6 +87,7 @@ HEADERS += \
 
 SOURCES += main.cpp \
     Components/bspline.cpp \
+    Components/camera.cpp \
     Components/collision.cpp \
     Components/component.cpp \
     Components/entitydata.cpp \
@@ -106,6 +109,7 @@ SOURCES += main.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
     Systems/bsplinesystem.cpp \
+    Systems/camerasystem.cpp \
     Systems/collisionsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
@@ -122,6 +126,7 @@ SOURCES += main.cpp \
     Windows/vector3dpicker.cpp \
     app.cpp \
     bsplinecurve.cpp \
+    cameraclass.cpp \
     eventhandler.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
@@ -133,7 +138,6 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     shader.cpp \
     texture.cpp \
-    camera.cpp \
     octahedronball.cpp \
     colorshader.cpp \
     textureshader.cpp \

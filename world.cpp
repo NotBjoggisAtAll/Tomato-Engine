@@ -2,12 +2,12 @@
 
 World* World::instance = nullptr;
 
-Camera *World::getCurrentCamera()
+CameraClass *World::getCurrentCamera()
 {
     return currentCamera_;
 }
 
-void World::setCurrentCamera(Camera *newCamera)
+void World::setCurrentCamera(CameraClass *newCamera)
 {
     currentCamera_ = newCamera;
 }

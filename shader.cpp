@@ -3,7 +3,7 @@
 #include <sstream>
 #include "constants.h"
 #include "World.h"
-#include "camera.h"
+#include "cameraclass.h"
 #include "Components/material.h"
 
 Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShaderName(shaderName)

@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERACLASS_H
+#define CAMERACLASS_H
 
 #include "GSL/gsl_math.h"
 #include <array>
@@ -10,12 +10,12 @@ struct Plane
     gsl::Vector3D normal_;
 };
 
-class Camera
+class CameraClass
 {
 public:
-    Camera() = default;
-    Camera(gsl::Vector3D position);
-    Camera(QJsonObject Json);
+    CameraClass() = default;
+    CameraClass(gsl::Vector3D position);
+    CameraClass(QJsonObject Json);
 
     void pitch(float degrees);
     void yaw(float degrees);
@@ -63,4 +63,4 @@ public:
     std::array<Plane, 6> frustum_; //left, right, top, bottom, farPlane, nearPlane
 };
 
-#endif // CAMERA_H
+#endif // CAMERACLASS_H

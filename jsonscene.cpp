@@ -3,7 +3,7 @@
 #include <QJsonDocument>
 #include "world.h"
 #include "Components/allcomponents.h"
-#include "camera.h"
+#include "cameraclass.h"
 #include "constants.h"
 
 namespace jba {

@@ -5,7 +5,7 @@
 #include "Components/transform.h"
 #include "Components/material.h"
 #include "Components/entitydata.h"
-#include "camera.h"
+#include "cameraclass.h"
 #include "shader.h"
 
 void RenderSystem::beginPlay()
