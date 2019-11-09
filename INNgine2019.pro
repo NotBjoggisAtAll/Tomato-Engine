@@ -62,7 +62,6 @@ HEADERS += \
     Windows/vector3dpicker.h \
     app.h \
     bsplinecurve.h \
-    cameraclass.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -133,7 +132,6 @@ SOURCES += main.cpp \
     Windows/vector3dpicker.cpp \
     app.cpp \
     bsplinecurve.cpp \
-    cameraclass.cpp \
     eventhandler.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \
