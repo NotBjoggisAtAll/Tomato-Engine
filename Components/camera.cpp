@@ -6,6 +6,10 @@ Camera::Camera()
 
 }
 
+Camera::Camera(bool isInUse) : isInUse_(isInUse){}
+
+Camera::Camera(bool isInUse, float yaw, float pitch) : yaw_(yaw), pitch_(pitch), isInUse_(isInUse){}
+
 Camera::Camera(float yaw, float pitch) : yaw_(yaw), pitch_(pitch) {}
 
 Camera::Camera(QJsonObject Json)

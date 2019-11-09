@@ -19,6 +19,8 @@ void CameraSystem::tick()
     for(const auto& entity : entities_)
     {
         Camera* camera = getWorld()->getComponent<Camera>(entity).value();
+        if(!camera->isInUse_) continue;
+
         Transform* transform = getWorld()->getComponent<Transform>(entity).value();
 
         gsl::Matrix4x4 yawMatrix;

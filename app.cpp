@@ -15,7 +15,6 @@
 #include "Systems/camerasystem.h"
 #include "eventhandler.h"
 #include "Systems/scenesystem.h"
-#include "cameraclass.h"
 #include "Systems/inputsystem.h"
 #include "Windows/sceneloader.h"
 #include "Windows/scenesaver.h"
@@ -228,16 +227,16 @@ void App::postInit()
         point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
     }
 
+
     entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Editor Camera"));
-    getWorld()->addComponent(entity, Camera());
+    getWorld()->addComponent(entity, Camera(true));
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
     getWorld()->setCurrentCamera(entity);
     editorCamera_ = entity;
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Game Camera"));
-    getWorld()->addComponent(entity, Camera(-180.f,-90.f));
+    getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(0, 0 , -1)));
 
     gameCamera_ = entity;

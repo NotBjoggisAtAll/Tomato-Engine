@@ -14,6 +14,8 @@ struct Plane
 struct Camera : public Component
 {
     Camera();
+    Camera(bool isInUse);
+    Camera(bool isInUse, float yaw, float pitch);
     Camera(float yaw, float pitch);
     Camera(QJsonObject Json);
 
@@ -33,9 +35,11 @@ struct Camera : public Component
     float aspectRatio_ = 0;
     float fieldOfView_ = 45.f;
 
+
     ///float is distance to origo, gsl::vector3D is normal.
     std::array<Plane, 6> frustum_; //left, right, top, bottom, farPlane, nearPlane
 
+    bool isInUse_ = false;
     virtual QJsonObject toJson() override;
     virtual void fromJson(QJsonObject Json) override;
 };
