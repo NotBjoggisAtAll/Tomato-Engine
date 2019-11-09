@@ -20,7 +20,7 @@ public:
 
 private:
 
-    QString currentScene_ = "";
+    void loadScenePriv(QString sceneName);
 
 };
 

@@ -10,7 +10,6 @@
 #include "mainwindow.h"
 
 class RenderWindow;
-class CameraClass;
 class EventHandler;
 
 class App : public QObject
@@ -52,8 +51,8 @@ private:
     QElapsedTimer deltaTimer_;
     int frameCounter = 0;
 
-    CameraClass* editorCamera_ = nullptr;
-    CameraClass* gameCamera_{nullptr};
+    Entity editorCamera_ = -1;
+    Entity gameCamera_ = -1;
 
     void calculateFramerate();
 

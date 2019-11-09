@@ -3,8 +3,8 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include "World.h"
-#include "cameraclass.h"
+#include "world.h"
+#include "Components/camera.h"
 EventHandler::EventHandler()
 {
 
@@ -31,11 +31,11 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
         QPoint numDegrees = static_cast<QWheelEvent*>(event)->angleDelta() / 8;
         if (keys_[Qt::MouseButton::RightButton])
         {
-            auto camera = getWorld()->getCurrentCamera();
-            if (numDegrees.y() < 1)
-                camera->setSpeed(0.001f);
-            if (numDegrees.y() > 1)
-                camera->setSpeed(-0.001f);
+            //            auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
+            //            if (numDegrees.y() < 1)
+            //                camera->setSpeed(0.001f);
+            //            if (numDegrees.y() > 1)
+            //                camera->setSpeed(-0.001f);
         }
         return true;
     }
@@ -44,16 +44,42 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
         auto mouseEvent = static_cast<QMouseEvent*>(event);
         if (keys_[Qt::MouseButton::RightButton])
         {
-            auto camera = getWorld()->getCurrentCamera();
+            auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
 
             //Using mMouseXYlast as deltaXY so we don't need extra variables
             mouseXlast_ = mouseEvent->pos().x() - mouseXlast_;
             mouseYlast_ = mouseEvent->pos().y() - mouseYlast_;
 
             if (mouseXlast_ != 0)
-                camera->yaw(mouseXlast_);
+            {
+                camera->yaw_ -= mouseXlast_ * camera->rotateSpeed_;
+                camera->right_ = gsl::Vector3D(1.f, 0.f, 0.f);
+                camera->right_.rotateY(camera->yaw_);
+                camera->right_.normalize();
+                camera->up_ = gsl::Vector3D(0.f, 1.f, 0.f);
+                camera->up_.rotateX(camera->pitch_);
+                camera->up_.normalize();
+                camera->forward_ = camera->up_^camera->right_;
+
+                camera->right_ = camera->forward_^camera->up_;
+                camera->right_.normalize();
+            }
+
             if (mouseYlast_ != 0)
-                camera->pitch(mouseYlast_);
+            {
+                camera->pitch_ -= mouseYlast_ * camera->rotateSpeed_;
+                camera->right_ = gsl::Vector3D(1.f, 0.f, 0.f);
+                camera->right_.rotateY(camera->yaw_);
+                camera->right_.normalize();
+                camera->up_ = gsl::Vector3D(0.f, 1.f, 0.f);
+                camera->up_.rotateX(camera->pitch_);
+                camera->up_.normalize();
+                camera->forward_ = camera->up_^camera->right_;
+
+                camera->right_ = camera->forward_^camera->up_;
+                camera->right_.normalize();
+            }
+
         }
         mouseXlast_ = mouseEvent->pos().x();
         mouseYlast_ = mouseEvent->pos().y();

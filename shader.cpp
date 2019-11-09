@@ -2,8 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include "constants.h"
-#include "World.h"
-#include "cameraclass.h"
+#include "world.h"
+#include "Components/camera.h"
 #include "Components/material.h"
 
 Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShaderName(shaderName)
@@ -149,7 +149,7 @@ GLuint Shader::getProgram() const
 
 void Shader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
-    glUniformMatrix4fv( vMatrixUniform_, 1, GL_TRUE, getWorld()->getCurrentCamera()->viewMatrix_.constData());
-    glUniformMatrix4fv( pMatrixUniform_, 1, GL_TRUE, getWorld()->getCurrentCamera()->projectionMatrix_.constData());
+    glUniformMatrix4fv( vMatrixUniform_, 1, GL_TRUE, getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->viewMatrix_.constData());
+    glUniformMatrix4fv( pMatrixUniform_, 1, GL_TRUE, getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->projectionMatrix_.constData());
     glUniformMatrix4fv( mMatrixUniform_, 1, GL_TRUE, modelMatrix->constData());
 }

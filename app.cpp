@@ -2,7 +2,6 @@
 #include "renderwindow.h"
 #include "world.h"
 #include "Components/allcomponents.h"
-#include "Components/vertexdata.h"
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
@@ -13,6 +12,8 @@
 #include "Systems/bsplinesystem.h"
 #include "Systems/npcsystem.h"
 #include "Systems/rendersystem.h"
+#include "Systems/camerasystem.h"
+#include "eventhandler.h"
 #include "Systems/scenesystem.h"
 #include "cameraclass.h"
 #include "Systems/inputsystem.h"
@@ -34,6 +35,7 @@ App::App()
     getWorld()->registerComponent<Input>();
     getWorld()->registerComponent<VertexData>();
     getWorld()->registerComponent<Destructable>();
+    getWorld()->registerComponent<Camera>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -44,6 +46,7 @@ App::App()
     getWorld()->registerSystem<RenderSystem>();
     getWorld()->registerSystem<NpcSystem>();
     getWorld()->registerSystem<InputSystem>();
+    getWorld()->registerSystem<CameraSystem>();
 
     Signature renderSign;
     renderSign.set(getWorld()->getComponentType<Transform>());
@@ -86,6 +89,11 @@ App::App()
     inputSign.set(getWorld()->getComponentType<Input>());
     inputSign.set(getWorld()->getComponentType<Transform>());
     getWorld()->setSystemSignature<InputSystem>(inputSign);
+
+    Signature cameraSign;
+    cameraSign.set(getWorld()->getComponentType<Transform>());
+    cameraSign.set(getWorld()->getComponentType<Camera>());
+    getWorld()->setSystemSignature<CameraSystem>(cameraSign);
 
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
@@ -220,14 +228,21 @@ void App::postInit()
         point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
     }
 
-    mainWindow_->displayEntitiesInOutliner();
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Editor Camera"));
+    getWorld()->addComponent(entity, Camera());
+    getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
+    getWorld()->setCurrentCamera(entity);
+    editorCamera_ = entity;
 
-    //********************** Set up camera **********************
-    editorCamera_ = new CameraClass(gsl::Vector3D(1.f, 1.f, 4.4f));
-    gameCamera_ = new CameraClass(gsl::Vector3D(0, 0 , -1));
-    gameCamera_->yaw_ = (-180.f);
-    gameCamera_->pitch_ = (-90.f);
-    getWorld()->setCurrentCamera(editorCamera_);
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Game Camera"));
+    getWorld()->addComponent(entity, Camera(-180.f,-90.f));
+    getWorld()->addComponent(entity, Transform(gsl::Vector3D(0, 0 , -1)));
+
+    gameCamera_ = entity;
+
+    mainWindow_->displayEntitiesInOutliner();
 
 }
 
@@ -275,7 +290,7 @@ void App::tick()
     getWorld()->getSystem<CollisionSystem>()->tick();
     getWorld()->getSystem<SoundSystem>()->tick();
 
-    getWorld()->getCurrentCamera()->update();
+    getWorld()->getSystem<CameraSystem>()->tick();
     renderWindow_->tick();
 }
 
@@ -382,12 +397,14 @@ void App::setupVisimOblig()
 void App::updateCameraPerspectives(float aspectRatio)
 {
     float fov = 45.f;
-    editorCamera_->aspectRatio_ = aspectRatio;
-    editorCamera_->fieldOfView_ = fov;
-    editorCamera_->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
-    gameCamera_->aspectRatio_ = aspectRatio;
-    gameCamera_->fieldOfView_ = fov;
-    gameCamera_->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
+    Camera* camera = getWorld()->getComponent<Camera>(editorCamera_).value_or(nullptr);
+    camera->aspectRatio_ = aspectRatio;
+    camera->fieldOfView_ = fov;
+    camera->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
+    Camera* gameCamera = getWorld()->getComponent<Camera>(gameCamera_).value_or(nullptr);
+    gameCamera->aspectRatio_ = aspectRatio;
+    gameCamera->fieldOfView_ = fov;
+    gameCamera->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
 }
 void App::calculateFramerate()
 {
@@ -439,22 +456,25 @@ void App::raycastFromMouse()
 {
     auto mousePos = renderWindow_->mapFromGlobal(QCursor::pos());
 
+    auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
+    auto transform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
+
     float x = (2.0f * mousePos.x()) / renderWindow_->width() - 1.0f;
     float y = 1.0f - (2.0f * mousePos.y()) / renderWindow_->height();
     float z = 1.0f;
     gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
     gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
-    gsl::Matrix4x4 projection_matrix = getWorld()->getCurrentCamera()->projectionMatrix_;
+    gsl::Matrix4x4 projection_matrix = camera->projectionMatrix_;
     projection_matrix.inverse();
     gsl::Vector4D ray_eye = projection_matrix * ray_clip;
     ray_eye.z = -1.0f;
     ray_eye.w = 0.0f;
-    gsl::Matrix4x4 view_matrix = getWorld()->getCurrentCamera()->viewMatrix_;
+    gsl::Matrix4x4 view_matrix = camera->viewMatrix_;
     view_matrix.inverse();
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
 
-    Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(getWorld()->getCurrentCamera()->position(),ray_world);
+    Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(transform->position_,ray_world);
 
     mainWindow_->updateRightPanel(entityPicked);
     renderWindow_->makeCollisionBorder(entityPicked);

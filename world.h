@@ -7,8 +7,6 @@
 #include <memory>
 #include <string>
 
-class CameraClass;
-
 class World
 {
 public:
@@ -120,8 +118,8 @@ public:
 
     bool bGameRunning = false;
 
-    CameraClass* getCurrentCamera();
-    void setCurrentCamera(CameraClass* newCamera);
+    Entity getCurrentCamera();
+    void setCurrentCamera(Entity newCamera);
 
 private:
 
@@ -132,7 +130,7 @@ private:
     std::unique_ptr<EntityManager> mEntityManager;
     std::unique_ptr<SystemManager> mSystemManager;
 
-    CameraClass* currentCamera_ = nullptr;
+    Entity currentCamera_ = -1;
 
 };
 

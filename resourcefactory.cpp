@@ -101,7 +101,7 @@ Mesh ResourceFactory::createMesh()
     else if(file_ == "line")
 
 
-    glBindVertexArray(0);
+        glBindVertexArray(0);
 
     return mesh;
 }
@@ -145,8 +145,10 @@ Mesh ResourceFactory::createObject()
     }
 
     else if(file_.find(".terrain") != std::string::npos)
+    {
         readTerrainFile();
-
+        mesh.isAffectedByFrustum_ = false;
+    }
 
     mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();

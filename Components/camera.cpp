@@ -6,6 +6,13 @@ Camera::Camera()
 
 }
 
+Camera::Camera(float yaw, float pitch) : yaw_(yaw), pitch_(pitch) {}
+
+Camera::Camera(QJsonObject Json)
+{
+    fromJson(Json);
+}
+
 
 QJsonObject Camera::toJson()
 {

@@ -3,8 +3,8 @@
 #include "world.h"
 #include "Components/transform.h"
 #include "Components/input.h"
-#include "camera.h"
 #include "Components/vertexdata.h"
+#include "Components/camera.h"
 
 InputSystem::InputSystem()
 {
@@ -18,23 +18,28 @@ void InputSystem::beginPlay()
 
 void InputSystem::tick()
 {
-    auto camera = getWorld()->getCurrentCamera();
+    auto cameraEntity = getWorld()->getCurrentCamera();
+    if(cameraEntity == -1) return;
 
-    camera->moveForward(0.f);  //cancel last frame movement
+    auto camera = getWorld()->getComponent<Camera>(cameraEntity).value_or(nullptr);
+    if(!camera) return;
+    camera->speed_ = 0.f;  //cancel last frame movement
     if(eventHandler_->keys_[Qt::MouseButton::RightButton] == true)
     {
+        auto transform = getWorld()->getComponent<Transform>(cameraEntity).value_or(nullptr);
+        if(!transform) return;
         if(eventHandler_->keys_[Qt::Key_W] == true)
-            camera->moveForward(-cameraSpeed);
+            camera->speed_ = -cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_S] == true)
-            camera->moveForward(cameraSpeed);
+            camera->speed_ = cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_D] == true)
-            camera->moveRight(cameraSpeed);
+            transform->position_ += camera->right_ * cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_A] == true)
-            camera->moveRight(-cameraSpeed);
+            transform->position_ += camera->right_ * -cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_Q] == true)
-            camera->moveUp(-cameraSpeed);
+            transform->position_.y += -cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_E] == true)
-            camera->moveUp(cameraSpeed);
+            transform->position_.y += cameraSpeed;
     }else{
         if(!getWorld()->bGameRunning) return;
         for(const auto& entity : entities_)

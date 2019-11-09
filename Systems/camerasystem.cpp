@@ -21,17 +21,17 @@ void CameraSystem::tick()
         Camera* camera = getWorld()->getComponent<Camera>(entity).value();
         Transform* transform = getWorld()->getComponent<Transform>(entity).value();
 
-    gsl::Matrix4x4 yawMatrix;
-    gsl::Matrix4x4 pitchMatrix;
+        gsl::Matrix4x4 yawMatrix;
+        gsl::Matrix4x4 pitchMatrix;
 
-    pitchMatrix.rotateX(camera->pitch_);
-    yawMatrix.rotateY(camera->yaw_);
+        pitchMatrix.rotateX(camera->pitch_);
+        yawMatrix.rotateY(camera->yaw_);
 
-    transform->position_ -= camera->forward_ * camera->speed_;
+        transform->position_ -= camera->forward_ * camera->speed_;
 
-    camera->viewMatrix_ = pitchMatrix * yawMatrix;
-    camera->viewMatrix_.translate(-transform->position_);
-    updateFrustum(camera);
+        camera->viewMatrix_ = pitchMatrix * yawMatrix;
+        camera->viewMatrix_.translate(-transform->position_);
+        updateFrustum(camera);
     }
 }
 

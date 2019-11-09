@@ -14,6 +14,6 @@
 #include "input.h"
 #include "vertexdata.h"
 #include "destructable.h"
-
+#include "camera.h"
 
 #endif // ALLCOMPONENTS_H

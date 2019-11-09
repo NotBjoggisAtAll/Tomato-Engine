@@ -5,7 +5,7 @@
 #include "Components/transform.h"
 #include "Components/material.h"
 #include "Components/entitydata.h"
-#include "cameraclass.h"
+#include "Components/camera.h"
 #include "shader.h"
 
 void RenderSystem::beginPlay()
@@ -61,7 +61,7 @@ void RenderSystem::tick()
 
 bool RenderSystem::sphereInsideFrustum(const gsl::Vector3D vecCenter, float radius)
 {
-    const auto& frustum = getWorld()->getCurrentCamera()->frustum_;
+    const auto& frustum = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->frustum_;
     for(unsigned int i = 0; i < 6; i++)
     {
         if(gsl::Vector3D::dot(vecCenter, frustum[i].normal_) + frustum[i].distance_ + radius <= 0)
