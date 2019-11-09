@@ -10,4 +10,10 @@ Entity World::getCurrentCamera()
 void World::setCurrentCamera(Entity newCamera)
 {
     currentCamera_ = newCamera;
+    emit updateCameraPerspectives();
+}
+
+World::World()
+{
+    init();
 }

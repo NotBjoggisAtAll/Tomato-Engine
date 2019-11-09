@@ -4,7 +4,6 @@
 #include <QJsonArray>
 #include "Components/allcomponents.h"
 #include <QFile>
-#include "cameraclass.h"
 #include <QJsonDocument>
 #include "Managers/shadermanager.h"
 #include "phongshader.h"
@@ -24,10 +23,40 @@ void SceneSystem::clearScene()
 
 void SceneSystem::beginPlay()
 {
+    editorCamera_.camera_    = *getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value();
+    editorCamera_.transform_ = *getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value();
+
+    getWorld()->destroyEntity(getWorld()->getCurrentCamera());
+
     jba::JsonScene scene("temp");
     for(auto entity : entities_)
         scene.addObject(entity);
     scene.makeTempFile("temp");
+
+    //Leter etter første kamera blant entites som ikke er et editor kamera og setter denne til current kamera.
+    for(const auto& entity : entities_)
+    {
+        auto camera = getWorld()->getComponent<Camera>(entity).value_or(nullptr);
+        if(camera)
+        {
+            if(camera->isEditor == false)
+            {
+                camera->isInUse_ = true;
+                getWorld()->setCurrentCamera(entity);
+                camera->right_ = gsl::Vector3D(1.f, 0.f, 0.f);
+                camera->right_.rotateY(camera->yaw_);
+                camera->right_.normalize();
+                camera->up_ = gsl::Vector3D(0.f, 1.f, 0.f);
+                camera->up_.rotateX(camera->pitch_);
+                camera->up_.normalize();
+                camera->forward_ = camera->up_^camera->right_;
+
+                camera->right_ = camera->forward_^camera->up_;
+                camera->right_.normalize();
+                return;
+            }
+        }
+    }
 }
 
 void SceneSystem::tick()
@@ -37,6 +66,13 @@ void SceneSystem::tick()
 void SceneSystem::endPlay()
 {
     loadScenePriv("temp.json");
+
+    //Resets to the editor camera
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, editorCamera_.camera_);
+    getWorld()->addComponent(entity, editorCamera_.transform_);
+    getWorld()->setCurrentCamera(entity);
+
 }
 
 void SceneSystem::loadScene(QString sceneName)
@@ -150,9 +186,7 @@ void SceneSystem::loadScenePriv(QString sceneName)
             if(!cameraData.empty())
             {
                 getWorld()->addComponent(newEntity, Camera(cameraData));
-                getWorld()->setCurrentCamera(newEntity);
             }
-
         }
     }
 }

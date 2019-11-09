@@ -118,8 +118,8 @@ App::App()
     connect(mainWindow_.get(), &MainWindow::newScene, this, &App::newScene);
     connect(mainWindow_.get(), &MainWindow::saveScene, this, &App::openSceneSaver);
 
-
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
+    connect(getWorld(), &World::updateCameraPerspectives, renderWindow_.get(), &RenderWindow::callExposeEvent);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
     connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
@@ -227,19 +227,19 @@ void App::postInit()
         point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
     }
 
+    Camera camera;
+    camera.isInUse_ = true;
+    camera.isEditor = true;
 
     entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, Camera(true));
+    getWorld()->addComponent(entity, camera);
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
     getWorld()->setCurrentCamera(entity);
-    editorCamera_ = entity;
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Game Camera"));
     getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(0, 0 , -1)));
-
-    gameCamera_ = entity;
 
     mainWindow_->displayEntitiesInOutliner();
 
@@ -323,8 +323,6 @@ Entity App::spawnObject(std::string name, std::string path)
 void App::playGame()
 {
     setupVisimOblig();
-
-    getWorld()->setCurrentCamera(gameCamera_);
     getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 
@@ -332,10 +330,9 @@ void App::playGame()
 
 void App::stopGame()
 {
+    getWorld()->getSystem<NpcSystem>()->endPlay();
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
-    getWorld()->setCurrentCamera(editorCamera_);
-    getWorld()->getSystem<NpcSystem>()->endPlay();
 
     setupVisimOblig();
 }
@@ -396,14 +393,10 @@ void App::setupVisimOblig()
 void App::updateCameraPerspectives(float aspectRatio)
 {
     float fov = 45.f;
-    Camera* camera = getWorld()->getComponent<Camera>(editorCamera_).value_or(nullptr);
+    Camera* camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
     camera->aspectRatio_ = aspectRatio;
     camera->fieldOfView_ = fov;
     camera->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
-    Camera* gameCamera = getWorld()->getComponent<Camera>(gameCamera_).value_or(nullptr);
-    gameCamera->aspectRatio_ = aspectRatio;
-    gameCamera->fieldOfView_ = fov;
-    gameCamera->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
 }
 void App::calculateFramerate()
 {

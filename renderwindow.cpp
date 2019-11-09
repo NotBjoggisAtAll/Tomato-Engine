@@ -90,6 +90,11 @@ void RenderWindow::tick()
     context_->swapBuffers(this);
 }
 
+void RenderWindow::callExposeEvent()
+{
+    exposeEvent(nullptr);
+}
+
 void RenderWindow::makeCollisionBorder(Entity newEntity){
 
     if(lastCollisionEntity != -1)

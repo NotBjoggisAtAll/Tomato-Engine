@@ -31,6 +31,8 @@ QJsonObject Camera::toJson()
     object.insert("aspectRatio", static_cast<double>(aspectRatio_));
     object.insert("fieldOfView", static_cast<double>(fieldOfView_));
 
+    object.insert("isEditor", isEditor);
+
     return object;
 }
 
@@ -44,5 +46,7 @@ void Camera::fromJson(QJsonObject Json)
 
     aspectRatio_ = static_cast<float>(Json.take("aspectRatio").toDouble());
     fieldOfView_ = static_cast<float>(Json.take("fieldOfView").toDouble());
+
+    isEditor = Json.take("isEditor").toBool();
 
 }

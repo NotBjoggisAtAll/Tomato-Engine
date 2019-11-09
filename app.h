@@ -51,9 +51,6 @@ private:
     QElapsedTimer deltaTimer_;
     int frameCounter = 0;
 
-    Entity editorCamera_ = -1;
-    Entity gameCamera_ = -1;
-
     void calculateFramerate();
 
     void setupVisimOblig();

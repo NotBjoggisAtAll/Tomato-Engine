@@ -40,6 +40,7 @@ struct Camera : public Component
     std::array<Plane, 6> frustum_; //left, right, top, bottom, farPlane, nearPlane
 
     bool isInUse_ = false;
+    bool isEditor = false;
     virtual QJsonObject toJson() override;
     virtual void fromJson(QJsonObject Json) override;
 };

@@ -112,7 +112,6 @@ void JsonScene::addObject(Entity entity)
         components.insert("camera", camera->toJson());
 
     // Legg til flere komponenter her etterhvert
-    entityObject.insert("id", entity);
     entityObject.insert("components", components);
 
     entities_.push_back(entityObject);
