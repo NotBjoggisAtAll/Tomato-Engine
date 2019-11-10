@@ -19,7 +19,6 @@ void CameraSystem::tick()
     for(const auto& entity : entities_)
     {
         Camera* camera = getWorld()->getComponent<Camera>(entity).value();
-        if(!camera->isInUse_) continue;
 
         Transform* transform = getWorld()->getComponent<Transform>(entity).value();
 
@@ -29,10 +28,14 @@ void CameraSystem::tick()
         pitchMatrix.rotateX(camera->pitch_);
         yawMatrix.rotateY(camera->yaw_);
 
-        transform->position_ -= camera->forward_ * camera->speed_;
-
         camera->viewMatrix_ = pitchMatrix * yawMatrix;
-        camera->viewMatrix_.translate(-transform->position_);
+
+        if(camera->isInUse_)
+        {
+            transform->position_ -= camera->forward_ * camera->speed_;
+            camera->viewMatrix_.translate(-transform->position_);
+        }
+
         updateFrustum(camera);
     }
 }

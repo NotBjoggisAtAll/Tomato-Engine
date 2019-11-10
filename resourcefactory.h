@@ -21,6 +21,8 @@ public:
     Mesh createLines(std::pair<std::vector<Vertex>,std::vector<unsigned int>> verticesAndIndices);
     Collision getCollision(std::string file);
 
+    Mesh getCameraFrustum();
+
     VertexData getLastTerrainImported() const;
 
 private:
