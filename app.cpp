@@ -186,14 +186,6 @@ void App::postInit()
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
     mesh->isAffectedByFrustum_ = false;
 
-//    entity = getWorld()->createEntity();
-//    getWorld()->addComponent(entity, EntityData("Enemy"));
-//    getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
-//    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{.2f,.7f,.1f}));
-//    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-//    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-
-
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Game Camera"));
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(0,13,0)));
