@@ -3,7 +3,6 @@
 #include <QJsonDocument>
 #include "world.h"
 #include "Components/allcomponents.h"
-#include "cameraclass.h"
 #include "constants.h"
 
 namespace jba {
@@ -21,7 +20,6 @@ void JsonScene::makeTempFile(QString sceneName)
 
     QJsonDocument doc;
     sceneObject_.insert("entities", entities_);
-    sceneObject_.insert("camera", getWorld()->getCurrentCamera()->toJson());
 
     doc.setObject(sceneObject_);
 
@@ -42,7 +40,6 @@ void JsonScene::makeFile(QString sceneName, bool overwrite)
 
     QJsonDocument doc;
     sceneObject_.insert("entities", entities_);
-    sceneObject_.insert("camera", getWorld()->getCurrentCamera()->toJson());
 
     doc.setObject(sceneObject_);
 
@@ -105,8 +102,15 @@ void JsonScene::addObject(Entity entity)
     if(input)
         components.insert("input", input->toJson());
 
+    Destructable* dest = getWorld()->getComponent<Destructable>(entity).value_or(nullptr);
+    if(dest)
+        components.insert("destructable", dest->toJson());
+
+    Camera* camera = getWorld()->getComponent<Camera>(entity).value_or(nullptr);
+    if(camera)
+        components.insert("camera", camera->toJson());
+
     // Legg til flere komponenter her etterhvert
-    entityObject.insert("id", entity);
     entityObject.insert("components", components);
 
     entities_.push_back(entityObject);

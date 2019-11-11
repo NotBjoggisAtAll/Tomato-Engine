@@ -7,6 +7,7 @@
 
 namespace gsl
 {
+class Vector3D;
 
 class Vector2D
 {
@@ -29,7 +30,7 @@ public:
     GLfloat length() const;
     void normalize();
     Vector2D normalized();
-    static GLfloat cross(const Vector2D &v1, const Vector2D &v2);
+    static Vector3D cross(const Vector2D &v1, const Vector2D &v2);
     static GLfloat dot(const Vector2D &v1, const Vector2D &v2);
 
     //Getters and setters
@@ -48,6 +49,7 @@ public:
 
     GLfloat x;
     GLfloat y;
+    Vector3D barycentricCoordinates(const Vector2D &p1, const Vector2D &p2, const Vector2D &p3);
 };
 
 } //namespace

@@ -1,16 +1,16 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <QObject>
 #include "Managers/componentManager.h"
 #include "Managers/entitymanager.h"
 #include "Managers/systemManager.h"
 #include <memory>
 #include <string>
 
-class CameraClass;
-
-class World
+class World : public QObject
 {
+    Q_OBJECT
 public:
 
      friend World* getWorld()
@@ -24,115 +24,118 @@ public:
     void init()
     {
         // Create pointers to each manager
-        mComponentManager = std::make_unique<ComponentManager>();
-        mEntityManager = std::make_unique<EntityManager>();
-        mSystemManager = std::make_unique<SystemManager>();
+        componentManager_ = std::make_unique<ComponentManager>();
+        entityManager_ = std::make_unique<EntityManager>();
+        systemManager_ = std::make_unique<SystemManager>();
     }
 
     // Entity methods
     Entity createEntity()
     {
-        auto eId = mEntityManager->createEntity();
+        auto eId = entityManager_->createEntity();
         return eId;
     }
 
     void destroyEntity(Entity entity)
     {
 
-        mEntityManager->destroyEntity(entity);
+        entityManager_->destroyEntity(entity);
 
-        mComponentManager->entityDestroyed(entity);
+        componentManager_->entityDestroyed(entity);
 
-        mSystemManager->entityDestroyed(entity);
+        systemManager_->entityDestroyed(entity);
     }
 
     std::vector<Entity> getEntities()
     {
-       return mEntityManager->getEntities();
+       return entityManager_->getEntities();
     }
 
     // Component methods
     template<typename T>
     void registerComponent()
     {
-        mComponentManager->registerComponent<T>();
+        componentManager_->registerComponent<T>();
     }
 
     template<typename T>
     void addComponent(Entity entity, T component)
     {
-        mComponentManager->addComponent<T>(entity, component);
+        componentManager_->addComponent<T>(entity, component);
 
-        auto signature = mEntityManager->getSignature(entity);
-        signature.set(mComponentManager->getComponentType<T>(), true);
-        mEntityManager->setSignature(entity, signature);
+        auto signature = entityManager_->getSignature(entity);
+        signature.set(componentManager_->getComponentType<T>(), true);
+        entityManager_->setSignature(entity, signature);
 
-        mSystemManager->EntitySignatureChanged(entity, signature);
+        systemManager_->EntitySignatureChanged(entity, signature);
     }
 
     template<typename T>
     void removeComponent(Entity entity)
     {
-        mComponentManager->removeComponent<T>(entity);
+        componentManager_->removeComponent<T>(entity);
 
-        auto signature = mEntityManager->getSignature(entity);
-        signature.set(mComponentManager->getComponentType<T>(), false);
-        mEntityManager->setSignature(entity, signature);
+        auto signature = entityManager_->getSignature(entity);
+        signature.set(componentManager_->getComponentType<T>(), false);
+        entityManager_->setSignature(entity, signature);
 
-        mSystemManager->EntitySignatureChanged(entity, signature);
+        systemManager_->EntitySignatureChanged(entity, signature);
     }
 
     template<typename T>
     std::optional<T*> getComponent(Entity entity)
     {
-        return mComponentManager->getComponent<T>(entity);
+        return componentManager_->getComponent<T>(entity);
     }
 
     template<typename T>
     ComponentType getComponentType()
     {
-        return mComponentManager->getComponentType<T>();
+        return componentManager_->getComponentType<T>();
     }
 
     std::unordered_map<std::string, ComponentType> getComponentTypes()
     {
-        return mComponentManager->getComponentTypes();
+        return componentManager_->getComponentTypes();
     }
 
     // System methods
     template<typename T>
     std::shared_ptr<T> registerSystem()
     {
-        return mSystemManager->registerSystem<T>();
+        return systemManager_->registerSystem<T>();
     }
 
     template<typename T>
     std::shared_ptr<T> getSystem()
     {
-        return mSystemManager->getSystem<T>();
+        return systemManager_->getSystem<T>();
     }
 
     template<typename T>
     void setSystemSignature(Signature signature)
     {
-        mSystemManager->setSignature<T>(signature);
+        systemManager_->setSignature<T>(signature);
     }
 
     bool bGameRunning = false;
 
-    CameraClass* getCurrentCamera();
-    void setCurrentCamera(CameraClass* newCamera);
+    Entity getCurrentCamera();
+    void setCurrentCamera(Entity newCamera);
 
+signals:
+    void updateCameraPerspectives();
 private:
 
     static World* instance;
-    World(){init();}
+    World();
 
-    std::unique_ptr<ComponentManager> mComponentManager;
-    std::unique_ptr<EntityManager> mEntityManager;
-    std::unique_ptr<SystemManager> mSystemManager;
+    std::unique_ptr<ComponentManager> componentManager_;
+    std::unique_ptr<EntityManager> entityManager_;
+    std::unique_ptr<SystemManager> systemManager_;
 
-    Camera* currentCamera_ = nullptr;
+    Entity currentCamera_ = -1;
+
 };
 
 World* getWorld();

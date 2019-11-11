@@ -2,7 +2,7 @@ let transform;
 
 function beginPlay()
 {
-
+    
 }
 
 function tick()

@@ -6,6 +6,17 @@ Camera::Camera()
 
 }
 
+Camera::Camera(bool isInUse) : isInUse_(isInUse){}
+
+Camera::Camera(bool isInUse, float yaw, float pitch) : yaw_(yaw), pitch_(pitch), isInUse_(isInUse){}
+
+Camera::Camera(float yaw, float pitch) : yaw_(yaw), pitch_(pitch) {}
+
+Camera::Camera(QJsonObject Json)
+{
+    fromJson(Json);
+}
+
 
 QJsonObject Camera::toJson()
 {
@@ -20,6 +31,8 @@ QJsonObject Camera::toJson()
     object.insert("aspectRatio", static_cast<double>(aspectRatio_));
     object.insert("fieldOfView", static_cast<double>(fieldOfView_));
 
+    object.insert("isEditor", isEditor);
+
     return object;
 }
 
@@ -33,5 +46,7 @@ void Camera::fromJson(QJsonObject Json)
 
     aspectRatio_ = static_cast<float>(Json.take("aspectRatio").toDouble());
     fieldOfView_ = static_cast<float>(Json.take("fieldOfView").toDouble());
+
+    isEditor = Json.take("isEditor").toBool();
 
 }

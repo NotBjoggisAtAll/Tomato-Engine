@@ -142,23 +142,17 @@ void MainWindow::on_Outliner_itemDoubleClicked(QTreeWidgetItem *item, int)
 
 void MainWindow::on_spawnCube_triggered()
 {
-    Entity entity = emit spawnObject("Cube","box2.txt");
-    addEntityToUi(entity);
-
+    emit spawnObject("Cube","box2.txt");
 }
 
 void MainWindow::on_spawnSphere_triggered()
 {
-    Entity entity = emit spawnObject("Sphere","sphere");
-    addEntityToUi(entity);
-
+    emit spawnObject("Sphere","sphere");
 }
 
 void MainWindow::on_spawnPlane_triggered()
 {
-    Entity entity = emit spawnObject("Plane","plane");
-    addEntityToUi(entity);
-
+    emit spawnObject("Plane","plane");
 }
 
 void MainWindow::on_actionEmpty_Entity_triggered()

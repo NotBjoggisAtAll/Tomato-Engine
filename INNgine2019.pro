@@ -22,6 +22,7 @@ HEADERS += \
     Components/collision.h \
     Components/component.h \
     Components/componentArray.h \
+    Components/destructable.h \
     Components/entitydata.h \
     Components/input.h \
     Components/light.h \
@@ -31,6 +32,7 @@ HEADERS += \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
+    Components/vertexdata.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -60,7 +62,6 @@ HEADERS += \
     Windows/vector3dpicker.h \
     app.h \
     bsplinecurve.h \
-    cameraclass.h \
     constants.h \
     Managers/entitymanager.h \
     Widgets/meshwidget.h \
@@ -100,6 +101,7 @@ SOURCES += main.cpp \
     Components/npc.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
+    Components/vertexdata.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
@@ -130,7 +132,6 @@ SOURCES += main.cpp \
     Windows/vector3dpicker.cpp \
     app.cpp \
     bsplinecurve.cpp \
-    cameraclass.cpp \
     eventhandler.cpp \
     jsonscene.cpp \
     resourcefactory.cpp \

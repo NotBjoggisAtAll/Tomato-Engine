@@ -53,6 +53,64 @@ Collision  ResourceFactory::getCollision(std::string file)
     return collisionIterator->second;
 }
 
+Mesh ResourceFactory::getCameraFrustum()
+{
+    vertices_.clear();
+    indices_.clear();
+    vertices_.reserve(12);
+    indices_.reserve(32);
+
+    float d = 1.f; //set to 1 to have it accurately
+    float p = 0.95f; //set to 1 to have it accurately
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,-d,-d),gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(d,-d,-d), gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(d,-d,d),  gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,-d,d), gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,d,-d), gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(d,d,-d),  gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(d,d,d),   gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,d,d),  gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+
+    //middle thing
+    vertices_.push_back(Vertex(gsl::Vector3D(d,d,d*p),   gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(d,-d,d*p),  gsl::Vector3D(1,0,0), gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,-d,d*p), gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+    vertices_.push_back(Vertex(gsl::Vector3D(-d,d,d*p),  gsl::Vector3D(-1,0,0),gsl::Vector2D(0,0)));
+
+    indices_ = {
+        0,1,
+        1,2,
+        2,3,
+        3,0,
+        0,4,
+        1,5,
+        2,6,
+        3,7,
+        7,6,
+        6,5,
+        5,4,
+        4,7,
+        8,9,
+        9,10,
+        10,11,
+        11,8
+    };
+    Mesh frustum;
+    initializeOpenGLFunctions();
+
+    frustum.VAO_ = openGLVertexBuffers();
+    openGLIndexBuffer();
+
+    frustum.verticeCount_ = static_cast<unsigned int>(vertices_.size());
+    frustum.indiceCount_ = static_cast<unsigned int>(indices_.size());
+    frustum.drawType_ = GL_LINES;
+    glBindVertexArray(0);
+
+    frustum.filepath_ = "frustum";
+    frustum.isAffectedByFrustum_ = false;
+    return frustum;
+}
+
 Mesh ResourceFactory::createLines(std::pair<std::vector<Vertex>, std::vector<unsigned int> > verticesAndIndices)
 {
     return createLines(verticesAndIndices.first, verticesAndIndices.second);
@@ -99,9 +157,13 @@ Mesh ResourceFactory::createMesh()
     else if(file_ == "plane")
         mesh = createPlane();
     else if(file_ == "line")
+    {
+    }
+    else if(file_ == "frustum")
+        mesh = getCameraFrustum();
 
 
-    glBindVertexArray(0);
+        glBindVertexArray(0);
 
     return mesh;
 }
@@ -133,15 +195,22 @@ Mesh ResourceFactory::createObject()
     Mesh mesh;
 
     if(file_.find(".obj") != std::string::npos)
+    {
         readOBJFile();
+        createCollision();
+    }
 
     else if(file_.find(".txt") != std::string::npos)
+    {
         readTXTFile();
+        createCollision();
+    }
 
     else if(file_.find(".terrain") != std::string::npos)
+    {
         readTerrainFile();
-
-    createCollision();
+        mesh.isAffectedByFrustum_ = false;
+    }
 
     mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
@@ -415,6 +484,13 @@ void ResourceFactory::calculateTerrainNormals()
         vertices_[indices_[i+1]].set_normal(normal);
         vertices_[indices_[i+2]].set_normal(normal);
     }
+    lastTerrainImported.vertices_ = vertices_;
+    lastTerrainImported.indices_ = indices_;
+}
+
+VertexData ResourceFactory::getLastTerrainImported() const
+{
+    return lastTerrainImported;
 }
 
 void ResourceFactory::readOBJFile()

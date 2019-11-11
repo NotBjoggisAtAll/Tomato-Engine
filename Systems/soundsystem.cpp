@@ -1,9 +1,9 @@
 #include "soundsystem.h"
-#include "cameraclass.h"
 #include "Managers/soundmanager.h"
 #include "world.h"
 #include "Components/sound.h"
 #include "Components/transform.h"
+#include "Components/camera.h"
 
 /**
  * TODO
@@ -27,11 +27,14 @@ void SoundSystem::beginPlay()
 
 void SoundSystem::tick()
 {
-    CameraClass* currCamera = getWorld()->getCurrentCamera();
-    SoundManager::instance()->updateListener(currCamera->position(),
+    auto currCamera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
+    auto cameraTransform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
+
+
+    SoundManager::instance()->updateListener(cameraTransform->position_,
                                              {},
-                                             currCamera->forward(),
-                                             currCamera->up());
+                                             currCamera->forward_,
+                                             currCamera->up_);
 
     for(auto const& entity : entities_)
     {

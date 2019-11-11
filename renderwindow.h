@@ -29,6 +29,8 @@ public:
 signals:
     void updateCameraPerspectives(float aspectRatio);
     void initDone();
+public slots:
+    void callExposeEvent();
 private:
     void init();
     void exposeEvent(QExposeEvent *) override;

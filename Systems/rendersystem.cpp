@@ -5,7 +5,7 @@
 #include "Components/transform.h"
 #include "Components/material.h"
 #include "Components/entitydata.h"
-#include "cameraclass.h"
+#include "Components/camera.h"
 #include "shader.h"
 
 void RenderSystem::beginPlay()
@@ -30,22 +30,38 @@ void RenderSystem::tick()
 
         if(!sphereInsideFrustum(transform->position_, 1) && mesh->isAffectedByFrustum_) continue;
 
+
+
         glUseProgram(material->shader_->getProgram());
         glBindVertexArray(mesh->VAO_);
 
-        gsl::Matrix4x4 posMatrix;
-        posMatrix.setPosition(transform->position_);
-
-        gsl::Matrix4x4 rotMatrix;
-        rotMatrix.rotateX(transform->rotation_.x);
-        rotMatrix.rotateY(transform->rotation_.y);
-        rotMatrix.rotateZ(transform->rotation_.z);
-
-        gsl::Matrix4x4 scaleMatrix;
-        scaleMatrix.scale(transform->scale_);
-
         gsl::Matrix4x4 modelMatrix;
-        modelMatrix = posMatrix * rotMatrix * scaleMatrix;
+
+        if(mesh->filepath_ == "frustum")
+        {
+            Camera* camera = getWorld()->getComponent<Camera>(entity).value();
+            gsl::Matrix4x4 inverseView = camera->viewMatrix_;
+            inverseView.inverse();
+            gsl::Matrix4x4 inverseProjection = camera->projectionMatrix_;
+            inverseProjection.inverse();
+
+            modelMatrix = inverseView * inverseProjection;
+        }
+        else
+        {
+            gsl::Matrix4x4 posMatrix;
+            posMatrix.setPosition(transform->position_);
+
+            gsl::Matrix4x4 rotMatrix;
+            rotMatrix.rotateX(transform->rotation_.x);
+            rotMatrix.rotateY(transform->rotation_.y);
+            rotMatrix.rotateZ(transform->rotation_.z);
+
+            gsl::Matrix4x4 scaleMatrix;
+            scaleMatrix.scale(transform->scale_);
+
+            modelMatrix = posMatrix * rotMatrix * scaleMatrix;
+        }
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 
@@ -56,12 +72,13 @@ void RenderSystem::tick()
 
         else
             glDrawArrays(mesh->drawType_, 0, mesh->verticeCount_);
+
     }
 }
 
 bool RenderSystem::sphereInsideFrustum(const gsl::Vector3D vecCenter, float radius)
 {
-    const auto& frustum = getWorld()->getCurrentCamera()->frustum_;
+    const auto& frustum = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->frustum_;
     for(unsigned int i = 0; i < 6; i++)
     {
         if(gsl::Vector3D::dot(vecCenter, frustum[i].normal_) + frustum[i].distance_ + radius <= 0)

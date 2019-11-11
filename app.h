@@ -10,7 +10,6 @@
 #include "mainwindow.h"
 
 class RenderWindow;
-class CameraClass;
 class EventHandler;
 
 class App : public QObject
@@ -36,6 +35,7 @@ private slots:
     void raycastFromMouse();
 
     void postInit();
+    void entitiesCollided(Entity entity1, Entity entity2);
 
 private:
 
@@ -51,11 +51,9 @@ private:
     QElapsedTimer deltaTimer_;
     int frameCounter = 0;
 
-    CameraClass* editorCamera_ = nullptr;
-    CameraClass* gameCamera_{nullptr};
-
     void calculateFramerate();
 
+    void setupVisimOblig();
 };
 
 #endif // APP_H

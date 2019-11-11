@@ -2,12 +2,18 @@
 
 World* World::instance = nullptr;
 
-CameraClass *World::getCurrentCamera()
+Entity World::getCurrentCamera()
 {
     return currentCamera_;
 }
 
-void World::setCurrentCamera(CameraClass *newCamera)
+void World::setCurrentCamera(Entity newCamera)
 {
     currentCamera_ = newCamera;
+    emit updateCameraPerspectives();
+}
+
+World::World()
+{
+    init();
 }
