@@ -45,7 +45,7 @@ void RenderSystem::tick()
             gsl::Matrix4x4 inverseProjection = camera->projectionMatrix_;
             inverseProjection.inverse();
 
-            modelMatrix = inverseProjection * inverseView;
+            modelMatrix = inverseView * inverseProjection;
         }
         else
         {
