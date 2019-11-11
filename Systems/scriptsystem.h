@@ -20,6 +20,7 @@ public:
 public slots:
 
     int createEntity();
+    void spawnEnemy();
 
     QJsonValue getComponent(QString name, int entity);
     void setComponent(QString name, int entity, QJsonObject Json);

@@ -175,6 +175,7 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Script("enemyManager.js"));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));

@@ -4,6 +4,8 @@
 #include "world.h"
 #include "constants.h"
 #include <QFile>
+#include "resourcefactory.h"
+#include "Managers/shadermanager.h"
 
 ScriptSystem::ScriptSystem()
 {
@@ -20,6 +22,7 @@ void ScriptSystem::beginPlay()
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
             continue;
+        componentAdded(scriptComp);
         load(scriptComp);
         call(scriptComp, "beginPlay");
     }
@@ -39,6 +42,14 @@ void ScriptSystem::tick()
 int ScriptSystem::createEntity()
 {
     return getWorld()->createEntity();
+}
+
+void ScriptSystem::spawnEnemy()
+{
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent<Transform>(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("camera.obj"));
+    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
 }
 
 QJsonValue ScriptSystem::getComponent(QString name , int entity)
