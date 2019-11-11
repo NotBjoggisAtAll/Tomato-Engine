@@ -36,7 +36,7 @@ Mesh ResourceFactory::loadMesh(std::string file)
     return mesh;
 }
 
-Collision  ResourceFactory::getCollision(std::string file)
+Collision ResourceFactory::getCollision(std::string file)
 {
     if(file == "")
     {
@@ -163,7 +163,7 @@ Mesh ResourceFactory::createMesh()
         mesh = getCameraFrustum();
 
 
-        glBindVertexArray(0);
+    glBindVertexArray(0);
 
     return mesh;
 }
@@ -493,6 +493,18 @@ void ResourceFactory::calculateTerrainNormals()
 VertexData ResourceFactory::getLastTerrainImported() const
 {
     return lastTerrainImported;
+}
+
+std::optional<VertexData> ResourceFactory::getVertexData()
+{
+    createPlane();
+
+    if(vertices_.size() == 0 && indices_.size() == 0)
+        return std::nullopt;
+    VertexData data;
+    data.vertices_ = vertices_;
+    data.indices_ = indices_;
+    return std::move(data);
 }
 
 void ResourceFactory::readOBJFile()

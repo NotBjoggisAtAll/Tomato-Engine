@@ -25,6 +25,12 @@ public:
 
     VertexData getLastTerrainImported() const;
 
+    /**
+     * Returns the vertex data of the previous meshloaded with the function loadMesh()
+     * If vertices_ and indices_ are both empty a empty optional is returned.
+     * @return Returns VertexData or nothing, depending on when the function is called.
+     */
+    std::optional<VertexData> getVertexData();
 private:
     ResourceFactory() = default;
 

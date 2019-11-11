@@ -68,6 +68,7 @@ HEADERS += \
     Widgets/meshwidget.h \
     Systems/rendersystem.h \
     eventhandler.h \
+    hitresult.h \
     jsonscene.h \
     plainshader.h \
     renderwindow.h \

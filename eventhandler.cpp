@@ -15,7 +15,10 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
     switch (event->type()) {
     case QEvent::MouseButtonPress:
         keys_[static_cast<int>(static_cast<QMouseEvent*>(event)->button())] = true;
-        emit leftMouseButtonPressed();
+        if(keys_[Qt::MouseButton::LeftButton])
+        {
+            emit leftMouseButtonPressed();
+        }
         return true;
     case QEvent::MouseButtonRelease:
         keys_[static_cast<int>(static_cast<QMouseEvent*>(event)->button())] = false;

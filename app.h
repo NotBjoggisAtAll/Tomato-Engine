@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "mainwindow.h"
+#include "GSL/vector3d.h"
 
 class RenderWindow;
 class EventHandler;
@@ -54,6 +55,7 @@ private:
     void calculateFramerate();
 
     void setupVisimOblig();
+    void spawnTower(gsl::Vector3D hitPosition);
 };
 
 #endif // APP_H

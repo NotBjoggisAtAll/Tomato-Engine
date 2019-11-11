@@ -2,6 +2,7 @@
 #include "world.h"
 #include "Components/collision.h"
 #include "Components/transform.h"
+#include "Components/vertexdata.h"
 #include "Components/entitydata.h"
 #include "GSL/matrix4x4.h"
 
@@ -62,7 +63,7 @@ void CollisionSystem::tick()
     }
 }
 
-Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection)
+Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult& hit)
 {
     Entity entityToReturn = -1;
     float distance = 999999999.f;
@@ -85,13 +86,11 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
             collision->scaledMinVector_ = (tempMatrix * gsl::Vector4D(collision->minVector_,0)).getXYZ();
         }
 
-        float tempDistance = 0.f;
-
-        if(intersect(collision, transform, rayOrigin, rayDirection,tempDistance))
+        if(intersect(collision, transform, rayOrigin, rayDirection,hit))
         {
-            if(tempDistance < distance)
+            if(hit.distance < distance)
             {
-                distance = tempDistance;
+                distance = hit.distance;
                 entityToReturn = entity;
             }
         }
@@ -99,7 +98,7 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
     return entityToReturn;
 }
 
-bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, float& distance)
+bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult &result)
 {
 
     gsl::Vector3D dirfrac;
@@ -126,18 +125,18 @@ bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl:
     // if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
     if (tmax < 0)
     {
-        distance = -1;
+        result.distance = -1;
         return false;
     }
 
     // if tmin > tmax, ray doesn't intersect AABB
     if (tmin > tmax)
     {
-        distance = -1;
+        result.distance = -1;
         return false;
     }
 
-    distance = tmin;
+    result.distance = tmin;
+    result.position = rayOrigin + rayDirection * tmin;
     return true;
 }
-

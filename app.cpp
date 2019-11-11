@@ -169,14 +169,12 @@ void App::postInit()
     spline.curve_.addControlPoint(gsl::Vector3D(5,0,-3));
     spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
 
-
     entity = getWorld()->createEntity();
-
+    getWorld()->addComponent(entity, EntityData("BSpline"));
     getWorld()->addComponent(entity, spline);
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
-    getWorld()->addComponent(entity, EntityData("BSpline"));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
@@ -184,10 +182,10 @@ void App::postInit()
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{.2f,.7f,.1f}));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("plane"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("plane"));
-
+    Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
+    mesh->isAffectedByFrustum_ = false;
 
     entity = getWorld()->createEntity();
-
     getWorld()->addComponent(entity, EntityData("Enemy"));
     getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{.2f,.7f,.1f}));
@@ -201,8 +199,6 @@ void App::postInit()
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Input(true));
-
-    entity = getWorld()->createEntity();
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Game Camera"));
@@ -261,6 +257,21 @@ void App::tick()
 
     getWorld()->getSystem<CameraSystem>()->tick();
     renderWindow_->tick();
+}
+
+void App::spawnTower(gsl::Vector3D hitPosition)
+{
+    Transform transform;
+    transform.position_ = hitPosition + gsl::Vector3D(0,0.1f,0);
+    transform.scale_ = gsl::Vector3D(0.2f,0.2f,0.2f);
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, transform);
+    getWorld()->addComponent(entity, EntityData("Tower"));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    mainWindow_->addEntityToUi(entity);
+
 }
 
 Entity App::createEntity()
@@ -440,7 +451,16 @@ void App::raycastFromMouse()
     gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
     ray_world.normalize();
 
-    Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(transform->position_,ray_world);
+    HitResult hit;
+
+    Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(transform->position_,ray_world, hit);
+
+    EntityData* data = getWorld()->getComponent<EntityData>(entityPicked).value_or(nullptr);
+    if(data)
+    {
+        if(data->name_ == "Floor")
+            spawnTower(hit.position);
+    }
 
     mainWindow_->updateRightPanel(entityPicked);
     renderWindow_->makeCollisionBorder(entityPicked);
