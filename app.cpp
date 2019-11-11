@@ -157,96 +157,92 @@ void App::postInit()
 
     ShaderManager::instance()->phongShader()->setLight(entity);
 
-    //    entity = getWorld()->createEntity();
-    //    getWorld()->addComponent(entity, EntityData("Item"));
-    //    getWorld()->addComponent(entity, Transform({-2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    //    getWorld()->addComponent(entity, Destructable(true));
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({-2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
 
-    //    entity = getWorld()->createEntity();
-    //    getWorld()->addComponent(entity, EntityData("Item"));
-    //    getWorld()->addComponent(entity, Transform({0,0,-5},{},{0.2f,0.2f,0.2f}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    //    getWorld()->addComponent(entity, Destructable(true));
-
-
-    //    entity = getWorld()->createEntity();
-    //    getWorld()->addComponent(entity, EntityData("Item"));
-    //    getWorld()->addComponent(entity, Transform({2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    //    getWorld()->addComponent(entity, Destructable(true));
-
-
-    //    BSpline spline = BSpline(.05f);
-
-    //    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
-    //    spline.curve_.addControlPoint(gsl::Vector3D(-2.5,0,2.5));
-    //    spline.curve_.addControlPoint(gsl::Vector3D(0,0,-5));
-    //    spline.curve_.addControlPoint(gsl::Vector3D(2.5,0,2.5));
-    //    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-5));
-
-
-    //    entity = getWorld()->createEntity();
-
-    //    getWorld()->addComponent(entity, spline);
-    //    getWorld()->addComponent(entity, Transform());
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    //    getWorld()->addComponent(entity, EntityData("BSpline"));
-
-
-    //    BSpline* splineptr = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
-
-    //    entity = getWorld()->createEntity();
-
-    //    getWorld()->addComponent(entity, EntityData("Enemy"));
-    //    getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    //    getWorld()->addComponent(entity, Npc(&splineptr->curve_));
-    //    Npc* npc = getWorld()->getComponent<Npc>(entity).value();
-
-    //    entity = getWorld()->createEntity();
-    //    getWorld()->addComponent(entity, EntityData("Player"));
-    //    getWorld()->addComponent(entity, Transform({0,0,1},{},{0.2f,0.2f,0.2f}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    //    getWorld()->addComponent(entity, Input(true));
-
-    //    entity = getWorld()->createEntity();
-
-    //    getWorld()->addComponent(entity, EntityData("Terrain"));
-    //    getWorld()->addComponent(entity, Transform({-400,-75,-100},{},{1,1,1}));
-    //    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("terrainData.terrain"));
-    //    getWorld()->addComponent(entity, ResourceFactory::get()->getLastTerrainImported());
-
-    //    npc->terrainId = entity;
-    //    getWorld()->getSystem<InputSystem>()->setTerrainId(entity);
-
-    //    for(auto& point : splineptr->curve_.getControlPoints())
-    //    {
-    //        point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
-    //    }
-
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({0,0,-5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
 
 
     entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Game Camera"));
-//    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("camera.obj"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
+    getWorld()->addComponent(entity, EntityData("Item"));
+    getWorld()->addComponent(entity, Transform({2.5,0,2.5},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Destructable(true));
 
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{0,0,0}));
+
+    BSpline spline = BSpline(.05f);
+
+    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(-2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(0,0,-5));
+    spline.curve_.addControlPoint(gsl::Vector3D(2.5,0,2.5));
+    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-5));
+
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, spline);
+    getWorld()->addComponent(entity, Transform());
+    getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, EntityData("BSpline"));
+
+
+    BSpline* splineptr = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, EntityData("Enemy"));
+    getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Npc(&splineptr->curve_));
+    Npc* npc = getWorld()->getComponent<Npc>(entity).value();
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Player"));
+    getWorld()->addComponent(entity, Transform({0,0,1},{},{0.2f,0.2f,0.2f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Input(true));
+
+    entity = getWorld()->createEntity();
+
+    getWorld()->addComponent(entity, EntityData("Terrain"));
+    getWorld()->addComponent(entity, Transform({-400,-75,-100},{},{1,1,1}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("terrainData.terrain"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getLastTerrainImported());
+
+    npc->terrainId = entity;
+    getWorld()->getSystem<InputSystem>()->setTerrainId(entity);
+
+    for(auto& point : splineptr->curve_.getControlPoints())
+    {
+        point.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(point, entity);
+    }
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Game Camera"));
     getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
-    getWorld()->addComponent(entity, Transform(gsl::Vector3D(0, 0 , -1),{},{0.5}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
+    getWorld()->addComponent(entity, Transform());
 
     mainWindow_->displayEntitiesInOutliner();
 

@@ -157,6 +157,10 @@ Mesh ResourceFactory::createMesh()
     else if(file_ == "plane")
         mesh = createPlane();
     else if(file_ == "line")
+    {
+    }
+    else if(file_ == "frustum")
+        mesh = getCameraFrustum();
 
 
         glBindVertexArray(0);

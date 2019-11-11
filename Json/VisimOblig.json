@@ -75,7 +75,7 @@
                 "transform": {
                     "position": [
                         -2.5,
-                        0,
+                        -13.150437355041504,
                         2.5
                     ],
                     "rotation": [
@@ -119,7 +119,7 @@
                 "transform": {
                     "position": [
                         0,
-                        0,
+                        -15.178893089294434,
                         -5
                     ],
                     "rotation": [
@@ -163,7 +163,7 @@
                 "transform": {
                     "position": [
                         2.5,
-                        0,
+                        -14.007944107055664,
                         2.5
                     ],
                     "rotation": [
@@ -378,19 +378,36 @@
         {
             "components": {
                 "camera": {
-                    "aspectRatio": 1.1741139888763428,
+                    "aspectRatio": 1.1869158744812012,
                     "fieldOfView": 45,
-                    "isEditor": true,
-                    "pitch": 0,
+                    "isEditor": false,
+                    "pitch": -90,
                     "rotateSpeed": 0.10000000149011612,
-                    "speed": 0,
-                    "yaw": 0
+                    "speed": 0.009999999776482582,
+                    "yaw": -180
+                },
+                "entitydata": {
+                    "name": "Game Camera",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "Textureunit": 0
+                },
+                "mesh": {
+                    "filepath": "frustum",
+                    "visible": true
                 },
                 "transform": {
                     "position": [
-                        1,
-                        1,
-                        4.400000095367432
+                        0,
+                        0,
+                        0
                     ],
                     "rotation": [
                         0,
@@ -408,23 +425,19 @@
         {
             "components": {
                 "camera": {
-                    "aspectRatio": 0,
+                    "aspectRatio": 1.1869158744812012,
                     "fieldOfView": 45,
-                    "isEditor": false,
-                    "pitch": -90,
+                    "isEditor": true,
+                    "pitch": -26.29986572265625,
                     "rotateSpeed": 0.10000000149011612,
-                    "speed": 0.009999999776482582,
-                    "yaw": -180
-                },
-                "entitydata": {
-                    "name": "Game Camera",
-                    "parent": -1
+                    "speed": 0,
+                    "yaw": 15.900032997131348
                 },
                 "transform": {
                     "position": [
-                        0,
-                        0,
-                        -1
+                        1,
+                        1,
+                        4.400000095367432
                     ],
                     "rotation": [
                         0,
