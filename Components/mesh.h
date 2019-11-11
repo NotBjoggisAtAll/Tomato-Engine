@@ -17,6 +17,7 @@ struct Mesh : public Component
     GLenum drawType_{0};
 
     bool isVisible_{true};
+    bool isAffectedByFrustum_{true};
 
     std::string filepath_ = "";
 

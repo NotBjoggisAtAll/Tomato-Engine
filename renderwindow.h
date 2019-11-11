@@ -29,7 +29,6 @@ public:
 signals:
     void updateCameraPerspectives(float aspectRatio);
     void initDone();
-
 private:
     void init();
     void exposeEvent(QExposeEvent *) override;
@@ -40,6 +39,7 @@ private:
 
     bool initialized_{false};
     bool wireframe_{false};
+
 
     Texture *texture_[4]{nullptr}; //We can hold 4 textures
     

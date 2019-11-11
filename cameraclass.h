@@ -1,14 +1,21 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERACLASS_H
+#define CAMERACLASS_H
 
 #include "GSL/gsl_math.h"
+#include <array>
 
-class Camera
+struct Plane
+{
+    float distance_;
+    gsl::Vector3D normal_;
+};
+
+class CameraClass
 {
 public:
-    Camera() = default;
-    Camera(gsl::Vector3D position);
-    Camera(QJsonObject Json);
+    CameraClass() = default;
+    CameraClass(gsl::Vector3D position);
+    CameraClass(QJsonObject Json);
 
     void pitch(float degrees);
     void yaw(float degrees);
@@ -45,6 +52,15 @@ private:
 
     float speed_{0.01f}; //camera will move by this speed along the mForward vector
     float rotateSpeed_{0.1f};
+
+public:
+    float aspectRatio_ = 0;
+    float fieldOfView_ = 45.f;
+
+    void calculateFrustum();
+
+    ///float is distance to origo, gsl::vector3D is normal.
+    std::array<Plane, 6> frustum_; //left, right, top, bottom, farPlane, nearPlane
 };
 
-#endif // CAMERA_H
+#endif // CAMERACLASS_H

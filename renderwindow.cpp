@@ -5,7 +5,7 @@
 #include "Components/allcomponents.h"
 #include "Systems/rendersystem.h"
 #include "resourcefactory.h"
-#include "World.h"
+#include "world.h"
 
 RenderWindow::RenderWindow()
 {
@@ -42,7 +42,7 @@ void RenderWindow::exposeEvent(QExposeEvent *)
         init();
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, static_cast<GLint>(width() * retinaScale), static_cast<GLint>(height() * retinaScale));
-    emit updateCameraPerspectives(static_cast<float>(width()) / height());
+    emit updateCameraPerspectives(static_cast<float>(width() * retinaScale / height() * retinaScale));
 }
 
 void RenderWindow::init()

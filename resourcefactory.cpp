@@ -75,6 +75,7 @@ Mesh ResourceFactory::createLines(std::vector<Vertex> vertices, std::vector<unsi
     glBindVertexArray(0);
 
     box.filepath_ = "line";
+    box.isAffectedByFrustum_ = false;
 
     return box;
 }
@@ -121,6 +122,7 @@ Mesh ResourceFactory::createAxis() //Kom tilbake her og gjør om til indices
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
     mesh.drawType_ = GL_LINES;
+    mesh.isAffectedByFrustum_ = false;
 
     return mesh;
 }
@@ -206,6 +208,7 @@ Mesh ResourceFactory::createSkybox()
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
     mesh.drawType_ = GL_TRIANGLES;
+    mesh.isAffectedByFrustum_ = false;
 
     return mesh;
 }

@@ -183,6 +183,8 @@ void App::postInit()
     gameCamera_ = new Camera(gsl::Vector3D(0, 12.f, -1));
     gameCamera_->yaw_ = (-180.f);
     gameCamera_->pitch_ = (-90.f);
+    editorCamera_ = new CameraClass(gsl::Vector3D(1.f, 1.f, 4.4f));
+    gameCamera_ = new CameraClass(gsl::Vector3D(0));
     getWorld()->setCurrentCamera(editorCamera_);
 
 }
@@ -255,8 +257,13 @@ void App::stopGame()
 
 void App::updateCameraPerspectives(float aspectRatio)
 {
-    editorCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 10000.f);
-    gameCamera_->projectionMatrix_.perspective(45.f, aspectRatio, 0.1f, 10000.f);
+    float fov = 45.f;
+    editorCamera_->aspectRatio_ = aspectRatio;
+    editorCamera_->fieldOfView_ = fov;
+    editorCamera_->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
+    gameCamera_->aspectRatio_ = aspectRatio;
+    gameCamera_->fieldOfView_ = fov;
+    gameCamera_->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
 }
 void App::calculateFramerate()
 {
@@ -265,7 +272,7 @@ void App::calculateFramerate()
     double elapsed = frameTimer_.elapsed();
     if(elapsed >= 100)
     {
-        mainWindow_->updateStatusbar(totalDeltaTime_/frameCounter, frameCounter/totalDeltaTime_);
+        mainWindow_->updateStatusbar(totalDeltaTime_/frameCounter, frameCounter/totalDeltaTime_, getWorld()->getSystem<RenderSystem>()->totalVerticeCount);
         frameCounter = 0;
         totalDeltaTime_ = 0;
         frameTimer_.restart();

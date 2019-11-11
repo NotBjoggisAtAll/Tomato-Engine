@@ -1,31 +1,31 @@
-#include "camera.h"
+#include "cameraclass.h"
 #include <QJsonObject>
 #include <QJsonArray>
+#include "GSL/gsl_math.h"
 
-Camera::Camera(gsl::Vector3D position) : position_(position){}
+CameraClass::CameraClass(gsl::Vector3D position) : position_(position){}
 
-void Camera::pitch(float degrees)
+void CameraClass::pitch(float degrees)
 {
     //  rotate around mRight
     pitch_ -= degrees * rotateSpeed_;
     updateForwardVector();
 }
 
-void Camera::yaw(float degrees)
+void CameraClass::yaw(float degrees)
 {
     // rotate around mUp
     yaw_ -= degrees * rotateSpeed_;
     updateForwardVector();
 }
 
-void Camera::updateRightVector()
+void CameraClass::updateRightVector()
 {
-    right_ = forward_^up_;
-    right_.normalize();
+
 //    qDebug() << "Right " << mRight;
 }
 
-void Camera::updateForwardVector()
+void CameraClass::updateForwardVector()
 {
     right_ = gsl::Vector3D(1.f, 0.f, 0.f);
     right_.rotateY(yaw_);
@@ -35,10 +35,42 @@ void Camera::updateForwardVector()
     up_.normalize();
     forward_ = up_^right_;
 
+    right_ = forward_^up_;
+    right_.normalize();
+
     updateRightVector();
 }
 
-void Camera::update()
+void CameraClass::calculateFrustum() //DONE
+{
+    auto vpMatrix = projectionMatrix_ * viewMatrix_;
+
+    gsl::Vector3D col1(vpMatrix[0], vpMatrix[2], vpMatrix[2]);
+    gsl::Vector3D col2(vpMatrix[4], vpMatrix[5], vpMatrix[6]);
+    gsl::Vector3D col3(vpMatrix[8], vpMatrix[9], vpMatrix[10]);
+    gsl::Vector3D col4(vpMatrix[12], vpMatrix[13], vpMatrix[14]);
+
+    frustum_[0].normal_ = col4 + col1;
+    frustum_[1].normal_ = col4 - col1;
+    frustum_[2].normal_ = col4 - col2;
+    frustum_[3].normal_ = col4 + col2;
+    frustum_[4].normal_ = col4 - col3;
+    frustum_[5].normal_ = col3;
+    frustum_[0].distance_ = vpMatrix[15] + vpMatrix[3];
+    frustum_[1].distance_ = vpMatrix[15] - vpMatrix[3];
+    frustum_[2].distance_ = vpMatrix[15] - vpMatrix[7];
+    frustum_[3].distance_ = vpMatrix[15] + vpMatrix[7];
+    frustum_[4].distance_ = vpMatrix[15] - vpMatrix[11];
+    frustum_[5].distance_ = vpMatrix[11];
+    for (unsigned int i = 0; i < 6; ++i) {
+        float magnitude = 1.0f /
+        frustum_[i].normal_.length();
+        frustum_[i].normal_ = frustum_[i].normal_ * magnitude;
+        frustum_[i].distance_ = frustum_[i].distance_ * magnitude;
+    }
+}
+
+void CameraClass::update() //DONE
 {
     gsl::Matrix4x4 yawMatrix;
     gsl::Matrix4x4 pitchMatrix;
@@ -50,24 +82,25 @@ void Camera::update()
 
     viewMatrix_ = pitchMatrix* yawMatrix;
     viewMatrix_.translate(-position_);
+    calculateFrustum();
 }
 
-void Camera::setPosition(const gsl::Vector3D &position)
+void CameraClass::setPosition(const gsl::Vector3D &position)
 {
     position_ = position;
 }
 
-void Camera::moveForward(float speed)
+void CameraClass::moveForward(float speed)
 {
     speed_ = speed;
 }
 
-void Camera::moveUp(float speed)
+void CameraClass::moveUp(float speed)
 {
     position_.y += speed;
 }
 
-void Camera::moveRight(float speed)
+void CameraClass::moveRight(float speed)
 {
     //This fixes a bug in the up and right calculations
     //so camera always holds its height when straifing
@@ -77,22 +110,22 @@ void Camera::moveRight(float speed)
     position_ += right * speed;
 }
 
-gsl::Vector3D Camera::position() const
+gsl::Vector3D CameraClass::position() const
 {
     return position_;
 }
 
-gsl::Vector3D Camera::up() const
+gsl::Vector3D CameraClass::up() const
 {
     return up_;
 }
 
-gsl::Vector3D Camera::forward() const
+gsl::Vector3D CameraClass::forward() const
 {
     return forward_;
 }
 
-void Camera::setSpeed(float value)
+void CameraClass::setSpeed(float value)
 {
     speed_ += value;
 
@@ -103,13 +136,13 @@ void Camera::setSpeed(float value)
         speed_ = 0.3f;
 }
 
-float Camera::getSpeed() const
+float CameraClass::getSpeed() const
 {
     return speed_;
 }
 
 
-Camera::Camera(QJsonObject Json)
+CameraClass::CameraClass(QJsonObject Json)
 {
     QJsonArray position = Json.take("position").toArray();
     position_.x = static_cast<float>(position.at(0).toDouble());
@@ -117,7 +150,7 @@ Camera::Camera(QJsonObject Json)
     position_.z = static_cast<float>(position.at(2).toDouble());
 }
 
-QJsonObject Camera::toJson()
+QJsonObject CameraClass::toJson()
 {
     QJsonObject object;
     QJsonArray position;
@@ -129,7 +162,7 @@ QJsonObject Camera::toJson()
     return object;
 }
 
-void Camera::fromJson(QJsonObject Json)
+void CameraClass::fromJson(QJsonObject Json)
 {
     QJsonArray position = Json.take("position").toArray();
     position_.x = static_cast<float>(position.at(0).toDouble());

@@ -4,7 +4,7 @@
 #include "system.h"
 
 class World;
-class Camera;
+class CameraClass;
 class Sound;
 
 class SoundSystem : public System

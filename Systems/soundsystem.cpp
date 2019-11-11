@@ -1,5 +1,5 @@
 #include "soundsystem.h"
-#include "camera.h"
+#include "cameraclass.h"
 #include "Managers/soundmanager.h"
 #include "world.h"
 #include "Components/sound.h"
@@ -27,7 +27,7 @@ void SoundSystem::beginPlay()
 
 void SoundSystem::tick()
 {
-    Camera* currCamera = getWorld()->getCurrentCamera();
+    CameraClass* currCamera = getWorld()->getCurrentCamera();
     SoundManager::instance()->updateListener(currCamera->position(),
                                              {},
                                              currCamera->forward(),

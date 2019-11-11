@@ -27,7 +27,7 @@ public:
 
     void addEntityToUi(Entity entity);
 
-    void updateStatusbar(float timePerFrame, float frameCounter);
+    void updateStatusbar(float timePerFrame, float frameCounter, int verticeCounter);
 
     std::shared_ptr<RenderWindow> renderWindow_ = nullptr;
 signals:

@@ -4,7 +4,7 @@
 #include <QJsonArray>
 #include "Components/allcomponents.h"
 #include <QFile>
-#include "camera.h"
+#include "cameraclass.h"
 #include <QJsonDocument>
 #include "Managers/shadermanager.h"
 #include "phongshader.h"

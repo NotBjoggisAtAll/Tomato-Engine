@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include "World.h"
-#include "camera.h"
+#include "cameraclass.h"
 EventHandler::EventHandler()
 {
 

@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-class Camera;
+class CameraClass;
 
 class World
 {
@@ -120,8 +120,8 @@ public:
 
     bool bGameRunning = false;
 
-    Camera* getCurrentCamera();
-    void setCurrentCamera(Camera* newCamera);
+    CameraClass* getCurrentCamera();
+    void setCurrentCamera(CameraClass* newCamera);
 
 private:
 
