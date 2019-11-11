@@ -5,9 +5,10 @@
 #include <string>
 #include <unordered_map>
 
-#include "colorshader.h"
+#include "plainshader.h"
 #include "textureshader.h"
 #include "phongshader.h"
+#include "Shaders/colorshader.h"
 
 class TextureShader;
 
@@ -17,10 +18,10 @@ public:
     static ShaderManager* instance();
     PhongShader *phongShader();
     TextureShader *textureShader();
-    ColorShader *colorShader();
+    PlainShader *plainShader();
+    ColorShader* colorShader();
 
     Shader* getShader(std::string shaderName);
-    //std::vector<Shader*> mShaders;
     std::unordered_map<std::string, Shader*> shaders_;
 private:
     ShaderManager();

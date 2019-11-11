@@ -19,9 +19,15 @@ TextureShader* ShaderManager::textureShader()
     return dynamic_cast<TextureShader*>(shaders_.at("textureshader"));
 }
 
-ColorShader* ShaderManager::colorShader()
+PlainShader* ShaderManager::plainShader()
 {
-    return dynamic_cast<ColorShader*>(shaders_.at("plainshader"));
+    return dynamic_cast<PlainShader*>(shaders_.at("plainshader"));
+}
+
+ColorShader *ShaderManager::colorShader()
+{
+    return dynamic_cast<ColorShader*>(shaders_.at("colorshader"));
+
 }
 
 Shader *ShaderManager::getShader(std::string shaderName)
@@ -32,9 +38,11 @@ Shader *ShaderManager::getShader(std::string shaderName)
 ShaderManager::ShaderManager()
 {
     //Compile shaders:
-    shaders_.insert(std::make_pair("plainshader", new ColorShader("plainshader")));
+    shaders_.insert(std::make_pair("plainshader", new PlainShader("plainshader")));
     shaders_.insert(std::make_pair("textureshader", new TextureShader("textureshader")));
     shaders_.insert(std::make_pair("phongshader", new PhongShader("phongshader")));
+    shaders_.insert(std::make_pair("colorshader", new ColorShader("colorshader")));
+
 }
 
 ShaderManager::~ShaderManager()

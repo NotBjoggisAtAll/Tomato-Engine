@@ -46,6 +46,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Shaders/colorshader.h \
     Systems/bsplinesystem.h \
     Systems/camerasystem.h \
     Systems/collisionsystem.h \
@@ -68,6 +69,7 @@ HEADERS += \
     Systems/rendersystem.h \
     eventhandler.h \
     jsonscene.h \
+    plainshader.h \
     renderwindow.h \
     resourcefactory.h \
     shader.h \
@@ -82,7 +84,6 @@ HEADERS += \
     vertex.h \
     octahedronball.h \
     gltypes.h \
-    colorshader.h \
     textureshader.h \
     phongshader.h \
     world.h
@@ -113,6 +114,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Shaders/colorshader.cpp \
     Systems/bsplinesystem.cpp \
     Systems/camerasystem.cpp \
     Systems/collisionsystem.cpp \
@@ -134,6 +136,7 @@ SOURCES += main.cpp \
     bsplinecurve.cpp \
     eventhandler.cpp \
     jsonscene.cpp \
+    plainshader.cpp \
     resourcefactory.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \
@@ -144,7 +147,6 @@ SOURCES += main.cpp \
     shader.cpp \
     texture.cpp \
     octahedronball.cpp \
-    colorshader.cpp \
     textureshader.cpp \
     phongshader.cpp \
     world.cpp
@@ -161,6 +163,8 @@ FORMS += \
     Widgets/transformwidget.ui
 
 DISTFILES += \
+    Shaders/colorshader.frag \
+    Shaders/colorshader.vert \
     Shaders/phongshader.frag \
     Shaders/phongshader.vert \
     Shaders/plainshader.frag \

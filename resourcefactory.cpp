@@ -320,6 +320,8 @@ Mesh ResourceFactory::createPlane()
     v.set_xyz(1,0,1); v.set_rgb(1,0,0);
     vertices_.push_back(v);
 
+    createCollision();
+
     mesh.VAO_ = openGLVertexBuffers();
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());

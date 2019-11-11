@@ -7,9 +7,13 @@ ColorShader::ColorShader(const std::string shaderName, const GLchar *geometryPat
     mMatrixUniform_ = glGetUniformLocation( program, "mMatrix" );
     vMatrixUniform_ = glGetUniformLocation( program, "vMatrix" );
     pMatrixUniform_ = glGetUniformLocation( program, "pMatrix" );
+    objectColorUniform_ = glGetUniformLocation( program, "objectColor" );
 }
 
-ColorShader::~ColorShader()
+
+void ColorShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
-    qDebug() << "Deleting ColorShader";
+    Shader::transmitUniformData(modelMatrix);
+
+    glUniform3f(objectColorUniform_, material->color_.x, material->color_.y, material->color_.z);
 }
