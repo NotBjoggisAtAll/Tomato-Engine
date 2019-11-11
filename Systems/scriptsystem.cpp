@@ -6,6 +6,7 @@
 #include <QFile>
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
+#include "Script/jstimer.h"
 
 ScriptSystem::ScriptSystem()
 {
@@ -22,7 +23,7 @@ void ScriptSystem::beginPlay()
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
             continue;
-        componentAdded(scriptComp);
+        componentAdded(scriptComp, entity);
         load(scriptComp);
         call(scriptComp, "beginPlay");
     }
@@ -39,17 +40,31 @@ void ScriptSystem::tick()
     }
 }
 
+void ScriptSystem::endPlay()
+{
+    for(auto entity : entities_)
+    {
+        auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
+        if(!scriptComp)
+            continue;
+        call(scriptComp, "endPlay");
+    }
+}
+
 int ScriptSystem::createEntity()
 {
     return getWorld()->createEntity();
 }
 
-void ScriptSystem::spawnEnemy()
+void ScriptSystem::spawnEnemy(int owner)
 {
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent<Transform>(entity, Transform({},{},{0.2f,0.2f,0.2f}));
     getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("camera.obj"));
     getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+    getWorld()->addComponent<Npc>(entity, Npc(&getWorld()->getComponent<BSpline>(owner).value()->curve_));
+    qDebug() << "Spawn enemy from script";
+
 }
 
 QJsonValue ScriptSystem::getComponent(QString name , int entity)
@@ -73,12 +88,14 @@ void ScriptSystem::setComponent(QString name, int entity, QJsonObject Json)
     }
 }
 
-void ScriptSystem::componentAdded(Script *script)
+void ScriptSystem::componentAdded(Script *script, Entity entity)
 {
     if(!script)
         return;
 
     script->engine_->globalObject().setProperty("engine", script->engine_->newQObject(this));
+    script->engine_->globalObject().setProperty("id", entity);
+    script->engine_->globalObject().setProperty("timer", script->engine_->newQObject(new JSTimer(entity,this)));
 
 }
 
@@ -124,6 +141,8 @@ void ScriptSystem::call(Script * script, QString function)
     evaluation.call();
 
 }
+
+
 
 
 

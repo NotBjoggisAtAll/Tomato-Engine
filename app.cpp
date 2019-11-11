@@ -220,7 +220,7 @@ void App::entitiesCollided(Entity entity1, Entity entity2)
             {
                 Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
                 npc->event = NPCevents::ITEM_TAKEN;
-                getWorld()->getSystem<NpcSystem>()->notify(entity, pos);
+                getWorld()->getSystem<NpcSystem>()->notify(entity);
             }
         }
         Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
@@ -298,7 +298,7 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-    setupVisimOblig();
+  //  setupVisimOblig();
     getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 
@@ -310,7 +310,7 @@ void App::stopGame()
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
 
-    setupVisimOblig();
+  //  setupVisimOblig();
 }
 
 void App::setupVisimOblig()
@@ -353,7 +353,6 @@ void App::setupVisimOblig()
     Npc* npc = getWorld()->getComponent<Npc>(npcID).value_or(nullptr);
     BSpline* bspline = getWorld()->getComponent<BSpline>(bsplineID).value_or(nullptr);
 
-    npc->terrainId = terrainID;
     npc->bSplineCurve = &bspline->curve_;
 
     getWorld()->getSystem<InputSystem>()->setTerrainId(terrainID);

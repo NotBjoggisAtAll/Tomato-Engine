@@ -46,6 +46,7 @@ HEADERS += \
     Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
+    Script/jstimer.h \
     Shaders/colorshader.h \
     Systems/bsplinesystem.h \
     Systems/camerasystem.h \
@@ -115,6 +116,7 @@ SOURCES += main.cpp \
     Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
+    Script/jstimer.cpp \
     Shaders/colorshader.cpp \
     Systems/bsplinesystem.cpp \
     Systems/camerasystem.cpp \
