@@ -190,7 +190,6 @@ void App::postInit()
     getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
-
     mainWindow_->displayEntitiesInOutliner();
 
 }

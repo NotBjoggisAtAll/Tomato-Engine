@@ -39,13 +39,16 @@ void RenderSystem::tick(float deltaTime)
 
         if(mesh->filepath_ == "frustum")
         {
+            gsl::Matrix4x4 posMatrix;
+            posMatrix.setPosition(transform->position_);
+
             Camera* camera = getWorld()->getComponent<Camera>(entity).value();
             gsl::Matrix4x4 inverseView = camera->viewMatrix_;
             inverseView.inverse();
             gsl::Matrix4x4 inverseProjection = camera->projectionMatrix_;
             inverseProjection.inverse();
 
-            modelMatrix = inverseView * inverseProjection;
+            modelMatrix = posMatrix * inverseView * inverseProjection;
         }
         else
         {
