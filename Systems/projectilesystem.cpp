@@ -5,6 +5,7 @@
 #include "Components/bspline.h"
 #include "world.h"
 #include <vector>
+#include <algorithm>
 
 ProjectileSystem::ProjectileSystem()
 {
@@ -36,22 +37,21 @@ void ProjectileSystem::tick(float deltaTime)
             }
             if(npcs.empty()) return;
 
-            std::sort(npcs.begin(), npcs.end(), [&](const int& npc1, const int& npc2 )
+            auto lowest = std::min_element(npcs.begin(), npcs.end(),[&](const int& npc1, const int& npc2 )
             {
                 auto transform1 = getWorld()->getComponent<Transform>(npc1).value_or(nullptr);
                 auto transform2 = getWorld()->getComponent<Transform>(npc2).value_or(nullptr);
 
                 return (transform1->position_ - projcetileTransform->position_).length() <
                         (transform2->position_ - projcetileTransform->position_).length();
-
             });
 
-            //Shoot at nearest
-            auto transform1 = getWorld()->getComponent<Transform>(npcs[0]).value_or(nullptr);
+            auto transform1 = getWorld()->getComponent<Transform>(*lowest).value_or(nullptr);
             projectile->direction_ = (transform1->position_ - projcetileTransform->position_).normalized();
             projectile->direction_.y = 0;
             projectile->routeCalculated = true;
-        }else
+        }
+        else
         {
             projcetileTransform->position_ += projectile->direction_ * projectile->speed_ * deltaTime;
             projectile->lifetime_ -= deltaTime;

@@ -30,6 +30,7 @@ public slots:
     QJsonValue getComponent(QString name, int entity);
     void setComponent(QString name, int entity, QJsonObject Json);
     void spawnProjectile(int owner);
+    QJsonValue getAllNpcLocations();
 private slots:
 private:
     void load(Script *script);

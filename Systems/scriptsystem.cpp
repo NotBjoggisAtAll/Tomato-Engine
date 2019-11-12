@@ -8,6 +8,7 @@
 #include "Managers/shadermanager.h"
 #include "Script/jstimer.h"
 #include "Systems/projectilesystem.h"
+#include <QJsonArray>
 
 ScriptSystem::ScriptSystem()
 {
@@ -35,7 +36,6 @@ void ScriptSystem::tick(float deltaTime)
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
             continue;
-        load(scriptComp);
         call(scriptComp, "tick");
     }
 }
@@ -87,6 +87,25 @@ void ScriptSystem::spawnProjectile(int owner)
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{0,0,0}));
     getWorld()->addComponent(entity, Projectile());
+}
+
+QJsonValue ScriptSystem::getAllNpcLocations()
+{
+    QJsonArray positions;
+    for(const auto& entity : getWorld()->getEntities())
+    {
+        auto ptr = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+        if(!ptr) continue;
+
+        auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+        if(!transform) continue;
+        QJsonArray pos;
+        pos.insert(0,static_cast<double>(transform->position_.x));
+        pos.insert(1,static_cast<double>(transform->position_.y));
+        pos.insert(2,static_cast<double>(transform->position_.z));
+        positions.push_back(pos);
+    }
+    return positions;
 }
 
 QJsonValue ScriptSystem::getComponent(QString name , int entity)

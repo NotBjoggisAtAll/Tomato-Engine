@@ -15,7 +15,7 @@ public slots:
     void setTimeout(int milliseconds, QJSValue callback);
     void timeoutDone();
 private:
-    QTimer* timer_;
+    QTimer* timer_ = nullptr;
     QJSValue callback_;
     int owningEntity_ = -1;
 };
