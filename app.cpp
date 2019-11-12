@@ -239,9 +239,9 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, transform);
     getWorld()->addComponent(entity, EntityData("Tower"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{0.82f,0.82f,0.82f}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("turret.obj"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("turret.obj"));
     getWorld()->addComponent(entity, Script("towerScript.js"));
     auto script = getWorld()->getComponent<Script>(entity).value();
     getWorld()->getSystem<ScriptSystem>()->componentAdded(script, entity);
