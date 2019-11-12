@@ -82,11 +82,11 @@ void RenderWindow::init()
     emit initDone();
 }
 
-void RenderWindow::tick()
+void RenderWindow::tick(float deltaTime)
 {
     context_->makeCurrent(this);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    getWorld()->getSystem<RenderSystem>()->tick();
+    getWorld()->getSystem<RenderSystem>()->tick(deltaTime);
     context_->swapBuffers(this);
 }
 

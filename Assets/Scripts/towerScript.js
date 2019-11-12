@@ -1,6 +1,6 @@
 function beginPlay()
 {
-    timer.setTimeout(1000, shoot);
+    timer.setTimeout(100, shoot);
 }
 
 function shoot()

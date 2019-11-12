@@ -59,7 +59,7 @@ void SceneSystem::beginPlay()
     }
 }
 
-void SceneSystem::tick()
+void SceneSystem::tick(float deltaTime)
 {
 }
 

@@ -14,7 +14,7 @@ void CameraSystem::beginPlay()
 {
 }
 
-void CameraSystem::tick()
+void CameraSystem::tick(float deltaTime)
 {
     for(const auto& entity : entities_)
     {

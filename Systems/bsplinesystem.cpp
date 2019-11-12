@@ -13,7 +13,7 @@ void BSplineSystem::beginPlay()
 {
 }
 
-void BSplineSystem::tick()
+void BSplineSystem::tick(float deltaTime)
 {
     for(auto const& entity : entities_)
     {

@@ -28,7 +28,7 @@ void ScriptSystem::beginPlay()
     }
 }
 
-void ScriptSystem::tick()
+void ScriptSystem::tick(float deltaTime)
 {
     for(auto entity : entities_)
     {
@@ -68,14 +68,12 @@ void ScriptSystem::spawnEnemy(int owner)
     if(spline)
     {
         Entity entity = getWorld()->createEntity();
-        getWorld()->addComponent<Transform>(entity, Transform({},{},{0.2f,0.2f,0.2f}));
-        getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("camera.obj"));
-        getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("camera.obj"));
-        getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
-        getWorld()->addComponent<Npc>(entity, Npc(&spline->curve_));
+        getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+        getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("camera.obj"));
+        getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("camera.obj"));
+        getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+        getWorld()->addComponent(entity, Npc(&spline->curve_));
     }
-  //  qDebug() << "Spawn enemy from script";
-
 }
 
 void ScriptSystem::spawnProjectile(int owner)
@@ -84,13 +82,11 @@ void ScriptSystem::spawnProjectile(int owner)
     if(!transform) return;
 
     Entity entity = getWorld()->createEntity();
-    getWorld()->addComponent<Transform>(entity, Transform(transform->position_,{},{0.1f,0.1f,0.1f}));
-    getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->phongShader(),{0,0,0}));
-    getWorld()->addComponent<Destructable>(entity, Destructable());
-    getWorld()->addComponent<Projectile>(entity, Projectile());
-    //qDebug() << "Spawn projectile from script";
+    getWorld()->addComponent(entity, Transform(transform->position_,{},{0.1f,0.1f,0.1f}));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{0,0,0}));
+    getWorld()->addComponent(entity, Projectile());
 }
 
 QJsonValue ScriptSystem::getComponent(QString name , int entity)

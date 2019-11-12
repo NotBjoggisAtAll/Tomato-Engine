@@ -11,7 +11,7 @@ struct RenderSystem : public QOpenGLFunctions_4_1_Core, public System
     RenderSystem() = default;
 
      void beginPlay() override;
-     void tick() override;
+     void tick(float deltaTime) override;
      int totalVerticeCount = 0;
 private:
     bool sphereInsideFrustum(const gsl::Vector3D vecCenter, float radius);

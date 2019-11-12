@@ -14,7 +14,7 @@ public:
     // System interface
 public:
     void beginPlay() override;
-    void tick() override;
+    void tick(float deltaTime) override;
     void endPlay() override;
 
 

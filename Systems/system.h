@@ -12,7 +12,7 @@ public:
     virtual ~System() = default;
 
     virtual void beginPlay(){}
-    virtual void tick(){}
+    virtual void tick(float deltaTime){}
     virtual void endPlay(){}
 
 

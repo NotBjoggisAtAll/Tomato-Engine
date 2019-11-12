@@ -89,7 +89,6 @@ App::App()
     Signature projSign;
     projSign.set(getWorld()->getComponentType<Projectile>());
     projSign.set(getWorld()->getComponentType<Transform>());
-    projSign.set(getWorld()->getComponentType<Destructable>());
     getWorld()->setSystemSignature<ProjectileSystem>(projSign);
 
 
@@ -196,28 +195,27 @@ void App::postInit()
 
 }
 
-
 void App::tick()
 {
 
     deltaTime_ = deltaTimer_.restart() / 1000.f;
     calculateFramerate();
 
-    getWorld()->getSystem<InputSystem>()->tick();
+    getWorld()->getSystem<InputSystem>()->tick(deltaTime_);
 
     if(getWorld()->bGameRunning)
     {
-        getWorld()->getSystem<ScriptSystem>()->tick();
-        getWorld()->getSystem<NpcSystem>()->tick();
+        getWorld()->getSystem<ScriptSystem>()->tick(deltaTime_);
+        getWorld()->getSystem<NpcSystem>()->tick(deltaTime_);
     }
 
-    getWorld()->getSystem<BSplineSystem>()->tick();
-    getWorld()->getSystem<ProjectileSystem>()->tick();
-    getWorld()->getSystem<CollisionSystem>()->tick();
-    getWorld()->getSystem<SoundSystem>()->tick();
+    getWorld()->getSystem<BSplineSystem>()->tick(deltaTime_);
+    getWorld()->getSystem<ProjectileSystem>()->tick(deltaTime_);
+    getWorld()->getSystem<CollisionSystem>()->tick(deltaTime_);
+    getWorld()->getSystem<SoundSystem>()->tick(deltaTime_);
 
-    getWorld()->getSystem<CameraSystem>()->tick();
-    renderWindow_->tick();
+    getWorld()->getSystem<CameraSystem>()->tick(deltaTime_);
+    renderWindow_->tick(deltaTime_);
 }
 
 void App::entitiesCollided(Entity entity1, Entity entity2)
@@ -225,12 +223,12 @@ void App::entitiesCollided(Entity entity1, Entity entity2)
     Projectile* projectile = getWorld()->getComponent<Projectile>(entity1).value_or(nullptr);
     if(projectile)
     {
-        qDebug() << "Something collided";
         Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
         if(npc)
         {
+            getWorld()->destroyEntity(entity1);
+            getWorld()->destroyEntity(entity2);
         }
-        getWorld()->destroyEntity(entity2);
     }
 }
 
@@ -244,6 +242,7 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     getWorld()->addComponent(entity, EntityData("Tower"));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Script("towerScript.js"));
     auto script = getWorld()->getComponent<Script>(entity).value();
     getWorld()->getSystem<ScriptSystem>()->componentAdded(script, entity);

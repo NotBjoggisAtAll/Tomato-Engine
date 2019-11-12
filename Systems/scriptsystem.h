@@ -20,7 +20,7 @@ public:
     void componentAdded(Script* script, Entity entity);
     ~ScriptSystem() override;
     void beginPlay() override;
-    void tick() override;
+    void tick(float deltaTime) override;
     void call(Script *script, QString function);
 public slots:
 

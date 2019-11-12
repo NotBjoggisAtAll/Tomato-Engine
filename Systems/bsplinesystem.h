@@ -8,7 +8,7 @@ class BSplineSystem : public System
 public:
     BSplineSystem();
     virtual void beginPlay() override;
-    virtual void tick() override;
+    virtual void tick(float deltaTime) override;
 };
 
 #endif // BSPLINESYSTEM_H

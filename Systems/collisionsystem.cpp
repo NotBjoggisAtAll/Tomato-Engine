@@ -3,10 +3,9 @@
 #include "Components/collision.h"
 #include "Components/transform.h"
 #include "Components/vertexdata.h"
-#include "Components/entitydata.h"
 #include "GSL/matrix4x4.h"
 
-void CollisionSystem::tick()
+void CollisionSystem::tick(float deltaTime)
 {
     for (auto const& entity : entities_)
     {
@@ -37,9 +36,8 @@ void CollisionSystem::tick()
 
             auto otherCollision = getWorld()->getComponent<Collision>(otherEntity).value_or(nullptr);
             auto otherTransform = getWorld()->getComponent<Transform>(otherEntity).value_or(nullptr);
-            auto otherData = getWorld()->getComponent<EntityData>(otherEntity).value_or(nullptr);
 
-            if(!otherCollision || !otherTransform || !otherData)
+            if(!otherCollision || !otherTransform)
                 continue;
 
             if(otherCollision->minVector_ == gsl::Vector3D(0) && otherCollision->maxVector_ == gsl::Vector3D(0))
@@ -70,9 +68,8 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
     {
         auto collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
         auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-        auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
 
-        if(!collision || !transform || !data)
+        if(!collision || !transform)
             continue;
 
         if(collision->scaledMaxVector_ == gsl::Vector3D(0) && collision->scaledMinVector_ == gsl::Vector3D(0))

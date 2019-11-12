@@ -19,7 +19,7 @@ public:
 
     SceneSystem();
     void beginPlay() override;
-    void tick() override;
+    void tick(float deltaTime) override;
     void endPlay() override;
 
     void clearScene();

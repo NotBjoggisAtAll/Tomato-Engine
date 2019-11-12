@@ -12,7 +12,7 @@ void RenderSystem::beginPlay()
 {
 }
 
-void RenderSystem::tick()
+void RenderSystem::tick(float deltaTime)
 {
     initializeOpenGLFunctions();
 

@@ -24,7 +24,7 @@ public:
 
     void makeCollisionBorder(Entity newEntity);
 
-    void tick();
+    void tick(float deltaTime);
 
 signals:
     void updateCameraPerspectives(float aspectRatio);

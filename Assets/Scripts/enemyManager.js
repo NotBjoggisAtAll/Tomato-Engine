@@ -1,6 +1,6 @@
 function beginPlay()
 {
-    timer.setTimeout(3000, test);
+    timer.setTimeout(1000, test);
 }
 
 function test()

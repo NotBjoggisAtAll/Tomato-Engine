@@ -17,7 +17,7 @@ void ProjectileSystem::beginPlay()
 
 }
 
-void ProjectileSystem::tick()
+void ProjectileSystem::tick(float deltaTime)
 {
     for(const auto& entity: entities_)
     {
@@ -53,9 +53,18 @@ void ProjectileSystem::tick()
             projectile->routeCalculated = true;
         }else
         {
-            projcetileTransform->position_ += projectile->direction_ * projectile->speed_;
+            projcetileTransform->position_ += projectile->direction_ * projectile->speed_ * deltaTime;
+            projectile->lifetime_ -= deltaTime;
+            if(projectile->lifetime_ < 0)
+                entitiesToBeDeleted_.push(entity);
         }
     }
+    while(!entitiesToBeDeleted_.empty())
+    {
+        getWorld()->destroyEntity(entitiesToBeDeleted_.front());
+        entitiesToBeDeleted_.pop();
+    }
+
 }
 
 void ProjectileSystem::endPlay()

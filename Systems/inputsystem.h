@@ -13,7 +13,7 @@ class InputSystem : public System
 public:
     InputSystem();
     void beginPlay() override;
-    void tick() override;
+    void tick(float deltaTime) override;
     void endPlay() override;
 
     void setEventHandler(const std::shared_ptr<EventHandler> &eventHandler);

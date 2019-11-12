@@ -15,7 +15,7 @@ void NpcSystem::beginPlay()
 {
 }
 
-void NpcSystem::tick()
+void NpcSystem::tick(float deltaTime)
 {
     for(const auto& entity : entities_)
     {
