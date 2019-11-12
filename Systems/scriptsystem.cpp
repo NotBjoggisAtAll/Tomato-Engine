@@ -58,13 +58,18 @@ int ScriptSystem::createEntity()
 
 void ScriptSystem::spawnEnemy(int owner)
 {
-    Entity entity = getWorld()->createEntity();
-    getWorld()->addComponent<Transform>(entity, Transform({},{},{0.2f,0.2f,0.2f}));
-    getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("camera.obj"));
-    getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("camera.obj"));
-    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
-    getWorld()->addComponent<Npc>(entity, Npc(&getWorld()->getComponent<BSpline>(owner).value()->curve_));
-    qDebug() << "Spawn enemy from script";
+    auto spline = getWorld()->getComponent<BSpline>(owner).value_or(nullptr);
+
+    if(spline)
+    {
+        Entity entity = getWorld()->createEntity();
+        getWorld()->addComponent<Transform>(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+        getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("camera.obj"));
+        getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("camera.obj"));
+        getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
+        getWorld()->addComponent<Npc>(entity, Npc(&spline->curve_));
+        qDebug() << "Spawn enemy from script";
+    }
 
 }
 
