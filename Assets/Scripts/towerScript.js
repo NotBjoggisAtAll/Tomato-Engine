@@ -1,11 +1,11 @@
 function beginPlay()
 {
-    timer.setTimeout(3000, test);
+    timer.setTimeout(1000, shoot);
 }
 
-function test()
+function shoot()
 {
-    engine.spawnEnemy(id);
+    engine.spawnProjectile(id);
 }
 
 function tick()
@@ -17,5 +17,4 @@ function endPlay()
 {
 
 }
-
 //engine.spawnEnemy(id); id er entitien som dette scriptet er på.

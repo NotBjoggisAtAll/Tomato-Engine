@@ -29,6 +29,7 @@ HEADERS += \
     Components/material.h \
     Components/mesh.h \
     Components/npc.h \
+    Components/projectile.h \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
@@ -48,12 +49,14 @@ HEADERS += \
     Managers/soundmanager.h \
     Script/jstimer.h \
     Shaders/colorshader.h \
+    Systems/allsystems.h \
     Systems/bsplinesystem.h \
     Systems/camerasystem.h \
     Systems/collisionsystem.h \
     Systems/inputsystem.h \
     Systems/movementsystem.h \
     Systems/npcsystem.h \
+    Systems/projectilesystem.h \
     Systems/scenesystem.h \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
@@ -102,6 +105,7 @@ SOURCES += main.cpp \
     Components/material.cpp \
     Components/mesh.cpp \
     Components/npc.cpp \
+    Components/projectile.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
     Components/vertexdata.cpp \
@@ -124,6 +128,7 @@ SOURCES += main.cpp \
     Systems/inputsystem.cpp \
     Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
+    Systems/projectilesystem.cpp \
     Systems/scenesystem.cpp \
     Systems/scriptsystem.cpp \
     Systems/system.cpp \

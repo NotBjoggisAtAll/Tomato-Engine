@@ -13,9 +13,8 @@ void CollisionSystem::tick()
 
         auto collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
         auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-        auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
 
-        if(!collision || !transform || !data)
+        if(!collision || !transform)
             continue;
 
         if(collision->minVector_ == gsl::Vector3D(0) && collision->maxVector_ == gsl::Vector3D(0))

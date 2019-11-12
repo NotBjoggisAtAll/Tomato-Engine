@@ -5,7 +5,9 @@
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJSValue>
+#include <vector>
 
+class JSTimer;
 class Script;
 
 class QJSEngine;
@@ -27,11 +29,12 @@ public slots:
 
     QJsonValue getComponent(QString name, int entity);
     void setComponent(QString name, int entity, QJsonObject Json);
+    void spawnProjectile(int owner);
 private slots:
 private:
     void load(Script *script);
 
-    // System interface
+    std::vector<JSTimer*> timers_;
 public:
     virtual void endPlay() override;
 };

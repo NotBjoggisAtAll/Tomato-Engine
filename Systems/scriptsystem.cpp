@@ -7,6 +7,7 @@
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Script/jstimer.h"
+#include "Systems/projectilesystem.h"
 
 ScriptSystem::ScriptSystem()
 {
@@ -24,8 +25,6 @@ void ScriptSystem::beginPlay()
         if(!scriptComp)
             continue;
         componentAdded(scriptComp, entity);
-        load(scriptComp);
-        call(scriptComp, "beginPlay");
     }
 }
 
@@ -36,6 +35,7 @@ void ScriptSystem::tick()
         auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
         if(!scriptComp)
             continue;
+        load(scriptComp);
         call(scriptComp, "tick");
     }
 }
@@ -48,6 +48,11 @@ void ScriptSystem::endPlay()
         if(!scriptComp)
             continue;
         call(scriptComp, "endPlay");
+        for(auto& timer : timers_)
+        {
+            delete timer;
+            timer = nullptr;
+        }
     }
 }
 
@@ -68,9 +73,24 @@ void ScriptSystem::spawnEnemy(int owner)
         getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("camera.obj"));
         getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->colorShader(),{1,0,0}));
         getWorld()->addComponent<Npc>(entity, Npc(&spline->curve_));
-        qDebug() << "Spawn enemy from script";
     }
+  //  qDebug() << "Spawn enemy from script";
 
+}
+
+void ScriptSystem::spawnProjectile(int owner)
+{
+    auto transform = getWorld()->getComponent<Transform>(owner).value_or(nullptr);
+    if(!transform) return;
+
+    Entity entity = getWorld()->createEntity();
+    getWorld()->addComponent<Transform>(entity, Transform(transform->position_,{},{0.1f,0.1f,0.1f}));
+    getWorld()->addComponent<Mesh>(entity, ResourceFactory::get()->loadMesh("box2.txt"));
+    getWorld()->addComponent<Collision>(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent<Material>(entity, Material(ShaderManager::instance()->phongShader(),{0,0,0}));
+    getWorld()->addComponent<Destructable>(entity, Destructable());
+    getWorld()->addComponent<Projectile>(entity, Projectile());
+    //qDebug() << "Spawn projectile from script";
 }
 
 QJsonValue ScriptSystem::getComponent(QString name , int entity)
@@ -96,12 +116,16 @@ void ScriptSystem::setComponent(QString name, int entity, QJsonObject Json)
 
 void ScriptSystem::componentAdded(Script *script, Entity entity)
 {
-    if(!script)
-        return;
+    auto scriptComp = getWorld()->getComponent<Script>(entity).value_or(nullptr);
+    if(!scriptComp) return;
 
     script->engine_->globalObject().setProperty("engine", script->engine_->newQObject(this));
     script->engine_->globalObject().setProperty("id", entity);
-    script->engine_->globalObject().setProperty("timer", script->engine_->newQObject(new JSTimer(entity,this)));
+    timers_.emplace_back(new JSTimer(this,entity));
+    script->engine_->globalObject().setProperty("timer", script->engine_->newQObject(timers_.back()));
+
+    load(scriptComp);
+    call(scriptComp, "beginPlay");
 
 }
 

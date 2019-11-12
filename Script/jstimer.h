@@ -9,7 +9,7 @@ class JSTimer : public QObject
 {
     Q_OBJECT
 public:
-    JSTimer(int entity, QObject *parent);
+    JSTimer(QObject *parent = nullptr, int entity = -1);
     ~JSTimer();
 public slots:
     void setTimeout(int milliseconds, QJSValue callback);

@@ -5,17 +5,8 @@
 #include "resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
-#include "Systems/soundsystem.h"
-#include "Systems/movementsystem.h"
-#include "Systems/collisionsystem.h"
-#include "Systems/scriptsystem.h"
-#include "Systems/bsplinesystem.h"
-#include "Systems/npcsystem.h"
-#include "Systems/rendersystem.h"
-#include "Systems/camerasystem.h"
+#include "Systems/allsystems.h"
 #include "eventhandler.h"
-#include "Systems/scenesystem.h"
-#include "Systems/inputsystem.h"
 #include "Windows/sceneloader.h"
 #include "Windows/scenesaver.h"
 
@@ -35,6 +26,7 @@ App::App()
     getWorld()->registerComponent<VertexData>();
     getWorld()->registerComponent<Destructable>();
     getWorld()->registerComponent<Camera>();
+    getWorld()->registerComponent<Projectile>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -46,6 +38,7 @@ App::App()
     getWorld()->registerSystem<NpcSystem>();
     getWorld()->registerSystem<InputSystem>();
     getWorld()->registerSystem<CameraSystem>();
+    getWorld()->registerSystem<ProjectileSystem>();
 
     Signature renderSign;
     renderSign.set(getWorld()->getComponentType<Transform>());
@@ -66,7 +59,6 @@ App::App()
 
     Signature collisionSign;
     collisionSign.set(getWorld()->getComponentType<Collision>());
-    collisionSign.set(getWorld()->getComponentType<EntityData>());
     collisionSign.set(getWorld()->getComponentType<Transform>());
     getWorld()->setSystemSignature<CollisionSystem>(collisionSign);
 
@@ -93,6 +85,13 @@ App::App()
     cameraSign.set(getWorld()->getComponentType<Transform>());
     cameraSign.set(getWorld()->getComponentType<Camera>());
     getWorld()->setSystemSignature<CameraSystem>(cameraSign);
+
+    Signature projSign;
+    projSign.set(getWorld()->getComponentType<Projectile>());
+    projSign.set(getWorld()->getComponentType<Transform>());
+    projSign.set(getWorld()->getComponentType<Destructable>());
+    getWorld()->setSystemSignature<ProjectileSystem>(projSign);
+
 
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
@@ -197,31 +196,6 @@ void App::postInit()
 
 }
 
-void App::entitiesCollided(Entity entity1, Entity entity2)
-{
-    Input* player = getWorld()->getComponent<Input>(entity1).value_or(nullptr);
-    if(player)
-    {
-        Destructable* item = getWorld()->getComponent<Destructable>(entity2).value_or(nullptr);
-        if(item)
-        {
-            Transform* data = getWorld()->getComponent<Transform>(entity2).value_or(nullptr);
-            gsl::Vector3D pos = data->position_;
-            getWorld()->destroyEntity(entity2);
-            for(const auto& entity : getWorld()->getSystem<NpcSystem>()->entities_)
-            {
-                Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
-                npc->event = NPCevents::ITEM_TAKEN;
-                getWorld()->getSystem<NpcSystem>()->notify(entity);
-            }
-        }
-        Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
-        if(npc)
-        {
-            getWorld()->destroyEntity(entity1);
-        }
-    }
-}
 
 void App::tick()
 {
@@ -238,11 +212,26 @@ void App::tick()
     }
 
     getWorld()->getSystem<BSplineSystem>()->tick();
+    getWorld()->getSystem<ProjectileSystem>()->tick();
     getWorld()->getSystem<CollisionSystem>()->tick();
     getWorld()->getSystem<SoundSystem>()->tick();
 
     getWorld()->getSystem<CameraSystem>()->tick();
     renderWindow_->tick();
+}
+
+void App::entitiesCollided(Entity entity1, Entity entity2)
+{
+    Projectile* projectile = getWorld()->getComponent<Projectile>(entity1).value_or(nullptr);
+    if(projectile)
+    {
+        qDebug() << "Something collided";
+        Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
+        if(npc)
+        {
+        }
+        getWorld()->destroyEntity(entity2);
+    }
 }
 
 void App::spawnTower(gsl::Vector3D hitPosition)
@@ -255,7 +244,9 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     getWorld()->addComponent(entity, EntityData("Tower"));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
+    getWorld()->addComponent(entity, Script("towerScript.js"));
+    auto script = getWorld()->getComponent<Script>(entity).value();
+    getWorld()->getSystem<ScriptSystem>()->componentAdded(script, entity);
     mainWindow_->addEntityToUi(entity);
 
 }
@@ -299,6 +290,7 @@ void App::playGame()
 void App::stopGame()
 {
     getWorld()->getSystem<NpcSystem>()->endPlay();
+    getWorld()->getSystem<ScriptSystem>()->endPlay();
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
 

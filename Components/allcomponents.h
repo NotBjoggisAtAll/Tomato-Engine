@@ -15,5 +15,6 @@
 #include "vertexdata.h"
 #include "destructable.h"
 #include "camera.h"
+#include "projectile.h"
 
 #endif // ALLCOMPONENTS_H

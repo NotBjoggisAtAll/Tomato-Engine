@@ -1,12 +1,13 @@
 #include "jstimer.h"
-
-JSTimer::JSTimer(int entity, QObject* parent) : QObject(parent),owningEntity_(entity)
+#include <QDebug>
+JSTimer::JSTimer(QObject* parent, int entity) : QObject(parent),owningEntity_(entity)
 {
 
 }
 
 JSTimer::~JSTimer()
 {
+    qDebug() << "JSTimer deleted";
     delete timer_;
 }
 
