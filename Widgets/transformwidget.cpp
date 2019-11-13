@@ -72,7 +72,7 @@ void TransformWidget::on_xPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {static_cast<float>(arg1 - p.x),0,0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {static_cast<float>(arg1) - p.x,0,0});
     }
 }
 
@@ -81,7 +81,7 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,static_cast<float>(arg1 - p.y),0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,static_cast<float>(arg1) - p.y,0});
     }
 }
 
@@ -90,7 +90,7 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,0,static_cast<float>(arg1 - p.z)});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,0,static_cast<float>(arg1) - p.z});
     }
 }
 
