@@ -66,7 +66,7 @@ void NpcSystem::notify(Entity entity)
     case NPCevents::ITEM_TAKEN:
         break;
     case NPCevents::ENDPOINT_ARRIVED:
-       getWorld()->destroyEntity(entity);
+       getWorld()->destroyEntityLater(entity);
         break;
     default:
         break;

@@ -28,26 +28,15 @@ void ProjectileSystem::tick(float deltaTime)
         if(!projectile->routeCalculated)
         {
 
-            std::vector<Entity> npcs;
-            for(const auto& entity : getWorld()->getEntities())
-            {
-                auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
-                if(!npc) continue;
-                npcs.push_back(entity);
-            }
-            if(npcs.empty()) return;
+            if(projectile->npcPositions_.empty()) return;
 
-            auto lowest = std::min_element(npcs.begin(), npcs.end(),[&](const int& npc1, const int& npc2 )
+            auto lowest = std::min_element(projectile->npcPositions_.begin(), projectile->npcPositions_.end(),[&](const gsl::Vector3D& npc1, const gsl::Vector3D& npc2 )
             {
-                auto transform1 = getWorld()->getComponent<Transform>(npc1).value_or(nullptr);
-                auto transform2 = getWorld()->getComponent<Transform>(npc2).value_or(nullptr);
-
-                return (transform1->position_ - projcetileTransform->position_).length() <
-                        (transform2->position_ - projcetileTransform->position_).length();
+                return (npc1 - projcetileTransform->position_).length() <
+                        (npc2 - projcetileTransform->position_).length();
             });
 
-            auto transform1 = getWorld()->getComponent<Transform>(*lowest).value_or(nullptr);
-            projectile->direction_ = (transform1->position_ - projcetileTransform->position_).normalized();
+            projectile->direction_ = (*lowest - projcetileTransform->position_).normalized();
             projectile->direction_.y = 0;
             projectile->routeCalculated = true;
         }
@@ -61,7 +50,7 @@ void ProjectileSystem::tick(float deltaTime)
     }
     while(!entitiesToBeDeleted_.empty())
     {
-        getWorld()->destroyEntity(entitiesToBeDeleted_.front());
+        getWorld()->destroyEntityLater(entitiesToBeDeleted_.front());
         entitiesToBeDeleted_.pop();
     }
 

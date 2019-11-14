@@ -6,6 +6,7 @@
 #include "Managers/entitymanager.h"
 #include "Managers/systemManager.h"
 #include <memory>
+#include <queue>
 #include <string>
 
 class World : public QObject
@@ -36,16 +37,22 @@ public:
         return eId;
     }
 
-    void destroyEntity(Entity entity)
+
+    void destroyEntityLater(Entity entity)
     {
-
-        entityManager_->destroyEntity(entity);
-
-        componentManager_->entityDestroyed(entity);
-
-        systemManager_->entityDestroyed(entity);
+        entitiesToDelete_.push(entity);
     }
 
+    void destroyEntities()
+    {
+        while(!entitiesToDelete_.empty())
+        {
+        entityManager_->destroyEntity(entitiesToDelete_.front());
+        componentManager_->entityDestroyed(entitiesToDelete_.front());
+        systemManager_->entityDestroyed(entitiesToDelete_.front());
+        entitiesToDelete_.pop();
+        }
+    }
     std::vector<Entity> getEntities()
     {
        return entityManager_->getEntities();
@@ -127,12 +134,15 @@ signals:
     void updateCameraPerspectives();
 private:
 
+
     static World* instance;
     World();
 
     std::unique_ptr<ComponentManager> componentManager_;
     std::unique_ptr<EntityManager> entityManager_;
     std::unique_ptr<SystemManager> systemManager_;
+
+    std::queue<Entity> entitiesToDelete_;
 
     Entity currentCamera_ = -1;
 

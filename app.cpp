@@ -204,17 +204,18 @@ void App::tick()
 
     if(getWorld()->bGameRunning)
     {
-        getWorld()->getSystem<ScriptSystem>()->tick(deltaTime_);
         getWorld()->getSystem<NpcSystem>()->tick(deltaTime_);
+        getWorld()->getSystem<ScriptSystem>()->tick(deltaTime_);
     }
 
     getWorld()->getSystem<BSplineSystem>()->tick(deltaTime_);
     getWorld()->getSystem<ProjectileSystem>()->tick(deltaTime_);
-    getWorld()->getSystem<CollisionSystem>()->tick(deltaTime_);
     getWorld()->getSystem<SoundSystem>()->tick(deltaTime_);
+    getWorld()->getSystem<CollisionSystem>()->tick(deltaTime_);
 
     getWorld()->getSystem<CameraSystem>()->tick(deltaTime_);
     renderWindow_->tick(deltaTime_);
+    getWorld()->destroyEntities();
 }
 
 void App::entitiesCollided(Entity entity1, Entity entity2)
@@ -225,8 +226,8 @@ void App::entitiesCollided(Entity entity1, Entity entity2)
         Npc* npc = getWorld()->getComponent<Npc>(entity2).value_or(nullptr);
         if(npc)
         {
-            getWorld()->destroyEntity(entity1);
-            getWorld()->destroyEntity(entity2);
+            getWorld()->destroyEntityLater(entity1);
+            getWorld()->destroyEntityLater(entity2);
         }
     }
 }

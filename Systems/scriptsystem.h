@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QJSValue>
 #include <vector>
+#include <QJsonArray>
 
 class JSTimer;
 class Script;
@@ -29,8 +30,8 @@ public slots:
 
     QJsonValue getComponent(QString name, int entity);
     void setComponent(QString name, int entity, QJsonObject Json);
-    void spawnProjectile(int owner);
     QJsonValue getAllNpcLocations();
+    void shoot(int owner, QJsonArray npcs);
 private slots:
 private:
     void load(Script *script);

@@ -17,7 +17,7 @@ void SceneSystem::clearScene()
 {
     auto tempEntities = entities_;
     for(auto entity : tempEntities)
-        getWorld()->destroyEntity(entity);
+        getWorld()->destroyEntityLater(entity);
 
 }
 
@@ -26,7 +26,7 @@ void SceneSystem::beginPlay()
     editorCamera_.camera_    = *getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value();
     editorCamera_.transform_ = *getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value();
 
-    getWorld()->destroyEntity(getWorld()->getCurrentCamera());
+    getWorld()->destroyEntityLater(getWorld()->getCurrentCamera());
 
     jba::JsonScene scene("temp");
     for(auto entity : entities_)

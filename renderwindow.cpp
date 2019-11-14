@@ -99,7 +99,7 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
 
     if(lastCollisionEntity != -1)
     {
-        getWorld()->destroyEntity(lastCollisionEntity);
+        getWorld()->destroyEntityLater(lastCollisionEntity);
 
         if(newEntity == -1){
             lastCollisionEntity = -1;
@@ -159,8 +159,9 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(vertices,indices));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, EntityData("__collision"));
-    EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value();
+    EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value_or(nullptr);
 
+    if(!data) return;
     data->children_.push_back(entity);
 
     lastCollisionEntity = entity;
