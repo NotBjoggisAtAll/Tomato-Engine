@@ -28,11 +28,10 @@ private slots:
     void playGame();
     void stopGame();
     void updateCameraPerspectives(float aspectRatio);
-    void loadScene(QString JsonPath);
-    void openSceneLoader();
-    void saveScene(QString sceneName);
-    void openSceneSaver();
+    void loadScene();
+    void saveScene();
     void newScene();
+    void updateWorldOutliner();
     void raycastFromMouse();
 
     void postInit();

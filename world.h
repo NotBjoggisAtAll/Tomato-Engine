@@ -45,6 +45,9 @@ public:
 
     void destroyEntities()
     {
+        if(entitiesToDelete_.empty())
+            return;
+
         while(!entitiesToDelete_.empty())
         {
         entityManager_->destroyEntity(entitiesToDelete_.front());
@@ -52,6 +55,7 @@ public:
         systemManager_->entityDestroyed(entitiesToDelete_.front());
         entitiesToDelete_.pop();
         }
+        emit updateWorldOutliner();
     }
     std::vector<Entity> getEntities()
     {
@@ -132,6 +136,7 @@ public:
 
 signals:
     void updateCameraPerspectives();
+    void updateWorldOutliner();
 private:
 
 

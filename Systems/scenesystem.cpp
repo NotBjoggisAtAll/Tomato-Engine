@@ -16,6 +16,9 @@ SceneSystem::SceneSystem() {}
 void SceneSystem::clearScene()
 {
     auto tempEntities = entities_;
+    auto currentCameraIterator = tempEntities.find(getWorld()->getCurrentCamera());
+    if(currentCameraIterator != tempEntities.end())
+        tempEntities.erase(currentCameraIterator);
     for(auto entity : tempEntities)
         getWorld()->destroyEntityLater(entity);
 
@@ -75,24 +78,24 @@ void SceneSystem::endPlay()
 
 }
 
-void SceneSystem::loadScene(QString sceneName)
+void SceneSystem::loadScene(QFileInfo scene)
 {
     editorCamera_.camera_    = *getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value();
     editorCamera_.transform_ = *getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value();
-    loadScenePriv(QString::fromStdString(gsl::jsonFilePath) + sceneName + ".json");
+    loadScenePriv(scene.filePath());
     //Resets to the editor camera
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, editorCamera_.camera_);
     getWorld()->addComponent(entity, editorCamera_.transform_);
     getWorld()->setCurrentCamera(entity);}
 
-void SceneSystem::saveScene(QString sceneName)
+void SceneSystem::saveScene(QFileInfo scene)
 {
-    jba::JsonScene scene(sceneName);
+    jba::JsonScene jscene(scene.baseName());
     for(auto entity : entities_)
-        scene.addObject(entity);
+        jscene.addObject(entity);
 
-    scene.makeFile(sceneName,true);
+    jscene.makeFile(scene.filePath(),true);
 }
 
 void SceneSystem::loadScenePriv(QString sceneName)

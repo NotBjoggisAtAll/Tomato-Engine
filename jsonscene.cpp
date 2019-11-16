@@ -29,9 +29,9 @@ void JsonScene::makeTempFile(QString sceneName)
     file.close();
 }
 
-void JsonScene::makeFile(QString sceneName, bool overwrite)
+void JsonScene::makeFile(QString absolutefilePath, bool overwrite)
 {
-    QFile file(QString::fromStdString(gsl::jsonFilePath) + sceneName + ".json");
+    QFile file(absolutefilePath);
     if(file.exists() && !overwrite)
         return;
     else

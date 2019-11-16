@@ -3,6 +3,7 @@
 
 #include "system.h"
 #include <QJsonObject>
+#include <QFileInfo>
 #include <unordered_map>
 #include "Components/camera.h"
 #include "Components/transform.h"
@@ -23,8 +24,8 @@ public:
     void endPlay() override;
 
     void clearScene();
-    void loadScene(QString sceneName);
-    void saveScene(QString sceneName);
+    void loadScene(QFileInfo scene);
+    void saveScene(QFileInfo scene);
 
 private:
 

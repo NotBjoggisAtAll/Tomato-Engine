@@ -7,8 +7,7 @@
 #include "Managers/soundmanager.h"
 #include "Systems/allsystems.h"
 #include "eventhandler.h"
-#include "Windows/sceneloader.h"
-#include "Windows/scenesaver.h"
+#include <QFileDialog>
 
 App::App()
 {
@@ -112,12 +111,13 @@ App::App()
     connect(mainWindow_.get(), &MainWindow::playGame_signal, this, &App::playGame);
     connect(mainWindow_.get(), &MainWindow::stopGame_signal, this, &App::stopGame);
     connect(mainWindow_.get(), &MainWindow::createEntity, this, &App::createEntity);
-    connect(mainWindow_.get(), &MainWindow::loadScene, this, &App::openSceneLoader);
+    connect(mainWindow_.get(), &MainWindow::loadScene, this, &App::loadScene);
     connect(mainWindow_.get(), &MainWindow::newScene, this, &App::newScene);
-    connect(mainWindow_.get(), &MainWindow::saveScene, this, &App::openSceneSaver);
+    connect(mainWindow_.get(), &MainWindow::saveScene, this, &App::saveScene);
 
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(getWorld(), &World::updateCameraPerspectives, renderWindow_.get(), &RenderWindow::callExposeEvent);
+    connect(getWorld(), &World::updateWorldOutliner, this, &App::updateWorldOutliner);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
     connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
@@ -196,7 +196,6 @@ void App::postInit()
 
 void App::tick()
 {
-
     deltaTime_ = deltaTimer_.restart() / 1000.f;
     calculateFramerate();
 
@@ -280,10 +279,8 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-  //  setupVisimOblig();
     getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
-
 }
 
 void App::stopGame()
@@ -292,8 +289,6 @@ void App::stopGame()
     getWorld()->getSystem<ScriptSystem>()->endPlay();
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
-
-  //  setupVisimOblig();
 }
 
 void App::setupVisimOblig()
@@ -373,18 +368,16 @@ void App::calculateFramerate()
     }
 }
 
-
-void App::loadScene(QString JsonPath)
+void App::loadScene()
 {
-    getWorld()->getSystem<SceneSystem>()->loadScene(JsonPath);
-    mainWindow_->displayEntitiesInOutliner();
-}
+    QFileDialog fileDialog;
+    QFileInfo fileInfo = fileDialog.getOpenFileName(mainWindow_.get(),"Pick a scene","../INNgine2019/Json","*.json");
 
-void App::openSceneLoader()
-{
-    SceneLoader* sceneLoader = new SceneLoader(mainWindow_.get());
-    sceneLoader->show();
-    connect(sceneLoader, &SceneLoader::onLoad, this, &App::loadScene);
+    if(!fileInfo.size())
+        return;
+
+    getWorld()->getSystem<SceneSystem>()->loadScene(fileInfo);
+    updateWorldOutliner();
 }
 
 void App::newScene()
@@ -392,17 +385,19 @@ void App::newScene()
     getWorld()->getSystem<SceneSystem>()->clearScene();
 }
 
-void App::openSceneSaver()
+void App::updateWorldOutliner()
 {
-    SceneSaver* sceneSaver_ = new SceneSaver(mainWindow_.get());
-    sceneSaver_->show();
-    connect(sceneSaver_, &SceneSaver::onSave, this, &App::saveScene);
-
+    mainWindow_->displayEntitiesInOutliner();
 }
 
-void App::saveScene(QString sceneName)
+void App::saveScene()
 {
-    getWorld()->getSystem<SceneSystem>()->saveScene(sceneName);
+    QFileInfo fileInfo = QFileDialog::getSaveFileName(mainWindow_.get(),"Save a scene","../INNgine2019/Json/newScene", "*.json");
+
+    if(!fileInfo.size())
+        return;
+
+    getWorld()->getSystem<SceneSystem>()->saveScene(fileInfo);
 }
 
 void App::raycastFromMouse()

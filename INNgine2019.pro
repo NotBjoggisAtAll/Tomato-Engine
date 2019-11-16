@@ -62,8 +62,6 @@ HEADERS += \
     Widgets/addcomponentwidget.h \
     Widgets/bsplinewidget.h \
     Widgets/soundwidget.h \
-    Windows/sceneloader.h \
-    Windows/scenesaver.h \
     Windows/vector3dpicker.h \
     app.h \
     bsplinecurve.h \
@@ -137,8 +135,6 @@ SOURCES += main.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     Systems/rendersystem.cpp \
-    Windows/sceneloader.cpp \
-    Windows/scenesaver.cpp \
     Windows/vector3dpicker.cpp \
     app.cpp \
     bsplinecurve.cpp \
@@ -163,8 +159,6 @@ FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/bsplinewidget.ui \
     Widgets/soundwidget.ui \
-    Windows/sceneloader.ui \
-    Windows/scenesaver.ui \
     Windows/vector3dpicker.ui \
     mainwindow.ui \
     Widgets/meshwidget.ui \

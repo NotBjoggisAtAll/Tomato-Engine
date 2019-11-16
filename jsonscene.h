@@ -13,7 +13,7 @@ class JsonScene
 public:
     JsonScene(QString SceneName);
 
-    void makeFile(QString sceneName, bool overwrite = false);
+    void makeFile(QString absolutefilePath, bool overwrite = false);
     void makeTempFile(QString sceneName);
     void addObject(Entity entity);
 private:

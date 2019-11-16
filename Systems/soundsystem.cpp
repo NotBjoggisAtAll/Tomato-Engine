@@ -30,6 +30,8 @@ void SoundSystem::tick(float deltaTime)
     auto currCamera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
     auto cameraTransform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
 
+    if(!currCamera || !cameraTransform)
+        return;
 
     SoundManager::instance()->updateListener(cameraTransform->position_,
                                              {},
