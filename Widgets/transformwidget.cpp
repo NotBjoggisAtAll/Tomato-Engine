@@ -3,11 +3,12 @@
 #include "world.h"
 #include "Components/transform.h"
 #include "Systems/movementsystem.h"
+#include <QMenu>
 
 TransformWidget::TransformWidget(Entity entityIn, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TransformWidget),
-    entity(entityIn)
+    entity_(entityIn)
 {
     ui->setupUi(this);
 
@@ -39,7 +40,7 @@ TransformWidget::TransformWidget(Entity entityIn, QWidget *parent) :
     ui->zScale->setSingleStep(0.1);
 
 
-    Component = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
+    Component = getWorld()->getComponent<Transform>(entity_).value_or(nullptr);
 
     auto& Pos = Component->position_;
 
@@ -72,7 +73,7 @@ void TransformWidget::on_xPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {static_cast<float>(arg1) - p.x,0,0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity_, {static_cast<float>(arg1) - p.x,0,0});
     }
 }
 
@@ -81,7 +82,7 @@ void TransformWidget::on_yPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,static_cast<float>(arg1) - p.y,0});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity_, {0,static_cast<float>(arg1) - p.y,0});
     }
 }
 
@@ -90,7 +91,7 @@ void TransformWidget::on_zPosition_valueChanged(double arg1)
     if(initDone)
     {
         auto& p = Component->position_;
-        getWorld()->getSystem<MovementSystem>()->addPosition(entity, {0,0,static_cast<float>(arg1) - p.z});
+        getWorld()->getSystem<MovementSystem>()->addPosition(entity_, {0,0,static_cast<float>(arg1) - p.z});
     }
 }
 
@@ -126,7 +127,7 @@ void TransformWidget::on_xScale_valueChanged(double arg1)
     if(initDone)
     {
         auto& s = Component->scale_;
-        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
+        getWorld()->getSystem<MovementSystem>()->setScale(entity_, gsl::Vector3D(static_cast<float>(arg1), s.y, s.z));
     }
 }
 
@@ -136,7 +137,7 @@ void TransformWidget::on_yScale_valueChanged(double arg1)
     {
 
         auto& s = Component->scale_;
-        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
+        getWorld()->getSystem<MovementSystem>()->setScale(entity_, gsl::Vector3D(s.x, static_cast<float>(arg1), s.z));
     }
 }
 
@@ -145,6 +146,43 @@ void TransformWidget::on_zScale_valueChanged(double arg1)
     if(initDone)
     {
         auto& s = Component->scale_;
-        getWorld()->getSystem<MovementSystem>()->setScale(entity, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
+        getWorld()->getSystem<MovementSystem>()->setScale(entity_, gsl::Vector3D(s.x, s.y, static_cast<float>(arg1)));
     }
+}
+
+void TransformWidget::on_pushButton_clicked()
+{
+    QMenu subMenu;
+
+    // Add actions here with name and slot to execute when action is pressed
+    subMenu.addAction("Reset to default", this, &TransformWidget::resetToDefault);
+    subMenu.addAction("Remove", this, &TransformWidget::remove);
+
+    QPoint globalPos = mapToGlobal(ui->pushButton->pos());
+
+    subMenu.exec(globalPos);
+}
+
+void TransformWidget::remove()
+{
+    getWorld()->removeComponent<Transform>(entity_);
+    hide();
+}
+void TransformWidget::resetToDefault()
+{
+    getWorld()->getSystem<MovementSystem>()->setPosition(entity_, gsl::Vector3D(0));
+    getWorld()->getSystem<MovementSystem>()->setScale(entity_, gsl::Vector3D(0));
+    Component->rotation_ = gsl::Vector3D(0);
+
+    ui->xPosition->setValue(0);
+    ui->yPosition->setValue(0);
+    ui->zPosition->setValue(0);
+
+    ui->xRotation->setValue(0);
+    ui->yRotation->setValue(0);
+    ui->zRotation->setValue(0);
+
+    ui->xScale->setValue(1);
+    ui->yScale->setValue(1);
+    ui->zScale->setValue(1);
 }

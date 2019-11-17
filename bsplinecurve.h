@@ -50,6 +50,11 @@ public:
     void removeControlPoint(unsigned int index);
 
     /**
+     * Removes all controlpoints from the BSpline.
+     */
+    void removeControlPoints();
+
+    /**
      * Randomizes the order of the controlpoints.
      * It does not include the first and the last point when randomizing.
      */

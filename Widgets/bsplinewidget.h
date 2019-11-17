@@ -28,11 +28,17 @@ private slots:
 
     void on_removePoint_clicked();
 
-private:
-    Ui::BSplineWidget *ui;
+    void remove();
+    void resetToDefault();
 
+    void on_pushButton_clicked();
+
+private:
+
+    Entity entity_ = -1;
     BSpline* component_ = nullptr;
     Vector3DPicker* vector3DPicker_ = nullptr;
+    Ui::BSplineWidget *ui;
 };
 
 #endif // BSPLINEWIDGET_H

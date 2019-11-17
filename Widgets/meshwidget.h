@@ -23,8 +23,8 @@ private slots:
 
     void on_changeMeshButton_clicked();
 
-    void ProvideContextMenu(const QPoint &point);
-    void Remove();
+    void showContextMenu(const QPoint &point);
+    void remove();
 private:
     Ui::MeshWidget *ui;
     Mesh* Component = nullptr;

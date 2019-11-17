@@ -39,9 +39,13 @@ private slots:
 
     void on_zScale_valueChanged(double arg1);
 
+    void on_pushButton_clicked();
+
+    void resetToDefault();
+    void remove();
 private:
     Ui::TransformWidget *ui;
-    Entity entity;
+    Entity entity_;
     Transform* Component {nullptr};
 
     bool initDone = false;

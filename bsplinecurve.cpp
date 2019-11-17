@@ -134,6 +134,13 @@ void BSplineCurve::removeControlPoint(unsigned int index)
     bPathChanged = true;
 }
 
+void BSplineCurve::removeControlPoints()
+{
+    controlPoints_.clear();
+    createKnots();
+    bPathChanged = true;
+}
+
 void BSplineCurve::removeControlPoint(gsl::Vector3D controlPoint)
 {
     auto it = std::find(controlPoints_.begin(), controlPoints_.end(), controlPoint);

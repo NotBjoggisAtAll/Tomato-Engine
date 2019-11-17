@@ -13,7 +13,7 @@ MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
     ui(new Ui::MeshWidget), entity_(entity)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(this, &QWidget::customContextMenuRequested, this, &MeshWidget::ProvideContextMenu);
+        connect(this, &QWidget::customContextMenuRequested, this, &MeshWidget::showContextMenu);
 
     ui->setupUi(this);
 
@@ -50,26 +50,22 @@ void MeshWidget::on_changeMeshButton_clicked()
         getWorld()->removeComponent<Collision>(entity_);
         getWorld()->addComponent(entity_, ResourceFactory::get()->getCollision(fileName));
     }
-
-    unsigned int i = 1;
-    int j = i;
-    qDebug() << j;
 }
 
-void MeshWidget::ProvideContextMenu(const QPoint &point)
+void MeshWidget::showContextMenu(const QPoint &point)
 {
     QMenu subMenu;
 
     // Add actions here with name and slot to execute when action is pressed
-    subMenu.addAction("Remove", this, &MeshWidget::Remove);
+    subMenu.addAction("Remove", this, &MeshWidget::remove);
 
     QPoint globalPos = mapToGlobal(point);
 
     subMenu.exec(globalPos);
 }
 
-void MeshWidget::Remove()
+void MeshWidget::remove()
 {
     getWorld()->removeComponent<Mesh>(entity_);
-    destroy();
+    hide();
 }
