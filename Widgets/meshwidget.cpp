@@ -12,14 +12,12 @@ MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MeshWidget), entity_(entity)
 {
-    setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(this, &QWidget::customContextMenuRequested, this, &MeshWidget::showContextMenu);
-
     ui->setupUi(this);
 
     Component = getWorld()->getComponent<Mesh>(entity).value();
 
     ui->isVisible->setChecked(Component->isVisible_);
+    ui->meshNameLabel->setText(QString::fromStdString(Component->filepath_));
 
 }
 
@@ -52,20 +50,18 @@ void MeshWidget::on_changeMeshButton_clicked()
     }
 }
 
-void MeshWidget::showContextMenu(const QPoint &point)
+void MeshWidget::remove()
+{
+    getWorld()->removeComponent<Mesh>(entity_);
+    hide();
+}
+
+void MeshWidget::on_moreButton_clicked()
 {
     QMenu subMenu;
 
     // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Remove", this, &MeshWidget::remove);
 
-    QPoint globalPos = mapToGlobal(point);
-
-    subMenu.exec(globalPos);
-}
-
-void MeshWidget::remove()
-{
-    getWorld()->removeComponent<Mesh>(entity_);
-    hide();
+    subMenu.exec(mapToGlobal(ui->moreButton->pos()));
 }
