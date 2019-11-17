@@ -24,10 +24,13 @@ private slots:
 
     void on_stopButton_clicked();
 
+    void on_moreButton_clicked();
+
+    void remove();
 private:
 
     Sound* Component{nullptr};
-
+    Entity entity_ = -1;
     Ui::SoundWidget *ui;
 };
 

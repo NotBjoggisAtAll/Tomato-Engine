@@ -23,7 +23,6 @@ private slots:
 
     void on_changeMeshButton_clicked();
 
-    void showContextMenu(const QPoint &point);
     void remove();
     void on_moreButton_clicked();
 

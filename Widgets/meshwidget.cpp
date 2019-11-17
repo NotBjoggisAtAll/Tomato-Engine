@@ -26,7 +26,6 @@ MeshWidget::~MeshWidget()
     delete ui;
 }
 
-
 void MeshWidget::on_isVisible_toggled(bool checked)
 {
     Component->isVisible_ = checked;

@@ -4,8 +4,9 @@
 #include "world.h"
 #include "Systems/soundsystem.h"
 #include "soundsource.h"
+#include <QMenu>
 SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
-    QWidget(parent),
+    QWidget(parent), entity_(entity),
     ui(new Ui::SoundWidget)
 {
     ui->setupUi(this);
@@ -34,4 +35,20 @@ void SoundWidget::on_pauseButton_clicked()
 void SoundWidget::on_stopButton_clicked()
 {
     SoundSystem::stopSound(Component);
+}
+
+void SoundWidget::on_moreButton_clicked()
+{
+    QMenu subMenu;
+
+    // Add actions here with name and slot to execute when action is pressed
+    subMenu.addAction("Remove", this, &SoundWidget::remove);
+
+    subMenu.exec(mapToGlobal(ui->moreButton->pos()));
+}
+
+void SoundWidget::remove()
+{
+    getWorld()->removeComponent<Sound>(entity_);
+    hide();
 }
