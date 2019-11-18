@@ -1,48 +1,46 @@
 #include "soundsource.h"
 #include "Handlers/wavfilehandler.h"
 #include <sstream>
+#include "constants.h"
 #include <iostream>
 
-void SoundSource::init(std::string name, bool loop, float gain)
+SoundSource::SoundSource(std::string name, std::string file, bool loop, float gain) :
+    name_(name),
+    file_(file),
+    bLoop_(loop),
+    gain_(gain),
+    source_(0),
+    buffer_(0),
+    position_(0.0f, 0.0f, 0.0f),
+    velocity_(0.0f, 0.0f, 0.0f)
 {
     alGetError();
-    alGenBuffers(1, &mBuffer);
+    alGenBuffers(1, &buffer_);
     checkError("alGenBuffers");
-    alGenSources(1, &mSource);
+    alGenSources(1, &source_);
     checkError("alGenSources");
-    alSourcef(mSource, AL_PITCH, 1.0f);
-    alSourcef(mSource, AL_GAIN, gain);
+    alSourcef(source_, AL_PITCH, 1.0f);
+    alSourcef(source_, AL_GAIN, gain);
 
-    ALfloat temp[3] = {mPosition.x, mPosition.y, mPosition.z};
-    alSourcefv(mSource, AL_POSITION, temp);
-    ALfloat temp2[3] = {mVelocity.x, mVelocity.y, mVelocity.z};
-    alSourcefv(mSource, AL_VELOCITY, temp2);
+    ALfloat temp[3] = {position_.x, position_.y, position_.z};
+    alSourcefv(source_, AL_POSITION, temp);
+    ALfloat temp2[3] = {velocity_.x, velocity_.y, velocity_.z};
+    alSourcefv(source_, AL_VELOCITY, temp2);
 
-    alSourcei(mSource, AL_LOOPING, loop);
+    alSourcei(source_, AL_LOOPING, loop);
 
-}
-
-SoundSource::SoundSource(std::string name, bool loop, float gain) :
-    mName(name),
-    bLoop(loop),
-    mGain(gain),
-    mSource(0),
-    mBuffer(0),
-    mPosition(0.0f, 0.0f, 0.0f),
-    mVelocity(0.0f, 0.0f, 0.0f)
-{
-    init(name, loop, gain);
+    loadWave(file);
 }
 SoundSource::~SoundSource()
 {
-    std::cout << "Destroying SoundSource " + mName;
+    std::cout << "Destroying SoundSource " + name_;
     stop();
     alGetError();
-    alSourcei(mSource, AL_BUFFER, 0);
+    alSourcei(source_, AL_BUFFER, 0);
     checkError("alSourcei");
-    alDeleteSources(1, &mSource);
+    alDeleteSources(1, &source_);
     checkError("alDeleteSources");
-    alDeleteBuffers(1, &mBuffer);
+    alDeleteBuffers(1, &buffer_);
     checkError("alDeleteBuffers");
 }
 
@@ -52,7 +50,7 @@ bool SoundSource::loadWave(std::string filePath)
     ALuint frequency{};
     ALenum format{};
     wave_t* waveData = new wave_t();
-    if (!WavFileHandler::loadWave(filePath, waveData))
+    if (!WavFileHandler::loadWave(gsl::soundFilePath + filePath, waveData))
     {
         std::cout << "Error loading wave file!\n";
         return false; // error loading wave file data
@@ -99,9 +97,9 @@ bool SoundSource::loadWave(std::string filePath)
     std::cout << "DataSize: " << i2s.str() << " bytes\n";
 
     alGetError();
-    alBufferData(mBuffer, format, waveData->buffer, waveData->dataSize, frequency);
+    alBufferData(buffer_, format, waveData->buffer, waveData->dataSize, frequency);
     checkError("alBufferData");
-    alSourcei(mSource, AL_BUFFER, mBuffer);
+    alSourcei(source_, AL_BUFFER, buffer_);
     checkError("alSourcei (loadWave)");
 
     std::cout << "Loading complete!\n";
@@ -112,37 +110,37 @@ bool SoundSource::loadWave(std::string filePath)
 
 void SoundSource::play()
 {
-    qDebug() << QString::fromStdString(mName) + ": Playing!";
-    alSourcePlay(mSource);
+    qDebug() << QString::fromStdString(name_) + ": Playing!";
+    alSourcePlay(source_);
 }
 void SoundSource::pause()
 {
-    qDebug() << QString::fromStdString(mName) + ": Paused!";
-    alSourcePause(mSource);
+    qDebug() << QString::fromStdString(name_) + ": Paused!";
+    alSourcePause(source_);
 }
 void SoundSource::stop()
 {
-    qDebug() << QString::fromStdString(mName) + ": Stopped!";
-    alSourceStop(mSource);
+    qDebug() << QString::fromStdString(name_) + ": Stopped!";
+    alSourceStop(source_);
 }
 
 bool SoundSource::isPlaying()
 {
     ALenum state;
-    alGetSourcei(mSource, AL_SOURCE_STATE, &state);
+    alGetSourcei(source_, AL_SOURCE_STATE, &state);
     return (state == AL_PLAYING);
 }
 
 void SoundSource::setPosition(gsl::Vector3D newPos)
 {
-    mPosition = newPos;
-    alSourcefv(mSource, AL_POSITION, mPosition.xP());
+    position_ = newPos;
+    alSourcefv(source_, AL_POSITION, position_.xP());
 }
 void SoundSource::setVelocity(gsl::Vector3D newVel)
 {
-    mVelocity = newVel;
-    ALfloat temp[3] = {mVelocity.x, mVelocity.y, mVelocity.z};
-    alSourcefv(mSource, AL_VELOCITY, temp);
+    velocity_ = newVel;
+    ALfloat temp[3] = {velocity_.x, velocity_.y, velocity_.z};
+    alSourcefv(source_, AL_VELOCITY, temp);
 }
 
 bool SoundSource::checkError(std::string name)

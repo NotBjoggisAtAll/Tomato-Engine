@@ -46,6 +46,15 @@ void SoundSystem::tick(float deltaTime)
     }
 }
 
+void SoundSystem::endPlay()
+{
+    for(auto const& entity : entities_)
+    {
+        auto sound = getWorld()->getComponent<Sound>(entity).value();
+        sound->audio_->stop();
+    }
+}
+
 void SoundSystem::playSound(Sound *sound)
 {
     if(!sound->audio_->isPlaying())
@@ -62,3 +71,4 @@ void SoundSystem::stopSound(Sound *sound)
 {
         sound->audio_->stop();
 }
+

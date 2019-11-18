@@ -14,7 +14,7 @@ SoundWidget::SoundWidget(Entity entity, QWidget *parent) :
     Component = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
 
     if(Component)
-        ui->fileNameHere->setText(QString::fromStdString(Component->audio_->mName));
+        ui->fileNameHere->setText(QString::fromStdString(Component->audio_->name_));
 }
 
 SoundWidget::~SoundWidget()

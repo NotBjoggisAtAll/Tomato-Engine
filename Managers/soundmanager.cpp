@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <constants.h>
 
-SoundManager* SoundManager::mInstance = nullptr;
+SoundManager* SoundManager::instance_ = nullptr;
 
 SoundManager::SoundManager() :
     mDevice(nullptr),
@@ -30,9 +30,9 @@ SoundManager::SoundManager() :
 
 SoundManager *SoundManager::instance()         ///< Get pointer to singleton instance.
 {
-    if (!mInstance)
-        mInstance = new SoundManager();
-    return mInstance;
+    if (!instance_)
+        instance_ = new SoundManager();
+    return instance_;
 }
 
 void SoundManager::cleanUp()
@@ -70,17 +70,9 @@ bool SoundManager::checkError()
     return true;
 }
 
-SoundSource* SoundManager::createSource(std::string name, gsl::Vector3D pos, std::string filePath, bool loop, float gain)
+SoundSource* SoundManager::createSource(std::string name, std::string file, bool loop, float gain)
 {
-
-    SoundSource* tempPtr = new SoundSource(name, loop, gain);
-    tempPtr->setPosition(pos);
-    if (filePath != "")
-    {
-        auto folder = gsl::soundFilePath;
-        tempPtr->loadWave(folder + filePath);
-    }
-    return tempPtr;
+    return new SoundSource(name, file, loop, gain);
 }
 
 void SoundManager::updateListener(gsl::Vector3D pos, gsl::Vector3D vel, gsl::Vector3D dir, gsl::Vector3D up)

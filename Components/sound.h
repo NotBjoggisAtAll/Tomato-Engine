@@ -8,10 +8,11 @@ class SoundSource;
 struct Sound : public Component
 {
     Sound() = default;
+    ~Sound() override;
     Sound(SoundSource* Sound);
     Sound(QJsonObject Json);
 
-    SoundSource* audio_{};
+    SoundSource* audio_ = nullptr;
 
     QJsonObject toJson() override;
     virtual void fromJson(QJsonObject Json) override;

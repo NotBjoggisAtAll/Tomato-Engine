@@ -22,14 +22,14 @@
 class SoundSource
 {
 public:
-    SoundSource(){init("caravan_mono.wav",true,1.f);}
+    SoundSource() = default;
     /// Constructor.
     /**
         Takes two arguments, initialises some variables.
-        \param The name of the sound source. Not used.
+        \param The name of the sound source.
         \param A boolean to check if sound should loop.
     **/
-    SoundSource(std::string name, bool loop = false, float gain = 1.0);
+    SoundSource(std::string name, std::string file, bool loop = false, float gain = 1.0);
     ~SoundSource();
 
     /// Plays the sound source from the current position.
@@ -42,6 +42,17 @@ public:
     /// Checks if the song is playing
     bool isPlaying();
 
+    void setPosition(gsl::Vector3D newPos);             ///< Sets source position from Vector3.
+    gsl::Vector3D getPosition() const {return position_;}     ///< Returns source position as Vector3.
+    void setVelocity(gsl::Vector3D newVel);             ///< Sets source velocity from Vector3.
+    gsl::Vector3D getVelocity() const {return velocity_;}     ///< Returns source velocity as Vector3.
+
+    std::string name_;
+    std::string file_;
+    bool bLoop_ = false;
+    float gain_ = 0.f;
+    
+private:
     /// Loads one given WAVE file.
     /**
         Calls the wave loader from the FileHandler class, parses the wave data and buffers it.
@@ -49,21 +60,10 @@ public:
     **/
     bool loadWave(std::string filePath);
 
-    void setPosition(gsl::Vector3D newPos);             ///< Sets source position from Vector3.
-    gsl::Vector3D getPosition() {return mPosition;}     ///< Returns source position as Vector3.
-    void setVelocity(gsl::Vector3D newVel);             ///< Sets source velocity from Vector3.
-    gsl::Vector3D getVelocity() {return mVelocity;}     ///< Returns source velocity as Vector3.
-
-    std::string mName;
-    bool bLoop = false;
-    float mGain = 0.f;
-    
-    void init(std::string name, bool loop, float gain);
-private:
-    ALuint mSource;             ///< The sound source.
-    ALuint mBuffer;             ///< The data buffer.
-    gsl::Vector3D mPosition{};    ///< Vector containing source position.
-    gsl::Vector3D mVelocity{};    ///< Vector containing source velocity.
+    ALuint source_;             ///< The sound source.
+    ALuint buffer_;             ///< The data buffer.
+    gsl::Vector3D position_{};    ///< Vector containing source position.
+    gsl::Vector3D velocity_{};    ///< Vector containing source velocity.
     bool checkError(std::string name);
 };
 

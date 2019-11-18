@@ -1,6 +1,5 @@
 #include "sound.h"
 #include "soundsource.h"
-#include "constants.h"
 #include <QJsonObject>
 
 Sound::Sound(SoundSource *Sound) : audio_(Sound){}
@@ -10,20 +9,27 @@ Sound::Sound(QJsonObject Json)
     fromJson(Json);
 }
 
+Sound::~Sound()
+{
+
+}
+
 QJsonObject Sound::toJson()
 {
-    QJsonObject Object;
-    Object.insert("filepath", QString::fromStdString(audio_->mName));
-    Object.insert("loop", audio_->bLoop);
-    Object.insert("gain", static_cast<double>(audio_->mGain));
-    return Object;
+    QJsonObject object;
+    object.insert("name", QString::fromStdString(audio_->name_));
+    object.insert("filepath", QString::fromStdString(audio_->file_));
+    object.insert("loop", audio_->bLoop_);
+    object.insert("gain", static_cast<double>(audio_->gain_));
+    return object;
 }
 
 void Sound::fromJson(QJsonObject Json)
 {
-    std::string File = gsl::soundFilePath + Json.take("filepath").toString().toStdString();
-    bool Loop = Json.take("loop").toBool();
-    float Gain = static_cast<float>(Json.take("gain").toDouble());
+    std::string name = Json.take("name").toString().toStdString();
+    std::string file = Json.take("filepath").toString().toStdString();
+    bool loop = Json.take("loop").toBool();
+    float gain = static_cast<float>(Json.take("gain").toDouble());
 
-    audio_ = new SoundSource(File,Loop,Gain);
+    audio_ = new SoundSource(name,file,loop,gain);
 }
