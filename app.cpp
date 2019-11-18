@@ -140,14 +140,9 @@ void App::postInit()
     getWorld()->setCurrentCamera(entity);
 
     entity = getWorld()->createEntity();
-        getWorld()->addComponent(entity, EntityData("Sound Source"));
-        getWorld()->addComponent(entity, Transform());
-        getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan", "shoot_1.wav", true, .5f)));
-
-        //  scene.addObject(entity); // TODO Make soundmanager into a resourcefactory so I can use the same file multiple times without loading it again
-        // TODO Fix so the JSON Sound filepath is the actual path and not just the name
-
-        entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Sound Source"));
+    getWorld()->addComponent(entity, Transform());
+    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan", "shoot_1.wav", true, .5f)));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Light Source"));
@@ -280,8 +275,8 @@ Entity App::spawnObject(std::string name, std::string path)
 
 void App::playGame()
 {
-    getWorld()->getSystem<SoundSystem>()->beginPlay();
     getWorld()->getSystem<SceneSystem>()->beginPlay();
+    getWorld()->getSystem<SoundSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
 }
 

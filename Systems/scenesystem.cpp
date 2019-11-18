@@ -18,7 +18,14 @@ void SceneSystem::clearScene()
     auto tempEntities = entities_;
     auto currentCameraIterator = tempEntities.find(getWorld()->getCurrentCamera());
     if(currentCameraIterator != tempEntities.end())
-        tempEntities.erase(currentCameraIterator);
+    {
+        Camera* camera = getWorld()->getComponent<Camera>(*currentCameraIterator).value_or(nullptr);
+        if(camera)
+        {
+            if(camera->isEditor)
+                tempEntities.erase(currentCameraIterator);
+        }
+    }
     for(auto entity : tempEntities)
         getWorld()->destroyEntityLater(entity);
 

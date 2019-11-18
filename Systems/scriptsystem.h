@@ -23,6 +23,7 @@ public:
     void beginPlay() override;
     void tick(float deltaTime) override;
     void call(Script *script, QString function);
+    void load(Script *script);
 public slots:
 
     int createEntity();
@@ -34,7 +35,6 @@ public slots:
     void shoot(int owner, QJsonArray npcs);
 private slots:
 private:
-    void load(Script *script);
 
     std::vector<JSTimer*> timers_;
 public:

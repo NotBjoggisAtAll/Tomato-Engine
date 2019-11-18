@@ -6,6 +6,7 @@
 #include "Widgets/meshwidget.h"
 #include "Widgets/soundwidget.h"
 #include "Widgets/addcomponentwidget.h"
+#include "Widgets/scriptwidget.h"
 #include "renderwindow.h"
 #include "Components/allcomponents.h"
 #include "world.h"
@@ -102,9 +103,6 @@ void MainWindow::updateRightPanel(Entity entity)
     if(entity == -1)
         return;
 
-
-
-
     leftWidget = new QWidget();
     ui->leftScrollArea->setWidget(leftWidget);
     QVBoxLayout* leftLayout = new QVBoxLayout(leftWidget);
@@ -132,6 +130,10 @@ void MainWindow::updateRightPanel(Entity entity)
     BSpline* spline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
     if(spline)
         layout->addWidget(new BSplineWidget(entity));
+
+    Script* script = getWorld()->getComponent<Script>(entity).value_or(nullptr);
+    if(script)
+        layout->addWidget(new ScriptWidget(entity));
 
 }
 

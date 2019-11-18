@@ -61,6 +61,7 @@ HEADERS += \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/bsplinewidget.h \
+    Widgets/scriptwidget.h \
     Widgets/soundwidget.h \
     Windows/vector3dpicker.h \
     app.h \
@@ -132,6 +133,7 @@ SOURCES += main.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/bsplinewidget.cpp \
+    Widgets/scriptwidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
     Systems/rendersystem.cpp \
@@ -158,6 +160,7 @@ SOURCES += main.cpp \
 FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/bsplinewidget.ui \
+    Widgets/scriptwidget.ui \
     Widgets/soundwidget.ui \
     Windows/vector3dpicker.ui \
     mainwindow.ui \
