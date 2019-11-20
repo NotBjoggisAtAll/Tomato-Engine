@@ -120,7 +120,6 @@ void SceneSystem::loadScenePriv(QString sceneName)
     QJsonValue entities = JSON.take("entities");
     if(entities != QJsonValue::Undefined)
     {
-
         //Array of Entities
         QJsonArray entitiesArray = entities.toArray();
 
@@ -132,7 +131,6 @@ void SceneSystem::loadScenePriv(QString sceneName)
 
             //Current Entity Object Should loop from here
             QJsonObject components = JSONentity.take("components").toObject();
-
 
             QJsonObject entityData = components.take("entitydata").toObject();
             if(!entityData.empty())
@@ -190,18 +188,21 @@ void SceneSystem::loadScenePriv(QString sceneName)
                 npc.fromJson(npcData);
                 getWorld()->addComponent(newEntity,npc);
             }
+
             QJsonObject inputData = components.take("input").toObject();
             if(!inputData.empty())
                 getWorld()->addComponent(newEntity, Input(inputData));
-
-            QJsonObject destData = components.take("destructable").toObject();
-            if(!destData.empty())
-                getWorld()->addComponent(newEntity, Destructable(destData));
 
             QJsonObject cameraData = components.take("camera").toObject();
             if(!cameraData.empty())
             {
                 getWorld()->addComponent(newEntity, Camera(cameraData));
+            }
+
+            QJsonObject projectileData = components.take("projectile").toObject();
+            if(!projectileData.empty())
+            {
+                getWorld()->addComponent(newEntity, Projectile(projectileData));
             }
         }
     }

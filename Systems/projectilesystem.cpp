@@ -27,7 +27,6 @@ void ProjectileSystem::tick(float deltaTime)
 
         if(!projectile->routeCalculated)
         {
-
             if(projectile->npcPositions_.empty()) return;
 
             auto lowest = std::min_element(projectile->npcPositions_.begin(), projectile->npcPositions_.end(),[&](const gsl::Vector3D& npc1, const gsl::Vector3D& npc2 )

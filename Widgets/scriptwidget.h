@@ -23,6 +23,11 @@ private slots:
 
     void remove();
 
+    /*
+     * Tries to open the file with their default editor program.
+     * If the file doesnt exist it creates a file with that name
+     * and then opens it.
+     */
     void on_openFileButton_clicked();
 
     void on_filePathText_editingFinished();

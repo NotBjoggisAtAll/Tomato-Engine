@@ -9,11 +9,12 @@ struct Projectile : public Component
 {
     Projectile();
     ~Projectile() override;
+    Projectile(QJsonObject json);
 
     gsl::Vector3D direction_ = gsl::Vector3D(0);
     float speed_ = 5;
-    bool routeCalculated = false;
     float lifetime_ = .5f;
+    bool routeCalculated = false;
 
     std::vector<gsl::Vector3D> npcPositions_;
 

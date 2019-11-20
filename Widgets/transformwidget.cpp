@@ -154,13 +154,10 @@ void TransformWidget::on_pushButton_clicked()
 {
     QMenu subMenu;
 
-    // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Reset to default", this, &TransformWidget::resetToDefault);
     subMenu.addAction("Remove", this, &TransformWidget::remove);
 
-    QPoint globalPos = mapToGlobal(ui->pushButton->pos());
-
-    subMenu.exec(globalPos);
+    subMenu.exec(QCursor::pos());
 }
 
 void TransformWidget::remove()

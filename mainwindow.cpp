@@ -6,6 +6,7 @@
 #include "Widgets/meshwidget.h"
 #include "Widgets/soundwidget.h"
 #include "Widgets/addcomponentwidget.h"
+#include "Widgets/projectilewidget.h"
 #include "Widgets/scriptwidget.h"
 #include "renderwindow.h"
 #include "Components/allcomponents.h"
@@ -36,7 +37,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::displayEntitiesInOutliner()
 {
@@ -88,31 +88,21 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::updateRightPanel(Entity entity)
 {
-    if(widget)
+    if(componentsWidgets_)
     {
-        delete widget;
-        widget = nullptr;
-    }
-
-    if(leftWidget)
-    {
-        delete leftWidget;
-        leftWidget = nullptr;
+        delete componentsWidgets_;
+        componentsWidgets_ = nullptr;
     }
 
     if(entity == -1)
         return;
 
-    leftWidget = new QWidget();
-    ui->leftScrollArea->setWidget(leftWidget);
-    QVBoxLayout* leftLayout = new QVBoxLayout(leftWidget);
-    leftLayout->addWidget(new AddComponentWidget());
 
 
-    widget = new QWidget();
-    ui->scrollArea->setWidget(widget);
+    componentsWidgets_ = new QWidget();
+    ui->scrollArea->setWidget(componentsWidgets_);
     QVBoxLayout* layout = new QVBoxLayout();
-    widget->setLayout(layout);
+    componentsWidgets_->setLayout(layout);
     layout->setMargin(0);
 
     Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
@@ -134,6 +124,13 @@ void MainWindow::updateRightPanel(Entity entity)
     Script* script = getWorld()->getComponent<Script>(entity).value_or(nullptr);
     if(script)
         layout->addWidget(new ScriptWidget(entity));
+
+    Projectile* projectile = getWorld()->getComponent<Projectile>(entity).value_or(nullptr);
+    if(projectile)
+        layout->addWidget(new ProjectileWidget(entity));
+
+    layout->addWidget(new AddComponentWidget(entity,this));
+
 
 }
 

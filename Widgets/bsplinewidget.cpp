@@ -77,7 +77,5 @@ void BSplineWidget::on_pushButton_clicked()
     subMenu.addAction("Reset to default", this, &BSplineWidget::resetToDefault);
     subMenu.addAction("Remove", this, &BSplineWidget::remove);
 
-    QPoint globalPos = mapToGlobal(ui->pushButton->pos());
-
-    subMenu.exec(globalPos);
+    subMenu.exec(QCursor::pos());
 }

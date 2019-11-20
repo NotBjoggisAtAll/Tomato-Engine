@@ -1,14 +1,14 @@
 #include "scriptwidget.h"
 #include "ui_scriptwidget.h"
-#include <QMenu>
-#include "Components/script.h"
-#include "world.h"
-#include <QFileInfo>
-#include <QDesktopServices>
-#include <QUrl>
 #include "constants.h"
-#include <QTextStream>
+#include "Components/script.h"
 #include "Systems/scriptsystem.h"
+#include "world.h"
+#include <QTextStream>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QMenu>
+#include <QUrl>
 
 ScriptWidget::ScriptWidget(Entity entity, QWidget *parent) :
     QWidget(parent), entity_(entity),
@@ -33,7 +33,7 @@ void ScriptWidget::on_moreButton_clicked()
     // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Remove", this, &ScriptWidget::remove);
 
-    subMenu.exec(mapToGlobal(ui->moreButton->pos()));
+    subMenu.exec(QCursor::pos());
 }
 
 void ScriptWidget::remove()

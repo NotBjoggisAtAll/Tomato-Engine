@@ -102,13 +102,13 @@ void JsonScene::addObject(Entity entity)
     if(input)
         components.insert("input", input->toJson());
 
-    Destructable* dest = getWorld()->getComponent<Destructable>(entity).value_or(nullptr);
-    if(dest)
-        components.insert("destructable", dest->toJson());
-
     Camera* camera = getWorld()->getComponent<Camera>(entity).value_or(nullptr);
     if(camera)
         components.insert("camera", camera->toJson());
+
+    Projectile* projectile = getWorld()->getComponent<Projectile>(entity).value_or(nullptr);
+    if(projectile)
+        components.insert("projectile", projectile->toJson());
 
     // Legg til flere komponenter her etterhvert
     entityObject.insert("components", components);

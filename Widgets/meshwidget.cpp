@@ -62,5 +62,5 @@ void MeshWidget::on_moreButton_clicked()
     // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Remove", this, &MeshWidget::remove);
 
-    subMenu.exec(mapToGlobal(ui->moreButton->pos()));
+    subMenu.exec(QCursor::pos());
 }

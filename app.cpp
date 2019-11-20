@@ -23,7 +23,6 @@ App::App()
     getWorld()->registerComponent<Npc>();
     getWorld()->registerComponent<Input>();
     getWorld()->registerComponent<VertexData>();
-    getWorld()->registerComponent<Destructable>();
     getWorld()->registerComponent<Camera>();
     getWorld()->registerComponent<Projectile>();
 

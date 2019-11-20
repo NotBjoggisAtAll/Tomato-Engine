@@ -22,7 +22,6 @@ HEADERS += \
     Components/collision.h \
     Components/component.h \
     Components/componentArray.h \
-    Components/destructable.h \
     Components/entitydata.h \
     Components/input.h \
     Components/light.h \
@@ -61,6 +60,7 @@ HEADERS += \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
     Widgets/bsplinewidget.h \
+    Widgets/projectilewidget.h \
     Widgets/scriptwidget.h \
     Widgets/soundwidget.h \
     Windows/vector3dpicker.h \
@@ -133,6 +133,7 @@ SOURCES += main.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/bsplinewidget.cpp \
+    Widgets/projectilewidget.cpp \
     Widgets/scriptwidget.cpp \
     Widgets/soundwidget.cpp \
     Widgets/meshwidget.cpp \
@@ -160,6 +161,7 @@ SOURCES += main.cpp \
 FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/bsplinewidget.ui \
+    Widgets/projectilewidget.ui \
     Widgets/scriptwidget.ui \
     Widgets/soundwidget.ui \
     Windows/vector3dpicker.ui \
