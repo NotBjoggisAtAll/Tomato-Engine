@@ -41,11 +41,8 @@ void MeshWidget::on_changeMeshButton_clicked()
 
     if(!fileName.empty())
     {
-        qDebug() << QString::fromStdString(fileName);
         getWorld()->removeComponent<Mesh>(entity_);
         getWorld()->addComponent(entity_, ResourceFactory::get()->loadMesh(fileName));
-        getWorld()->removeComponent<Collision>(entity_);
-        getWorld()->addComponent(entity_, ResourceFactory::get()->getCollision(fileName));
     }
 }
 

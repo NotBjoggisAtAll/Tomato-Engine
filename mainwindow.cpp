@@ -97,8 +97,6 @@ void MainWindow::updateRightPanel(Entity entity)
     if(entity == -1)
         return;
 
-
-
     componentsWidgets_ = new QWidget();
     ui->scrollArea->setWidget(componentsWidgets_);
     QVBoxLayout* layout = new QVBoxLayout();

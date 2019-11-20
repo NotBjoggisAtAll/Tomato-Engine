@@ -6,6 +6,7 @@
 #include "Systems/rendersystem.h"
 #include "resourcefactory.h"
 #include "world.h"
+#include "Managers/shadermanager.h"
 
 RenderWindow::RenderWindow()
 {

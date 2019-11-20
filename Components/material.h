@@ -3,7 +3,6 @@
 
 #include "component.h"
 #include "GSL/vector3d.h"
-#include "Managers/shadermanager.h"
 
 class Shader;
 

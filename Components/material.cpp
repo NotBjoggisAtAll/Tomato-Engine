@@ -2,6 +2,7 @@
 #include "shader.h"
 #include <QJsonObject>
 #include <QJsonArray>
+#include "Managers/shadermanager.h"
 
 Material::Material(Shader *Shader) : shader_(Shader), color_(1,1,1) , textureUnit_(0) {}
 

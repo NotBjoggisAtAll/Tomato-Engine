@@ -2,16 +2,18 @@
 #include "mainwindow.h"
 #include "ui_addcomponentwidget.h"
 #include "Components/allcomponents.h"
+#include "Managers/shadermanager.h"
 #include "world.h"
 #include <QDebug>
 #include <QMenu>
-
 
 AddComponentWidget::AddComponentWidget(Entity entity, MainWindow *mainWindow, QWidget *parent) :
     QWidget(parent), entity_(entity), mainWindow_(mainWindow),
     ui(new Ui::AddComponentWidget)
 {
     ui->setupUi(this);
+
+    connect(this, &AddComponentWidget::updateComponentPanel, mainWindow, &MainWindow::updateRightPanel);
 }
 
 AddComponentWidget::~AddComponentWidget()
@@ -52,65 +54,65 @@ void AddComponentWidget::on_addButton_clicked()
 void AddComponentWidget::addTransform()
 {
     getWorld()->addComponent(entity_, Transform());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addBSpline()
 {
     getWorld()->addComponent(entity_, BSpline());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addCamera()
 {
     getWorld()->addComponent(entity_, Camera());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addCollision()
 {
     getWorld()->addComponent(entity_, Collision());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addInput()
 {
     getWorld()->addComponent(entity_, Input());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addLight()
 {
     getWorld()->addComponent(entity_, Light());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addMaterial()
 {
-    getWorld()->addComponent(entity_, Material());
-    mainWindow_->updateRightPanel(entity_);
+    getWorld()->addComponent(entity_, Material(ShaderManager::instance()->colorShader()));
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addMesh()
 {
     getWorld()->addComponent(entity_, Mesh());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addNpc()
 {
     getWorld()->addComponent(entity_, Npc());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addProjectile()
 {
     getWorld()->addComponent(entity_, Projectile());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }
 
 void AddComponentWidget::addSound()
 {
     getWorld()->addComponent(entity_, Sound());
-    mainWindow_->updateRightPanel(entity_);
+    emit updateComponentPanel(entity_);
 }

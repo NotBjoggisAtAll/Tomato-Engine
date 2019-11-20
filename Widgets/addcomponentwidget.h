@@ -33,6 +33,8 @@ private slots:
     void addNpc();
     void addProjectile();
     void addSound();
+signals:
+    void updateComponentPanel(Entity entity);
 private:
 
     Entity entity_ = -1;

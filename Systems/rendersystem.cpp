@@ -30,8 +30,6 @@ void RenderSystem::tick(float deltaTime)
 
         if(!sphereInsideFrustum(transform->position_, 1) && mesh->isAffectedByFrustum_) continue;
 
-
-
         glUseProgram(material->shader_->getProgram());
         glBindVertexArray(mesh->VAO_);
 

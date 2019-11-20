@@ -23,7 +23,6 @@ public:
 
     void displayEntitiesInOutliner();
 
-    void updateRightPanel(Entity entity);
 
     void addEntityToUi(Entity entity);
 
@@ -42,7 +41,11 @@ signals:
     void newScene();
     void saveScene();
 
+public slots:
+    void updateRightPanel(Entity entity);
+
 private slots:
+
     void on_actionToggle_Wireframe_triggered();
 
     void on_actionExit_triggered();
