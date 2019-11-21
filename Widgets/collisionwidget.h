@@ -23,6 +23,18 @@ private slots:
 
     void remove();
     void updateWidget();
+    void on_xMin_valueChanged(double arg1);
+
+    void on_yMin_valueChanged(double arg1);
+
+    void on_zMin_valueChanged(double arg1);
+
+    void on_xMax_valueChanged(double arg1);
+
+    void on_yMax_valueChanged(double arg1);
+
+    void on_zMax_valueChanged(double arg1);
+
 private:
     Entity entity_ = -1;
     Collision* component_ = nullptr;
