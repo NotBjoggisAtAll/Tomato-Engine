@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::MeshWidget *ui;
-    Mesh* Component = nullptr;
+    Mesh* component_ = nullptr;
     Entity entity_ = -1;
 };
 

@@ -5,6 +5,7 @@
 #include "bsplinewidget.h"
 #include "inputwidget.h"
 #include "meshwidget.h"
+#include "collisionwidget.h"
 #include "projectilewidget.h"
 #include "scriptwidget.h"
 #include "soundwidget.h"

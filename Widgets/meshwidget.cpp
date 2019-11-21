@@ -14,10 +14,10 @@ MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Component = getWorld()->getComponent<Mesh>(entity).value();
+    component_ = getWorld()->getComponent<Mesh>(entity).value();
 
-    ui->isVisible->setChecked(Component->isVisible_);
-    ui->meshNameLabel->setText(QString::fromStdString(Component->filepath_));
+    ui->isVisible->setChecked(component_->isVisible_);
+    ui->meshNameLabel->setText(QString::fromStdString(component_->filepath_));
 
 }
 
@@ -28,7 +28,7 @@ MeshWidget::~MeshWidget()
 
 void MeshWidget::on_isVisible_toggled(bool checked)
 {
-    Component->isVisible_ = checked;
+    component_->isVisible_ = checked;
 }
 
 void MeshWidget::on_changeMeshButton_clicked()
@@ -43,7 +43,9 @@ void MeshWidget::on_changeMeshButton_clicked()
     {
         getWorld()->removeComponent<Mesh>(entity_);
         getWorld()->addComponent(entity_, ResourceFactory::get()->loadMesh(fileName));
+        component_ = getWorld()->getComponent<Mesh>(entity_).value();
     }
+    ui->meshNameLabel->setText(QString::fromStdString(component_->filepath_));
 }
 
 void MeshWidget::remove()

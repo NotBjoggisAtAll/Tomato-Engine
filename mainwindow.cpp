@@ -107,6 +107,10 @@ void MainWindow::updateRightPanel(Entity entity)
     if(mesh)
         layout->addWidget(new MeshWidget(entity));
 
+    Collision* collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
+    if(collision)
+        layout->addWidget(new CollisionWidget(entity));
+
     Sound* sound = getWorld()->getComponent<Sound>(entity).value_or(nullptr);
     if(sound)
         layout->addWidget(new SoundWidget(entity));
