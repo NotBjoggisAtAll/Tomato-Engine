@@ -6,7 +6,7 @@
 #include "GSL/vector3d.h"
 
 class EventHandler;
-class VertexData;
+struct VertexData;
 
 class InputSystem : public System
 {

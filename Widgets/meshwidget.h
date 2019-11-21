@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "types.h"
 
-class Mesh;
+struct Mesh;
 
 namespace Ui {
 class MeshWidget;

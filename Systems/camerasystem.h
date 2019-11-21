@@ -3,7 +3,7 @@
 
 #include "system.h"
 
-class Camera;
+struct Camera;
 
 class CameraSystem : public System
 {

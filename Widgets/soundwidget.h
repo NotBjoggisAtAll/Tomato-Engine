@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include "types.h"
-class Sound;
+
+struct Sound;
 
 namespace Ui {
 class SoundWidget;

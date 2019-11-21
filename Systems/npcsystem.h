@@ -5,7 +5,7 @@
 #include "GSL/vector3d.h"
 #include <queue>
 
-class Npc;
+struct Npc;
 class NpcSystem : public System
 {
 public:

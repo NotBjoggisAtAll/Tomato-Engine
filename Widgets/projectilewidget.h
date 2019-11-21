@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "types.h"
 
-class Projectile;
+struct Projectile;
 
 namespace Ui {
 class ProjectileWidget;

@@ -1,12 +1,11 @@
 #include "wavfilehandler.h"
 #include <iostream>
-
 bool WavFileHandler::loadWave(std::string filePath, wave_t* wavePtr)
 {
     std::cout << "Loading "+ filePath + " from disk\n";
-    FILE* fp = NULL;
+    FILE* fp = nullptr;
     fp = std::fopen(filePath.c_str(), "rb");
-    if (fp == NULL)
+    if (fp == nullptr)
     {
         return endOnError("FileHandler error: File not found.\n");
     }
@@ -49,7 +48,7 @@ bool WavFileHandler::loadWave(std::string filePath, wave_t* wavePtr)
     std::fread(&wavePtr->dataSize, sizeof(uint32_t), 1, fp);
 
     wavePtr->buffer = new unsigned char[wavePtr->dataSize];
-    uint32_t result = std::fread(wavePtr->buffer, sizeof(char), wavePtr->dataSize, fp);
+    size_t result = std::fread(wavePtr->buffer, sizeof(char), wavePtr->dataSize, fp);
     if (result != wavePtr->dataSize)
     {
         return endOnError("FileHandler error: fread result mismatch.\n");
@@ -60,7 +59,7 @@ bool WavFileHandler::loadWave(std::string filePath, wave_t* wavePtr)
         return endOnError("FileHandler error: fstream error.");
     }
 
-    if (wavePtr->buffer == NULL)
+    if (wavePtr->buffer == nullptr)
     {
         return endOnError("FileHandler error: Wave Data pointer is NULL.\n");
     }

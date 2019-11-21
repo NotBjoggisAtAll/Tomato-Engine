@@ -4,7 +4,7 @@
 #include "system.h"
 
 class World;
-class Sound;
+struct Sound;
 
 class SoundSystem : public System
 {

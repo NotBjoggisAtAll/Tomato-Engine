@@ -9,7 +9,7 @@
 #include <QJsonArray>
 
 class JSTimer;
-class Script;
+struct Script;
 
 class QJSEngine;
 

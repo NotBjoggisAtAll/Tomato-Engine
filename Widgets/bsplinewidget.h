@@ -5,7 +5,7 @@
 #include "types.h"
 #include "GSL/vector3d.h"
 
-class BSpline;
+struct BSpline;
 class Vector3DPicker;
 
 namespace Ui {

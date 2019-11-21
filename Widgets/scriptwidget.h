@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "types.h"
 
-class Script;
+struct Script;
 
 namespace Ui {
 class ScriptWidget;

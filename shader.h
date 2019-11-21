@@ -4,7 +4,7 @@
 #include <QOpenGLFunctions_4_1_Core>
 #include "GSL/matrix4x4.h"
 
-class Material;
+struct Material;
 
 class Shader : protected QOpenGLFunctions_4_1_Core
 {

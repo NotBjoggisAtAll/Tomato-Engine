@@ -6,8 +6,8 @@
 #include "GSL/vector3d.h"
 #include "hitresult.h"
 
-class Collision;
-class Transform;
+struct Collision;
+struct Transform;
 
 class CollisionSystem : public System
 {

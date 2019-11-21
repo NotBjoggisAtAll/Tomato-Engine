@@ -4,8 +4,8 @@
 #include "shader.h"
 #include "types.h"
 
-class Light;
-class Transform;
+struct Light;
+struct Transform;
 
 class PhongShader : public Shader
 {

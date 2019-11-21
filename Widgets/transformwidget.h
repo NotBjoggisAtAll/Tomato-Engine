@@ -5,7 +5,7 @@
 #include "types.h"
 #include <memory>
 
-class Transform;
+struct Transform;
 
 namespace Ui {
 class TransformWidget;
