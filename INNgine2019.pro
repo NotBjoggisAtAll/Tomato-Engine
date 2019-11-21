@@ -59,7 +59,9 @@ HEADERS += \
     Systems/scenesystem.h \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
+    Widgets/allcomponentwidgets.h \
     Widgets/bsplinewidget.h \
+    Widgets/inputwidget.h \
     Widgets/projectilewidget.h \
     Widgets/scriptwidget.h \
     Widgets/soundwidget.h \
@@ -133,6 +135,7 @@ SOURCES += main.cpp \
     Systems/system.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/bsplinewidget.cpp \
+    Widgets/inputwidget.cpp \
     Widgets/projectilewidget.cpp \
     Widgets/scriptwidget.cpp \
     Widgets/soundwidget.cpp \
@@ -161,6 +164,7 @@ SOURCES += main.cpp \
 FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/bsplinewidget.ui \
+    Widgets/inputwidget.ui \
     Widgets/projectilewidget.ui \
     Widgets/scriptwidget.ui \
     Widgets/soundwidget.ui \

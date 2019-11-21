@@ -2,17 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QSurfaceFormat>
 #include <QDesktopWidget>
-#include "Widgets/transformwidget.h"
-#include "Widgets/meshwidget.h"
-#include "Widgets/soundwidget.h"
-#include "Widgets/addcomponentwidget.h"
-#include "Widgets/projectilewidget.h"
-#include "Widgets/scriptwidget.h"
+#include "Widgets/allcomponentwidgets.h"
 #include "renderwindow.h"
 #include "Components/allcomponents.h"
 #include "world.h"
 #include "constants.h"
-#include "Widgets/bsplinewidget.h"
 #include "Windows/vector3dpicker.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -128,6 +122,10 @@ void MainWindow::updateRightPanel(Entity entity)
     Projectile* projectile = getWorld()->getComponent<Projectile>(entity).value_or(nullptr);
     if(projectile)
         layout->addWidget(new ProjectileWidget(entity));
+
+    Input* input = getWorld()->getComponent<Input>(entity).value_or(nullptr);
+    if(input)
+        layout->addWidget(new InputWidget(entity));
 
     layout->addWidget(new AddComponentWidget(entity,this));
 

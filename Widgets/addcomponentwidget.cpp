@@ -23,33 +23,33 @@ AddComponentWidget::~AddComponentWidget()
 
 void AddComponentWidget::on_addButton_clicked()
 {
-    menu_ = new QMenu(this);
+    QMenu menu;
     if(!getWorld()->getComponent<Transform>(entity_).value_or(nullptr))
-        menu_->addAction("Transform", this, &AddComponentWidget::addTransform);
+        menu.addAction("Transform", this, &AddComponentWidget::addTransform);
     if(!getWorld()->getComponent<Collision>(entity_).value_or(nullptr))
-        menu_->addAction("Collision", this, &AddComponentWidget::addCollision);
+        menu.addAction("Collision", this, &AddComponentWidget::addCollision);
     if(!getWorld()->getComponent<Mesh>(entity_).value_or(nullptr))
-        menu_->addAction("Mesh", this, &AddComponentWidget::addMesh);
+        menu.addAction("Mesh", this, &AddComponentWidget::addMesh);
     if(!getWorld()->getComponent<Material>(entity_).value_or(nullptr))
-        menu_->addAction("Material", this, &AddComponentWidget::addMaterial);
+        menu.addAction("Material", this, &AddComponentWidget::addMaterial);
     if(!getWorld()->getComponent<Sound>(entity_).value_or(nullptr))
-        menu_->addAction("Sound", this, &AddComponentWidget::addSound);
-    if(menu_->actions().size() == 0)
-        menu_->addSeparator();
+        menu.addAction("Sound", this, &AddComponentWidget::addSound);
+    if(menu.actions().size() == 0)
+        menu.addSeparator();
     if(!getWorld()->getComponent<BSpline>(entity_).value_or(nullptr))
-        menu_->addAction("BSpline", this, &AddComponentWidget::addBSpline);
+        menu.addAction("BSpline", this, &AddComponentWidget::addBSpline);
     if(!getWorld()->getComponent<Camera>(entity_).value_or(nullptr))
-        menu_->addAction("Camera", this, &AddComponentWidget::addCamera);
+        menu.addAction("Camera", this, &AddComponentWidget::addCamera);
     if(!getWorld()->getComponent<Input>(entity_).value_or(nullptr))
-        menu_->addAction("Input", this, &AddComponentWidget::addInput);
+        menu.addAction("Input", this, &AddComponentWidget::addInput);
     if(!getWorld()->getComponent<Light>(entity_).value_or(nullptr))
-        menu_->addAction("Light", this, &AddComponentWidget::addLight);
+        menu.addAction("Light", this, &AddComponentWidget::addLight);
     if(!getWorld()->getComponent<Npc>(entity_).value_or(nullptr))
-        menu_->addAction("Npc", this, &AddComponentWidget::addNpc);
+        menu.addAction("Npc", this, &AddComponentWidget::addNpc);
     if(!getWorld()->getComponent<Projectile>(entity_).value_or(nullptr))
-        menu_->addAction("Projectile", this, &AddComponentWidget::addProjectile);
+        menu.addAction("Projectile", this, &AddComponentWidget::addProjectile);
 
-    menu_->exec(QCursor::pos());
+    menu.exec(QCursor::pos());
 }
 void AddComponentWidget::addTransform()
 {

@@ -41,7 +41,6 @@ private:
     MainWindow* mainWindow_ = nullptr;
     Ui::AddComponentWidget *ui;
 
-    QMenu* menu_ = nullptr;
 };
 
 #endif // ADDCOMPONENTWIDGET_H
