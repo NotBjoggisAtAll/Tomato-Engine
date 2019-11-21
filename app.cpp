@@ -423,14 +423,20 @@ void App::raycastFromMouse()
 
     Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(transform->position_,ray_world, hit);
 
-    EntityData* data = getWorld()->getComponent<EntityData>(entityPicked).value_or(nullptr);
-    if(data)
+    if(getWorld()->bGameRunning)
     {
-        if(data->name_ == "Floor")
-            spawnTower(hit.position);
+        EntityData* data = getWorld()->getComponent<EntityData>(entityPicked).value_or(nullptr);
+        if(data)
+        {
+            if(data->name_ == "Floor")
+                spawnTower(hit.position);
+        }
+    }
+    else
+    {
+        renderWindow_->makeCollisionBorder(entityPicked);
+        mainWindow_->updateRightPanel(entityPicked);
     }
 
-    mainWindow_->updateRightPanel(entityPicked);
-    renderWindow_->makeCollisionBorder(entityPicked);
 
 }

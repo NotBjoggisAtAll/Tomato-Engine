@@ -47,9 +47,11 @@ void MainWindow::displayEntitiesInOutliner()
         auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
         if(data)
         {
-        item->setText(0, QString::fromStdString(data->name_));
-        item->setText(1, QString::number(entity));
-        ui->Outliner->addTopLevelItem(item);
+            if(data->name_.front() == '_')
+                continue;
+            item->setText(0, QString::fromStdString(data->name_));
+            item->setText(1, QString::number(entity));
+            ui->Outliner->addTopLevelItem(item);
         }
     }
 }
@@ -66,11 +68,11 @@ void MainWindow::addEntityToUi(Entity entity)
 void MainWindow::updateStatusbar(float timePerFrame, float frameCounter, int verticeCounter)
 {
     statusBar()->showMessage(" | Time pr FrameDraw: "
-                                 + QString::number(static_cast<double>(timePerFrame), 'g', 4)
-                                 + " s  |  " + "FPS: "
-                                 + QString::number(static_cast<double>(frameCounter), 'g', 4)
-                                 + " | Vertice count: "
-                                 + QString::number(verticeCounter));
+                             + QString::number(static_cast<double>(timePerFrame), 'g', 4)
+                             + " s  |  " + "FPS: "
+                             + QString::number(static_cast<double>(frameCounter), 'g', 4)
+                             + " | Vertice count: "
+                             + QString::number(verticeCounter));
 }
 
 void MainWindow::on_actionToggle_Wireframe_triggered()
@@ -252,12 +254,12 @@ void MainWindow::on_sceneOpen_triggered()
 
 void MainWindow::on_sceneCreateNew_triggered()
 {
-   emit newScene();
+    emit newScene();
 }
 
 void MainWindow::on_createBSpline_triggered()
 {
-   emit spawnObject("BSpline", "BSpline");
+    emit spawnObject("BSpline", "BSpline");
 }
 
 void MainWindow::on_sceneSave_triggered()

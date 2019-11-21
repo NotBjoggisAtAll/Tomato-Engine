@@ -10,6 +10,7 @@
 #include "Components/sound.h"
 #include "Components/vertexdata.h"
 #include <unordered_map>
+#include <optional>
 
 class ResourceFactory : public QOpenGLFunctions_4_1_Core
 {

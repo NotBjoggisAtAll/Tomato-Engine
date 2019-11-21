@@ -1,5 +1,7 @@
 #include "bsplinecurve.h"
 #include "vertex.h"
+#include <random>
+#include <algorithm>
 
 BSplineCurve::BSplineCurve(float speed, unsigned int degree) : speed_(speed), degree_(degree){}
 
@@ -153,6 +155,9 @@ void BSplineCurve::randomizeControlpoints()
 {
     if(controlPoints_.size() < 3)
         return;
-    std::random_shuffle(controlPoints_.begin() + 1, controlPoints_.end() - 1);
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(controlPoints_.begin() + 1, controlPoints_.end() - 1, g);
     bPathChanged = true;
 }
