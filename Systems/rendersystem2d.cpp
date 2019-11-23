@@ -28,14 +28,21 @@ void RenderSystem2D::tick(float /*deltaTime*/)
         gsl::Matrix4x4 modelMatrix;
 
         modelMatrix.setPosition(gui->position_.x,gui->position_.y,0);
-        modelMatrix.scale(gui->scale_.x, gui->scale_.y, 1.f);
+        modelMatrix.scale((gui->scale_.x*height_)/width_, gui->scale_.y, 1.f);
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
     }
 }
 
 void RenderSystem2D::endPlay()
 {
+}
+
+void RenderSystem2D::setWidthAndHeight(int width, int height)
+{
+    width_ = width;
+    height_ = height;
 }

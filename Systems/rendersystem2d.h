@@ -13,6 +13,11 @@ public:
     virtual void beginPlay() override;
     virtual void tick(float) override;
     virtual void endPlay() override;
+    void setWidthAndHeight(int width, int height);
+
+private:
+    int width_ = 0;
+    int height_ = 0;
 
 };
 
