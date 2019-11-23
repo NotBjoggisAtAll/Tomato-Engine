@@ -9,7 +9,7 @@ class GUIFactory : public QOpenGLFunctions_4_1_Core
 public:
 
     static GUIFactory* get();
-    GUI createGUI();
+    GUI createGUI(gsl::Vector2D position = gsl::Vector2D(0), gsl::Vector2D scale = gsl::Vector2D(1));
 
 private:
     GUIFactory();

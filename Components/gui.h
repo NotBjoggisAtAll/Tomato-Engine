@@ -8,6 +8,8 @@
 struct GUI : public Component
 {
     GUI();
+    GUI(gsl::Vector2D position, gsl::Vector2D scale);
+    GUI(QJsonObject Json);
     virtual QJsonObject toJson() override;
     virtual void fromJson(QJsonObject Json) override;
 

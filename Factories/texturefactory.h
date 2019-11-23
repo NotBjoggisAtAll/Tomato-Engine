@@ -3,6 +3,7 @@
 
 #include "gltypes.h"
 #include <string>
+#include <unordered_map>
 class TextureFactory
 {
 public:
@@ -15,6 +16,8 @@ public:
     GLuint loadTexture(std::string file);
 private:
     TextureFactory();
+
+    std::unordered_map<std::string, GLuint> textureIDs_;
 
     static TextureFactory* instance_;
 };

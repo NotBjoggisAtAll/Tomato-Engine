@@ -10,13 +10,14 @@ struct Material : public Component
 {
     Material() = default;
     Material(Shader* Shader);
-    Material(Shader* Shader, GLuint TextureUnit);
+    Material(Shader* Shader, std::string texture);
     Material(Shader* Shader, gsl::Vector3D Color);
-    Material(Shader* Shader, gsl::Vector3D Color,  GLuint TextureUnit);
+    Material(Shader* Shader, gsl::Vector3D Color,  std::string texture);
     Material(QJsonObject Json);
 
     Shader* shader_{nullptr};
     gsl::Vector3D color_{1,1,1};
+    std::string textureFile_ = "";
     GLuint textureUnit_{0};
 
     QJsonObject toJson() override;

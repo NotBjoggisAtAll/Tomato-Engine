@@ -110,6 +110,10 @@ void JsonScene::addObject(Entity entity)
     if(projectile)
         components.insert("projectile", projectile->toJson());
 
+    GUI* gui = getWorld()->getComponent<GUI>(entity).value_or(nullptr);
+    if(gui)
+        components.insert("gui", gui->toJson());
+
     // Legg til flere komponenter her etterhvert
     entityObject.insert("components", components);
 

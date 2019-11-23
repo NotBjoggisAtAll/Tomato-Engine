@@ -16,6 +16,12 @@ TextureFactory *TextureFactory::get()
 
 GLuint TextureFactory::loadTexture(std::string file)
 {
+    auto textureIt = textureIDs_.find(file);
+    if(textureIt != textureIDs_.end())
+    {
+        return textureIt->second;
+    }
     Texture tex(file);
+    textureIDs_.insert({file, tex.id()});
     return tex.id();
 }

@@ -183,7 +183,7 @@ void App::postInit()
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
     getWorld()->addComponent(entity, Transform({-5,0,-5},{},{10,10,10}));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),{.2f,.7f,.1f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(.2f,.7f,.1f)));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("plane"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("plane"));
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
@@ -198,8 +198,8 @@ void App::postInit()
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("UI Test"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},TextureFactory::get()->loadTexture("hund.bmp")));
-    getWorld()->addComponent(entity, GUIFactory::get()->createGUI());
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},"hund.bmp"));
+    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.1f,-0.5f},{0.1f,0.1f}));
     mainWindow_->displayEntitiesInOutliner();
 
 }
@@ -249,7 +249,7 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, transform);
     getWorld()->addComponent(entity, EntityData("Tower"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),{0.82f,0.82f,0.82f}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),gsl::Vector3D(0.82f,0.82f,0.82f)));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("turret.obj"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("turret.obj"));
     getWorld()->addComponent(entity, Script("towerScript.js"));

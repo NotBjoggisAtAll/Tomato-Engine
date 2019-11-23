@@ -13,12 +13,12 @@ GUIFactory *GUIFactory::get()
     return instance_;
 }
 
-GUI GUIFactory::createGUI()
+GUI GUIFactory::createGUI(gsl::Vector2D position, gsl::Vector2D scale)
 {
     GUI gui;
+    gui.position_ = position;
+    gui.scale_ = scale;
     gui.VAO_ = openGLVertexBuffers();
-    gui.scale_.x = 0.5;
-    gui.scale_.y = 0.5;
     return gui;
 
 }

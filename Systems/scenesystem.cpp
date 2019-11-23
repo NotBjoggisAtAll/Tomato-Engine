@@ -204,6 +204,11 @@ void SceneSystem::loadScenePriv(QString sceneName)
             {
                 getWorld()->addComponent(newEntity, Projectile(projectileData));
             }
+            QJsonObject guiData = components.take("gui").toObject();
+            if(!guiData.empty())
+            {
+                getWorld()->addComponent(newEntity, GUI(guiData));
+            }
         }
     }
 }
