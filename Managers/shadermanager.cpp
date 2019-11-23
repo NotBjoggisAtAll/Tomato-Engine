@@ -30,6 +30,11 @@ ColorShader *ShaderManager::colorShader()
 
 }
 
+GUIShader *ShaderManager::guiShader()
+{
+    return dynamic_cast<GUIShader*>(shaders_.at("guishader"));
+}
+
 Shader *ShaderManager::getShader(std::string shaderName)
 {
     return shaders_.at(shaderName);
@@ -42,11 +47,14 @@ ShaderManager::ShaderManager()
     shaders_.insert(std::make_pair("textureshader", new TextureShader("textureshader")));
     shaders_.insert(std::make_pair("phongshader", new PhongShader("phongshader")));
     shaders_.insert(std::make_pair("colorshader", new ColorShader("colorshader")));
+    shaders_.insert(std::make_pair("guishader", new GUIShader("guishader")));
 
 }
 
 ShaderManager::~ShaderManager()
 {
+    for(const auto& shader : shaders_)
+        delete shader.second;
     delete instance_;
     instance_ = nullptr;
 }

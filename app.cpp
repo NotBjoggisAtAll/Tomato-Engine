@@ -2,7 +2,9 @@
 #include "renderwindow.h"
 #include "world.h"
 #include "Components/allcomponents.h"
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
+#include "Factories/guifactory.h"
+#include "Factories/texturefactory.h"
 #include "Managers/shadermanager.h"
 #include "Managers/soundmanager.h"
 #include "Systems/allsystems.h"
@@ -25,6 +27,7 @@ App::App()
     getWorld()->registerComponent<VertexData>();
     getWorld()->registerComponent<Camera>();
     getWorld()->registerComponent<Projectile>();
+    getWorld()->registerComponent<GUI>();
 
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
@@ -33,6 +36,7 @@ App::App()
     getWorld()->registerSystem<ScriptSystem>();
     getWorld()->registerSystem<BSplineSystem>();
     getWorld()->registerSystem<RenderSystem>();
+    getWorld()->registerSystem<RenderSystem2D>();
     getWorld()->registerSystem<NpcSystem>();
     getWorld()->registerSystem<InputSystem>();
     getWorld()->registerSystem<CameraSystem>();
@@ -43,6 +47,11 @@ App::App()
     renderSign.set(getWorld()->getComponentType<Mesh>());
     renderSign.set(getWorld()->getComponentType<Material>());
     getWorld()->setSystemSignature<RenderSystem>(renderSign);
+
+    Signature render2DSign;
+    render2DSign.set(getWorld()->getComponentType<GUI>());
+    render2DSign.set(getWorld()->getComponentType<Material>());
+    getWorld()->setSystemSignature<RenderSystem2D>(render2DSign);
 
     Signature soundSign;
     soundSign.set(getWorld()->getComponentType<Transform>());
@@ -126,6 +135,7 @@ App::~App()
 {
     SoundManager::instance()->cleanUp();
 }
+
 void App::postInit()
 {
     Entity entity = getWorld()->createEntity();
@@ -185,6 +195,11 @@ void App::postInit()
     getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
+
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("UI Test"));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},TextureFactory::get()->loadTexture("hund.bmp")));
+    getWorld()->addComponent(entity, GUIFactory::get()->createGUI());
     mainWindow_->displayEntitiesInOutliner();
 
 }
@@ -250,6 +265,7 @@ Entity App::createEntity()
     getWorld()->addComponent(entity, EntityData("Empty Entity"));
     return entity;
 }
+
 Entity App::spawnObject(std::string name, std::string path)
 {
     Entity entity = getWorld()->createEntity();
@@ -437,6 +453,4 @@ void App::raycastFromMouse()
         renderWindow_->makeCollisionBorder(entityPicked);
         mainWindow_->updateRightPanel(entityPicked);
     }
-
-
 }

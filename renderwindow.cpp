@@ -4,7 +4,8 @@
 #include <QOpenGLDebugLogger>
 #include "Components/allcomponents.h"
 #include "Systems/rendersystem.h"
-#include "resourcefactory.h"
+#include "Systems/rendersystem2d.h"
+#include "Factories/resourcefactory.h"
 #include "world.h"
 #include "Managers/shadermanager.h"
 
@@ -67,19 +68,6 @@ void RenderWindow::init()
     glEnable(GL_CULL_FACE);     //draws only front side of models - usually what you want -
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f);    //color used in glClear GL_COLOR_BUFFER_BIT
 
-    //**********************  Texture stuff: **********************
-
-    texture_[0] = new Texture("white.bmp");
-    texture_[1] = new Texture("hund.bmp", 1);
-    texture_[2] = new Texture("skybox.bmp", 2);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture_[0]->id());
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture_[1]->id());
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, texture_[2]->id());
-
     emit initDone();
 }
 
@@ -88,6 +76,7 @@ void RenderWindow::tick(float deltaTime)
     context_->makeCurrent(this);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     getWorld()->getSystem<RenderSystem>()->tick(deltaTime);
+    getWorld()->getSystem<RenderSystem2D>()->tick(deltaTime);
     context_->swapBuffers(this);
 }
 

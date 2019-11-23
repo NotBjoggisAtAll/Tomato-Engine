@@ -4,7 +4,7 @@
 #include "world.h"
 #include "constants.h"
 #include <QFile>
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 #include "Managers/shadermanager.h"
 #include "Script/jstimer.h"
 #include "Systems/projectilesystem.h"

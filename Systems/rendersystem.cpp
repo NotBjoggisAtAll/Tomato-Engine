@@ -18,7 +18,7 @@ void RenderSystem::tick(float deltaTime)
 
     totalVerticeCount = 0;
 
-    for(auto& entity : entities_)
+    for(const auto& entity : entities_)
     {
         auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 

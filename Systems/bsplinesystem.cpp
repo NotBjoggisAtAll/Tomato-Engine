@@ -2,7 +2,7 @@
 #include "world.h"
 #include "Components/bspline.h"
 #include "Components/mesh.h"
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 
 BSplineSystem::BSplineSystem()
 {

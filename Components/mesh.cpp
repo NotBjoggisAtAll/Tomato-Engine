@@ -1,6 +1,6 @@
 #include "mesh.h"
 #include <QJsonObject>
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 
 Mesh::Mesh(QJsonObject Json)
 {

@@ -2,8 +2,8 @@
 #define RENDERWINDOW_H
 
 #include <QWindow>
-#include "texture.h"
 #include "types.h"
+#include <QOpenGLFunctions_4_1_Core>
 #include <memory>
 
 class QOpenGLContext;
@@ -41,9 +41,6 @@ private:
 
     bool initialized_{false};
     bool wireframe_{false};
-
-
-    Texture *texture_[4]{nullptr}; //We can hold 4 textures
     
     Entity lastCollisionEntity = -1;
 };

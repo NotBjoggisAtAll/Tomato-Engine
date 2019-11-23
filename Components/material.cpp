@@ -26,7 +26,7 @@ QJsonObject Material::toJson()
     colorArray.insert(1, static_cast<double>(color_.y));
     colorArray.insert(2, static_cast<double>(color_.z));
     object.insert("Color", colorArray);
-    object.insert("Textureunit", static_cast<int>(textureUnit_));
+    object.insert("Textureunit", static_cast<int>(textureUnit_)); //Her må jeg kanskje loade inn texture på nytt? Bruke filpath i stedet?
 
     return object;
 }

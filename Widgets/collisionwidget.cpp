@@ -1,10 +1,10 @@
 #include "collisionwidget.h"
 #include "ui_collisionwidget.h"
-#include <QMenu>
 #include "Components/collision.h"
 #include "Components/mesh.h"
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 #include "world.h"
+#include <QMenu>
 
 CollisionWidget::CollisionWidget(Entity entity, QWidget *parent) :
     QWidget(parent), entity_(entity),

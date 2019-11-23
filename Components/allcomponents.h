@@ -7,6 +7,7 @@
 #include "sound.h"
 #include "transform.h"
 #include "entitydata.h"
+#include "gui.h"
 #include "collision.h"
 #include "light.h"
 #include "bspline.h"

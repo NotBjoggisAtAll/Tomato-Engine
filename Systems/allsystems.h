@@ -9,6 +9,7 @@
 #include "npcsystem.h"
 #include "projectilesystem.h"
 #include "rendersystem.h"
+#include "rendersystem2d.h"
 #include "scenesystem.h"
 #include "scriptsystem.h"
 #include "soundsystem.h"

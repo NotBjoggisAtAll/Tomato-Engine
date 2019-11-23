@@ -23,6 +23,7 @@ HEADERS += \
     Components/component.h \
     Components/componentArray.h \
     Components/entitydata.h \
+    Components/gui.h \
     Components/input.h \
     Components/light.h \
     Components/material.h \
@@ -33,6 +34,8 @@ HEADERS += \
     Components/sound.h \
     Components/transform.h \
     Components/vertexdata.h \
+    Factories/guifactory.h \
+    Factories/texturefactory.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -56,6 +59,7 @@ HEADERS += \
     Systems/movementsystem.h \
     Systems/npcsystem.h \
     Systems/projectilesystem.h \
+    Systems/rendersystem2d.h \
     Systems/scenesystem.h \
     Systems/scriptsystem.h \
     Widgets/addcomponentwidget.h \
@@ -74,11 +78,12 @@ HEADERS += \
     Widgets/meshwidget.h \
     Systems/rendersystem.h \
     eventhandler.h \
+    guishader.h \
     hitresult.h \
     jsonscene.h \
     plainshader.h \
     renderwindow.h \
-    resourcefactory.h \
+    Factories/resourcefactory.h \
     shader.h \
     mainwindow.h \
     Widgets/transformwidget.h \
@@ -102,6 +107,7 @@ SOURCES += main.cpp \
     Components/collision.cpp \
     Components/component.cpp \
     Components/entitydata.cpp \
+    Components/gui.cpp \
     Components/input.cpp \
     Components/light.cpp \
     Components/material.cpp \
@@ -111,6 +117,8 @@ SOURCES += main.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
     Components/vertexdata.cpp \
+    Factories/guifactory.cpp \
+    Factories/texturefactory.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \
@@ -131,6 +139,7 @@ SOURCES += main.cpp \
     Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
     Systems/projectilesystem.cpp \
+    Systems/rendersystem2d.cpp \
     Systems/scenesystem.cpp \
     Systems/scriptsystem.cpp \
     Systems/system.cpp \
@@ -147,9 +156,10 @@ SOURCES += main.cpp \
     app.cpp \
     bsplinecurve.cpp \
     eventhandler.cpp \
+    guishader.cpp \
     jsonscene.cpp \
     plainshader.cpp \
-    resourcefactory.cpp \
+    Factories/resourcefactory.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \
     Systems/soundsystem.cpp \
@@ -179,6 +189,8 @@ FORMS += \
 DISTFILES += \
     Shaders/colorshader.frag \
     Shaders/colorshader.vert \
+    Shaders/guishader.frag \
+    Shaders/guishader.vert \
     Shaders/phongshader.frag \
     Shaders/phongshader.vert \
     Shaders/plainshader.frag \

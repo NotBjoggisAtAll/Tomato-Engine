@@ -1,8 +1,8 @@
 #include "meshwidget.h"
 #include "ui_meshwidget.h"
+#include "Factories/resourcefactory.h"
 #include "Components/mesh.h"
 #include "world.h"
-#include "resourcefactory.h"
 #include <QMenu>
 #include <QFileDialog>
 

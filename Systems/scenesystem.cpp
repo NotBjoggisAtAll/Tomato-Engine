@@ -9,7 +9,7 @@
 #include "phongshader.h"
 #include "constants.h"
 #include "jsonscene.h"
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 
 SceneSystem::SceneSystem() {}
 

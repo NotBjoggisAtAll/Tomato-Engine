@@ -8,6 +8,7 @@
 #include "plainshader.h"
 #include "textureshader.h"
 #include "phongshader.h"
+#include "guishader.h"
 #include "Shaders/colorshader.h"
 
 class TextureShader;
@@ -20,10 +21,11 @@ public:
     TextureShader *textureShader();
     PlainShader *plainShader();
     ColorShader* colorShader();
+    GUIShader* guiShader();
 
     Shader* getShader(std::string shaderName);
-    std::unordered_map<std::string, Shader*> shaders_;
 private:
+    std::unordered_map<std::string, Shader*> shaders_;
     ShaderManager();
     ~ShaderManager();
 

@@ -1,5 +1,5 @@
 #include "collision.h"
-#include "resourcefactory.h"
+#include "Factories/resourcefactory.h"
 #include <QJsonObject>
 
 Collision::Collision(gsl::Vector3D minVector, gsl::Vector3D maxVector) : minVector_(minVector), maxVector_(maxVector), scaledMinVector_(minVector), scaledMaxVector_(maxVector) {}
