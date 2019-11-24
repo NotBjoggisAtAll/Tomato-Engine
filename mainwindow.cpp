@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->scrollArea->setWidgetResizable(true);
 
+    ui->Outliner->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->Outliner, &QWidget::customContextMenuRequested, this, &MainWindow::onOutlinerRightClick);
+
     setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
 
     renderWindow_ = std::make_shared<RenderWindow>();
@@ -30,6 +33,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+void MainWindow::onOutlinerRightClick(const QPoint /*point*/)
+{
+    QMenu menu;
+
+    menu.addAction("Delete", this, &MainWindow::deleteEntity);
+
+    menu.exec(QCursor::pos());
+}
+
+void MainWindow::deleteEntity()
+{
+   getWorld()->destroyEntityLater(ui->Outliner->currentItem()->text(1).toInt());
+   updateRightPanel(-1);
 }
 
 void MainWindow::displayEntitiesInOutliner()

@@ -73,6 +73,8 @@ private slots:
     void on_createBSpline_triggered();
     void on_sceneSave_triggered();
 
+    void onOutlinerRightClick(const QPoint);
+    void deleteEntity();
 private:
 
     Ui::MainWindow *ui;
