@@ -3,10 +3,6 @@
 
 TextureFactory* TextureFactory::instance_ = nullptr;
 
-TextureFactory::TextureFactory()
-{
-}
-
 TextureFactory *TextureFactory::get()
 {
     if(!instance_)
