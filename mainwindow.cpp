@@ -8,6 +8,7 @@
 #include "world.h"
 #include "constants.h"
 #include "Windows/vector3dpicker.h"
+#include <QAbstractItemView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -36,13 +37,16 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::onOutlinerRightClick(const QPoint /*point*/)
+void MainWindow::onOutlinerRightClick(const QPoint point)
 {
+    ui->Outliner->selectionModel()->clearSelection();
+    auto item = ui->Outliner->itemAt(point);
+    if(!item) return;
+    item->setSelected(true);
+
     QMenu menu;
-
     menu.addAction("Delete", this, &MainWindow::deleteEntity);
-
-    menu.exec(QCursor::pos());
+    menu.exec(point);
 }
 
 void MainWindow::deleteEntity()
