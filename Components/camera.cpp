@@ -1,11 +1,6 @@
 #include "camera.h"
 #include <QJsonArray>
 
-Camera::Camera()
-{
-
-}
-
 Camera::Camera(bool isInUse) : isInUse_(isInUse){}
 
 Camera::Camera(bool isInUse, float yaw, float pitch) : yaw_(yaw), pitch_(pitch), isInUse_(isInUse){}
@@ -16,7 +11,6 @@ Camera::Camera(QJsonObject Json)
 {
     fromJson(Json);
 }
-
 
 QJsonObject Camera::toJson()
 {
@@ -38,6 +32,9 @@ QJsonObject Camera::toJson()
 
 void Camera::fromJson(QJsonObject Json)
 {
+    if(!Json.contains("pitch"))
+        return;
+
     pitch_ = static_cast<float>(Json.take("pitch").toDouble());
     yaw_ = static_cast<float>(Json.take("yaw").toDouble());
 

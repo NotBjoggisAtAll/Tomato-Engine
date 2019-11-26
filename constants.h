@@ -2,7 +2,9 @@
 #define CONSTANTS_H
 
 #include <string>
-
+/**
+ * Contains relative paths to different folders containing assets for the game engine. Put all your assets inside these folders inorder to use them in the editor.
+ */
 namespace gsl  //Game School Lib
 {
     const std::string projectFolderName{"../INNgine2019/"};

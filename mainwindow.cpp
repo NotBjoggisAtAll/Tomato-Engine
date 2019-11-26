@@ -46,7 +46,7 @@ void MainWindow::onOutlinerRightClick(const QPoint point)
 
     QMenu menu;
     menu.addAction("Delete", this, &MainWindow::deleteEntity);
-    menu.exec(point);
+    menu.exec(QCursor::pos());
 }
 
 void MainWindow::deleteEntity()

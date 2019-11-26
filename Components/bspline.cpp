@@ -1,8 +1,6 @@
 #include "bspline.h"
 #include <QJsonArray>
 
-BSpline::BSpline() {}
-
 BSpline::~BSpline() {}
 
 BSpline::BSpline(float speed, unsigned int degree)
@@ -31,6 +29,9 @@ QJsonObject BSpline::toJson()
 
 void BSpline::fromJson(QJsonObject Json)
 {
+    if(!Json.contains("speed") || !Json.contains("degree") || !Json.contains("controlPoints"))
+        return;
+
     curve_ = BSplineCurve();
     curve_.speed_ = static_cast<float>(Json.take("speed").toDouble());
     curve_.degree_ = static_cast<unsigned int>(Json.take("degree").toInt());

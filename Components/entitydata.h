@@ -38,7 +38,7 @@ struct EntityData : public Component
     /**
      * Override the data in the EntityData with the data in the QJsonObject.
      * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
-     * @param Json
+     * @param Json - QJsonObject
      */
     void fromJson(QJsonObject Json);
 

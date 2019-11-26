@@ -16,8 +16,6 @@ private:
 
     GLint textureUniform_ = -1;
     GLint objectColorUniform_ = -1;
-
-
 };
 
 #endif // GUISHADER_H
