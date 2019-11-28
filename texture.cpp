@@ -28,7 +28,7 @@ Texture::Texture(GLuint textureUnit) : QOpenGLFunctions_4_1_Core()
                  reinterpret_cast<const GLvoid*>(pixels));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    setTexture(textureUnit);
+  //  setTexture(textureUnit);
 }
 
 /**
@@ -98,7 +98,7 @@ void Texture::setTexture(GLuint textureUnit)
 {
     glGenTextures(1, &mId);
     // activate the texture unit first before binding texture
-    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glActiveTexture(GL_TEXTURE0 + mId);
     glBindTexture(GL_TEXTURE_2D, mId);
     qDebug() << "Texture::Texture() id = " << mId;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

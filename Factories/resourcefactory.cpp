@@ -305,27 +305,35 @@ Mesh ResourceFactory::createSphere()
 Mesh ResourceFactory::createPlane()
 {
     Mesh mesh;
-
+//    {-1,1},
+//    {-1,-1},
+//    {1,1},
+//    {1,-1}
+//}};
     Vertex v;
-    v.set_xyz(0,0,0); v.set_rgb(1,0,0);
+    v.set_xyz(-1,0,1); v.set_rgb(0,0,1); v.set_uv(1,1);
     vertices_.push_back(v);
-    v.set_xyz(1,0,1); v.set_rgb(0,0,1);
+    v.set_xyz(1,0,1); v.set_rgb(0,1,0); v.set_uv(0,1);
     vertices_.push_back(v);
-    v.set_xyz(1,0,0); v.set_rgb(0,1,0);
+    v.set_xyz(-1,0,-1); v.set_rgb(0,0,1); v.set_uv(1,0);
     vertices_.push_back(v);
-    v.set_xyz(0,0,0); v.set_rgb(0,1,0);
-    vertices_.push_back(v);
-    v.set_xyz(0,0,1); v.set_rgb(0,0,1);
-    vertices_.push_back(v);
-    v.set_xyz(1,0,1); v.set_rgb(1,0,0);
+    v.set_xyz(1,0,-1); v.set_rgb(1,0,0); v.set_uv(0,0);
     vertices_.push_back(v);
 
     createCollision();
 
+//    indices_ = {
+//        0,1,2,
+//        0,1,3
+
+//    };
+
+
     mesh.VAO_ = openGLVertexBuffers();
+ //   openGLIndexBuffer();
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
-    mesh.drawType_ = GL_TRIANGLES;
+    mesh.drawType_ = GL_TRIANGLE_STRIP;
 
     return mesh;
 }

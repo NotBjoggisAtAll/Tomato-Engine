@@ -149,6 +149,11 @@ void App::postInit()
     getWorld()->setCurrentCamera(entity);
 
     entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, Transform({0,0,0},{},{}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("axis"));
+
+    entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Sound Source"));
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan", "shoot_1.wav", true, .5f)));
@@ -181,9 +186,14 @@ void App::postInit()
     getWorld()->addComponent(entity, Script("enemyManager.js"));
 
     entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("UI Test"));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},"hund.bmp"));
+    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.1f,-0.5f},{0.1f,0.1f}));
+
+    entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
-    getWorld()->addComponent(entity, Transform({-5,0,-5},{},{10,10,10}));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(.2f,.7f,.1f)));
+    getWorld()->addComponent(entity, Transform({0,0,0},{},{5,5,5}));
+    getWorld()->addComponent(entity, Material(ShaderManager::instance()->textureShader(),"ground_path.bmp"));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("plane"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("plane"));
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
@@ -196,10 +206,7 @@ void App::postInit()
     getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
 
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("UI Test"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},"hund.bmp"));
-    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.1f,-0.5f},{0.1f,0.1f}));
+
     mainWindow_->displayEntitiesInOutliner();
 
 }
@@ -405,11 +412,12 @@ void App::updateWorldOutliner()
 
 void App::saveScene()
 {
-    QFileInfo fileInfo = QFileDialog::getSaveFileName(mainWindow_.get(),"Save a scene","../INNgine2019/Json/newScene", "*.json");
+    QString file = QFileDialog::getSaveFileName(mainWindow_.get(),"Save a scene","../INNgine2019/Json/newScene", "*.json");
 
-    if(!fileInfo.size())
+    if(!file.size())
         return;
 
+    QFileInfo fileInfo(file);
     getWorld()->getSystem<SceneSystem>()->saveScene(fileInfo);
 }
 
