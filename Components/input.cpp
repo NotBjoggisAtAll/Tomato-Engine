@@ -1,8 +1,5 @@
 #include "input.h"
 
-Input::Input() {}
-
-
 Input::Input(bool isControlable) : isControllable(isControlable)
 {
 

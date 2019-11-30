@@ -1,10 +1,6 @@
 #include "gui.h"
 #include <QJsonArray>
 #include "Factories/guifactory.h"
-GUI::GUI()
-{
-
-}
 
 GUI::GUI(gsl::Vector2D position, gsl::Vector2D scale) : position_(position), scale_(scale){}
 
@@ -29,6 +25,7 @@ QJsonObject GUI::toJson()
 
 void GUI::fromJson(QJsonObject Json)
 {
+    if(!Json.contains("position")) return;
     QJsonArray positionArray = Json.take("position").toArray();
     position_.x = static_cast<float>(positionArray.at(0).toDouble());
     position_.y = static_cast<float>(positionArray.at(1).toDouble());
