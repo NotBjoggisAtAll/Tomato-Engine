@@ -43,6 +43,8 @@ QJsonObject Light::toJson()
 
 void Light::fromJson(QJsonObject Json)
 {
+    if(!Json.contains("ambient")) return;
+
     QJsonObject ambientObject = Json.take("ambient").toObject();
 
     ambientStrength_ = static_cast<float>(ambientObject.take("strength").toDouble());

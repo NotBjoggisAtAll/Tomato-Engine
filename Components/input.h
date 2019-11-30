@@ -4,7 +4,7 @@
 #include "component.h"
 
 /**
- * The Input component is used to control an entity. If a entity have this component it can be controlled with WASD.
+ * The Input component is used to control an Entity. If a Entity have this Component it can be controlled with WASD.
  */
 struct Input : public Component
 {
@@ -14,17 +14,30 @@ struct Input : public Component
     Input() = default;
     /**
      * A constructor taking in a bool.
-     * @param isControlable - bool. If this is true the player is controllable.
+     * @param isControlable - bool. If this is true the Entity is controllable.
      */
     Input(bool isControlable);
     /**
-     *
-     * @param Json
+     * A constructor taking in a QJsonObject.
+     * Overrides the data in the component with the data in the QJsonObject.
+     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
+     * @param Json - QJsonObject.
      */
     Input(QJsonObject Json);
+
+    /**
+     * Makes a QJsonObject containing the component data.
+     * @return Returns a QJsonObject
+     */
     QJsonObject toJson() override;
+    /**
+     * Overrides the data in the component with the data in the QJsonObject.
+     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
+     * @param Json - QJsonObject
+     */
     void fromJson(QJsonObject Json) override;
 
+    /// Used to check if the Entity is controllable.
     bool isControllable = true;
 };
 

@@ -7,9 +7,9 @@
 
 Material::Material(Shader *Shader) : shader_(Shader), color_(1,1,1) , textureUnit_(0) {}
 
-Material::Material(Shader *Shader, std::string texture) : shader_(Shader), color_(1,1,1), textureFile_(texture)
+Material::Material(Shader *Shader, std::string Texture) : shader_(Shader), color_(1,1,1), textureFile_(Texture)
 {
-    textureUnit_ = TextureFactory::get()->loadTexture(texture);
+    textureUnit_ = TextureFactory::get()->loadTexture(Texture);
 }
 
 Material::Material(Shader *Shader, gsl::Vector3D Color) : shader_(Shader), color_(Color){}
@@ -26,6 +26,9 @@ Material::Material(QJsonObject Json)
 
 void Material::fromJson(QJsonObject Json)
 {
+
+    if(!Json.contains("Shader Name")) return;
+
     std::string ShaderName = Json.take("Shader Name").toString().toStdString();
     shader_ = ShaderManager::instance()->getShader(ShaderName);
     QJsonArray colorArray = Json.take("Color").toArray();
