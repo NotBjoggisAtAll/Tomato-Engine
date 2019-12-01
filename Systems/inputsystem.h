@@ -11,16 +11,13 @@ struct VertexData;
 class InputSystem : public System
 {
 public:
-    InputSystem();
+    InputSystem() = default;
     void beginPlay() override;
     void tick(float deltaTime) override;
     void endPlay() override;
 
     void setEventHandler(const std::shared_ptr<EventHandler> &eventHandler);
 
-    void setTerrainId(const Entity &value);
-    float getHeightBaryc(Entity player, Entity terrain);
-    float getHeightBaryc(gsl::Vector3D pos, Entity terrain);
 private:
     std::shared_ptr<EventHandler> eventHandler_;
     void addPosition(Entity entity, gsl::Vector3D translation);
@@ -29,7 +26,6 @@ private:
 
     void setYPosition(Entity entity, float y);
 
-    Entity terrainId = -1;
 };
 
 #endif // INPUTSYSTEM_H

@@ -8,7 +8,6 @@
 #include "Components/mesh.h"
 #include "Components/collision.h"
 #include "Components/sound.h"
-#include "Components/vertexdata.h"
 #include <unordered_map>
 #include <optional>
 
@@ -24,20 +23,11 @@ public:
 
     Mesh getCameraFrustum();
 
-    VertexData getLastTerrainImported() const;
-
-    /**
-     * Returns the vertex data of the previous mesh loaded with the function loadMesh()
-     * If vertices_ and indices_ are both empty a empty optional is returned.
-     * @return Returns VertexData or nothing, depending on when the function is called.
-     */
-    std::optional<VertexData> getVertexData();
 private:
     ResourceFactory() = default;
 
     std::unordered_map<std::string, Mesh> meshUMap_;
     std::unordered_map<std::string, Collision> collisionUMap_;
-    std::unordered_map<std::string, Sound> soundArray_;
 
     std::string file_ = "";
 
@@ -55,17 +45,10 @@ private:
 
     void readTXTFile();
     void readOBJFile();
-    void readTerrainFile();
-
-    void calculateTerrainIndices(int TilesX, int TilesZ);
-    void calculateTerrainNormals();
 
     std::vector<Vertex> vertices_;
     std::vector<unsigned int> indices_;
     static ResourceFactory* instance_;
-
-    VertexData lastTerrainImported;
-
 };
 
 #endif // RESOURCEFACTORY_H

@@ -33,7 +33,6 @@ HEADERS += \
     Components/script.h \
     Components/sound.h \
     Components/transform.h \
-    Components/vertexdata.h \
     Factories/guifactory.h \
     Factories/texturefactory.h \
     GSL/matrix2x2.h \
@@ -116,7 +115,6 @@ SOURCES += main.cpp \
     Components/projectile.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
-    Components/vertexdata.cpp \
     Factories/guifactory.cpp \
     Factories/texturefactory.cpp \
     GSL/matrix2x2.cpp \

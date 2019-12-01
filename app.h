@@ -53,7 +53,6 @@ private:
 
     void calculateFramerate();
 
-    void setupVisimOblig();
     void spawnTower(gsl::Vector3D hitPosition);
 };
 

@@ -2,7 +2,6 @@
 #include "world.h"
 #include "Components/npc.h"
 #include "Components/transform.h"
-#include "Components/vertexdata.h"
 #include "bsplinecurve.h"
 
 NpcSystem::NpcSystem()

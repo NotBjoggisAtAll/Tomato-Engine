@@ -146,7 +146,7 @@ Mesh ResourceFactory::createMesh()
     indices_.clear();
     initializeOpenGLFunctions();
 
-    if(file_.find(".obj") != std::string::npos || file_.find(".txt") != std::string::npos || file_.find(".terrain") != std::string::npos)
+    if(file_.find(".obj") != std::string::npos || file_.find(".txt") != std::string::npos)
         mesh = createObject();
     else if(file_.find("axis") != std::string::npos)
         mesh = createAxis();
@@ -180,7 +180,6 @@ Mesh ResourceFactory::createAxis() //Kom tilbake her og gjør om til indices
     vertices_.push_back({0.f, 0.f, 1000.f, 0.f, 0.f, 1.f});
 
     mesh.VAO_ = openGLVertexBuffers();
-    // openGLIndexBuffer();
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
     mesh.drawType_ = GL_LINES;
@@ -197,20 +196,12 @@ Mesh ResourceFactory::createObject()
     if(file_.find(".obj") != std::string::npos)
     {
         readOBJFile();
-        createCollision();
     }
-
-    else if(file_.find(".txt") != std::string::npos)
+    else
     {
         readTXTFile();
-        createCollision();
     }
-
-    else if(file_.find(".terrain") != std::string::npos)
-    {
-        readTerrainFile();
-        mesh.isAffectedByFrustum_ = false;
-    }
+    createCollision();
 
     mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();
@@ -305,11 +296,6 @@ Mesh ResourceFactory::createSphere()
 Mesh ResourceFactory::createPlane()
 {
     Mesh mesh;
-//    {-1,1},
-//    {-1,-1},
-//    {1,1},
-//    {1,-1}
-//}};
     Vertex v;
     v.set_xyz(-1,0,1); v.set_rgb(0,0,1); v.set_uv(1,1);
     vertices_.push_back(v);
@@ -322,15 +308,7 @@ Mesh ResourceFactory::createPlane()
 
     createCollision();
 
-//    indices_ = {
-//        0,1,2,
-//        0,1,3
-
-//    };
-
-
     mesh.VAO_ = openGLVertexBuffers();
- //   openGLIndexBuffer();
     mesh.verticeCount_ = static_cast<unsigned int>(vertices_.size());
     mesh.indiceCount_ = static_cast<unsigned int>(indices_.size());
     mesh.drawType_ = GL_TRIANGLE_STRIP;
@@ -427,92 +405,6 @@ void ResourceFactory::readTXTFile()
     {
         qDebug() << "Could not open file for reading: " << QString::fromStdString(fileWithPath);
     }
-}
-
-void ResourceFactory::readTerrainFile()
-{
-    std::string fileWithPath = gsl::meshFilePath + file_;
-    std::ifstream inn;
-    inn.open(fileWithPath);
-
-    int TilesX = 0;
-    int TilesZ = 0;
-
-    if (inn.is_open()) {
-        unsigned int n;
-        Vertex vertex;
-        inn >> n;
-        vertices_.reserve(n);
-        inn >> TilesX >> TilesZ;
-        for (unsigned int i=0; i<n; i++) {
-            inn >> vertex;
-            vertices_.push_back(vertex);
-        }
-
-        inn.close();
-        qDebug() << "File read: " << QString::fromStdString(fileWithPath);
-    }
-    else
-    {
-        qDebug() << "Could not open file for reading: " << QString::fromStdString(fileWithPath);
-    }
-
-    calculateTerrainIndices(TilesX, TilesZ);
-    calculateTerrainNormals();
-}
-
-void ResourceFactory::calculateTerrainIndices(int TilesX, int TilesZ)
-{
-    indices_.clear();
-    for(int i = 0; i < TilesZ*TilesX; ++i)
-    {
-        if(i == (TilesX*TilesZ)-TilesZ) break;
-        if(i > 1 && (i+1) % TilesX == 0)  continue;
-
-        indices_.emplace_back(i);
-        indices_.emplace_back(i+1);
-        indices_.emplace_back(i+TilesZ+1);
-
-        indices_.emplace_back(i);
-        indices_.emplace_back(i+TilesZ+1);
-        indices_.emplace_back(i+TilesZ);
-    }
-}
-
-void ResourceFactory::calculateTerrainNormals()
-{
-    for (unsigned int i = 0; i < indices_.size(); i+=3)
-    {
-        auto pos1 = vertices_[indices_[i+0]].mXYZ;
-        auto pos2 = vertices_[indices_[i+1]].mXYZ;
-        auto pos3 = vertices_[indices_[i+2]].mXYZ;
-
-        auto normal = gsl::Vector3D::cross(pos3-pos1,pos2-pos1);
-        normal.normalize();
-
-        vertices_[indices_[i+0]].set_normal(normal);
-        vertices_[indices_[i+1]].set_normal(normal);
-        vertices_[indices_[i+2]].set_normal(normal);
-    }
-    lastTerrainImported.vertices_ = vertices_;
-    lastTerrainImported.indices_ = indices_;
-}
-
-VertexData ResourceFactory::getLastTerrainImported() const
-{
-    return lastTerrainImported;
-}
-
-std::optional<VertexData> ResourceFactory::getVertexData()
-{
-    createPlane();
-
-    if(vertices_.size() == 0 && indices_.size() == 0)
-        return std::nullopt;
-    VertexData data;
-    data.vertices_ = vertices_;
-    data.indices_ = indices_;
-    return std::move(data);
 }
 
 void ResourceFactory::readOBJFile()

@@ -148,13 +148,7 @@ void SceneSystem::loadScenePriv(QString sceneName)
 
             QJsonObject meshData = components.take("mesh").toObject();
             if(!meshData.empty())
-            {
                 getWorld()->addComponent(newEntity,Mesh(meshData));
-                if(meshData["filepath"].toString().toStdString().find(".terrain") != std::string::npos)
-                {
-                    getWorld()->addComponent(newEntity, ResourceFactory::get()->getLastTerrainImported());
-                }
-            }
 
             QJsonObject collisionData = components.take("collision").toObject();
             if(!collisionData.empty())

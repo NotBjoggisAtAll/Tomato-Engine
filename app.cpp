@@ -13,6 +13,7 @@
 
 App::App()
 {
+    // Register components
     getWorld()->registerComponent<Transform>();
     getWorld()->registerComponent<Mesh>();
     getWorld()->registerComponent<Material>();
@@ -24,11 +25,11 @@ App::App()
     getWorld()->registerComponent<BSpline>();
     getWorld()->registerComponent<Npc>();
     getWorld()->registerComponent<Input>();
-    getWorld()->registerComponent<VertexData>();
     getWorld()->registerComponent<Camera>();
     getWorld()->registerComponent<Projectile>();
     getWorld()->registerComponent<GUI>();
 
+    // Register systems
     getWorld()->registerSystem<SoundSystem>();
     getWorld()->registerSystem<MovementSystem>();
     getWorld()->registerSystem<CollisionSystem>();
@@ -42,61 +43,62 @@ App::App()
     getWorld()->registerSystem<CameraSystem>();
     getWorld()->registerSystem<ProjectileSystem>();
 
-    Signature renderSign;
-    renderSign.set(getWorld()->getComponentType<Transform>());
-    renderSign.set(getWorld()->getComponentType<Mesh>());
-    renderSign.set(getWorld()->getComponentType<Material>());
-    getWorld()->setSystemSignature<RenderSystem>(renderSign);
+    // Sets the system signatures
+    Signature signature;
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Mesh>());
+    signature.set(getWorld()->getComponentType<Material>());
+    getWorld()->setSystemSignature<RenderSystem>(signature);
 
-    Signature render2DSign;
-    render2DSign.set(getWorld()->getComponentType<GUI>());
-    render2DSign.set(getWorld()->getComponentType<Material>());
-    getWorld()->setSystemSignature<RenderSystem2D>(render2DSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<GUI>());
+    signature.set(getWorld()->getComponentType<Material>());
+    getWorld()->setSystemSignature<RenderSystem2D>(signature);
 
-    Signature soundSign;
-    soundSign.set(getWorld()->getComponentType<Transform>());
-    soundSign.set(getWorld()->getComponentType<Sound>());
-    getWorld()->setSystemSignature<SoundSystem>(soundSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Sound>());
+    getWorld()->setSystemSignature<SoundSystem>(signature);
 
-    Signature movementSign;
-    movementSign.set(getWorld()->getComponentType<Transform>());
-    movementSign.set(getWorld()->getComponentType<EntityData>());
-    movementSign.set(getWorld()->getComponentType<Collision>());
-    getWorld()->setSystemSignature<MovementSystem>(movementSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<EntityData>());
+    signature.set(getWorld()->getComponentType<Collision>());
+    getWorld()->setSystemSignature<MovementSystem>(signature);
 
-    Signature collisionSign;
-    collisionSign.set(getWorld()->getComponentType<Collision>());
-    collisionSign.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<CollisionSystem>(collisionSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Collision>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<CollisionSystem>(signature);
 
-    Signature scriptSign;
-    scriptSign.set(getWorld()->getComponentType<Script>());
-    getWorld()->setSystemSignature<ScriptSystem>(scriptSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Script>());
+    getWorld()->setSystemSignature<ScriptSystem>(signature);
 
-    Signature bsplineSign;
-    bsplineSign.set(getWorld()->getComponentType<BSpline>());
-    bsplineSign.set(getWorld()->getComponentType<Mesh>());
-    getWorld()->setSystemSignature<BSplineSystem>(bsplineSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<BSpline>());
+    signature.set(getWorld()->getComponentType<Mesh>());
+    getWorld()->setSystemSignature<BSplineSystem>(signature);
 
-    Signature npcSign;
-    npcSign.set(getWorld()->getComponentType<Npc>());
-    npcSign.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<NpcSystem>(npcSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Npc>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<NpcSystem>(signature);
 
-    Signature inputSign;
-    inputSign.set(getWorld()->getComponentType<Input>());
-    inputSign.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<InputSystem>(inputSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Input>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<InputSystem>(signature);
 
-    Signature cameraSign;
-    cameraSign.set(getWorld()->getComponentType<Transform>());
-    cameraSign.set(getWorld()->getComponentType<Camera>());
-    getWorld()->setSystemSignature<CameraSystem>(cameraSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Camera>());
+    getWorld()->setSystemSignature<CameraSystem>(signature);
 
-    Signature projSign;
-    projSign.set(getWorld()->getComponentType<Projectile>());
-    projSign.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<ProjectileSystem>(projSign);
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Projectile>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<ProjectileSystem>(signature);
 
 
     mainWindow_ = std::make_unique<MainWindow>();
@@ -309,58 +311,6 @@ void App::stopGame()
     getWorld()->getSystem<ScriptSystem>()->endPlay();
     getWorld()->getSystem<SceneSystem>()->endPlay();
     mainWindow_->displayEntitiesInOutliner();
-}
-
-void App::setupVisimOblig()
-{
-    Entity bsplineID = -1;
-    Entity npcID = -1;
-    Entity terrainID = -1;
-    Entity playerID = -1;
-
-    std::vector<Entity> itemsIDs;
-
-    for(auto entity : getWorld()->getEntities())
-    {
-        EntityData* entityData = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
-        if(entityData)
-        {
-            if(entityData->name_ == "Item")
-                itemsIDs.push_back(entity);
-        }
-
-        BSpline* bspline = getWorld()->getComponent<BSpline>(entity).value_or(nullptr);
-        if(bspline)
-            bsplineID = entity;
-
-        Npc* npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
-        if(npc)
-            npcID = entity;
-
-        VertexData* terrain = getWorld()->getComponent<VertexData>(entity).value_or(nullptr);
-        if(terrain)
-            terrainID = entity;
-
-        Input* input = getWorld()->getComponent<Input>(entity).value_or(nullptr);
-        if(input)
-            playerID = entity;
-    }
-    if(bsplineID == -1 || npcID == -1 || terrainID == -1 || playerID == -1) return;
-
-
-    Npc* npc = getWorld()->getComponent<Npc>(npcID).value_or(nullptr);
-    BSpline* bspline = getWorld()->getComponent<BSpline>(bsplineID).value_or(nullptr);
-
-    npc->bSplineCurve = &bspline->curve_;
-
-    getWorld()->getSystem<InputSystem>()->setTerrainId(terrainID);
-
-    for(auto entity : itemsIDs)
-    {
-        Transform* transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-        if(!transform) return;
-        transform->position_.y = getWorld()->getSystem<InputSystem>()->getHeightBaryc(entity, terrainID);
-    }
 }
 
 void App::updateCameraPerspectives(float aspectRatio)

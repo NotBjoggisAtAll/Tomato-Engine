@@ -2,7 +2,6 @@
 #include "world.h"
 #include "Components/collision.h"
 #include "Components/transform.h"
-#include "Components/vertexdata.h"
 #include "GSL/matrix4x4.h"
 
 void CollisionSystem::tick(float deltaTime)
