@@ -17,9 +17,7 @@ struct Light : public Component
 
     /**
      * A constructor taking in a QJsonObject.
-     * Overrides the data in the component with the data in the QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
-     * @param Json - QJsonObject.
+     * @param Json - QJsonObject. Creates a Light component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     Light(QJsonObject Json);
 

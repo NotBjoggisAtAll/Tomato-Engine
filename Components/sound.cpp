@@ -9,11 +9,6 @@ Sound::Sound(QJsonObject Json)
     fromJson(Json);
 }
 
-Sound::~Sound()
-{
-
-}
-
 QJsonObject Sound::toJson()
 {
     QJsonObject object;
@@ -26,6 +21,8 @@ QJsonObject Sound::toJson()
 
 void Sound::fromJson(QJsonObject Json)
 {
+    if(!Json.contains("loop")) return;
+
     std::string name = Json.take("name").toString().toStdString();
     std::string file = Json.take("filepath").toString().toStdString();
     bool loop = Json.take("loop").toBool();

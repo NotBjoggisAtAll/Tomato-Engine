@@ -23,9 +23,8 @@ struct EntityData : public Component
     EntityData(std::string Name);
 
     /**
-     * Constructor that takes in a QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwise a default EntityData is made.
-     * @param Json - QJsonObject
+     * A constructor taking in a QJsonObject.
+     * @param Json - QJsonObject. Creates a EntityData component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     EntityData(QJsonObject Json);
 

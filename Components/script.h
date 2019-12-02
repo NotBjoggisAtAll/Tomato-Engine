@@ -5,41 +5,46 @@
 #include <QJSEngine>
 #include <QString>
 
+/**
+ * The Script component holds a QJSEngine which is used to talk/read/write to a JavaScript file.
+ */
 struct Script : public Component
 {
-    Script(QString fileName) : file_(fileName)
-    {
-        engine_ = new QJSEngine();
-        engine_->installExtensions(QJSEngine::ConsoleExtension);
-    }
+    /**
+     * Default constructor.
+     */
     Script() = default;
 
-    Script(QJsonObject Json)
-    {
-        fromJson(Json);
-    }
-    ~Script() override
-    {
-    }
+    /**
+     * A constructor taking in a QString which is the JavaScript filepath.
+     * Assumes the location is Assets/Scripts. Creates a QJsEngine when constructed.
+     * @param fileName - QString.
+     */
+    Script(QString fileName);
+
+    /**
+     * A constructor taking in a QJsonObject.
+     * @param Json - QJsonObject. Creates a Script component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
+     */
+    Script(QJsonObject Json);
+
+    /**
+     * Makes a QJsonObject containing the component data.
+     * @return Returns a QJsonObject
+     */
+    QJsonObject toJson() override;
+    /**
+     * Overrides the data in the component with the data in the QJsonObject.
+     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
+     * @param Json - QJsonObject
+     */
+    void fromJson(QJsonObject Json) override;
+
+    /// The JavaScript filepath. Assumes the location is Assets/Scripts.
     QString file_ = "";
+
+    /// A pointer to the QJSEngine. The engine is used to talk,read,write data to JavaScript.
     QJSEngine* engine_ = nullptr;
-
-    void fromJson(QJsonObject Json) override
-    {
-        if(engine_)
-            delete engine_;
-        engine_ = new QJSEngine();
-        engine_->installExtensions(QJSEngine::ConsoleExtension);
-
-        file_ = Json.take("file").toString();
-    }
-
-    QJsonObject toJson() override
-    {
-        QJsonObject object;
-        object.insert("file", file_);
-        return object;
-    }
 };
 
 #endif // SCRIPTCOMPONENT_H

@@ -156,9 +156,6 @@ Mesh ResourceFactory::createMesh()
         mesh =  createSphere();
     else if(file_ == "plane")
         mesh = createPlane();
-    else if(file_ == "line")
-    {
-    }
     else if(file_ == "frustum")
         mesh = getCameraFrustum();
 

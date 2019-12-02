@@ -45,7 +45,6 @@ HEADERS += \
     GSL/math_constants.h \
     Handlers/wavfilehandler.h \
     Managers/componentManager.h \
-    Managers/filemanager.h \
     Managers/shadermanager.h \
     Managers/soundmanager.h \
     Script/jstimer.h \
@@ -113,6 +112,7 @@ SOURCES += main.cpp \
     Components/mesh.cpp \
     Components/npc.cpp \
     Components/projectile.cpp \
+    Components/script.cpp \
     Components/sound.cpp \
     Components/transform.cpp \
     Factories/guifactory.cpp \
@@ -125,7 +125,6 @@ SOURCES += main.cpp \
     GSL/vector4d.cpp \
     GSL/gsl_math.cpp \
     Handlers/wavfilehandler.cpp \
-    Managers/filemanager.cpp \
     Managers/shadermanager.cpp \
     Managers/soundmanager.cpp \
     Script/jstimer.cpp \

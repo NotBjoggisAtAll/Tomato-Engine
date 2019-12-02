@@ -21,18 +21,19 @@ struct GUI : public Component
      * @param scale - gsl::Vector2D
      */
     GUI(gsl::Vector2D position, gsl::Vector2D scale);
+
     /**
      * A constructor taking in a QJsonObject.
-     * Overrides the data in the component with the data in the QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
-     * @param Json - QJsonObject.
+     * @param Json - QJsonObject. Creates a GUI component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     GUI(QJsonObject Json);
+
     /**
      * Makes a QJsonObject containing the component data.
      * @return Returns a QJsonObject
      */
     virtual QJsonObject toJson() override;
+
     /**
      * Overrides the data in the component with the data in the QJsonObject.
      * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.

@@ -20,7 +20,14 @@ QJsonObject Mesh::toJson()
 
 void Mesh::fromJson(QJsonObject Json)
 {
-    *this = ResourceFactory::get()->loadMesh(Json.take("filepath").toString().toStdString());
+    if(!Json.contains("filepath")) return;
+
+    Mesh m = ResourceFactory::get()->loadMesh(Json.take("filepath").toString().toStdString());
+    VAO_ = m.VAO_;
+    verticeCount_ = m.verticeCount_;
+    indiceCount_ = m.indiceCount_;
+    drawType_ = m.drawType_;
+
     isVisible_ = Json.take("visible").toBool();
     isAffectedByFrustum_ = Json.take("affectedByFrustum").toBool();
 }

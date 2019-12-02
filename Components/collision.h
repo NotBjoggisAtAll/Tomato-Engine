@@ -23,9 +23,8 @@ struct Collision : public Component
     Collision(gsl::Vector3D minVector, gsl::Vector3D maxVector);
 
     /**
-     * Constructor that takes in a QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwhise a default Collision is made.
-     * @param Json - QJsonObject
+     * A constructor taking in a QJsonObject.
+     * @param Json - QJsonObject. Creates a Collision component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     Collision(QJsonObject Json);
 

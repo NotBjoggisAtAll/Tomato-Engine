@@ -1,16 +1,8 @@
 #include "projectile.h"
-#include <QDebug>
-Projectile::Projectile()
-{
-}
 
-Projectile::~Projectile()
+Projectile::Projectile(QJsonObject Json)
 {
-}
-
-Projectile::Projectile(QJsonObject json)
-{
-    fromJson(json);
+    fromJson(Json);
 }
 
 QJsonObject Projectile::toJson()

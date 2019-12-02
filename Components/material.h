@@ -8,6 +8,7 @@ class Shader;
 
 /**
  * A Component storing the Material data. Stores a pointer to the Shader. A color and a texture id.
+ * Used to give the Mesh a color or a texture.
  */
 struct Material : public Component
 {
@@ -38,9 +39,7 @@ struct Material : public Component
 
     /**
      * A constructor taking in a QJsonObject.
-     * Overrides the data in the component with the data in the QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwise nothing is overridden.
-     * @param Json - QJsonObject.
+     * @param Json - QJsonObject. Creates a Material component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     Material(QJsonObject Json);
 

@@ -36,7 +36,6 @@ void NpcSystem::tick(float deltaTime)
 
 void NpcSystem::endPlay()
 {
-   // currentT_ = 0;
 }
 
 void NpcSystem::patrol(Entity entity, Npc* npc)
@@ -51,7 +50,7 @@ void NpcSystem::patrol(Entity entity, Npc* npc)
     }
     else
     {
-        npc->event = NPCevents::ENDPOINT_ARRIVED;
+        npc->event_ = NPCevents::ENDPOINT_ARRIVED;
         notify(entity);
     }
 }
@@ -61,7 +60,7 @@ void NpcSystem::notify(Entity entity)
     auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
     if(!npc) return;
 
-    switch (npc->event) {
+    switch (npc->event_) {
     case NPCevents::ITEM_TAKEN:
         break;
     case NPCevents::ENDPOINT_ARRIVED:

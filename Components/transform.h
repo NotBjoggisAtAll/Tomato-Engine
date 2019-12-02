@@ -36,9 +36,8 @@ struct Transform : public Component
     Transform(gsl::Vector3D Position, gsl::Vector3D Rotation, gsl::Vector3D Scale);
 
     /**
-     * Constructor that takes in a QJsonObject.
-     * The QJsonObject needs to be in a valid Json format. Otherwise a default Transform is made.
-     * @param Json - QJsonObject
+     * A constructor taking in a QJsonObject.
+     * @param Json - QJsonObject. Creates a Transform component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     Transform(QJsonObject Json);
 

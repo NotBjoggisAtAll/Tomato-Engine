@@ -46,8 +46,8 @@ struct Camera : public Component
     Camera(float yaw, float pitch);
 
     /**
-     * Constructor taking in a QJsonObject.
-     * @param Json - QJsonObject. Creates a Camera component with the data in the QJsonObject. If its the QJsonObject is not valid the component is constructed with default values.
+     * A constructor taking in a QJsonObject.
+     * @param Json - QJsonObject. Creates a Camera component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
      */
     Camera(QJsonObject Json);
 
