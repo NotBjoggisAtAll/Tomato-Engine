@@ -1,13 +1,9 @@
 #include "jstimer.h"
-#include <QDebug>
-JSTimer::JSTimer(QObject* parent, int entity) : QObject(parent),owningEntity_(entity)
-{
 
-}
+JSTimer::JSTimer(QObject* parent) : QObject(parent) {}
 
 JSTimer::~JSTimer()
 {
-    qDebug() << "JSTimer deleted";
     if(timer_)
     delete timer_;
 }
@@ -26,5 +22,4 @@ void JSTimer::setTimeout(int milliseconds, QJSValue callback)
 void JSTimer::timeoutDone()
 {
     callback_.call();
-
 }

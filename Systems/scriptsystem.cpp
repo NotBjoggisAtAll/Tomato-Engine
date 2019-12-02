@@ -144,7 +144,7 @@ void ScriptSystem::componentAdded(Script *script, Entity entity)
 
     script->engine_->globalObject().setProperty("engine", script->engine_->newQObject(this));
     script->engine_->globalObject().setProperty("id", entity);
-    timers_.emplace_back(new JSTimer(this,entity));
+    timers_.emplace_back(new JSTimer(this));
     script->engine_->globalObject().setProperty("timer", script->engine_->newQObject(timers_.back()));
 
     load(scriptComp);
