@@ -9,6 +9,7 @@
 #include "types.h"
 #include "mainwindow.h"
 #include "GSL/vector3d.h"
+#include "GSL/vector2d.h"
 
 class RenderWindow;
 class EventHandler;
@@ -54,6 +55,7 @@ private:
     void calculateFramerate();
 
     void spawnTower(gsl::Vector3D hitPosition);
+    gsl::Vector2D map(gsl::Vector2D point, gsl::Vector2D oldMin, gsl::Vector2D oldMax, gsl::Vector2D newMin, gsl::Vector2D newMax);
 };
 
 #endif // APP_H

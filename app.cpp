@@ -371,9 +371,59 @@ void App::saveScene()
     getWorld()->getSystem<SceneSystem>()->saveScene(fileInfo);
 }
 
+gsl::Vector2D App::map(gsl::Vector2D point, gsl::Vector2D oldMin, gsl::Vector2D oldMax, gsl::Vector2D newMin, gsl::Vector2D newMax)
+{
+    return gsl::Vector2D(
+                (point.x-oldMin.x) * ((newMax.x - newMin.x)/(oldMax.x - oldMin.x))+ newMin.x,
+                (point.y-oldMin.y) * ((newMax.y - newMin.y)/(oldMax.y - oldMin.y))+ newMin.y
+                );
+}
+
 void App::raycastFromMouse()
 {
     auto mousePos = renderWindow_->mapFromGlobal(QCursor::pos());
+
+    gsl::Vector2D newMouse = map(gsl::Vector2D(mousePos.x(), mousePos.y()),
+                                 gsl::Vector2D(0,0),
+                                 gsl::Vector2D(renderWindow_->width(),renderWindow_->height()),
+                                 gsl::Vector2D(-1,-1),
+                                 gsl::Vector2D(1,1));
+
+    qDebug() << "Mouse Pos: " << newMouse.x << newMouse.y;
+
+    GUI* gui = nullptr;
+
+    for(const auto& entity : getWorld()->getEntities())
+    {
+        auto g = getWorld()->getComponent<GUI>(entity);
+        if(g.has_value())
+            gui = g.value();
+
+    }
+
+    gsl::Vector2D guipos = gsl::Vector2D(
+                                         (gui->scale_.x * static_cast<float>(renderWindow_->height()))/
+                                         static_cast<float>(renderWindow_->width())/2,gui->scale_.y/2);
+
+    gsl::Vector2D guiMIN = gui->position_ - guipos;
+    gsl::Vector2D guiMAX = gui->position_ + guipos;
+
+    qDebug() << "Gui Pos: " << gui->position_.x << gui->position_.y;
+
+    qDebug() << "GUIMin" << guiMIN.x << guiMIN.y;
+    qDebug() << "GUIMax" << guiMAX.x << guiMAX.y;
+
+    if ((newMouse.x <= guiMAX.x && newMouse.x >= guiMIN.x) &&
+            (newMouse.y <= guiMAX.y && newMouse.y >= guiMIN.y))
+    {
+        qDebug() << true;
+    }
+    else{
+        qDebug() << false;
+    }
+
+
+
 
     auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
     auto transform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
