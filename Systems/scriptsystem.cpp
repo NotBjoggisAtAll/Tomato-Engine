@@ -71,7 +71,7 @@ void ScriptSystem::spawnEnemy(int owner)
         getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
         getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("camera.obj"));
         getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("camera.obj"));
-        getWorld()->addComponent(entity, Material(ShaderManager::instance()->colorShader(),gsl::Vector3D(1,0,0)));
+        getWorld()->addComponent(entity, Material(ShaderManager::get()->colorShader(),gsl::Vector3D(1,0,0)));
         getWorld()->addComponent(entity, Npc(&spline->curve_));
     }
 }
@@ -92,7 +92,7 @@ void ScriptSystem::shoot(int owner, QJsonArray npcs)
     getWorld()->addComponent(entity, Transform(transform->position_,{},{0.1f,0.1f,0.1f}));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),gsl::Vector3D(0,0,0)));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->phongShader(),gsl::Vector3D(0,0,0)));
     getWorld()->addComponent(entity, proj);
 
 }

@@ -30,7 +30,7 @@ void Material::fromJson(QJsonObject Json)
     if(!Json.contains("Shader Name")) return;
 
     std::string ShaderName = Json.take("Shader Name").toString().toStdString();
-    shader_ = ShaderManager::instance()->getShader(ShaderName);
+    shader_ = ShaderManager::get()->getShader(ShaderName);
     QJsonArray colorArray = Json.take("Color").toArray();
     color_.x = static_cast<float>(colorArray.at(0).toDouble());
     color_.y = static_cast<float>(colorArray.at(1).toDouble());

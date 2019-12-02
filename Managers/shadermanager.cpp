@@ -2,7 +2,7 @@
 
 ShaderManager* ShaderManager::instance_ = nullptr;
 
-ShaderManager* ShaderManager::instance()
+ShaderManager* ShaderManager::get()
 {
     if(!instance_)
         instance_ = new ShaderManager();
@@ -42,13 +42,11 @@ Shader *ShaderManager::getShader(std::string shaderName)
 
 ShaderManager::ShaderManager()
 {
-    //Compile shaders:
     shaders_.insert(std::make_pair("plainshader", new PlainShader("plainshader")));
     shaders_.insert(std::make_pair("textureshader", new TextureShader("textureshader")));
     shaders_.insert(std::make_pair("phongshader", new PhongShader("phongshader")));
     shaders_.insert(std::make_pair("colorshader", new ColorShader("colorshader")));
     shaders_.insert(std::make_pair("guishader", new GUIShader("guishader")));
-
 }
 
 ShaderManager::~ShaderManager()

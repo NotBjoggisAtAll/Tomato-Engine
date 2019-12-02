@@ -89,7 +89,7 @@ void AddComponentWidget::addLight()
 
 void AddComponentWidget::addMaterial()
 {
-    getWorld()->addComponent(entity_, Material(ShaderManager::instance()->colorShader()));
+    getWorld()->addComponent(entity_, Material(ShaderManager::get()->colorShader()));
     emit updateComponentPanel(entity_);
 }
 

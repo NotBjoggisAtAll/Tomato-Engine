@@ -148,7 +148,7 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
 
     getWorld()->addComponent(entity, Transform(transform->position_));
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(vertices,indices));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, EntityData("__collision"));
     EntityData* data = getWorld()->getComponent<EntityData>(newEntity).value_or(nullptr);
 

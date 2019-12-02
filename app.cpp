@@ -152,7 +152,7 @@ void App::postInit()
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, Transform({0,0,0},{},{}));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("axis"));
 
     entity = getWorld()->createEntity();
@@ -165,7 +165,7 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
     getWorld()->addComponent(entity, Light());
 
-    ShaderManager::instance()->phongShader()->setLight(entity);
+    ShaderManager::get()->phongShader()->setLight(entity);
 
     BSpline spline = BSpline(.05f);
 
@@ -184,18 +184,18 @@ void App::postInit()
     getWorld()->addComponent(entity, spline);
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, Script("enemyManager.js"));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("UI Test"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->guiShader(),{1,0,0},"hund.bmp"));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->guiShader(),{1,0,0},"hund.bmp"));
     getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.1f,-0.5f},{0.1f,0.1f}));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
     getWorld()->addComponent(entity, Transform({0,0,0},{},{5,5,5}));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->textureShader(),"ground_path.bmp"));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->textureShader(),"ground_path.bmp"));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("plane"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("plane"));
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
@@ -205,7 +205,7 @@ void App::postInit()
     getWorld()->addComponent(entity, EntityData("Game Camera"));
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(0,13,0)));
     getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
 
 
@@ -258,7 +258,7 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, transform);
     getWorld()->addComponent(entity, EntityData("Tower"));
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->phongShader(),gsl::Vector3D(0.82f,0.82f,0.82f)));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->phongShader(),gsl::Vector3D(0.82f,0.82f,0.82f)));
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("turret.obj"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("turret.obj"));
     getWorld()->addComponent(entity, Script("towerScript.js"));
@@ -291,7 +291,7 @@ Entity App::spawnObject(std::string name, std::string path)
 
     getWorld()->addComponent(entity, EntityData(name));
     getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, Material(ShaderManager::instance()->plainShader()));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision(path));
     mainWindow_->addEntityToUi(entity);
     return entity;

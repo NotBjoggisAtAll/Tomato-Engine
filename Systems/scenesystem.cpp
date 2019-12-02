@@ -158,7 +158,7 @@ void SceneSystem::loadScenePriv(QString sceneName)
             if(!lightData.empty())
             {
                 getWorld()->addComponent(newEntity,Light(lightData));
-                ShaderManager::instance()->phongShader()->setLight(newEntity);
+                ShaderManager::get()->phongShader()->setLight(newEntity);
             }
             QJsonObject soundData = components.take("sound").toObject();
             if(!soundData.empty())
