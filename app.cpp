@@ -384,14 +384,14 @@ void App::raycastFromMouse()
 
     if(getWorld()->getSystem<CollisionSystem>()->checkMouseCollision2D(mousePosVector2D,screenWidthHeight,hit2D))
     {
-        //Button press here.
-
-
         if(!getWorld()->bGameRunning)
         {
             renderWindow_->makeCollisionBorder(hit2D.entityHit);
             mainWindow_->updateRightPanel(hit2D.entityHit);
+            return;
         }
+        //Button press here.
+
         return;
     }
     // No UI elements hit. Testing for 3D Objects
@@ -411,7 +411,9 @@ void App::raycastFromMouse()
             renderWindow_->makeCollisionBorder(hit.entityHit);
             mainWindow_->updateRightPanel(hit.entityHit);
         }
+        return;
     }
+    // Hit nothing
     else
     {
         renderWindow_->makeCollisionBorder(-1);
