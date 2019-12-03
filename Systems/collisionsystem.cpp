@@ -1,8 +1,12 @@
 #include "collisionsystem.h"
 #include "world.h"
 #include "Components/collision.h"
+#include "Components/gui.h"
 #include "Components/transform.h"
 #include "GSL/matrix4x4.h"
+#include "Components/camera.h"
+
+#include "GSL/gsl_math_extensions.h"
 
 void CollisionSystem::tick(float deltaTime)
 {
@@ -58,10 +62,66 @@ void CollisionSystem::tick(float deltaTime)
         }
     }
 }
-
-Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult& hit)
+bool CollisionSystem::checkMouseCollision2D(gsl::Vector2D mousePos, gsl::Vector2D screenWidthHeight, HitResult2D& hit)
 {
-    Entity entityToReturn = -1;
+    gsl::Vector2D newMouse = gsle::map(gsl::Vector2D(mousePos.x, mousePos.y),
+                                       gsl::Vector2D(0,0),
+                                       gsl::Vector2D(screenWidthHeight.x,screenWidthHeight.y),
+                                       gsl::Vector2D(-1,-1),
+                                       gsl::Vector2D(1,1));
+
+
+    for(const auto& entity : getWorld()->getEntities())
+    {
+        auto gui = getWorld()->getComponent<GUI>(entity).value_or(nullptr);
+
+        if(gui)
+        {
+            gsl::Vector2D guipos = gsl::Vector2D(
+                        (gui->scale_.x * screenWidthHeight.y)/
+                        screenWidthHeight.x,gui->scale_.y);
+
+            gsl::Vector2D guiMIN = gui->position_ - guipos;
+            gsl::Vector2D guiMAX = gui->position_ + guipos;
+
+
+            if ((newMouse.x <= guiMAX.x && newMouse.x >= guiMIN.x) &&
+                    (newMouse.y <= guiMAX.y && newMouse.y >= guiMIN.y))
+            {
+                hit.entityHit = entity;
+                hit.entityPosition = guipos;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool CollisionSystem::checkMouseCollision(gsl::Vector2D mousePos, gsl::Vector2D screenWidthHeight, HitResult& hit)
+{
+    auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
+    auto transform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
+
+    float x = (2.0f * mousePos.x) / screenWidthHeight.x - 1.0f;
+    float y = 1.0f - (2.0f * mousePos.y) / screenWidthHeight.y;
+    float z = 1.0f;
+    gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
+    gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
+    gsl::Matrix4x4 projection_matrix = camera->projectionMatrix_;
+    projection_matrix.inverse();
+    gsl::Vector4D ray_eye = projection_matrix * ray_clip;
+    ray_eye.z = -1.0f;
+    ray_eye.w = 0.0f;
+    gsl::Matrix4x4 view_matrix = camera->viewMatrix_;
+    view_matrix.inverse();
+    gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
+    ray_world.normalize();
+
+    return raycastFromMouse(transform->position_,ray_world,hit);
+}
+
+bool CollisionSystem::raycastFromMouse(gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult& hit)
+{
     float distance = 999999999.f;
     for (auto& entity : entities_)
     {
@@ -86,11 +146,12 @@ Entity CollisionSystem::checkMouseCollision(gsl::Vector3D rayOrigin, gsl::Vector
             if(hit.distance < distance)
             {
                 distance = hit.distance;
-                entityToReturn = entity;
+                hit.entityHit = entity;
+                return true;
             }
         }
     }
-    return entityToReturn;
+    return false;
 }
 
 bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult &result)

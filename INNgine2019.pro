@@ -35,6 +35,7 @@ HEADERS += \
     Components/transform.h \
     Factories/guifactory.h \
     Factories/texturefactory.h \
+    GSL/gsl_math_extensions.h \
     GSL/matrix2x2.h \
     GSL/matrix3x3.h \
     GSL/matrix4x4.h \
@@ -117,6 +118,7 @@ SOURCES += main.cpp \
     Components/transform.cpp \
     Factories/guifactory.cpp \
     Factories/texturefactory.cpp \
+    GSL/gsl_math_extensions.cpp \
     GSL/matrix2x2.cpp \
     GSL/matrix3x3.cpp \
     GSL/matrix4x4.cpp \

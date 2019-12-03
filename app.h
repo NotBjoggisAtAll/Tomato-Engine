@@ -13,6 +13,12 @@
 
 class RenderWindow;
 class EventHandler;
+/** \mainpage Welcome to the Fragile Engine code documentation!
+ * The code and manual were both created as parts of a semester project at the Inland Norway University of Applied Sciences
+ * during the fall of 2019.
+ *
+ * @author NotBjoggisAtAll on GitHub.
+ * @date Fall of 2019.*/
 
 class App : public QObject
 {
@@ -55,7 +61,6 @@ private:
     void calculateFramerate();
 
     void spawnTower(gsl::Vector3D hitPosition);
-    gsl::Vector2D map(gsl::Vector2D point, gsl::Vector2D oldMin, gsl::Vector2D oldMax, gsl::Vector2D newMin, gsl::Vector2D newMax);
 };
 
 #endif // APP_H

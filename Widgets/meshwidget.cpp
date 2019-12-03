@@ -1,6 +1,7 @@
 #include "meshwidget.h"
 #include "ui_meshwidget.h"
 #include "Factories/resourcefactory.h"
+#include "constants.h"
 #include "Components/mesh.h"
 #include "world.h"
 #include <QMenu>
@@ -35,7 +36,7 @@ void MeshWidget::on_changeMeshButton_clicked()
 {
     QFileDialog fileDialog;
     fileDialog.setNameFilter("*.obj");
-    QFileInfo fileInfo = fileDialog.getOpenFileName(this,"Open file","../INNgine2019/Assets","*.obj *.txt *.terrain");
+    QFileInfo fileInfo = fileDialog.getOpenFileName(this,"Open file",QString::fromStdString(gsl::assetFilePath),"*.obj *.txt *.terrain");
 
     std::string fileName =  fileInfo.fileName().toStdString();
 

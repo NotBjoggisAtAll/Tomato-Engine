@@ -9,6 +9,7 @@
 #include "Managers/soundmanager.h"
 #include "Systems/allsystems.h"
 #include "eventhandler.h"
+#include "GSL/gsl_math_extensions.h"
 #include <QFileDialog>
 
 App::App()
@@ -190,7 +191,7 @@ void App::postInit()
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("UI Test"));
     getWorld()->addComponent(entity, Material(ShaderManager::get()->guiShader(),{1,0,0},"hund.bmp"));
-    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.5,0},{0.1,0.1}));
+    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.5,0},{0.1f,0.1f}));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
@@ -371,97 +372,49 @@ void App::saveScene()
     getWorld()->getSystem<SceneSystem>()->saveScene(fileInfo);
 }
 
-gsl::Vector2D App::map(gsl::Vector2D point, gsl::Vector2D oldMin, gsl::Vector2D oldMax, gsl::Vector2D newMin, gsl::Vector2D newMax)
-{
-    return gsl::Vector2D(
-                (point.x-oldMin.x) * ((newMax.x - newMin.x)/(oldMax.x - oldMin.x))+ newMin.x,
-                (point.y-oldMin.y) * ((newMax.y - newMin.y)/(oldMax.y - oldMin.y))+ newMin.y
-                );
-}
-
 void App::raycastFromMouse()
 {
-    auto mousePos = renderWindow_->mapFromGlobal(QCursor::pos());
+    QPoint mousePos = renderWindow_->mapFromGlobal(QCursor::pos());
 
-    gsl::Vector2D newMouse = map(gsl::Vector2D(mousePos.x(), mousePos.y()),
-                                 gsl::Vector2D(0,0),
-                                 gsl::Vector2D(renderWindow_->width(),renderWindow_->height()),
-                                 gsl::Vector2D(-1,-1),
-                                 gsl::Vector2D(1,1));
-
-    qDebug() << "Mouse Pos: " << newMouse.x << newMouse.y;
-
-    GUI* gui = nullptr;
-
-    for(const auto& entity : getWorld()->getEntities())
-    {
-        auto g = getWorld()->getComponent<GUI>(entity);
-        if(g.has_value())
-            gui = g.value();
-
-    }
-
-    gsl::Vector2D guipos = gsl::Vector2D(
-                                         (gui->scale_.x * static_cast<float>(renderWindow_->height()))/
-                                         static_cast<float>(renderWindow_->width()),gui->scale_.y);
-
-    gsl::Vector2D guiMIN = gui->position_ - guipos;
-    gsl::Vector2D guiMAX = gui->position_ + guipos;
-
-    qDebug() << "Scale" << gui->scale_.x << gui->scale_.y;
-
-    qDebug() << "Gui Pos: " << gui->position_.x << gui->position_.y;
-
-    qDebug() << "GUIMin" << guiMIN.x << guiMIN.y;
-    qDebug() << "GUIMax" << guiMAX.x << guiMAX.y;
-
-    if ((newMouse.x <= guiMAX.x && newMouse.x >= guiMIN.x) &&
-            (newMouse.y <= guiMAX.y && newMouse.y >= guiMIN.y))
-    {
-        qDebug() << true;
-        return;
-    }
-    else{
-        qDebug() << false;
-    }
-
-
-
-
-    auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
-    auto transform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
-
-    float x = (2.0f * mousePos.x()) / renderWindow_->width() - 1.0f;
-    float y = 1.0f - (2.0f * mousePos.y()) / renderWindow_->height();
-    float z = 1.0f;
-    gsl::Vector3D ray_nds(x, y, z); //nds = normalised device coordinates
-    gsl::Vector4D ray_clip(ray_nds.x, ray_nds.y, -1.0f, 1.0f); //clip = Homogeneous Clip Coordinates
-    gsl::Matrix4x4 projection_matrix = camera->projectionMatrix_;
-    projection_matrix.inverse();
-    gsl::Vector4D ray_eye = projection_matrix * ray_clip;
-    ray_eye.z = -1.0f;
-    ray_eye.w = 0.0f;
-    gsl::Matrix4x4 view_matrix = camera->viewMatrix_;
-    view_matrix.inverse();
-    gsl::Vector3D ray_world = (view_matrix * ray_eye).toVector3D();
-    ray_world.normalize();
+    gsl::Vector2D mousePosVector2D = gsl::Vector2D(mousePos.x(), mousePos.y());
+    gsl::Vector2D screenWidthHeight = gsl::Vector2D(renderWindow_->width(), renderWindow_->height());
 
     HitResult hit;
+    HitResult2D hit2D;
 
-    Entity entityPicked = getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(transform->position_,ray_world, hit);
-
-    if(getWorld()->bGameRunning)
+    if(getWorld()->getSystem<CollisionSystem>()->checkMouseCollision2D(mousePosVector2D,screenWidthHeight,hit2D))
     {
-        EntityData* data = getWorld()->getComponent<EntityData>(entityPicked).value_or(nullptr);
-        if(data)
+        //Button press here.
+
+
+        if(!getWorld()->bGameRunning)
         {
-            if(data->name_ == "Floor")
-                spawnTower(hit.position);
+            renderWindow_->makeCollisionBorder(hit2D.entityHit);
+            mainWindow_->updateRightPanel(hit2D.entityHit);
+        }
+        return;
+    }
+    // No UI elements hit. Testing for 3D Objects
+    else if(getWorld()->getSystem<CollisionSystem>()->checkMouseCollision(mousePosVector2D,screenWidthHeight,hit))
+    {
+        if(getWorld()->bGameRunning)
+        {
+            EntityData* data = getWorld()->getComponent<EntityData>(hit.entityHit).value_or(nullptr);
+            if(data)
+            {
+                if(data->name_ == "Floor")
+                    spawnTower(hit.position);
+            }
+        }
+        else
+        {
+            renderWindow_->makeCollisionBorder(hit.entityHit);
+            mainWindow_->updateRightPanel(hit.entityHit);
         }
     }
     else
     {
-        renderWindow_->makeCollisionBorder(entityPicked);
-        mainWindow_->updateRightPanel(entityPicked);
+        renderWindow_->makeCollisionBorder(-1);
+        mainWindow_->updateRightPanel(-1);
     }
 }
