@@ -29,6 +29,7 @@ void RenderSystem2D::tick(float /*deltaTime*/)
 
         modelMatrix.setPosition(gui->position_.x,gui->position_.y,0);
         modelMatrix.scale((gui->scale_.x*height_)/width_, gui->scale_.y, 1.f);
+      //  modelMatrix.scale(gui->scale_.x, gui->scale_.y, 1.f);
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 

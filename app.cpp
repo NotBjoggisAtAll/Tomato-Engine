@@ -190,7 +190,7 @@ void App::postInit()
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("UI Test"));
     getWorld()->addComponent(entity, Material(ShaderManager::get()->guiShader(),{1,0,0},"hund.bmp"));
-    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.1f,-0.5f},{0.1f,0.1f}));
+    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.5,0},{0.1,0.1}));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Floor"));
@@ -403,10 +403,12 @@ void App::raycastFromMouse()
 
     gsl::Vector2D guipos = gsl::Vector2D(
                                          (gui->scale_.x * static_cast<float>(renderWindow_->height()))/
-                                         static_cast<float>(renderWindow_->width())/2,gui->scale_.y/2);
+                                         static_cast<float>(renderWindow_->width()),gui->scale_.y);
 
     gsl::Vector2D guiMIN = gui->position_ - guipos;
     gsl::Vector2D guiMAX = gui->position_ + guipos;
+
+    qDebug() << "Scale" << gui->scale_.x << gui->scale_.y;
 
     qDebug() << "Gui Pos: " << gui->position_.x << gui->position_.y;
 
@@ -417,6 +419,7 @@ void App::raycastFromMouse()
             (newMouse.y <= guiMAX.y && newMouse.y >= guiMIN.y))
     {
         qDebug() << true;
+        return;
     }
     else{
         qDebug() << false;
