@@ -4,10 +4,10 @@
 #include "constants.h"
 #include "Components/mesh.h"
 #include "world.h"
-#include <QMenu>
 #include <QFileDialog>
-
-extern World world;
+#include <QFileInfo>
+#include <QFile>
+#include <QMenu>
 
 MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
     QWidget(parent),
@@ -19,7 +19,6 @@ MeshWidget::MeshWidget(Entity entity, QWidget *parent) :
 
     ui->isVisible->setChecked(component_->isVisible_);
     ui->meshNameLabel->setText(QString::fromStdString(component_->filepath_));
-
 }
 
 MeshWidget::~MeshWidget()
@@ -34,10 +33,8 @@ void MeshWidget::on_isVisible_toggled(bool checked)
 
 void MeshWidget::on_changeMeshButton_clicked()
 {
-    QFileDialog fileDialog;
-    fileDialog.setNameFilter("*.obj");
-    QFileInfo fileInfo = fileDialog.getOpenFileName(this,"Open file",QString::fromStdString(gsl::assetFilePath),"*.obj *.txt *.terrain");
-
+    QFile file = QFileDialog::getOpenFileName(this,"Open file",QString::fromStdString(gsl::meshFilePath),"*.obj *.txt *.terrain");
+    QFileInfo fileInfo(file);
     std::string fileName =  fileInfo.fileName().toStdString();
 
     if(!fileName.empty())
@@ -58,9 +55,6 @@ void MeshWidget::remove()
 void MeshWidget::on_moreButton_clicked()
 {
     QMenu subMenu;
-
-    // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Remove", this, &MeshWidget::remove);
-
     subMenu.exec(QCursor::pos());
 }

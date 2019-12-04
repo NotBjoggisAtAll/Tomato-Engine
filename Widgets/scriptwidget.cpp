@@ -18,7 +18,6 @@ ScriptWidget::ScriptWidget(Entity entity, QWidget *parent) :
 
     component_ =  getWorld()->getComponent<Script>(entity_).value();
     ui->filePathText->setText(component_->file_);
-
 }
 
 ScriptWidget::~ScriptWidget()
@@ -29,10 +28,7 @@ ScriptWidget::~ScriptWidget()
 void ScriptWidget::on_moreButton_clicked()
 {
     QMenu subMenu;
-
-    // Add actions here with name and slot to execute when action is pressed
     subMenu.addAction("Remove", this, &ScriptWidget::remove);
-
     subMenu.exec(QCursor::pos());
 }
 
@@ -52,7 +48,6 @@ void ScriptWidget::on_openFileButton_clicked()
         file.open(QFile::WriteOnly);
 
         QTextStream stream(&file);
-        // Base template for new files. Includes the functions beginPlay, tick, endPlay. keyPressed and onHit.
         stream << "// This will run when the game starts. If this is spawned during runtime it will run on creation.\n"
                << "function beginPlay()\n{\n\t//console.log(\"Begin play called on entity \" + id);\n}\n\n"
                << "// This will run each frame\n"

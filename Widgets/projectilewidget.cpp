@@ -40,14 +40,12 @@ void ProjectileWidget::on_lifeTimeSpinBox_valueChanged(double arg1)
 void ProjectileWidget::on_moreButton_clicked()
 {
     QMenu subMenu;
-
-    subMenu.addAction("Reset to default", this, &ProjectileWidget::resetToDefault);
+    subMenu.addAction("Reset to default", this, &ProjectileWidget::reset);
     subMenu.addAction("Remove", this, &ProjectileWidget::remove);
-
     subMenu.exec(QCursor::pos());
 }
 
-void ProjectileWidget::resetToDefault()
+void ProjectileWidget::reset()
 {
     getWorld()->removeComponent<Projectile>(entity_);
     getWorld()->addComponent(entity_, Projectile());
