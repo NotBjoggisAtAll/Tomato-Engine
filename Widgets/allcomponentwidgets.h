@@ -10,5 +10,6 @@
 #include "scriptwidget.h"
 #include "soundwidget.h"
 #include "transformwidget.h"
+#include "guiwidget.h"
 
 #endif // ALLCOMPONENTWIDGETS_H

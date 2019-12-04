@@ -1,5 +1,4 @@
 #include "addcomponentwidget.h"
-#include "mainwindow.h"
 #include "ui_addcomponentwidget.h"
 #include "Components/allcomponents.h"
 #include "Managers/shadermanager.h"
@@ -7,13 +6,11 @@
 #include <QDebug>
 #include <QMenu>
 
-AddComponentWidget::AddComponentWidget(Entity entity, MainWindow *mainWindow, QWidget *parent) :
-    QWidget(parent), entity_(entity), mainWindow_(mainWindow),
+AddComponentWidget::AddComponentWidget(Entity entity, QWidget *parent) :
+    QWidget(parent), entity_(entity),
     ui(new Ui::AddComponentWidget)
 {
     ui->setupUi(this);
-
-    connect(this, &AddComponentWidget::updateComponentPanel, mainWindow, &MainWindow::updateRightPanel);
 }
 
 AddComponentWidget::~AddComponentWidget()
@@ -48,6 +45,8 @@ void AddComponentWidget::on_addButton_clicked()
         menu.addAction("Npc", this, &AddComponentWidget::addNpc);
     if(!getWorld()->getComponent<Projectile>(entity_).value_or(nullptr))
         menu.addAction("Projectile", this, &AddComponentWidget::addProjectile);
+    if(!getWorld()->getComponent<GUI>(entity_).value_or(nullptr))
+        menu.addAction("GUI", this, &AddComponentWidget::addGUI);
 
     menu.exec(QCursor::pos());
 }
@@ -114,5 +113,11 @@ void AddComponentWidget::addProjectile()
 void AddComponentWidget::addSound()
 {
     getWorld()->addComponent(entity_, Sound());
+    emit updateComponentPanel(entity_);
+}
+
+void AddComponentWidget::addGUI()
+{
+    getWorld()->addComponent(entity_, GUI());
     emit updateComponentPanel(entity_);
 }

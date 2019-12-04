@@ -65,6 +65,7 @@ HEADERS += \
     Widgets/allcomponentwidgets.h \
     Widgets/bsplinewidget.h \
     Widgets/collisionwidget.h \
+    Widgets/guiwidget.h \
     Widgets/inputwidget.h \
     Widgets/projectilewidget.h \
     Widgets/scriptwidget.h \
@@ -145,6 +146,7 @@ SOURCES += main.cpp \
     Widgets/addcomponentwidget.cpp \
     Widgets/bsplinewidget.cpp \
     Widgets/collisionwidget.cpp \
+    Widgets/guiwidget.cpp \
     Widgets/inputwidget.cpp \
     Widgets/projectilewidget.cpp \
     Widgets/scriptwidget.cpp \
@@ -176,6 +178,7 @@ FORMS += \
     Widgets/addcomponentwidget.ui \
     Widgets/bsplinewidget.ui \
     Widgets/collisionwidget.ui \
+    Widgets/guiwidget.ui \
     Widgets/inputwidget.ui \
     Widgets/projectilewidget.ui \
     Widgets/scriptwidget.ui \

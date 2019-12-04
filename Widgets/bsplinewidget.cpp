@@ -1,18 +1,17 @@
 #include "bsplinewidget.h"
 #include "ui_bsplinewidget.h"
 #include "Components/bspline.h"
-#include "world.h"
-#include <QString>
-#include <QMenu>
 #include "Windows/vector3dpicker.h"
+#include "world.h"
+#include <QMenu>
 
-BSplineWidget::BSplineWidget(Entity entityIn, QWidget *parent) :
-    QWidget(parent), entity_(entityIn),
+BSplineWidget::BSplineWidget(Entity entity, QWidget *parent) :
+    QWidget(parent), entity_(entity),
     ui(new Ui::BSplineWidget)
 {
     ui->setupUi(this);
 
-    component_ = getWorld()->getComponent<BSpline>(entityIn).value();
+    component_ = getWorld()->getComponent<BSpline>(entity).value();
     if(component_->curve_.getControlPoints().size() == 0)
         return;
     for(auto it = component_->curve_.getControlPoints().begin(); it != component_->curve_.getControlPoints().end(); ++it)
@@ -57,7 +56,7 @@ void BSplineWidget::on_removePoint_clicked()
     component_->curve_.removeControlPoint(point);
 }
 
-void BSplineWidget::resetToDefault()
+void BSplineWidget::reset()
 {
     ui->pointList->clear();
     component_->curve_.removeControlPoints();
@@ -72,10 +71,7 @@ void BSplineWidget::remove()
 void BSplineWidget::on_pushButton_clicked()
 {
     QMenu subMenu;
-
-    // Add actions here with name and slot to execute when action is pressed
-    subMenu.addAction("Reset to default", this, &BSplineWidget::resetToDefault);
+    subMenu.addAction("Reset to default", this, &BSplineWidget::reset);
     subMenu.addAction("Remove", this, &BSplineWidget::remove);
-
     subMenu.exec(QCursor::pos());
 }

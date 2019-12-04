@@ -154,8 +154,14 @@ void MainWindow::updateRightPanel(Entity entity)
     if(input)
         layout->addWidget(new InputWidget(entity));
 
-    layout->addWidget(new AddComponentWidget(entity,this));
+    GUI* gui = getWorld()->getComponent<GUI>(entity).value_or(nullptr);
+    if(gui)
+        layout->addWidget(new GUIWidget(entity));
 
+    AddComponentWidget* addComponentWidget = new AddComponentWidget(entity, componentsWidgets_);
+    layout->addWidget(addComponentWidget);
+
+    connect(addComponentWidget, &AddComponentWidget::updateComponentPanel, this, &MainWindow::updateRightPanel);
 
 }
 

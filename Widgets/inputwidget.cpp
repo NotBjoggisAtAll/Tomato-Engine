@@ -9,9 +9,7 @@ InputWidget::InputWidget(Entity entity, QWidget *parent) :
     ui(new Ui::InputWidget)
 {
     ui->setupUi(this);
-
     component_ = getWorld()->getComponent<Input>(entity_).value();
-
 }
 
 InputWidget::~InputWidget()

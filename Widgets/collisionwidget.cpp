@@ -76,7 +76,6 @@ void CollisionWidget::updateWidget()
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity_).value_or(nullptr);
     if(!mesh) return;
 
-
     getWorld()->removeComponent<Collision>(entity_);
     getWorld()->addComponent(entity_, ResourceFactory::get()->getCollision(mesh->filepath_));
     component_ = getWorld()->getComponent<Collision>(entity_).value();
