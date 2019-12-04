@@ -27,6 +27,7 @@ void Mesh::fromJson(QJsonObject Json)
     verticeCount_ = m.verticeCount_;
     indiceCount_ = m.indiceCount_;
     drawType_ = m.drawType_;
+    filepath_ = m.filepath_;
 
     isVisible_ = Json.take("visible").toBool();
     isAffectedByFrustum_ = Json.take("affectedByFrustum").toBool();

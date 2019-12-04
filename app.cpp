@@ -209,6 +209,16 @@ void App::postInit()
     getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
 
+    entity = getWorld()->createEntity();
+    getWorld()->addComponent(entity, EntityData("Skybox"));
+    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("skybox"));
+    getWorld()->addComponent(entity, Material(ShaderManager::get()->textureShader(),"skybox.bmp"));
+    getWorld()->addComponent(entity, Transform());
+
+    //Preload objects
+    ResourceFactory::get()->loadMesh("turret.obj");
+    ResourceFactory::get()->loadMesh("camera.obj");
+    ResourceFactory::get()->loadMesh("box2.txt");
 
     mainWindow_->displayEntitiesInOutliner();
 
