@@ -1,5 +1,7 @@
 #include "texturefactory.h"
 #include "texture.h"
+#include <QFile>
+#include "constants.h"
 
 TextureFactory* TextureFactory::instance_ = nullptr;
 
@@ -10,8 +12,11 @@ TextureFactory *TextureFactory::get()
     return instance_;
 }
 
-GLuint TextureFactory::loadTexture(std::string file)
+std::optional<GLuint> TextureFactory::loadTexture(std::string file)
 {
+    if(!QFile::exists(QString::fromStdString(gsl::textureFilePath) + QString::fromStdString(file)))
+         return std::nullopt;
+
     auto textureIt = textureIDs_.find(file);
     if(textureIt != textureIDs_.end())
     {

@@ -64,8 +64,16 @@ public:
      * @return a pointer to Shader.
      */
     Shader* getShader(std::string shaderName);
+
+    /**
+     * Getter for all Shaders.
+     * @return a unordered_map with the Shaders.
+     */
+    std::unordered_map<std::string, Shader*> getShaders() const;
 private:
+    /// A unordered map with shaders where the shader name is the key and a Shader* is the value.
     std::unordered_map<std::string, Shader*> shaders_;
+
     /**
      * Default constructor. Since this is a singleton class the constructor is private.
      * Creates and stores the different shaders.

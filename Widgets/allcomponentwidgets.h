@@ -11,5 +11,6 @@
 #include "soundwidget.h"
 #include "transformwidget.h"
 #include "guiwidget.h"
+#include "materialwidget.h"
 
 #endif // ALLCOMPONENTWIDGETS_H

@@ -40,6 +40,11 @@ Shader *ShaderManager::getShader(std::string shaderName)
     return shaders_.at(shaderName);
 }
 
+std::unordered_map<std::string, Shader *> ShaderManager::getShaders() const
+{
+    return shaders_;
+}
+
 ShaderManager::ShaderManager()
 {
     shaders_.insert(std::make_pair("plainshader", new PlainShader("plainshader")));

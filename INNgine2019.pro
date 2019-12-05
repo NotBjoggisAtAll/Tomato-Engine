@@ -67,6 +67,7 @@ HEADERS += \
     Widgets/collisionwidget.h \
     Widgets/guiwidget.h \
     Widgets/inputwidget.h \
+    Widgets/materialwidget.h \
     Widgets/projectilewidget.h \
     Widgets/scriptwidget.h \
     Widgets/soundwidget.h \
@@ -148,6 +149,7 @@ SOURCES += main.cpp \
     Widgets/collisionwidget.cpp \
     Widgets/guiwidget.cpp \
     Widgets/inputwidget.cpp \
+    Widgets/materialwidget.cpp \
     Widgets/projectilewidget.cpp \
     Widgets/scriptwidget.cpp \
     Widgets/soundwidget.cpp \
@@ -180,6 +182,7 @@ FORMS += \
     Widgets/collisionwidget.ui \
     Widgets/guiwidget.ui \
     Widgets/inputwidget.ui \
+    Widgets/materialwidget.ui \
     Widgets/projectilewidget.ui \
     Widgets/scriptwidget.ui \
     Widgets/soundwidget.ui \

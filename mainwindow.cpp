@@ -126,6 +126,10 @@ void MainWindow::updateRightPanel(Entity entity)
     if(transform)
         layout->addWidget(new TransformWidget(entity));
 
+    Material* material = getWorld()->getComponent<Material>(entity).value_or(nullptr);
+    if(material)
+        layout->addWidget(new MaterialWidget(entity));
+
     Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value_or(nullptr);
     if(mesh)
         layout->addWidget(new MeshWidget(entity));
