@@ -143,6 +143,19 @@ void SoundSource::setVelocity(gsl::Vector3D newVel)
     alSourcefv(source_, AL_VELOCITY, temp);
 }
 
+void SoundSource::setLooping(bool loop)
+{
+    bLoop_ = loop;
+    alSourcei(source_, AL_LOOPING, loop);
+
+}
+
+void SoundSource::setGain(float gain)
+{
+    gain_ = gain;
+    alSourcef(source_, AL_GAIN, gain);
+}
+
 bool SoundSource::checkError(std::string name)
 {
     switch (alGetError())

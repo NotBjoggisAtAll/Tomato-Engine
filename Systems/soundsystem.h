@@ -12,7 +12,7 @@ public:
     SoundSystem();
 
     void beginPlay() override;
-    void tick(float deltaTime) override;
+    void tick(float) override;
     virtual void endPlay() override;
 
 

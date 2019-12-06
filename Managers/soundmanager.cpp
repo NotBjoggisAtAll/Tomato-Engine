@@ -70,9 +70,9 @@ bool SoundManager::checkError()
     return true;
 }
 
-SoundSource* SoundManager::createSource(std::string name, std::string file, bool loop, float gain)
+std::shared_ptr<SoundSource> SoundManager::createSource(std::string name, std::string file, bool loop, float gain)
 {
-    return new SoundSource(name, file, loop, gain);
+    return std::make_shared<SoundSource>(name, file, loop, gain);
 }
 
 void SoundManager::updateListener(gsl::Vector3D pos, gsl::Vector3D vel, gsl::Vector3D dir, gsl::Vector3D up)

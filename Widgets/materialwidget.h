@@ -79,7 +79,7 @@ private slots:
     void on_textureName_editingFinished();
 
     /**
-     * Called whenever the use edit text in the lineEdit textureName.
+     * Called whenever the user edit text in the lineEdit textureName.
      * Used to turn the color back to black while writing after an invalid file.
      */
     void on_textureName_textEdited(const QString &);

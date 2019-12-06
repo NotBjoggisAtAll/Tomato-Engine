@@ -1,8 +1,9 @@
 #include "sound.h"
 #include "soundsource.h"
 #include <QJsonObject>
+#include "Managers/soundmanager.h"
 
-Sound::Sound(SoundSource *Sound) : audio_(Sound){}
+Sound::Sound(std::shared_ptr<SoundSource> Sound) : audio_(Sound){}
 
 Sound::Sound(QJsonObject Json)
 {
@@ -28,5 +29,5 @@ void Sound::fromJson(QJsonObject Json)
     bool loop = Json.take("loop").toBool();
     float gain = static_cast<float>(Json.take("gain").toDouble());
 
-    audio_ = new SoundSource(name,file,loop,gain);
+    audio_ = SoundManager::instance()->createSource(name,file,loop,gain);
 }

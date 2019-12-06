@@ -47,6 +47,9 @@ public:
     void setVelocity(gsl::Vector3D newVel);             ///< Sets source velocity from Vector3.
     gsl::Vector3D getVelocity() const {return velocity_;}     ///< Returns source velocity as Vector3.
 
+    void setLooping(bool loop);
+    void setGain(float gain);
+
     std::string name_;
     std::string file_;
     bool bLoop_ = false;

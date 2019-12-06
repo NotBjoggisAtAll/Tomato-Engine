@@ -2,6 +2,7 @@
 #define SOUNDCOMPONENT_H
 
 #include "component.h"
+#include <memory>
 
 class SoundSource;
 
@@ -20,7 +21,7 @@ struct Sound : public Component
      * Use the SoundManager to create a SoundSource.
      * @param Sound - SoundSource.
      */
-    Sound(SoundSource* Sound);
+    Sound(std::shared_ptr<SoundSource> Sound);
     /**
      * A constructor taking in a QJsonObject.
      * @param Json - QJsonObject. Creates a Sound component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
@@ -41,7 +42,7 @@ struct Sound : public Component
     void fromJson(QJsonObject Json) override;
 
     /// A pointer to the SoundSource.
-    SoundSource* audio_ = nullptr;
+    std::shared_ptr<SoundSource> audio_;
 };
 
 #endif // SOUNDCOMPONENT_H

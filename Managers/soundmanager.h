@@ -14,6 +14,7 @@
 #include <vector>
 #include "soundsource.h"
 #include "GSL/vector3d.h"
+#include <memory>
 
 /// Class handling OpenAL setup and management of sound sources.
 /**
@@ -54,7 +55,7 @@ public:
         \param File path relative to execution directory.
         \param Boolean to see if sound should loop or not.
     **/
-    SoundSource *createSource(std::string name, std::string file = "", bool loop = false, float gain = 1.0);
+    std::shared_ptr<SoundSource> createSource(std::string name, std::string file = "", bool loop = false, float gain = 1.0);
     void updateListener(gsl::Vector3D pos, gsl::Vector3D vel, gsl::Vector3D dir, gsl::Vector3D up);
 
 private:

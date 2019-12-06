@@ -159,7 +159,7 @@ void App::postInit()
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Sound Source"));
     getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("Caravan", "shoot_1.wav", true, .5f)));
+    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("shoot", "shoot_1.wav", true, .5f)));
 
     entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, EntityData("Light Source"));

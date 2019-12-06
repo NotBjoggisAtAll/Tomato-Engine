@@ -25,7 +25,7 @@ void SoundSystem::beginPlay()
     }
 }
 
-void SoundSystem::tick(float deltaTime)
+void SoundSystem::tick(float /*deltaTime*/)
 {
     auto currCamera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
     auto cameraTransform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
@@ -41,6 +41,9 @@ void SoundSystem::tick(float deltaTime)
     for(auto const& entity : entities_)
     {
         auto sound = getWorld()->getComponent<Sound>(entity).value();
+        if(!sound->audio_)
+            continue;
+
         auto transform = getWorld()->getComponent<Transform>(entity).value();
         sound->audio_->setPosition(transform->position_);
     }
@@ -57,18 +60,24 @@ void SoundSystem::endPlay()
 
 void SoundSystem::playSound(Sound *sound)
 {
+    if(!sound->audio_)
+        return;
     if(!sound->audio_->isPlaying())
         sound->audio_->play();
 }
 
 void SoundSystem::pauseSound(Sound *sound)
 {
+    if(!sound->audio_)
+        return;
     if(sound->audio_->isPlaying())
         sound->audio_->pause();
 }
 
 void SoundSystem::stopSound(Sound *sound)
 {
+    if(!sound->audio_)
+        return;
         sound->audio_->stop();
 }
 
