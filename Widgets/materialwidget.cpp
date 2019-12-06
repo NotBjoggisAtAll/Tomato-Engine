@@ -42,7 +42,6 @@ MaterialWidget::MaterialWidget(Entity entity, QWidget *parent) :
     }
 
     ui->shaderBox->setCurrentText(QString::fromStdString(component_->shader_->mShaderName));
-
 }
 
 MaterialWidget::~MaterialWidget()
@@ -54,7 +53,7 @@ void MaterialWidget::on_pushButton_clicked()
 {
     QMenu menu;
     menu.addAction("Remove", this, &MaterialWidget::remove);
-    menu.exec();
+    menu.exec(QCursor::pos());
 }
 
 void MaterialWidget::remove()
@@ -80,7 +79,7 @@ void MaterialWidget::on_bColor_valueChanged(double arg1)
 
 void MaterialWidget::on_shaderBox_currentIndexChanged(const QString &arg1)
 {
-    if(!(arg1 == "textureshader" || arg1 == "guishader"))
+    if(!(arg1 == "textureshader" || arg1 == "guishader" || ui->shaderBox->currentIndex() == 0))
     {
         ui->textureWidget->setVisible(false);
     }
@@ -88,6 +87,7 @@ void MaterialWidget::on_shaderBox_currentIndexChanged(const QString &arg1)
     {
         ui->textureWidget->setVisible(true);
     }
+    if(!(ui->shaderBox->currentIndex() == 0))
     component_->shader_ = ShaderManager::get()->getShader(arg1.toStdString());
 }
 
