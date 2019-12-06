@@ -1,9 +1,14 @@
 #include "sound.h"
 #include "soundsource.h"
 #include <QJsonObject>
+#include "Systems/soundsystem.h"
 #include "Managers/soundmanager.h"
 
-Sound::Sound(std::shared_ptr<SoundSource> Sound) : audio_(Sound){}
+Sound::Sound(std::shared_ptr<SoundSource> Sound, bool playOnSpawn) : audio_(Sound)
+{
+    if(playOnSpawn)
+        SoundSystem::playSound(this);
+}
 
 Sound::Sound(QJsonObject Json)
 {

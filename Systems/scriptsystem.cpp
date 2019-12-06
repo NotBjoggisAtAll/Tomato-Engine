@@ -8,6 +8,7 @@
 #include "Managers/shadermanager.h"
 #include "Script/jstimer.h"
 #include "Systems/projectilesystem.h"
+#include "Managers/soundmanager.h"
 #include <QJsonArray>
 
 ScriptSystem::ScriptSystem()
@@ -85,7 +86,7 @@ void ScriptSystem::shoot(int owner, QJsonArray npcs)
 
     for(const auto npc : npcs)
     {
-    proj.npcPositions_.push_back(gsl::Vector3D(static_cast<float>(npc.toArray().at(0).toDouble()),0,static_cast<float>(npc.toArray().at(2).toDouble())));
+        proj.npcPositions_.push_back(gsl::Vector3D(static_cast<float>(npc.toArray().at(0).toDouble()),0,static_cast<float>(npc.toArray().at(2).toDouble())));
     }
 
     Entity entity = getWorld()->createEntity();
@@ -93,6 +94,7 @@ void ScriptSystem::shoot(int owner, QJsonArray npcs)
     getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("box2.txt"));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("box2.txt"));
     getWorld()->addComponent(entity, Material(ShaderManager::get()->phongShader(),gsl::Vector3D(0,0,0)));
+    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("shoot", "shoot_1.wav",false, 0.4f),true));
     getWorld()->addComponent(entity, proj);
 
 }

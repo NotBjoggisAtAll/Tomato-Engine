@@ -20,8 +20,9 @@ struct Sound : public Component
      * A constructor taking in a soundsource.
      * Use the SoundManager to create a SoundSource.
      * @param Sound - SoundSource.
+     * @param playOnSpawn - bool. True if the sound should play when this is created.
      */
-    Sound(std::shared_ptr<SoundSource> Sound);
+    Sound(std::shared_ptr<SoundSource> Sound, bool playOnSpawn = false);
     /**
      * A constructor taking in a QJsonObject.
      * @param Json - QJsonObject. Creates a Sound component with the data in the QJsonObject. If the QJsonObject is not valid the component is constructed with default values.
