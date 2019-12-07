@@ -141,8 +141,8 @@ App::~App()
 
 void App::postInit()
 {
+    //Editor Camera
     Entity entity = getWorld()->createEntity();
-
     Camera camera;
     camera.isInUse_ = true;
     camera.isEditor = true;
@@ -151,77 +151,12 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
     getWorld()->setCurrentCamera(entity);
 
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, Transform({0,0,0},{},{}));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("axis"));
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Sound Source"));
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, Sound(SoundManager::instance()->createSource("shoot", "shoot_1.wav", true, .5f)));
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Light Source"));
-    getWorld()->addComponent(entity, Transform({2.5f, 3.f, 0.f},{},{0.5f,0.5f,0.5f}));
-    getWorld()->addComponent(entity, Light());
-
-    ShaderManager::get()->phongShader()->setLight(entity);
-
-    BSpline spline = BSpline(.05f);
-
-    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,5));
-    spline.curve_.addControlPoint(gsl::Vector3D(5,0,5));
-    spline.curve_.addControlPoint(gsl::Vector3D(5,0,3));
-    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,1));
-    spline.curve_.addControlPoint(gsl::Vector3D(5,0,1));
-    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-1));
-    spline.curve_.addControlPoint(gsl::Vector3D(0,0,-1));
-    spline.curve_.addControlPoint(gsl::Vector3D(5,0,-3));
-    spline.curve_.addControlPoint(gsl::Vector3D(-5,0,-5));
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("BSpline"));
-    getWorld()->addComponent(entity, spline);
-    getWorld()->addComponent(entity, Transform());
-    getWorld()->addComponent(entity, ResourceFactory::get()->createLines(spline.curve_.getVerticesAndIndices()));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
-    getWorld()->addComponent(entity, Script("enemyManager.js"));
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("UI Test"));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->guiShader(),{1,0,0},"hund.bmp"));
-    getWorld()->addComponent(entity, GUIFactory::get()->createGUI({0.5,0},{0.1f,0.1f}));
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Floor"));
-    getWorld()->addComponent(entity, Transform({0,0,0},{},{5,5,5}));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->textureShader(),"ground_path.bmp"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("plane"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("plane"));
-    Mesh* mesh = getWorld()->getComponent<Mesh>(entity).value();
-    mesh->isAffectedByFrustum_ = false;
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Game Camera"));
-    getWorld()->addComponent(entity, Transform(gsl::Vector3D(0,13,0)));
-    getWorld()->addComponent(entity, Camera(false, -180.f,-90.f));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
-    getWorld()->addComponent(entity, ResourceFactory::get()->getCameraFrustum());
-
-    entity = getWorld()->createEntity();
-    getWorld()->addComponent(entity, EntityData("Skybox"));
-    getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("skybox"));
-    getWorld()->addComponent(entity, Material(ShaderManager::get()->textureShader(),"skybox.bmp"));
-    getWorld()->addComponent(entity, Transform());
-
-    //Preload objects
+    //Preload objects for the game. Should be done when actually loading the scene.
     ResourceFactory::get()->loadMesh("turret.obj");
     ResourceFactory::get()->loadMesh("camera.obj");
     ResourceFactory::get()->loadMesh("box2.txt");
 
     mainWindow_->displayEntitiesInOutliner();
-
 }
 
 void App::tick()
@@ -241,7 +176,6 @@ void App::tick()
     getWorld()->getSystem<ProjectileSystem>()->tick(deltaTime_);
     getWorld()->getSystem<SoundSystem>()->tick(deltaTime_);
     getWorld()->getSystem<CollisionSystem>()->tick(deltaTime_);
-
     getWorld()->getSystem<CameraSystem>()->tick(deltaTime_);
     renderWindow_->tick(deltaTime_);
     getWorld()->destroyEntities();
@@ -276,7 +210,6 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     auto script = getWorld()->getComponent<Script>(entity).value();
     getWorld()->getSystem<ScriptSystem>()->componentAdded(script, entity);
     mainWindow_->addEntityToUi(entity);
-
 }
 
 Entity App::createEntity()
@@ -401,6 +334,8 @@ void App::raycastFromMouse()
             return;
         }
         //Button press here.
+
+        qDebug() << "I'm pressing the button!" << hit2D.entityHit;
 
         return;
     }

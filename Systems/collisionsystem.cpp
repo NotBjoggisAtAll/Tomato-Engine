@@ -70,6 +70,7 @@ bool CollisionSystem::checkMouseCollision2D(gsl::Vector2D mousePos, gsl::Vector2
                                        gsl::Vector2D(-1,-1),
                                        gsl::Vector2D(1,1));
 
+    newMouse.y = -newMouse.y;
 
     for(const auto& entity : getWorld()->getEntities())
     {
