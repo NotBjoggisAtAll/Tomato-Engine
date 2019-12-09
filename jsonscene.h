@@ -6,8 +6,6 @@
 #include <QJsonArray>
 #include "types.h"
 
-namespace jba {
-
 class JsonScene
 {
 public:
@@ -22,5 +20,4 @@ private:
     QJsonArray entities_ = QJsonArray();
 
 };
-}
 #endif // JSONSCENE_H

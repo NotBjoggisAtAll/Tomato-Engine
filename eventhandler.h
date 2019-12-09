@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <unordered_map>
+
 class EventHandler : public QObject
 {
     Q_OBJECT

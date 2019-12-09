@@ -1,5 +1,5 @@
 #include "material.h"
-#include "shader.h"
+#include "Shaders/shader.h"
 #include <QJsonObject>
 #include <QJsonArray>
 #include "Managers/shadermanager.h"

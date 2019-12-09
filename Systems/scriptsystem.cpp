@@ -11,14 +11,6 @@
 #include "Managers/soundmanager.h"
 #include <QJsonArray>
 
-ScriptSystem::ScriptSystem()
-{
-
-}
-ScriptSystem::~ScriptSystem()
-{
-
-}
 void ScriptSystem::beginPlay()
 {
     for(auto entity : entities_)
@@ -69,10 +61,10 @@ void ScriptSystem::spawnEnemy(int owner)
     if(spline)
     {
         Entity entity = getWorld()->createEntity();
-        getWorld()->addComponent(entity, Transform({},{},{0.2f,0.2f,0.2f}));
+        getWorld()->addComponent(entity, Transform({500,-500, 500},{},{0.2f,0.2f,0.2f}));
         getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("camera.obj"));
         getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("camera.obj"));
-        getWorld()->addComponent(entity, Material(ShaderManager::get()->colorShader(),gsl::Vector3D(1,0,0)));
+        getWorld()->addComponent(entity, Material(ShaderManager::get()->phongShader(),gsl::Vector3D(1,0,0.5f)));
         getWorld()->addComponent(entity, Npc(&spline->curve_));
     }
 }

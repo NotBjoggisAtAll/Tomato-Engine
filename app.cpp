@@ -12,101 +12,24 @@
 #include "GSL/gsl_math_extensions.h"
 #include <QFileDialog>
 
+
 App::App()
 {
     // Register components
-    getWorld()->registerComponent<Transform>();
-    getWorld()->registerComponent<Mesh>();
-    getWorld()->registerComponent<Material>();
-    getWorld()->registerComponent<Sound>();
-    getWorld()->registerComponent<EntityData>();
-    getWorld()->registerComponent<Light>();
-    getWorld()->registerComponent<Collision>();
-    getWorld()->registerComponent<Script>();
-    getWorld()->registerComponent<BSpline>();
-    getWorld()->registerComponent<Npc>();
-    getWorld()->registerComponent<Input>();
-    getWorld()->registerComponent<Camera>();
-    getWorld()->registerComponent<Projectile>();
-    getWorld()->registerComponent<GUI>();
+    registerComponents();
 
     // Register systems
-    getWorld()->registerSystem<SoundSystem>();
-    getWorld()->registerSystem<MovementSystem>();
-    getWorld()->registerSystem<CollisionSystem>();
-    getWorld()->registerSystem<SceneSystem>();
-    getWorld()->registerSystem<ScriptSystem>();
-    getWorld()->registerSystem<BSplineSystem>();
-    getWorld()->registerSystem<RenderSystem>();
-    getWorld()->registerSystem<RenderSystem2D>();
-    getWorld()->registerSystem<NpcSystem>();
-    getWorld()->registerSystem<InputSystem>();
-    getWorld()->registerSystem<CameraSystem>();
-    getWorld()->registerSystem<ProjectileSystem>();
+    registerSystems();
 
     // Sets the system signatures
-    Signature signature;
-    signature.set(getWorld()->getComponentType<Transform>());
-    signature.set(getWorld()->getComponentType<Mesh>());
-    signature.set(getWorld()->getComponentType<Material>());
-    getWorld()->setSystemSignature<RenderSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<GUI>());
-    signature.set(getWorld()->getComponentType<Material>());
-    getWorld()->setSystemSignature<RenderSystem2D>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Transform>());
-    signature.set(getWorld()->getComponentType<Sound>());
-    getWorld()->setSystemSignature<SoundSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Transform>());
-    signature.set(getWorld()->getComponentType<EntityData>());
-    signature.set(getWorld()->getComponentType<Collision>());
-    getWorld()->setSystemSignature<MovementSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Collision>());
-    signature.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<CollisionSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Script>());
-    getWorld()->setSystemSignature<ScriptSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<BSpline>());
-    signature.set(getWorld()->getComponentType<Mesh>());
-    getWorld()->setSystemSignature<BSplineSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Npc>());
-    signature.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<NpcSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Input>());
-    signature.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<InputSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Transform>());
-    signature.set(getWorld()->getComponentType<Camera>());
-    getWorld()->setSystemSignature<CameraSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Projectile>());
-    signature.set(getWorld()->getComponentType<Transform>());
-    getWorld()->setSystemSignature<ProjectileSystem>(signature);
+    setSystemSignatures();
 
 
     mainWindow_ = std::make_unique<MainWindow>();
     renderWindow_ = mainWindow_->renderWindow_;
     eventHandler_ = std::make_shared<EventHandler>();
     renderWindow_->installEventFilter(eventHandler_.get());
-    connect(eventHandler_.get(), &EventHandler::leftMouseButtonPressed, this, &App::raycastFromMouse);
+    connect(eventHandler_.get(), &EventHandler::leftMouseButtonPressed, this, &App::mouseLeftClick);
 
     getWorld()->getSystem<InputSystem>()->setEventHandler(eventHandler_);
 
@@ -127,9 +50,9 @@ App::App()
     connect(mainWindow_.get(), &MainWindow::saveScene, this, &App::saveScene);
 
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
+    connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
     connect(getWorld(), &World::updateCameraPerspectives, renderWindow_.get(), &RenderWindow::callExposeEvent);
     connect(getWorld(), &World::updateWorldOutliner, this, &App::updateWorldOutliner);
-    connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
 
     connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
 }
@@ -157,6 +80,8 @@ void App::postInit()
     ResourceFactory::get()->loadMesh("box2.txt");
 
     mainWindow_->displayEntitiesInOutliner();
+
+    loadScene();
 }
 
 void App::tick()
@@ -171,7 +96,6 @@ void App::tick()
         getWorld()->getSystem<NpcSystem>()->tick(deltaTime_);
         getWorld()->getSystem<ScriptSystem>()->tick(deltaTime_);
     }
-
     getWorld()->getSystem<BSplineSystem>()->tick(deltaTime_);
     getWorld()->getSystem<ProjectileSystem>()->tick(deltaTime_);
     getWorld()->getSystem<SoundSystem>()->tick(deltaTime_);
@@ -275,7 +199,7 @@ void App::calculateFramerate()
     double elapsed = frameTimer_.elapsed();
     if(elapsed >= 100)
     {
-        mainWindow_->updateStatusbar(totalDeltaTime_/frameCounter, frameCounter/totalDeltaTime_, getWorld()->getSystem<RenderSystem>()->totalVerticeCount);
+        mainWindow_->updateStatusbar(totalDeltaTime_/frameCounter, frameCounter/totalDeltaTime_, getWorld()->getSystem<RenderSystem>()->totalVerticeCount_);
         frameCounter = 0;
         totalDeltaTime_ = 0;
         frameTimer_.restart();
@@ -315,7 +239,7 @@ void App::saveScene()
     getWorld()->getSystem<SceneSystem>()->saveScene(fileInfo);
 }
 
-void App::raycastFromMouse()
+void App::mouseLeftClick()
 {
     QPoint mousePos = renderWindow_->mapFromGlobal(QCursor::pos());
 
@@ -364,4 +288,97 @@ void App::raycastFromMouse()
         renderWindow_->makeCollisionBorder(-1);
         mainWindow_->updateRightPanel(-1);
     }
+}
+
+void App::registerComponents()
+{
+    getWorld()->registerComponent<Transform>();
+    getWorld()->registerComponent<Mesh>();
+    getWorld()->registerComponent<Material>();
+    getWorld()->registerComponent<Sound>();
+    getWorld()->registerComponent<EntityData>();
+    getWorld()->registerComponent<Light>();
+    getWorld()->registerComponent<Collision>();
+    getWorld()->registerComponent<Script>();
+    getWorld()->registerComponent<BSpline>();
+    getWorld()->registerComponent<Npc>();
+    getWorld()->registerComponent<Input>();
+    getWorld()->registerComponent<Camera>();
+    getWorld()->registerComponent<Projectile>();
+    getWorld()->registerComponent<GUI>();
+}
+
+void App::registerSystems()
+{
+    getWorld()->registerSystem<SoundSystem>();
+    getWorld()->registerSystem<MovementSystem>();
+    getWorld()->registerSystem<CollisionSystem>();
+    getWorld()->registerSystem<SceneSystem>();
+    getWorld()->registerSystem<ScriptSystem>();
+    getWorld()->registerSystem<BSplineSystem>();
+    getWorld()->registerSystem<RenderSystem>();
+    getWorld()->registerSystem<RenderSystem2D>();
+    getWorld()->registerSystem<NpcSystem>();
+    getWorld()->registerSystem<InputSystem>();
+    getWorld()->registerSystem<CameraSystem>();
+    getWorld()->registerSystem<ProjectileSystem>();
+}
+
+void App::setSystemSignatures()
+{
+    Signature signature;
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Mesh>());
+    signature.set(getWorld()->getComponentType<Material>());
+    getWorld()->setSystemSignature<RenderSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<GUI>());
+    signature.set(getWorld()->getComponentType<Material>());
+    getWorld()->setSystemSignature<RenderSystem2D>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Sound>());
+    getWorld()->setSystemSignature<SoundSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<EntityData>());
+    signature.set(getWorld()->getComponentType<Collision>());
+    getWorld()->setSystemSignature<MovementSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Collision>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<CollisionSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Script>());
+    getWorld()->setSystemSignature<ScriptSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<BSpline>());
+    signature.set(getWorld()->getComponentType<Mesh>());
+    getWorld()->setSystemSignature<BSplineSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Npc>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<NpcSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Input>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<InputSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Transform>());
+    signature.set(getWorld()->getComponentType<Camera>());
+    getWorld()->setSystemSignature<CameraSystem>(signature);
+
+    signature.reset();
+    signature.set(getWorld()->getComponentType<Projectile>());
+    signature.set(getWorld()->getComponentType<Transform>());
+    getWorld()->setSystemSignature<ProjectileSystem>(signature);
 }

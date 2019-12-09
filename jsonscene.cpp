@@ -5,8 +5,6 @@
 #include "Components/allcomponents.h"
 #include "constants.h"
 
-namespace jba {
-
 JsonScene::JsonScene(QString SceneName)
 {
     sceneObject_.insert("scene", SceneName);
@@ -120,4 +118,4 @@ void JsonScene::addObject(Entity entity)
     entities_.push_back(entityObject);
 
 }
-}
+

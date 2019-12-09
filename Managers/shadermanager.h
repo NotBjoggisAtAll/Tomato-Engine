@@ -5,10 +5,10 @@
 #include <string>
 #include <unordered_map>
 
-#include "plainshader.h"
-#include "textureshader.h"
-#include "phongshader.h"
-#include "guishader.h"
+#include "Shaders/plainshader.h"
+#include "Shaders/textureshader.h"
+#include "Shaders/phongshader.h"
+#include "Shaders/guishader.h"
 #include "Shaders/colorshader.h"
 
 class TextureShader;

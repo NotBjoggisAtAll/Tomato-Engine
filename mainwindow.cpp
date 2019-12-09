@@ -240,7 +240,9 @@ void MainWindow::on_actionPlay_triggered()
 {
     updatePlayButtons();
     if(getWorld()->bGameRunning)
+    {
         stopGame();
+    }
     else
     {
         playGame();
@@ -278,6 +280,7 @@ void MainWindow::stopGame()
     emit stopGame_signal();
     updatePlayButtons();
     getWorld()->bGameRunning = false;
+    updateRightPanel(-1);
     showPanels();
 }
 

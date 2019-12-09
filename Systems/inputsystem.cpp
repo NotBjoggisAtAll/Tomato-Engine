@@ -9,7 +9,7 @@ void InputSystem::beginPlay()
 {
 }
 
-void InputSystem::tick(float deltaTime)
+void InputSystem::tick(float /*deltaTime*/)
 {
     auto cameraEntity = getWorld()->getCurrentCamera();
     if(cameraEntity == -1) return;

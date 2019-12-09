@@ -1,21 +1,30 @@
+let i = 0;
+const minTime = 800;
+const maxTime = 1200;
+let randomSpawnTime = getRndInteger(minTime, maxTime);
+
 function beginPlay()
 {
-    timer.setTimeout(1000, test);
 }
 
-function test()
-{
-    engine.spawnEnemy(id);
-}
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
 
 function tick()
 {
+    i += (1/60) * 1000;
 
+    if(i > randomSpawnTime)
+    {
+        console.log(i);
+        engine.spawnEnemy(id);
+        i = 0;
+        randomSpawnTime = getRndInteger(minTime,maxTime);
+    }
 }
 
 function endPlay()
 {
 
 }
-
-//engine.spawnEnemy(id); id er entitien som dette scriptet er på.

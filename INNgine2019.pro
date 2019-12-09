@@ -79,13 +79,13 @@ HEADERS += \
     Widgets/meshwidget.h \
     Systems/rendersystem.h \
     eventhandler.h \
-    guishader.h \
+    Shaders/guishader.h \
     hitresult.h \
     jsonscene.h \
-    plainshader.h \
+    Shaders/plainshader.h \
     renderwindow.h \
     Factories/resourcefactory.h \
-    shader.h \
+    Shaders/shader.h \
     mainwindow.h \
     Widgets/transformwidget.h \
     soundsource.h \
@@ -97,8 +97,8 @@ HEADERS += \
     vertex.h \
     octahedronball.h \
     gltypes.h \
-    textureshader.h \
-    phongshader.h \
+    Shaders/textureshader.h \
+    Shaders/phongshader.h \
     world.h
 
 
@@ -159,9 +159,9 @@ SOURCES += main.cpp \
     app.cpp \
     bsplinecurve.cpp \
     eventhandler.cpp \
-    guishader.cpp \
+    Shaders/guishader.cpp \
     jsonscene.cpp \
-    plainshader.cpp \
+    Shaders/plainshader.cpp \
     Factories/resourcefactory.cpp \
     Widgets/transformwidget.cpp \
     soundsource.cpp \
@@ -169,11 +169,11 @@ SOURCES += main.cpp \
     vertex.cpp \
     renderwindow.cpp \
     mainwindow.cpp \
-    shader.cpp \
+    Shaders/shader.cpp \
     texture.cpp \
     octahedronball.cpp \
-    textureshader.cpp \
-    phongshader.cpp \
+    Shaders/textureshader.cpp \
+    Shaders/phongshader.cpp \
     world.cpp
 
 FORMS += \

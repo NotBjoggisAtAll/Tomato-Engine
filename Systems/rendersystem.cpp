@@ -1,22 +1,21 @@
 #include "rendersystem.h"
-
 #include "world.h"
 #include "Components/mesh.h"
 #include "Components/transform.h"
 #include "Components/material.h"
 #include "Components/entitydata.h"
 #include "Components/camera.h"
-#include "shader.h"
+#include "Shaders/shader.h"
 
 void RenderSystem::beginPlay()
 {
 }
 
-void RenderSystem::tick(float deltaTime)
+void RenderSystem::tick(float /*deltaTime*/)
 {
     initializeOpenGLFunctions();
 
-    totalVerticeCount = 0;
+    totalVerticeCount_ = 0;
 
     for(const auto& entity : entities_)
     {
@@ -66,13 +65,13 @@ void RenderSystem::tick(float deltaTime)
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 
-        totalVerticeCount += mesh->verticeCount_;
+        totalVerticeCount_ += mesh->verticeCount_;
 
         if(mesh->indiceCount_ > 0)
-            glDrawElements(mesh->drawType_, mesh->indiceCount_, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(mesh->drawType_, static_cast<GLsizei>(mesh->indiceCount_), GL_UNSIGNED_INT, nullptr);
 
         else
-            glDrawArrays(mesh->drawType_, 0, mesh->verticeCount_);
+            glDrawArrays(mesh->drawType_, 0, static_cast<GLsizei>(mesh->verticeCount_));
 
     }
 }

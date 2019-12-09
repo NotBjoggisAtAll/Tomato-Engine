@@ -110,17 +110,14 @@ bool SoundSource::loadWave(std::string filePath)
 
 void SoundSource::play()
 {
-    qDebug() << QString::fromStdString(name_) + ": Playing!";
     alSourcePlay(source_);
 }
 void SoundSource::pause()
 {
-    qDebug() << QString::fromStdString(name_) + ": Paused!";
     alSourcePause(source_);
 }
 void SoundSource::stop()
 {
-    qDebug() << QString::fromStdString(name_) + ": Stopped!";
     alSourceStop(source_);
 }
 

@@ -17,13 +17,13 @@ class ScriptSystem : public System
 {
     Q_OBJECT
 public:
-    ScriptSystem();
+    ScriptSystem() = default;
     void componentAdded(Script* script, Entity entity);
-    ~ScriptSystem() override;
     void beginPlay() override;
     void tick(float deltaTime) override;
     void call(Script *script, QString function);
     void load(Script *script);
+
 public slots:
 
     int createEntity();
@@ -33,7 +33,6 @@ public slots:
     void setComponent(QString name, int entity, QJsonObject Json);
     QJsonValue getAllNpcLocations();
     void shoot(int owner, QJsonArray npcs);
-private slots:
 private:
 
     std::vector<JSTimer*> timers_;

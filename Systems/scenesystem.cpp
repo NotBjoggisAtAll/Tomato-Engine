@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include "Managers/shadermanager.h"
-#include "phongshader.h"
+#include "Shaders/phongshader.h"
 #include "constants.h"
 #include "jsonscene.h"
 #include "Factories/resourcefactory.h"
@@ -38,7 +38,7 @@ void SceneSystem::beginPlay()
 
     getWorld()->destroyEntityLater(getWorld()->getCurrentCamera());
 
-    jba::JsonScene scene("temp");
+    JsonScene scene("temp");
     for(auto entity : entities_)
         scene.addObject(entity);
     scene.makeTempFile("temp");
@@ -98,7 +98,7 @@ void SceneSystem::loadScene(QFileInfo scene)
 
 void SceneSystem::saveScene(QFileInfo scene)
 {
-    jba::JsonScene jscene(scene.baseName());
+    JsonScene jscene(scene.baseName());
     for(auto entity : entities_)
         jscene.addObject(entity);
 

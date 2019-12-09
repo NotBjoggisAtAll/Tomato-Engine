@@ -26,6 +26,7 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
         return true;
     case QEvent::MouseMove:
     {
+        if(getWorld()->bGameRunning) return true;
         auto mouseEvent = static_cast<QMouseEvent*>(event);
         if (keys_[Qt::MouseButton::RightButton])
         {
