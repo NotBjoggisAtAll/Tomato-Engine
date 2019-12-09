@@ -1,14 +1,9 @@
-
 #include "eventhandler.h"
 #include <QEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include "world.h"
 #include "Components/camera.h"
-EventHandler::EventHandler()
-{
-
-}
 
 bool EventHandler::eventFilter(QObject *watched, QEvent *event)
 {
@@ -29,19 +24,6 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
     case QEvent::KeyRelease:
         keys_[static_cast<int>(static_cast<QKeyEvent*>(event)->key())] = false;
         return true;
-    case QEvent::Wheel:
-    {
-        QPoint numDegrees = static_cast<QWheelEvent*>(event)->angleDelta() / 8;
-        if (keys_[Qt::MouseButton::RightButton])
-        {
-            //            auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
-            //            if (numDegrees.y() < 1)
-            //                camera->setSpeed(0.001f);
-            //            if (numDegrees.y() > 1)
-            //                camera->setSpeed(-0.001f);
-        }
-        return true;
-    }
     case QEvent::MouseMove:
     {
         auto mouseEvent = static_cast<QMouseEvent*>(event);

@@ -19,6 +19,7 @@ void InputSystem::tick(float deltaTime)
     camera->speed_ = 0.f;  //cancel last frame movement
     if(eventHandler_->keys_[Qt::MouseButton::RightButton] == true)
     {
+        if(getWorld()->bGameRunning) return;
         auto transform = getWorld()->getComponent<Transform>(cameraEntity).value_or(nullptr);
         if(!transform) return;
         if(eventHandler_->keys_[Qt::Key_W] == true)
@@ -60,13 +61,7 @@ void InputSystem::setEventHandler(const std::shared_ptr<EventHandler> &eventHand
 {
     eventHandler_ = eventHandler;
 }
-void InputSystem::setYPosition(Entity entity, float y)
-{
-    auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-    if (!transform) return;
 
-    transform->position_.y = y;
-}
 void InputSystem::addPosition(Entity entity, gsl::Vector3D translation)
 {
     auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);

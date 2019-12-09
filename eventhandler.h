@@ -7,7 +7,7 @@ class EventHandler : public QObject
 {
     Q_OBJECT
 public:
-    EventHandler();
+    EventHandler() = default;
 
 signals:
     void leftMouseButtonPressed();

@@ -23,9 +23,6 @@ private:
     void addPosition(Entity entity, gsl::Vector3D translation);
 
     float cameraSpeed = 0.01f;
-
-    void setYPosition(Entity entity, float y);
-
 };
 
 #endif // INPUTSYSTEM_H
