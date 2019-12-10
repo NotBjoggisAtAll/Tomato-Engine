@@ -36,7 +36,7 @@ private:
     /**
      * Translates the entity's position based on the parameter.
      * @param entity - Entity
-     * @param translation - gsl::Vecto3D.
+     * @param translation - gsl::Vector3D.
      */
     void addPosition(Entity entity, gsl::Vector3D translation);
 

@@ -55,7 +55,6 @@ HEADERS += \
     Systems/camerasystem.h \
     Systems/collisionsystem.h \
     Systems/inputsystem.h \
-    Systems/movementsystem.h \
     Systems/npcsystem.h \
     Systems/projectilesystem.h \
     Systems/rendersystem2d.h \
@@ -137,7 +136,6 @@ SOURCES += main.cpp \
     Systems/camerasystem.cpp \
     Systems/collisionsystem.cpp \
     Systems/inputsystem.cpp \
-    Systems/movementsystem.cpp \
     Systems/npcsystem.cpp \
     Systems/projectilesystem.cpp \
     Systems/rendersystem2d.cpp \

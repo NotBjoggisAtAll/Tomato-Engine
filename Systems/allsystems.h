@@ -5,7 +5,6 @@
 #include "camerasystem.h"
 #include "collisionsystem.h"
 #include "inputsystem.h"
-#include "movementsystem.h"
 #include "npcsystem.h"
 #include "projectilesystem.h"
 #include "rendersystem.h"

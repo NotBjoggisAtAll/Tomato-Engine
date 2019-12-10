@@ -12,7 +12,6 @@
 #include "GSL/gsl_math_extensions.h"
 #include <QFileDialog>
 
-
 App::App()
 {
     // Register components
@@ -311,7 +310,6 @@ void App::registerComponents()
 void App::registerSystems()
 {
     getWorld()->registerSystem<SoundSystem>();
-    getWorld()->registerSystem<MovementSystem>();
     getWorld()->registerSystem<CollisionSystem>();
     getWorld()->registerSystem<SceneSystem>();
     getWorld()->registerSystem<ScriptSystem>();
@@ -341,12 +339,6 @@ void App::setSystemSignatures()
     signature.set(getWorld()->getComponentType<Transform>());
     signature.set(getWorld()->getComponentType<Sound>());
     getWorld()->setSystemSignature<SoundSystem>(signature);
-
-    signature.reset();
-    signature.set(getWorld()->getComponentType<Transform>());
-    signature.set(getWorld()->getComponentType<EntityData>());
-    signature.set(getWorld()->getComponentType<Collision>());
-    getWorld()->setSystemSignature<MovementSystem>(signature);
 
     signature.reset();
     signature.set(getWorld()->getComponentType<Collision>());
