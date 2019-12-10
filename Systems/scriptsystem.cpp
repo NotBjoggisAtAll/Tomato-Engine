@@ -22,7 +22,7 @@ void ScriptSystem::beginPlay()
     }
 }
 
-void ScriptSystem::tick(float deltaTime)
+void ScriptSystem::tick(float /*deltaTime*/)
 {
     for(auto entity : entities_)
     {
@@ -119,16 +119,6 @@ QJsonValue ScriptSystem::getComponent(QString name , int entity)
             return ptr->toJson();
     }
     return 0;
-}
-
-void ScriptSystem::setComponent(QString name, int entity, QJsonObject Json)
-{
-    if(name == "Transform")
-    {
-        auto ptr = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-        if(ptr)
-            ptr->fromJson(Json);
-    }
 }
 
 void ScriptSystem::componentAdded(Script *script, Entity entity)

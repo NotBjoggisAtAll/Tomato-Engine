@@ -4,27 +4,18 @@
 #include "Components/transform.h"
 #include "bsplinecurve.h"
 
-NpcSystem::NpcSystem()
-{
-
-}
-
-
-void NpcSystem::beginPlay()
-{
-}
-
-void NpcSystem::tick(float deltaTime)
+void NpcSystem::tick(float /*deltaTime*/)
 {
     for(const auto& entity : entities_)
     {
-        auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
+        auto npc = getWorld()->getComponent<Npc>(entity).value();
 
-        if(!npc) continue;
         if(!npc->bSplineCurve) continue;
 
         npc->state_ = NPCstates::PATROL;
-        switch (npc->state_) {
+
+        switch (npc->state_)
+        {
         case NPCstates::PATROL:
             patrol(entity, npc);
             break;
@@ -32,10 +23,6 @@ void NpcSystem::tick(float deltaTime)
             break;
         }
     }
-}
-
-void NpcSystem::endPlay()
-{
 }
 
 void NpcSystem::patrol(Entity entity, Npc* npc)
@@ -60,11 +47,10 @@ void NpcSystem::notify(Entity entity)
     auto npc = getWorld()->getComponent<Npc>(entity).value_or(nullptr);
     if(!npc) return;
 
-    switch (npc->event_) {
-    case NPCevents::ITEM_TAKEN:
-        break;
+    switch (npc->event_)
+    {
     case NPCevents::ENDPOINT_ARRIVED:
-       getWorld()->destroyEntityLater(entity);
+        getWorld()->destroyEntityLater(entity);
         break;
     default:
         break;

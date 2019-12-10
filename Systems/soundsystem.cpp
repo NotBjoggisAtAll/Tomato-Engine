@@ -5,17 +5,6 @@
 #include "Components/transform.h"
 #include "Components/camera.h"
 
-/**
- * TODO
- * Take a look at the soundmanager and the sound system?
- * Maybe I could merge them together?
- */
-
-SoundSystem::SoundSystem()
-{
-    SoundManager::instance();
-}
-
 void SoundSystem::beginPlay()
 {
     for(auto const& entity : entities_)
@@ -78,6 +67,6 @@ void SoundSystem::stopSound(Sound *sound)
 {
     if(!sound->audio_)
         return;
-        sound->audio_->stop();
+    sound->audio_->stop();
 }
 

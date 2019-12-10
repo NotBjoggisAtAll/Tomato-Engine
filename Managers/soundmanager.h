@@ -23,26 +23,6 @@
 class SoundManager
 {
 public:
-    struct SoundListener
-    {
-        gsl::Vector3D pos;
-        gsl::Vector3D vel;
-        gsl::Vector3D dir;
-        gsl::Vector3D up;
-        SoundListener()
-        {
-            pos = gsl::Vector3D(0.0f, 0.0f, 0.0f);
-            vel = gsl::Vector3D(0.0f, 0.0f, 0.0f);
-            dir = gsl::Vector3D(0.0f, 0.0f, 1.0f);
-            up = gsl::Vector3D(0.0f, 1.0f, 0.0f);
-            //Could be something like this, if Vector3-class had support support:
-            //pos = Vector3::ZERO;
-            //vel = Vector3::ZERO;
-            //dir = Vector3::UNIT_Z;
-            //up = Vector3::UNIT_Y;
-        }
-    };
-
     static SoundManager* instance();
 
     /// Cleans up and shuts down OpenAl.
@@ -72,7 +52,6 @@ private:
     ALCdevice* mDevice;                 ///< Pointer to the ALC Device.
     ALCcontext* mContext;               ///< Pointer to the ALC Context.
 
-    SoundListener mListener;               ///< The listener data structure. (Temporary)
 };
 
 #endif

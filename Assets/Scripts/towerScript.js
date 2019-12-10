@@ -24,7 +24,6 @@ function tick()
 
             let distance = distX * distX + distZ * distZ;
 
-
             if(distance < radius*radius)
             {
                 npcsInRange.push(npcs[i]);
@@ -41,14 +40,7 @@ function tick()
 function resetShoot()
 {
     canShoot = true;
-   
 }
 function endPlay()
 {
-
 }
-//engine.spawnEnemy(id); id er entitien som dette scriptet er på.
-/*
- let pos = engine.getAllNpcLocations();
-    console.log(pos);
-*/

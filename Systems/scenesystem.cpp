@@ -11,8 +11,6 @@
 #include "jsonscene.h"
 #include "Factories/resourcefactory.h"
 
-SceneSystem::SceneSystem() {}
-
 void SceneSystem::clearScene()
 {
     auto tempEntities = entities_;
@@ -69,13 +67,9 @@ void SceneSystem::beginPlay()
     }
 }
 
-void SceneSystem::tick(float deltaTime)
-{
-}
-
 void SceneSystem::endPlay()
 {
-    loadScenePriv("temp.json");
+    p_loadScene("temp.json");
 
     //Resets to the editor camera
     Entity entity = getWorld()->createEntity();
@@ -89,7 +83,8 @@ void SceneSystem::loadScene(QFileInfo scene)
 {
     editorCamera_.camera_    = *getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value();
     editorCamera_.transform_ = *getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value();
-    loadScenePriv(scene.filePath());
+    p_loadScene(scene.filePath());
+
     //Resets to the editor camera
     Entity entity = getWorld()->createEntity();
     getWorld()->addComponent(entity, editorCamera_.camera_);
@@ -105,7 +100,7 @@ void SceneSystem::saveScene(QFileInfo scene)
     jscene.makeFile(scene.filePath(),true);
 }
 
-void SceneSystem::loadScenePriv(QString sceneName)
+void SceneSystem::p_loadScene(QString sceneName)
 {
 
     clearScene();

@@ -7,17 +7,6 @@
 #include <vector>
 #include <algorithm>
 
-ProjectileSystem::ProjectileSystem()
-{
-
-}
-
-
-void ProjectileSystem::beginPlay()
-{
-
-}
-
 void ProjectileSystem::tick(float deltaTime)
 {
     for(const auto& entity: entities_)
@@ -32,7 +21,7 @@ void ProjectileSystem::tick(float deltaTime)
             auto lowest = std::min_element(projectile->npcPositions_.begin(), projectile->npcPositions_.end(),[&](const gsl::Vector3D& npc1, const gsl::Vector3D& npc2 )
             {
                 return (npc1 - projcetileTransform->position_).length() <
-                        (npc2 - projcetileTransform->position_).length();
+                       (npc2 - projcetileTransform->position_).length();
             });
 
             projectile->direction_ = (*lowest - projcetileTransform->position_).normalized();
@@ -52,10 +41,4 @@ void ProjectileSystem::tick(float deltaTime)
         getWorld()->destroyEntityLater(entitiesToBeDeleted_.front());
         entitiesToBeDeleted_.pop();
     }
-
 }
-
-void ProjectileSystem::endPlay()
-{
-}
-

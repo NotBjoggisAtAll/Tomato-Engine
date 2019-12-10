@@ -7,9 +7,10 @@ function beginPlay()
 {
 }
 
-function getRndInteger(min, max) {
+function getRndInteger(min, max)
+{
     return Math.floor(Math.random() * (max - min) ) + min;
-  }
+}
 
 function tick()
 {
@@ -26,5 +27,4 @@ function tick()
 
 function endPlay()
 {
-
 }

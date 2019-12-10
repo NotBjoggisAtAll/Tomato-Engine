@@ -8,6 +8,9 @@
 #include <QDebug>
 #include <cassert>
 
+/**
+ * IComponentArray is the base class for the ComponentArray.
+ */
 struct IComponentArray
 {
     virtual ~IComponentArray() = default;

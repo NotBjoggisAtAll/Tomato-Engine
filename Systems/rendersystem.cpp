@@ -7,10 +7,6 @@
 #include "Components/camera.h"
 #include "Shaders/shader.h"
 
-void RenderSystem::beginPlay()
-{
-}
-
 void RenderSystem::tick(float /*deltaTime*/)
 {
     initializeOpenGLFunctions();

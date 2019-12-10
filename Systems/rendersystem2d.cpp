@@ -6,13 +6,6 @@
 #include "world.h"
 #include "Shaders/textureshader.h"
 #include <array>
-RenderSystem2D::RenderSystem2D()
-{
-}
-
-void RenderSystem2D::beginPlay()
-{
-}
 
 void RenderSystem2D::tick(float /*deltaTime*/)
 {
@@ -29,17 +22,12 @@ void RenderSystem2D::tick(float /*deltaTime*/)
 
         modelMatrix.setPosition(gui->position_.x,gui->position_.y,0);
         modelMatrix.scale((gui->scale_.x*height_)/width_, gui->scale_.y, 1.f);
-      //  modelMatrix.scale(gui->scale_.x, gui->scale_.y, 1.f);
 
         material->shader_->transmitUniformData(&modelMatrix, material);
 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
-}
-
-void RenderSystem2D::endPlay()
-{
 }
 
 void RenderSystem2D::setWidthAndHeight(int width, int height)
