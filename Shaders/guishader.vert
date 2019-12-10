@@ -3,7 +3,6 @@
 layout(location = 0) in vec2 posAttr;
 
 uniform mat4 mMatrix;
-uniform mat4 pMatrix;
 
 out vec2 UV;
 

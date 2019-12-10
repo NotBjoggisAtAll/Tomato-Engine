@@ -41,7 +41,7 @@ MaterialWidget::MaterialWidget(Entity entity, QWidget *parent) :
         ui->shaderBox->addItem(QString::fromStdString(shader.first));
     }
 
-    ui->shaderBox->setCurrentText(QString::fromStdString(component_->shader_->mShaderName));
+    ui->shaderBox->setCurrentText(QString::fromStdString(component_->shader_->shaderName_));
 }
 
 MaterialWidget::~MaterialWidget()

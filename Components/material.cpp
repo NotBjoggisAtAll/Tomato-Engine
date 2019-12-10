@@ -43,7 +43,7 @@ void Material::fromJson(QJsonObject Json)
 QJsonObject Material::toJson()
 {
     QJsonObject object;
-    object.insert("Shader Name", QString::fromStdString(shader_->mShaderName));
+    object.insert("Shader Name", QString::fromStdString(shader_->shaderName_));
     QJsonArray colorArray;
     colorArray.insert(0, static_cast<double>(color_.x));
     colorArray.insert(1, static_cast<double>(color_.y));

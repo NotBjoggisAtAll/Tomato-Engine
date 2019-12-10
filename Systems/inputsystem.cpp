@@ -5,10 +5,6 @@
 #include "Components/input.h"
 #include "Components/camera.h"
 
-void InputSystem::beginPlay()
-{
-}
-
 void InputSystem::tick(float /*deltaTime*/)
 {
     auto cameraEntity = getWorld()->getCurrentCamera();
@@ -22,6 +18,7 @@ void InputSystem::tick(float /*deltaTime*/)
         if(getWorld()->bGameRunning) return;
         auto transform = getWorld()->getComponent<Transform>(cameraEntity).value_or(nullptr);
         if(!transform) return;
+
         if(eventHandler_->keys_[Qt::Key_W] == true)
             camera->speed_ = -cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_S] == true)
@@ -34,7 +31,9 @@ void InputSystem::tick(float /*deltaTime*/)
             transform->position_.y += -cameraSpeed;
         if(eventHandler_->keys_[Qt::Key_E] == true)
             transform->position_.y += cameraSpeed;
-    }else{
+    }
+    else
+    {
         if(!getWorld()->bGameRunning) return;
         for(const auto& entity : entities_)
         {
@@ -51,10 +50,6 @@ void InputSystem::tick(float /*deltaTime*/)
                 addPosition(entity,{0.1f,0,0});
         }
     }
-}
-
-void InputSystem::endPlay()
-{
 }
 
 void InputSystem::setEventHandler(const std::shared_ptr<EventHandler> &eventHandler)

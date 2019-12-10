@@ -3,10 +3,11 @@
 #include <sstream>
 #include "constants.h"
 #include "world.h"
+#include "GSL/matrix4x4.h"
 #include "Components/camera.h"
 #include "Components/material.h"
 
-Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShaderName(shaderName)
+Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : shaderName_(shaderName)
 {
     initializeOpenGLFunctions();    //must do this to get access to OpenGL functions in QOpenGLFunctions
 
@@ -109,17 +110,17 @@ Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShad
     }
 
     // Shader Program
-    this->program = glCreateProgram( );
-    glAttachShader( this->program, vertex );
-    glAttachShader( this->program, fragment );
+    this->program_ = glCreateProgram( );
+    glAttachShader( this->program_, vertex );
+    glAttachShader( this->program_, fragment );
     if(geometryPath)
-        glAttachShader( this->program, geometry );
-    glLinkProgram( this->program );
+        glAttachShader( this->program_, geometry );
+    glLinkProgram( this->program_ );
     // Print linking errors if any
-    glGetProgramiv( this->program, GL_LINK_STATUS, &success );
+    glGetProgramiv( this->program_, GL_LINK_STATUS, &success );
     if (!success)
     {
-        glGetProgramInfoLog( this->program, 512, nullptr, infoLog );
+        glGetProgramInfoLog( this->program_, 512, nullptr, infoLog );
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
     // Delete the shaders as they're linked into our program now and no longer needed
@@ -133,21 +134,16 @@ Shader::Shader(const std::string shaderName, const GLchar *geometryPath) : mShad
 
 Shader::~Shader()
 {
-    qDebug() << "shader program " << program;
-    glDeleteProgram(program);
-}
-
-void Shader::use()
-{
-    glUseProgram( this->program );
+    qDebug() << "shader program " << program_;
+    glDeleteProgram(program_);
 }
 
 GLuint Shader::getProgram() const
 {
-    return program;
+    return program_;
 }
 
-void Shader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
+void Shader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material */*material*/)
 {
     glUniformMatrix4fv( vMatrixUniform_, 1, GL_TRUE, getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->viewMatrix_.constData());
     glUniformMatrix4fv( pMatrixUniform_, 1, GL_TRUE, getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value()->projectionMatrix_.constData());

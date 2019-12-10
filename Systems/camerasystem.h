@@ -5,14 +5,31 @@
 
 struct Camera;
 
+/**
+ * Updates the cameras viewmatrix and position.
+ */
 class CameraSystem : public System
 {
 public:
-    CameraSystem();
-    virtual void beginPlay() override;
+    /**
+     * Default constructor.
+     */
+    CameraSystem() = default;
+
+    /**
+     * Tick runs every frame.
+     * Updates the cameras viewmatrix and position.
+     * Only updates the position to the Camera in use.
+     * @param deltaTime - The time since last frame. Usually at 16 ms.
+     */
     virtual void tick(float deltaTime) override;
-    virtual void endPlay() override;
+
 private:
+
+    /**
+     * Calculates the new Camera frustum.
+     * @param camera - Camera component.
+     */
     void updateFrustum(Camera *camera);
 };
 

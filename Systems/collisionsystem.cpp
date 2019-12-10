@@ -5,19 +5,14 @@
 #include "Components/transform.h"
 #include "GSL/matrix4x4.h"
 #include "Components/camera.h"
-
 #include "GSL/gsl_math_extensions.h"
 
-void CollisionSystem::tick(float deltaTime)
+void CollisionSystem::tick(float /*deltaTime*/)
 {
     for (auto const& entity : entities_)
     {
-
-        auto collision = getWorld()->getComponent<Collision>(entity).value_or(nullptr);
-        auto transform = getWorld()->getComponent<Transform>(entity).value_or(nullptr);
-
-        if(!collision || !transform)
-            continue;
+        auto collision = getWorld()->getComponent<Collision>(entity).value();
+        auto transform = getWorld()->getComponent<Transform>(entity).value();
 
         if(collision->minVector_ == gsl::Vector3D(0) && collision->maxVector_ == gsl::Vector3D(0))
             continue;
@@ -58,10 +53,10 @@ void CollisionSystem::tick(float deltaTime)
                 emit entitiesCollided(entity, otherEntity);
                 break;
             }
-
         }
     }
 }
+
 bool CollisionSystem::checkMouseCollision2D(gsl::Vector2D mousePos, gsl::Vector2D screenWidthHeight, HitResult2D& hit)
 {
     gsl::Vector2D newMouse = gsle::map(gsl::Vector2D(mousePos.x, mousePos.y),
@@ -101,7 +96,9 @@ bool CollisionSystem::checkMouseCollision2D(gsl::Vector2D mousePos, gsl::Vector2
 bool CollisionSystem::checkMouseCollision(gsl::Vector2D mousePos, gsl::Vector2D screenWidthHeight, HitResult& hit)
 {
     auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
+    if(!camera) return false;
     auto transform = getWorld()->getComponent<Transform>(getWorld()->getCurrentCamera()).value_or(nullptr);
+    if(!transform) return false;
 
     float x = (2.0f * mousePos.x) / screenWidthHeight.x - 1.0f;
     float y = 1.0f - (2.0f * mousePos.y) / screenWidthHeight.y;
@@ -157,7 +154,6 @@ bool CollisionSystem::raycastFromMouse(gsl::Vector3D rayOrigin, gsl::Vector3D ra
 
 bool CollisionSystem::intersect(Collision* collision, Transform* transform, gsl::Vector3D rayOrigin, gsl::Vector3D rayDirection, HitResult &result)
 {
-
     gsl::Vector3D dirfrac;
     // r.dir is unit direction vector of ray
     dirfrac.x = 1.0f / rayDirection.x;

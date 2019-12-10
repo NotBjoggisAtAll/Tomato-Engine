@@ -4,18 +4,15 @@
 #include "Components/mesh.h"
 #include "Factories/resourcefactory.h"
 
-void BSplineSystem::beginPlay()
-{
-}
-
 void BSplineSystem::tick(float /*deltaTime*/)
 {
     for(auto const& entity : entities_)
     {
         auto spline = getWorld()->getComponent<BSpline>(entity).value();
-        auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 
-        if(!spline->curve_.checkPathChanged()) return;
+        if(!spline->curve_.checkPathChanged()) continue;
+
+        auto mesh = getWorld()->getComponent<Mesh>(entity).value();
 
         Mesh m = ResourceFactory::get()->createLines(spline->curve_.getVerticesAndIndices());
 

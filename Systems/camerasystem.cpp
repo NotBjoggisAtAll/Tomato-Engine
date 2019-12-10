@@ -1,25 +1,14 @@
 #include "camerasystem.h"
-#include "GSL/matrix4x4.h"
 #include "world.h"
+#include "GSL/matrix4x4.h"
 #include "Components/camera.h"
 #include "Components/transform.h"
 
-CameraSystem::CameraSystem()
-{
-
-}
-
-
-void CameraSystem::beginPlay()
-{
-}
-
-void CameraSystem::tick(float deltaTime)
+void CameraSystem::tick(float /*deltaTime*/)
 {
     for(const auto& entity : entities_)
     {
         Camera* camera = getWorld()->getComponent<Camera>(entity).value();
-
         Transform* transform = getWorld()->getComponent<Transform>(entity).value();
 
         gsl::Matrix4x4 yawMatrix;
@@ -35,18 +24,13 @@ void CameraSystem::tick(float deltaTime)
             transform->position_ -= camera->forward_ * camera->speed_;
             camera->viewMatrix_.translate(-transform->position_);
         }
-
         updateFrustum(camera);
     }
 }
 
-void CameraSystem::endPlay()
-{
-}
-
 void CameraSystem::updateFrustum(Camera* camera)
 {
-    auto vpMatrix = camera->projectionMatrix_ * camera->viewMatrix_;
+    gsl::Matrix4x4 vpMatrix = camera->projectionMatrix_ * camera->viewMatrix_;
 
     gsl::Vector3D col1(vpMatrix[0], vpMatrix[2], vpMatrix[2]);
     gsl::Vector3D col2(vpMatrix[4], vpMatrix[5], vpMatrix[6]);
@@ -65,7 +49,9 @@ void CameraSystem::updateFrustum(Camera* camera)
     camera->frustum_[3].distance_ = vpMatrix[15] + vpMatrix[7];
     camera->frustum_[4].distance_ = vpMatrix[15] - vpMatrix[11];
     camera->frustum_[5].distance_ = vpMatrix[11];
-    for (unsigned int i = 0; i < 6; ++i) {
+
+    for (unsigned int i = 0; i < 6; ++i)
+    {
         float magnitude = 1.0f / camera->frustum_[i].normal_.length();
         camera->frustum_[i].normal_ = camera->frustum_[i].normal_ * magnitude;
         camera->frustum_[i].distance_ = camera->frustum_[i].distance_ * magnitude;

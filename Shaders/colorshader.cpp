@@ -4,12 +4,11 @@
 ColorShader::ColorShader(const std::string shaderName, const GLchar *geometryPath)
     :Shader(shaderName, geometryPath)
 {
-    mMatrixUniform_ = glGetUniformLocation( program, "mMatrix" );
-    vMatrixUniform_ = glGetUniformLocation( program, "vMatrix" );
-    pMatrixUniform_ = glGetUniformLocation( program, "pMatrix" );
-    objectColorUniform_ = glGetUniformLocation( program, "objectColor" );
+    mMatrixUniform_ = glGetUniformLocation( program_, "mMatrix" );
+    vMatrixUniform_ = glGetUniformLocation( program_, "vMatrix" );
+    pMatrixUniform_ = glGetUniformLocation( program_, "pMatrix" );
+    objectColorUniform_ = glGetUniformLocation( program_, "objectColor" );
 }
-
 
 void ColorShader::transmitUniformData(gsl::Matrix4x4 *modelMatrix, Material *material)
 {
