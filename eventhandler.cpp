@@ -32,7 +32,6 @@ bool EventHandler::eventFilter(QObject *watched, QEvent *event)
         {
             auto camera = getWorld()->getComponent<Camera>(getWorld()->getCurrentCamera()).value_or(nullptr);
 
-            //Using mMouseXYlast as deltaXY so we don't need extra variables
             mouseXlast_ = mouseEvent->pos().x() - mouseXlast_;
             mouseYlast_ = mouseEvent->pos().y() - mouseYlast_;
 

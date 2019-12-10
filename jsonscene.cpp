@@ -35,17 +35,14 @@ void JsonScene::makeFile(QString absolutefilePath, bool overwrite)
     else
         file.remove();
 
-
     QJsonDocument doc;
     sceneObject_.insert("entities", entities_);
 
     doc.setObject(sceneObject_);
 
-
     file.open(QFile::WriteOnly);
     file.write(doc.toJson());
     file.close();
-
 }
 
 void JsonScene::addObject(Entity entity)
