@@ -18,7 +18,6 @@ function tick()
 
     if(i > randomSpawnTime)
     {
-        console.log(i);
         engine.spawnEnemy(id);
         i = 0;
         randomSpawnTime = getRndInteger(minTime,maxTime);

@@ -294,13 +294,13 @@ Mesh ResourceFactory::createPlane()
 {
     Mesh mesh;
     Vertex v;
-    v.set_xyz(-1,0,1); v.set_rgb(0,0,1); v.set_uv(1,1);
+    v.xyz_ = {-1,0,1}; v.normal_ = {0,0,1}; v.uv_ = {1,1};
     vertices_.push_back(v);
-    v.set_xyz(1,0,1); v.set_rgb(0,1,0); v.set_uv(0,1);
+    v.xyz_ = {1,0,1}; v.normal_ = {0,1,0}; v.uv_ = {0,1};
     vertices_.push_back(v);
-    v.set_xyz(-1,0,-1); v.set_rgb(0,0,1); v.set_uv(1,0);
+    v.xyz_ = {-1,0,-1}; v.normal_ = {0,0,1}; v.uv_ = {1,0};
     vertices_.push_back(v);
-    v.set_xyz(1,0,-1); v.set_rgb(1,0,0); v.set_uv(0,0);
+    v.xyz_ = {1,0,-1}; v.normal_ = {1,0,0}; v.uv_ = {0,0};
     vertices_.push_back(v);
 
     createCollision();
@@ -355,24 +355,24 @@ void ResourceFactory::createCollision()
 
     Collision collision;
 
-    gsl::Vector3D minVector = vertices_.at(0).mXYZ;
-    gsl::Vector3D maxVector = vertices_.at(0).mXYZ;
+    gsl::Vector3D minVector = vertices_.at(0).xyz_;
+    gsl::Vector3D maxVector = vertices_.at(0).xyz_;
 
     for(auto const& vertex : vertices_)
     {
-        if(vertex.mXYZ.x < minVector.x)
-            minVector.x = vertex.mXYZ.x;
-        if(vertex.mXYZ.y < minVector.y)
-            minVector.y = vertex.mXYZ.y;
-        if(vertex.mXYZ.z < minVector.z)
-            minVector.z = vertex.mXYZ.z;
+        if(vertex.xyz_.x < minVector.x)
+            minVector.x = vertex.xyz_.x;
+        if(vertex.xyz_.y < minVector.y)
+            minVector.y = vertex.xyz_.y;
+        if(vertex.xyz_.z < minVector.z)
+            minVector.z = vertex.xyz_.z;
 
-        if(vertex.mXYZ.x > maxVector.x)
-            maxVector.x = vertex.mXYZ.x;
-        if(vertex.mXYZ.y > maxVector.y)
-            maxVector.y = vertex.mXYZ.y;
-        if(vertex.mXYZ.z > maxVector.z)
-            maxVector.z = vertex.mXYZ.z;
+        if(vertex.xyz_.x > maxVector.x)
+            maxVector.x = vertex.xyz_.x;
+        if(vertex.xyz_.y > maxVector.y)
+            maxVector.y = vertex.xyz_.y;
+        if(vertex.xyz_.z > maxVector.z)
+            maxVector.z = vertex.xyz_.z;
     }
     collision.minVector_ = minVector;
     collision.maxVector_ = maxVector;

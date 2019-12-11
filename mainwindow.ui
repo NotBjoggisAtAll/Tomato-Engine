@@ -143,7 +143,6 @@
     <addaction name="sceneCreateNew"/>
     <addaction name="sceneOpen"/>
     <addaction name="sceneSave"/>
-    <addaction name="sceneSaveAs"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>

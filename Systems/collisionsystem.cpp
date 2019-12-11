@@ -145,10 +145,11 @@ bool CollisionSystem::raycastFromMouse(gsl::Vector3D rayOrigin, gsl::Vector3D ra
             {
                 distance = hit.distance;
                 hit.entityHit = entity;
-                return true;
             }
         }
     }
+    if(hit.entityHit != -1)
+        return true;
     return false;
 }
 

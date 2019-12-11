@@ -51,7 +51,6 @@ App::App()
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
     connect(getWorld(), &World::updateCameraPerspectives, renderWindow_.get(), &RenderWindow::callExposeEvent);
-    connect(getWorld(), &World::updateWorldOutliner, this, &App::updateWorldOutliner);
 
     connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
 }
@@ -191,6 +190,7 @@ void App::updateCameraPerspectives(float aspectRatio)
         camera->projectionMatrix_.perspective(fov, aspectRatio, 0.1f, 10000.f);
     }
 }
+
 void App::calculateFramerate()
 {
     frameCounter++;
@@ -208,23 +208,18 @@ void App::calculateFramerate()
 void App::loadScene()
 {
     QFileDialog fileDialog;
-    QFileInfo fileInfo = fileDialog.getOpenFileName(mainWindow_.get(),"Pick a scene","../INNgine2019/Json","*.json");
+    QFileInfo fileInfo = fileDialog.getOpenFileName(mainWindow_.get(),"Load a scene","../INNgine2019/Json","*.json");
 
     if(!fileInfo.size())
         return;
 
     getWorld()->getSystem<SceneSystem>()->loadScene(fileInfo);
-    updateWorldOutliner();
+    mainWindow_->displayEntitiesInOutliner();
 }
 
 void App::newScene()
 {
     getWorld()->getSystem<SceneSystem>()->clearScene();
-}
-
-void App::updateWorldOutliner()
-{
-    mainWindow_->displayEntitiesInOutliner();
 }
 
 void App::saveScene()

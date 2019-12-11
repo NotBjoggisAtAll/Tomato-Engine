@@ -110,23 +110,23 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
     std::vector<unsigned int> indices;
     vertices.reserve(8);
     Vertex vertex;
-    vertex.set_rgb(1,0,0);
+    vertex.normal_ = {1,0,0};
 
-    vertex.set_xyz(min);                    // 0
+    vertex.xyz_ = min;                      // 0
     vertices.push_back(vertex);
-    vertex.set_xyz(max.x, min.y, min.z);    // 1
+    vertex.xyz_ = {max.x, min.y, min.z};    // 1
     vertices.push_back(vertex);
-    vertex.set_xyz(max.x, min.y, max.z);    // 2
+    vertex.xyz_ = {max.x, min.y, max.z};    // 2
     vertices.push_back(vertex);
-    vertex.set_xyz(min.x, min.y, max.z);    // 3
+    vertex.xyz_ = {min.x, min.y, max.z};    // 3
     vertices.push_back(vertex);
-    vertex.set_xyz(min.x, max.y, min.z);    // 4
+    vertex.xyz_ = {min.x, max.y, min.z};    // 4
     vertices.push_back(vertex);
-    vertex.set_xyz(max.x, max.y, min.z);    // 5
+    vertex.xyz_ = {max.x, max.y, min.z};    // 5
     vertices.push_back(vertex);
-    vertex.set_xyz(max);                    // 6
+    vertex.xyz_ = max;                      // 6
     vertices.push_back(vertex);
-    vertex.set_xyz(min.x, max.y, max.z);    // 7
+    vertex.xyz_ = {min.x, max.y, max.z};    // 7
     vertices.push_back(vertex);
 
     indices = {
