@@ -1,20 +1,15 @@
 #include "octahedronball.h"
 #include "vertex.h"
-OctahedronBall::OctahedronBall(GLint n) : mRecursions{n}, mIndex{0}
+OctahedronBall::OctahedronBall(GLint n) : recursions_{n}
 {
     makeUnitOctahedron();
 }
 
-OctahedronBall::~OctahedronBall()
-{
-}
-
 void OctahedronBall::makeTriangle(const gsl::Vector3D &v1, const gsl::Vector3D &v2, const gsl::Vector3D &v3)
 {
-    mVertices.push_back(Vertex(v1, v1, gsl::Vector2D(0.f, 0.f)));
-    mVertices.push_back(Vertex(v2, v2, gsl::Vector2D(1.f, 0.f)));
-    mVertices.push_back(Vertex(v3, v3, gsl::Vector2D(0.5f, 1.f)));
-
+    vertices_.push_back(Vertex(v1, v1, gsl::Vector2D(0.f, 0.f)));
+    vertices_.push_back(Vertex(v2, v2, gsl::Vector2D(1.f, 0.f)));
+    vertices_.push_back(Vertex(v3, v3, gsl::Vector2D(0.5f, 1.f)));
 }
 
 void OctahedronBall::subDivide(const gsl::Vector3D &a, const gsl::Vector3D &b, const gsl::Vector3D &c, GLint n)
@@ -50,12 +45,12 @@ void OctahedronBall::makeUnitOctahedron()
     gsl::Vector3D v4(0.f, -1.f, 0.f);
     gsl::Vector3D v5(0.f, 0.f, -1.f);
 
-    subDivide(v0, v1, v2, mRecursions);
-    subDivide(v0, v2, v3, mRecursions);
-    subDivide(v0, v3, v4, mRecursions);
-    subDivide(v0, v4, v1, mRecursions);
-    subDivide(v5, v2, v1, mRecursions);
-    subDivide(v5, v3, v2, mRecursions);
-    subDivide(v5, v4, v3, mRecursions);
-    subDivide(v5, v1, v4, mRecursions);
+    subDivide(v0, v1, v2, recursions_);
+    subDivide(v0, v2, v3, recursions_);
+    subDivide(v0, v3, v4, recursions_);
+    subDivide(v0, v4, v1, recursions_);
+    subDivide(v5, v2, v1, recursions_);
+    subDivide(v5, v3, v2, recursions_);
+    subDivide(v5, v4, v3, recursions_);
+    subDivide(v5, v1, v4, recursions_);
 }

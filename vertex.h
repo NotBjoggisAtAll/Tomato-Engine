@@ -49,8 +49,13 @@ public:
      */
     friend std::istream& operator>> (std::istream&, Vertex&);
 
+    /// The XYZ coordinates of the Vertex.
     gsl::Vector3D xyz_ = gsl::Vector3D(0);
+
+    /// The normal of the Vertex.
     gsl::Vector3D normal_ = gsl::Vector3D(0);
+
+    /// The UV of the Vertex.
     gsl::Vector2D uv_ = gsl::Vector2D(0);
 };
 

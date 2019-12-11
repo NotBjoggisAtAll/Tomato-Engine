@@ -51,6 +51,7 @@ App::App()
     connect(renderWindow_.get(), &RenderWindow::updateCameraPerspectives, this, &App::updateCameraPerspectives);
     connect(renderWindow_.get(), &RenderWindow::initDone, this, &App::postInit);
     connect(getWorld(), &World::updateCameraPerspectives, renderWindow_.get(), &RenderWindow::callExposeEvent);
+    connect(getWorld(), &World::updateWorldOutliner, mainWindow_.get(), &MainWindow::displayEntitiesInOutliner);
 
     connect(getWorld()->getSystem<CollisionSystem>().get(), &CollisionSystem::entitiesCollided, this, &App::entitiesCollided);
 }
@@ -131,7 +132,7 @@ void App::spawnTower(gsl::Vector3D hitPosition)
     getWorld()->addComponent(entity, Script("towerScript.js"));
     auto script = getWorld()->getComponent<Script>(entity).value();
     getWorld()->getSystem<ScriptSystem>()->componentAdded(script, entity);
-    mainWindow_->addEntityToUi(entity);
+    mainWindow_->addEntityToOutliner(entity);
 }
 
 Entity App::createEntity()
@@ -159,7 +160,7 @@ Entity App::spawnObject(std::string name, std::string path)
     getWorld()->addComponent(entity, Transform());
     getWorld()->addComponent(entity, Material(ShaderManager::get()->plainShader()));
     getWorld()->addComponent(entity, ResourceFactory::get()->getCollision(path));
-    mainWindow_->addEntityToUi(entity);
+    mainWindow_->addEntityToOutliner(entity);
     return entity;
 }
 

@@ -1,13 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QSurfaceFormat>
-#include <QDesktopWidget>
 #include "Widgets/allcomponentwidgets.h"
-#include "renderwindow.h"
 #include "Components/allcomponents.h"
-#include "world.h"
-#include "constants.h"
 #include "Windows/vector3dpicker.h"
+#include "renderwindow.h"
+#include "constants.h"
+#include "world.h"
+#include <QDesktopWidget>
+#include <QSurfaceFormat>
 #include <QAbstractItemView>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -36,7 +36,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::onOutlinerRightClick(const QPoint point)
 {
     ui->Outliner->selectionModel()->clearSelection();
@@ -51,8 +50,8 @@ void MainWindow::onOutlinerRightClick(const QPoint point)
 
 void MainWindow::deleteEntity()
 {
-   getWorld()->destroyEntityLater(ui->Outliner->currentItem()->text(1).toInt());
-   updateRightPanel(-1);
+    getWorld()->destroyEntityLater(ui->Outliner->currentItem()->text(1).toInt());
+    updateRightPanel(-1);
 }
 
 void MainWindow::displayEntitiesInOutliner()
@@ -73,7 +72,7 @@ void MainWindow::displayEntitiesInOutliner()
     }
 }
 
-void MainWindow::addEntityToUi(Entity entity)
+void MainWindow::addEntityToOutliner(Entity entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
     auto data = getWorld()->getComponent<EntityData>(entity).value_or(nullptr);
@@ -192,7 +191,7 @@ void MainWindow::on_spawnPlane_triggered()
 void MainWindow::on_actionEmpty_Entity_triggered()
 {
     Entity entity = emit createEntity();
-    addEntityToUi(entity);
+    addEntityToOutliner(entity);
 }
 
 void MainWindow::on_Outliner_itemSelectionChanged()

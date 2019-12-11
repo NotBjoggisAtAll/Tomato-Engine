@@ -61,7 +61,7 @@ void ScriptSystem::spawnEnemy(int owner)
     if(spline)
     {
         Entity entity = getWorld()->createEntity();
-        getWorld()->addComponent(entity, Transform({500,-500, 500},{},{0.2f,0.2f,0.2f}));
+        getWorld()->addComponent(entity, Transform({500,-500, 500},{0,0,0},{0.2f,0.2f,0.2f}));
         getWorld()->addComponent(entity, ResourceFactory::get()->loadMesh("camera.obj"));
         getWorld()->addComponent(entity, ResourceFactory::get()->getCollision("camera.obj"));
         getWorld()->addComponent(entity, Material(ShaderManager::get()->phongShader(),gsl::Vector3D(1,0,0.5f)));

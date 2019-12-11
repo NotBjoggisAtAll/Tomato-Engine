@@ -278,8 +278,8 @@ Mesh ResourceFactory::createSphere()
     initializeOpenGLFunctions();
 
     OctahedronBall ball(3);
-    vertices_ = ball.mVertices;
-    indices_ = ball.mIndices;
+    vertices_ = ball.vertices_;
+    indices_ = ball.indices_;
 
     mesh.VAO_ = openGLVertexBuffers();
     openGLIndexBuffer();

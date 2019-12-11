@@ -1,6 +1,5 @@
 #include "vertex.h"
 
-
 Vertex::Vertex(float x, float y, float z, float r, float g, float b)
 {
     xyz_.setX(x);

@@ -35,9 +35,15 @@ RenderWindow::RenderWindow()
     }
 }
 
-RenderWindow::~RenderWindow()
+void RenderWindow::tick(float deltaTime)
 {
+    context_->makeCurrent(this);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    getWorld()->getSystem<RenderSystem>()->tick(deltaTime);
+    getWorld()->getSystem<RenderSystem2D>()->tick(deltaTime);
+    context_->swapBuffers(this);
 }
+
 void RenderWindow::exposeEvent(QExposeEvent *)
 {
     if (!initialized_)
@@ -50,7 +56,8 @@ void RenderWindow::exposeEvent(QExposeEvent *)
 
 void RenderWindow::init()
 {
-    if (!context_->makeCurrent(this)) {
+    if (!context_->makeCurrent(this))
+    {
         qDebug() << "makeCurrent() failed";
         return;
     }
@@ -70,15 +77,6 @@ void RenderWindow::init()
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f);    //color used in glClear GL_COLOR_BUFFER_BIT
 
     emit initDone();
-}
-
-void RenderWindow::tick(float deltaTime)
-{
-    context_->makeCurrent(this);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    getWorld()->getSystem<RenderSystem>()->tick(deltaTime);
-    getWorld()->getSystem<RenderSystem2D>()->tick(deltaTime);
-    context_->swapBuffers(this);
 }
 
 void RenderWindow::callExposeEvent()
@@ -159,20 +157,6 @@ void RenderWindow::makeCollisionBorder(Entity newEntity){
 
 }
 
-
-//    temp = new BillBoard();
-//    temp->init();
-//    temp->setShader(ShaderManager::instance()->textureShader());
-//    temp->mMatrix.translate(4.f, 0.f, -3.5f);
-//    temp->mName = "Billboard";
-//    temp->mRenderWindow = this;
-//    temp->mMaterial.mTextureUnit = 1;
-//    temp->mMaterial.mColor = gsl::Vector3D(0.7f, 0.6f, 0.1f);
-//    dynamic_cast<BillBoard*>(temp)->setConstantYUp(true);
-//    mVisualObjects.push_back(temp);
-
-// The stuff below this line should be somewhere else in the future.
-
 void RenderWindow::toggleWireframe()
 {
     wireframe_ = !wireframe_;
@@ -211,7 +195,7 @@ void RenderWindow::checkForGLerrors()
 /// Tries to start the extended OpenGL debugger that comes with Qt
 void RenderWindow::startOpenGLDebugger()
 {
-    QOpenGLContext * temp = this->context();
+    QOpenGLContext * temp = context_;
     if (temp)
     {
         QSurfaceFormat format = temp->format();

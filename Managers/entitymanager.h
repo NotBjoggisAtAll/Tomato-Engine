@@ -8,7 +8,7 @@
 #include <cassert>
 
 /**
- * The EntityManager is responsible for creating/destroying entites in the ECS system.
+ * The EntityManager is responsible for creating/destroying entities in the ECS system.
  * All components is stored in this Manager.
  */
 class EntityManager

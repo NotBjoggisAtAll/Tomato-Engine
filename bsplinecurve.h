@@ -7,7 +7,7 @@
 class Vertex;
 
 /**
- *
+ * A class for making BSplines.
  */
 class BSplineCurve
 {

@@ -1,5 +1,5 @@
 let canShoot = true;
-let fireRate = 500; //In msec
+let fireRate = 250; //In msec
 let radius = 2;
 
 function beginPlay()

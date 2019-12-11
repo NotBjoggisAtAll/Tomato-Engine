@@ -1,0 +1,933 @@
+{
+    "entities": [
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "name": "Light Source",
+                    "parent": -1
+                },
+                "light": {
+                    "ambient": {
+                        "color": [
+                            0.30000001192092896,
+                            0.30000001192092896,
+                            0.30000001192092896
+                        ],
+                        "strength": 0.30000001192092896
+                    },
+                    "light": {
+                        "color": [
+                            0.30000001192092896,
+                            0.30000001192092896,
+                            0.30000001192092896
+                        ],
+                        "strength": 0.699999988079071
+                    },
+                    "specular": {
+                        "exponent": 4,
+                        "strength": 0.30000001192092896
+                    }
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        5,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        0.20000000298023224,
+                        0.20000000298023224,
+                        0.20000000298023224
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "bspline": {
+                    "controlPoints": [
+                        [
+                            -5,
+                            0,
+                            4.5
+                        ],
+                        [
+                            5,
+                            0,
+                            5
+                        ],
+                        [
+                            5,
+                            0,
+                            3
+                        ],
+                        [
+                            -5,
+                            0,
+                            1
+                        ],
+                        [
+                            5,
+                            0,
+                            1
+                        ],
+                        [
+                            5,
+                            0,
+                            -1
+                        ],
+                        [
+                            0,
+                            0,
+                            -1
+                        ],
+                        [
+                            5,
+                            0,
+                            -3
+                        ],
+                        [
+                            -5,
+                            0,
+                            -5
+                        ]
+                    ],
+                    "degree": 2,
+                    "speed": 0.05000000074505806
+                },
+                "entitydata": {
+                    "name": "BSpline",
+                    "parent": -1
+                },
+                "script": {
+                    "file": "enemyManager.js"
+                }
+            }
+        },
+        {
+            "components": {
+                "collision": {
+                    "filepath": "plane"
+                },
+                "entitydata": {
+                    "name": "Floor",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "textureshader",
+                    "texture file": "ground_path.bmp"
+                },
+                "mesh": {
+                    "affectedByFrustum": true,
+                    "filepath": "plane",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        5,
+                        5,
+                        5
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": false,
+                    "pitch": -90,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0.009999999776482582,
+                    "yaw": -180
+                },
+                "entitydata": {
+                    "name": "Game Camera",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "plainshader",
+                    "texture file": ""
+                },
+                "mesh": {
+                    "affectedByFrustum": false,
+                    "filepath": "frustum",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        13,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "entitydata": {
+                    "name": "Skybox",
+                    "parent": -1
+                },
+                "material": {
+                    "Color": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "Shader Name": "textureshader",
+                    "texture file": "skybox.bmp"
+                },
+                "mesh": {
+                    "affectedByFrustum": false,
+                    "filepath": "skybox",
+                    "visible": true
+                },
+                "transform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        15,
+                        15,
+                        15
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 0,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 0
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 5.499997138977051,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": -0.20000000298023224
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 5.499997138977051,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": -0.20000000298023224
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 5.499997138977051,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": -0.20000000298023224
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 5.499997138977051,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": -0.20000000298023224
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": 20.200027465820312,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 6.999995708465576
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "components": {
+                "camera": {
+                    "aspectRatio": 1.1741139888763428,
+                    "fieldOfView": 45,
+                    "isEditor": true,
+                    "pitch": -15.799989700317383,
+                    "rotateSpeed": 0.10000000149011612,
+                    "speed": 0,
+                    "yaw": 9.299999237060547
+                },
+                "transform": {
+                    "position": [
+                        1,
+                        1,
+                        4.400000095367432
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            }
+        }
+    ],
+    "scene": "towerDefence_new"
+}
