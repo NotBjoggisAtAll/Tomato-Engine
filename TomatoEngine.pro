@@ -3,7 +3,7 @@ QT          += core gui widgets qml
 TEMPLATE    = app
 CONFIG      += c++17
 
-TARGET      = INNgine2019
+TARGET      = TomatoEngine
 
 mac {
     QMAKE_CXXFLAGS += --target=x86_64-apple-macosx10.14
