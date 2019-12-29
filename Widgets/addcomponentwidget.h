@@ -111,6 +111,7 @@ private slots:
      */
     void addGUI();
 
+    void addScript();
 signals:
 
     /**

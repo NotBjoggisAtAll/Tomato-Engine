@@ -35,6 +35,8 @@ void AddComponentWidget::on_addButton_clicked()
         menu.addSeparator();
     if(!getWorld()->getComponent<BSpline>(entity_).value_or(nullptr))
         menu.addAction("BSpline", this, &AddComponentWidget::addBSpline);
+    if(!getWorld()->getComponent<Script>(entity_).value_or(nullptr))
+        menu.addAction("Script", this, &AddComponentWidget::addScript);
     if(!getWorld()->getComponent<Camera>(entity_).value_or(nullptr))
         menu.addAction("Camera", this, &AddComponentWidget::addCamera);
     if(!getWorld()->getComponent<Input>(entity_).value_or(nullptr))
@@ -119,5 +121,11 @@ void AddComponentWidget::addSound()
 void AddComponentWidget::addGUI()
 {
     getWorld()->addComponent(entity_, GUI());
+    emit updateComponentPanel(entity_);
+}
+
+void AddComponentWidget::addScript()
+{
+    getWorld()->addComponent(entity_, Script());
     emit updateComponentPanel(entity_);
 }

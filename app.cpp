@@ -263,12 +263,12 @@ void App::mouseLeftClick()
     {
         if(getWorld()->bGameRunning)
         {
-            EntityData* data = getWorld()->getComponent<EntityData>(hit.entityHit).value_or(nullptr);
-            if(data)
-            {
-                if(data->name_ == "Floor")
-                    spawnTower(hit.position);
-            }
+//            EntityData* data = getWorld()->getComponent<EntityData>(hit.entityHit).value_or(nullptr);
+//            if(data)
+//            {
+//                if(data->name_ == "Floor")
+//                    spawnTower(hit.position);
+//            }
         }
         else
         {
