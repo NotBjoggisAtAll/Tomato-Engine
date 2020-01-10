@@ -4,6 +4,7 @@
 #include "Systems/system.h"
 #include "GSL/vector3d.h"
 #include <memory>
+#include <queue>
 
 class EventHandler;
 
@@ -17,6 +18,8 @@ public:
      * Default constructor.
      */
     InputSystem() = default;
+
+    void beginPlay() override;
 
     /**
      * Tick runs every frame.
@@ -45,6 +48,11 @@ private:
 
     /// The camera speed.
     float cameraSpeed = 0.01f;
+    void shoot(Entity entity);
+
+    float shootTimer_ = 0;
+
+    std::queue<Entity> bullets_;
 };
 
 #endif // INPUTSYSTEM_H

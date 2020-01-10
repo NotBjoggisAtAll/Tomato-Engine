@@ -78,7 +78,7 @@ void ScriptSystem::shoot(int owner, QJsonArray npcs)
 
     for(const auto npc : npcs)
     {
-        proj.npcPositions_.push_back(gsl::Vector3D(static_cast<float>(npc.toArray().at(0).toDouble()),0,static_cast<float>(npc.toArray().at(2).toDouble())));
+        //proj.npcPositions_.push_back(gsl::Vector3D(static_cast<float>(npc.toArray().at(0).toDouble()),0,static_cast<float>(npc.toArray().at(2).toDouble())));
     }
 
     Entity entity = getWorld()->createEntity();

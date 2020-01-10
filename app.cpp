@@ -9,6 +9,7 @@
 #include "Managers/soundmanager.h"
 #include "Systems/allsystems.h"
 #include "eventhandler.h"
+#include "constants.h"
 #include "GSL/gsl_math_extensions.h"
 #include <QFileDialog>
 
@@ -73,14 +74,10 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
     getWorld()->setCurrentCamera(entity);
 
-    //Preload objects for the game. Should be done when actually loading the scene.
-    ResourceFactory::get()->loadMesh("turret.obj");
-    ResourceFactory::get()->loadMesh("camera.obj");
-    ResourceFactory::get()->loadMesh("box2.txt");
 
+    QFileInfo path(QString::fromStdString(gsl::jsonFilePath) + "Particle.json");
+    getWorld()->getSystem<SceneSystem>()->loadScene(path);
     mainWindow_->displayEntitiesInOutliner();
-
-    loadScene();
 }
 
 void App::tick()
@@ -169,6 +166,7 @@ void App::playGame()
     getWorld()->getSystem<SceneSystem>()->beginPlay();
     getWorld()->getSystem<SoundSystem>()->beginPlay();
     getWorld()->getSystem<ScriptSystem>()->beginPlay();
+    getWorld()->getSystem<InputSystem>()->beginPlay();
 }
 
 void App::stopGame()

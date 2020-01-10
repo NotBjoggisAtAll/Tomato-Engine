@@ -41,13 +41,9 @@ struct Projectile : public Component
     float speed_ = 5;
 
     /// The projectile's lifetime. The Entity is destroyed when the Projectile has exceeded its lifetime or if it hits something.
-    float lifetime_ = .5f;
+    float lifetime_ = 1.f;
 
-    /// Used to set the Projectile's direction. Set to true when the Projectile gets a valid direction.
-    bool routeCalculated = false;
-
-    /// A vector with the the nearest Npc positions. Used to calculate what to shoot at.
-    std::vector<gsl::Vector3D> npcPositions_;
+    bool active_ = false;
 
 };
 
