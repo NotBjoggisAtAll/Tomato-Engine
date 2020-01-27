@@ -1,13 +1,8 @@
-# INNgine2019
-Kode for kurset Spillmotorarkitektur, høsten 2019.
-Repositoriet er lukket og privat for lærere og studenter i denne klassa.
-
-Dere skal lage en egen branch av masterbranchen inne i dette repositoriet. Kall branchen din noe med ditt eget ekte navn, så vi ser hvem sin branch det er.
-I din egen branch kan du leke deg og gjøre forandringer av hjertens lyst. Det eneste du ikke får lov til er å skifte navnet på mappen som repositoriet ligger i. Den må hete "INNgine2019".
-
-
-# MINgine2019
-
-Bygget på et allerede eksisterende ECS system laget av Austin Morlan
-
+# Tomato-Engine
+Based on a existing ECS system made by Austin Morlan
 https://code.austinmorlan.com/austin/ecs - MIT License
+
+
+This Engine is made during a course at Inland Norway University of Applied Sciences the fall 2019.
+It's built with OpenGL and QT Creator
+
