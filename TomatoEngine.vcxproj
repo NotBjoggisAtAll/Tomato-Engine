@@ -135,7 +135,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(OPENAL_HOME)\include\AL;$(QTDIR)\include;debug;/include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(OPENAL_HOME)\include\AL;$(QTDIR)\include;debug;/include;$(QTDIR)\mkspecs\win32-msvc;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -189,183 +189,183 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Widgets\addcomponentwidget.cpp" />
-    <ClCompile Include="app.cpp" />
-    <ClCompile Include="Components\bspline.cpp" />
-    <ClCompile Include="bsplinecurve.cpp" />
-    <ClCompile Include="Systems\bsplinesystem.cpp" />
-    <ClCompile Include="Widgets\bsplinewidget.cpp" />
-    <ClCompile Include="Components\camera.cpp" />
-    <ClCompile Include="Systems\camerasystem.cpp" />
-    <ClCompile Include="Components\collision.cpp" />
-    <ClCompile Include="Systems\collisionsystem.cpp" />
-    <ClCompile Include="Widgets\collisionwidget.cpp" />
+    <ClCompile Include="src\Widgets\addcomponentwidget.cpp" />
+    <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\Components\bspline.cpp" />
+    <ClCompile Include="src\bsplinecurve.cpp" />
+    <ClCompile Include="src\Systems\bsplinesystem.cpp" />
+    <ClCompile Include="src\Widgets\bsplinewidget.cpp" />
+    <ClCompile Include="src\Components\camera.cpp" />
+    <ClCompile Include="src\Systems\camerasystem.cpp" />
+    <ClCompile Include="src\Components\collision.cpp" />
+    <ClCompile Include="src\Systems\collisionsystem.cpp" />
+    <ClCompile Include="src\Widgets\collisionwidget.cpp" />
     <ClCompile Include="Shaders\colorshader.cpp" />
-    <ClCompile Include="Components\component.cpp" />
-    <ClCompile Include="Components\entitydata.cpp" />
-    <ClCompile Include="eventhandler.cpp" />
-    <ClCompile Include="GSL\gsl_math.cpp" />
-    <ClCompile Include="GSL\gsl_math_extensions.cpp" />
-    <ClCompile Include="Components\gui.cpp" />
-    <ClCompile Include="Factories\guifactory.cpp" />
+    <ClCompile Include="src\Components\component.cpp" />
+    <ClCompile Include="src\Components\entitydata.cpp" />
+    <ClCompile Include="src\eventhandler.cpp" />
+    <ClCompile Include="src\GSL\gsl_math.cpp" />
+    <ClCompile Include="src\GSL\gsl_math_extensions.cpp" />
+    <ClCompile Include="src\Components\gui.cpp" />
+    <ClCompile Include="src\Factories\guifactory.cpp" />
     <ClCompile Include="Shaders\guishader.cpp" />
-    <ClCompile Include="Widgets\guiwidget.cpp" />
-    <ClCompile Include="Components\input.cpp" />
-    <ClCompile Include="Systems\inputsystem.cpp" />
-    <ClCompile Include="Widgets\inputwidget.cpp" />
-    <ClCompile Include="jsonscene.cpp" />
+    <ClCompile Include="src\Widgets\guiwidget.cpp" />
+    <ClCompile Include="src\Components\input.cpp" />
+    <ClCompile Include="src\Systems\inputsystem.cpp" />
+    <ClCompile Include="src\Widgets\inputwidget.cpp" />
+    <ClCompile Include="src\jsonscene.cpp" />
     <ClCompile Include="Script\jstimer.cpp" />
-    <ClCompile Include="Components\light.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="Components\material.cpp" />
-    <ClCompile Include="Widgets\materialwidget.cpp" />
-    <ClCompile Include="GSL\matrix2x2.cpp" />
-    <ClCompile Include="GSL\matrix3x3.cpp" />
-    <ClCompile Include="GSL\matrix4x4.cpp" />
-    <ClCompile Include="Components\mesh.cpp" />
-    <ClCompile Include="Widgets\meshwidget.cpp" />
-    <ClCompile Include="Components\npc.cpp" />
-    <ClCompile Include="Systems\npcsystem.cpp" />
-    <ClCompile Include="octahedronball.cpp" />
+    <ClCompile Include="src\Components\light.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mainwindow.cpp" />
+    <ClCompile Include="src\Components\material.cpp" />
+    <ClCompile Include="src\Widgets\materialwidget.cpp" />
+    <ClCompile Include="src\GSL\matrix2x2.cpp" />
+    <ClCompile Include="src\GSL\matrix3x3.cpp" />
+    <ClCompile Include="src\GSL\matrix4x4.cpp" />
+    <ClCompile Include="src\Components\mesh.cpp" />
+    <ClCompile Include="src\Widgets\meshwidget.cpp" />
+    <ClCompile Include="src\Components\npc.cpp" />
+    <ClCompile Include="src\Systems\npcsystem.cpp" />
+    <ClCompile Include="src\octahedronball.cpp" />
     <ClCompile Include="Shaders\phongshader.cpp" />
     <ClCompile Include="Shaders\plainshader.cpp" />
-    <ClCompile Include="Components\projectile.cpp" />
-    <ClCompile Include="Systems\projectilesystem.cpp" />
-    <ClCompile Include="Widgets\projectilewidget.cpp" />
-    <ClCompile Include="Systems\rendersystem.cpp" />
-    <ClCompile Include="Systems\rendersystem2d.cpp" />
-    <ClCompile Include="renderwindow.cpp" />
-    <ClCompile Include="Factories\resourcefactory.cpp" />
-    <ClCompile Include="Systems\scenesystem.cpp" />
-    <ClCompile Include="Components\script.cpp" />
-    <ClCompile Include="Systems\scriptsystem.cpp" />
-    <ClCompile Include="Widgets\scriptwidget.cpp" />
+    <ClCompile Include="src\Components\projectile.cpp" />
+    <ClCompile Include="src\Systems\projectilesystem.cpp" />
+    <ClCompile Include="src\Widgets\projectilewidget.cpp" />
+    <ClCompile Include="src\Systems\rendersystem.cpp" />
+    <ClCompile Include="src\Systems\rendersystem2d.cpp" />
+    <ClCompile Include="src\renderwindow.cpp" />
+    <ClCompile Include="src\Factories\resourcefactory.cpp" />
+    <ClCompile Include="src\Systems\scenesystem.cpp" />
+    <ClCompile Include="src\Components\script.cpp" />
+    <ClCompile Include="src\Systems\scriptsystem.cpp" />
+    <ClCompile Include="src\Widgets\scriptwidget.cpp" />
     <ClCompile Include="Shaders\shader.cpp" />
-    <ClCompile Include="Managers\shadermanager.cpp" />
-    <ClCompile Include="Components\sound.cpp" />
-    <ClCompile Include="Managers\soundmanager.cpp" />
-    <ClCompile Include="soundsource.cpp" />
-    <ClCompile Include="Systems\soundsystem.cpp" />
-    <ClCompile Include="Widgets\soundwidget.cpp" />
-    <ClCompile Include="Systems\system.cpp" />
-    <ClCompile Include="texture.cpp" />
-    <ClCompile Include="Factories\texturefactory.cpp" />
+    <ClCompile Include="src\Managers\shadermanager.cpp" />
+    <ClCompile Include="src\Components\sound.cpp" />
+    <ClCompile Include="src\Managers\soundmanager.cpp" />
+    <ClCompile Include="src\soundsource.cpp" />
+    <ClCompile Include="src\Systems\soundsystem.cpp" />
+    <ClCompile Include="src\Widgets\soundwidget.cpp" />
+    <ClCompile Include="src\Systems\system.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\Factories\texturefactory.cpp" />
     <ClCompile Include="Shaders\textureshader.cpp" />
-    <ClCompile Include="Components\transform.cpp" />
-    <ClCompile Include="Widgets\transformwidget.cpp" />
-    <ClCompile Include="GSL\vector2d.cpp" />
-    <ClCompile Include="GSL\vector3d.cpp" />
-    <ClCompile Include="Windows\vector3dpicker.cpp" />
-    <ClCompile Include="GSL\vector4d.cpp" />
-    <ClCompile Include="vertex.cpp" />
-    <ClCompile Include="Handlers\wavfilehandler.cpp" />
-    <ClCompile Include="world.cpp" />
+    <ClCompile Include="src\Components\transform.cpp" />
+    <ClCompile Include="src\Widgets\transformwidget.cpp" />
+    <ClCompile Include="src\GSL\vector2d.cpp" />
+    <ClCompile Include="src\GSL\vector3d.cpp" />
+    <ClCompile Include="src\Windows\vector3dpicker.cpp" />
+    <ClCompile Include="src\GSL\vector4d.cpp" />
+    <ClCompile Include="src\vertex.cpp" />
+    <ClCompile Include="src\Handlers\wavfilehandler.cpp" />
+    <ClCompile Include="src\world.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Widgets\addcomponentwidget.h">
+    <QtMoc Include="src\Widgets\addcomponentwidget.h">
     </QtMoc>
-    <ClInclude Include="Components\allcomponents.h" />
-    <ClInclude Include="Widgets\allcomponentwidgets.h" />
-    <ClInclude Include="Systems\allsystems.h" />
-    <QtMoc Include="app.h">
+    <ClInclude Include="src\Components\allcomponents.h" />
+    <ClInclude Include="src\Widgets\allcomponentwidgets.h" />
+    <ClInclude Include="src\Systems\allsystems.h" />
+    <QtMoc Include="src\app.h">
     </QtMoc>
-    <ClInclude Include="Components\bspline.h" />
-    <ClInclude Include="bsplinecurve.h" />
-    <ClInclude Include="Systems\bsplinesystem.h" />
-    <QtMoc Include="Widgets\bsplinewidget.h">
+    <ClInclude Include="src\Components\bspline.h" />
+    <ClInclude Include="src\bsplinecurve.h" />
+    <ClInclude Include="src\Systems\bsplinesystem.h" />
+    <QtMoc Include="src\Widgets\bsplinewidget.h">
     </QtMoc>
-    <ClInclude Include="Components\camera.h" />
-    <ClInclude Include="Systems\camerasystem.h" />
-    <ClInclude Include="Components\collision.h" />
-    <QtMoc Include="Systems\collisionsystem.h">
+    <ClInclude Include="src\Components\camera.h" />
+    <ClInclude Include="src\Systems\camerasystem.h" />
+    <ClInclude Include="src\Components\collision.h" />
+    <QtMoc Include="src\Systems\collisionsystem.h">
     </QtMoc>
-    <QtMoc Include="Widgets\collisionwidget.h">
+    <QtMoc Include="src\Widgets\collisionwidget.h">
     </QtMoc>
     <ClInclude Include="Shaders\colorshader.h" />
-    <ClInclude Include="Components\component.h" />
-    <ClInclude Include="Components\componentArray.h" />
-    <ClInclude Include="Managers\componentManager.h" />
-    <ClInclude Include="constants.h" />
-    <ClInclude Include="Components\entitydata.h" />
-    <ClInclude Include="Managers\entitymanager.h" />
-    <QtMoc Include="eventhandler.h">
+    <ClInclude Include="src\Components\component.h" />
+    <ClInclude Include="src\Components\componentArray.h" />
+    <ClInclude Include="src\Managers\componentManager.h" />
+    <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\Components\entitydata.h" />
+    <ClInclude Include="src\Managers\entitymanager.h" />
+    <QtMoc Include="src\eventhandler.h">
     </QtMoc>
-    <ClInclude Include="gltypes.h" />
-    <ClInclude Include="GSL\gsl_math.h" />
-    <ClInclude Include="GSL\gsl_math_extensions.h" />
-    <ClInclude Include="Components\gui.h" />
-    <ClInclude Include="Factories\guifactory.h" />
+    <ClInclude Include="src\gltypes.h" />
+    <ClInclude Include="src\GSL\gsl_math.h" />
+    <ClInclude Include="src\GSL\gsl_math_extensions.h" />
+    <ClInclude Include="src\Components\gui.h" />
+    <ClInclude Include="src\Factories\guifactory.h" />
     <ClInclude Include="Shaders\guishader.h" />
-    <QtMoc Include="Widgets\guiwidget.h">
+    <QtMoc Include="src\Widgets\guiwidget.h">
     </QtMoc>
-    <ClInclude Include="hitresult.h" />
-    <ClInclude Include="Components\input.h" />
-    <ClInclude Include="Systems\inputsystem.h" />
-    <QtMoc Include="Widgets\inputwidget.h">
+    <ClInclude Include="src\hitresult.h" />
+    <ClInclude Include="src\Components\input.h" />
+    <ClInclude Include="src\Systems\inputsystem.h" />
+    <QtMoc Include="src\Widgets\inputwidget.h">
     </QtMoc>
-    <ClInclude Include="jsonscene.h" />
+    <ClInclude Include="src\jsonscene.h" />
     <QtMoc Include="Script\jstimer.h">
     </QtMoc>
-    <ClInclude Include="Components\light.h" />
-    <QtMoc Include="mainwindow.h">
+    <ClInclude Include="src\Components\light.h" />
+    <QtMoc Include="src\mainwindow.h">
     </QtMoc>
-    <ClInclude Include="Components\material.h" />
-    <QtMoc Include="Widgets\materialwidget.h">
+    <ClInclude Include="src\Components\material.h" />
+    <QtMoc Include="src\Widgets\materialwidget.h">
     </QtMoc>
-    <ClInclude Include="GSL\math_constants.h" />
-    <ClInclude Include="GSL\matrix2x2.h" />
-    <ClInclude Include="GSL\matrix3x3.h" />
-    <ClInclude Include="GSL\matrix4x4.h" />
-    <ClInclude Include="Components\mesh.h" />
-    <QtMoc Include="Widgets\meshwidget.h">
+    <ClInclude Include="src\GSL\math_constants.h" />
+    <ClInclude Include="src\GSL\matrix2x2.h" />
+    <ClInclude Include="src\GSL\matrix3x3.h" />
+    <ClInclude Include="src\GSL\matrix4x4.h" />
+    <ClInclude Include="src\Components\mesh.h" />
+    <QtMoc Include="src\Widgets\meshwidget.h">
     </QtMoc>
-    <ClInclude Include="Components\npc.h" />
-    <ClInclude Include="Systems\npcsystem.h" />
-    <ClInclude Include="octahedronball.h" />
+    <ClInclude Include="src\Components\npc.h" />
+    <ClInclude Include="src\Systems\npcsystem.h" />
+    <ClInclude Include="src\octahedronball.h" />
     <ClInclude Include="Shaders\phongshader.h" />
     <ClInclude Include="Shaders\plainshader.h" />
-    <ClInclude Include="Components\projectile.h" />
-    <ClInclude Include="Systems\projectilesystem.h" />
-    <QtMoc Include="Widgets\projectilewidget.h">
+    <ClInclude Include="src\Components\projectile.h" />
+    <ClInclude Include="src\Systems\projectilesystem.h" />
+    <QtMoc Include="src\Widgets\projectilewidget.h">
     </QtMoc>
-    <ClInclude Include="Systems\rendersystem.h" />
-    <ClInclude Include="Systems\rendersystem2d.h" />
-    <QtMoc Include="renderwindow.h">
+    <ClInclude Include="src\Systems\rendersystem.h" />
+    <ClInclude Include="src\Systems\rendersystem2d.h" />
+    <QtMoc Include="src\renderwindow.h">
     </QtMoc>
-    <ClInclude Include="Factories\resourcefactory.h" />
-    <ClInclude Include="Systems\scenesystem.h" />
-    <ClInclude Include="Components\script.h" />
-    <QtMoc Include="Systems\scriptsystem.h">
+    <ClInclude Include="src\Factories\resourcefactory.h" />
+    <ClInclude Include="src\Systems\scenesystem.h" />
+    <ClInclude Include="src\Components\script.h" />
+    <QtMoc Include="src\Systems\scriptsystem.h">
     </QtMoc>
-    <QtMoc Include="Widgets\scriptwidget.h">
+    <QtMoc Include="src\Widgets\scriptwidget.h">
     </QtMoc>
     <ClInclude Include="Shaders\shader.h" />
-    <ClInclude Include="Managers\shadermanager.h" />
-    <ClInclude Include="Components\sound.h" />
-    <ClInclude Include="Managers\soundmanager.h" />
-    <ClInclude Include="soundsource.h" />
-    <ClInclude Include="Systems\soundsystem.h" />
-    <QtMoc Include="Widgets\soundwidget.h">
+    <ClInclude Include="src\Managers\shadermanager.h" />
+    <ClInclude Include="src\Components\sound.h" />
+    <ClInclude Include="src\Managers\soundmanager.h" />
+    <ClInclude Include="src\soundsource.h" />
+    <ClInclude Include="src\Systems\soundsystem.h" />
+    <QtMoc Include="src\Widgets\soundwidget.h">
     </QtMoc>
-    <QtMoc Include="Systems\system.h">
+    <QtMoc Include="src\Systems\system.h">
     </QtMoc>
-    <ClInclude Include="Managers\systemManager.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="Factories\texturefactory.h" />
+    <ClInclude Include="src\Managers\systemManager.h" />
+    <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\Factories\texturefactory.h" />
     <ClInclude Include="Shaders\textureshader.h" />
-    <ClInclude Include="Components\transform.h" />
-    <QtMoc Include="Widgets\transformwidget.h">
+    <ClInclude Include="src\Components\transform.h" />
+    <QtMoc Include="src\Widgets\transformwidget.h">
     </QtMoc>
-    <ClInclude Include="types.h" />
-    <ClInclude Include="GSL\vector2d.h" />
-    <ClInclude Include="GSL\vector3d.h" />
-    <QtMoc Include="Windows\vector3dpicker.h">
+    <ClInclude Include="src\types.h" />
+    <ClInclude Include="src\GSL\vector2d.h" />
+    <ClInclude Include="src\GSL\vector3d.h" />
+    <QtMoc Include="src\Windows\vector3dpicker.h">
     </QtMoc>
-    <ClInclude Include="GSL\vector4d.h" />
-    <ClInclude Include="vertex.h" />
-    <ClInclude Include="Handlers\wavfilehandler.h" />
-    <QtMoc Include="world.h">
+    <ClInclude Include="src\GSL\vector4d.h" />
+    <ClInclude Include="src\vertex.h" />
+    <ClInclude Include="src\Handlers\wavfilehandler.h" />
+    <QtMoc Include="src\world.h">
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -387,35 +387,35 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="Widgets\addcomponentwidget.ui">
+    <QtUic Include="src\Widgets\addcomponentwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\bsplinewidget.ui">
+    <QtUic Include="src\Widgets\bsplinewidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\collisionwidget.ui">
+    <QtUic Include="src\Widgets\collisionwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\guiwidget.ui">
+    <QtUic Include="src\Widgets\guiwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\inputwidget.ui">
+    <QtUic Include="src\Widgets\inputwidget.ui">
     </QtUic>
-    <QtUic Include="mainwindow.ui">
+    <QtUic Include="src\mainwindow.ui">
     </QtUic>
-    <QtUic Include="Widgets\materialwidget.ui">
+    <QtUic Include="src\Widgets\materialwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\meshwidget.ui">
+    <QtUic Include="src\Widgets\meshwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\projectilewidget.ui">
+    <QtUic Include="src\Widgets\projectilewidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\scriptwidget.ui">
+    <QtUic Include="src\Widgets\scriptwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\soundwidget.ui">
+    <QtUic Include="src\Widgets\soundwidget.ui">
     </QtUic>
-    <QtUic Include="Widgets\transformwidget.ui">
+    <QtUic Include="src\Widgets\transformwidget.ui">
     </QtUic>
-    <QtUic Include="Windows\vector3dpicker.ui">
+    <QtUic Include="src\Windows\vector3dpicker.ui">
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GSL\README.md" />
+    <None Include="src\GSL\README.md" />
     <None Include="README.md" />
     <None Include="Shaders\colorshader.frag" />
     <None Include="Shaders\colorshader.vert" />
