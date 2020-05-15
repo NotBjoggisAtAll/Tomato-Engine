@@ -207,7 +207,7 @@ void App::calculateFramerate()
 void App::loadScene()
 {
     QFileDialog fileDialog;
-    QFileInfo fileInfo = fileDialog.getOpenFileName(mainWindow_.get(),"Load a scene","../INNgine2019/Json","*.json");
+    QFileInfo fileInfo = fileDialog.getOpenFileName(mainWindow_.get(),"Load a scene","../Tomato-Engine/Json","*.json");
 
     if(!fileInfo.size())
         return;
@@ -241,6 +241,7 @@ void App::mouseLeftClick()
 
     HitResult hit;
     HitResult2D hit2D;
+        std::cout << "I'm pressing the button!" << hit2D.entityHit;
 
     if(getWorld()->getSystem<CollisionSystem>()->checkMouseCollision2D(mousePosVector2D,screenWidthHeight,hit2D))
     {
@@ -252,7 +253,6 @@ void App::mouseLeftClick()
         }
         //Button press here.
 
-        qDebug() << "I'm pressing the button!" << hit2D.entityHit;
 
         return;
     }

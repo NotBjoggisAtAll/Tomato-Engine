@@ -12,7 +12,7 @@ mac {
 
 win32 {
     INCLUDEPATH += $(OPENAL_HOME)\\include\\AL
-    LIBS *= $(OPENAL_HOME)\\libs\\Win64\\libOpenAL32.dll.a
+    LIBS *= $(OPENAL_HOME)\\OpenAL32.dll
 }
 
 HEADERS += \

@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C243BB71-404F-3033-B6E9-328ECCE65143}</ProjectGuid>
+    <RootNamespace>TomatoEngine</RootNamespace>
+    <Keyword>QtVS_v302</Keyword>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.18362.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>TomatoEngine</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>TomatoEngine</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>Default</QtInstall>
+    <QtModules>core;network;gui;widgets;qml</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>Default</QtInstall>
+    <QtModules>core;network;gui;widgets;qml</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TomatoEngine</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TomatoEngine</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(OPENAL_HOME)\include\AL;$(QTDIR)\include;release;/include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(OPENAL_HOME)\libOpenAL32.dll.a;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\TomatoEngine.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(OPENAL_HOME)\include\AL;$(QTDIR)\include;debug;/include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(OPENAL_HOME)\libOpenAL32.dll.a;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\TomatoEngine.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Widgets\addcomponentwidget.cpp" />
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="Components\bspline.cpp" />
+    <ClCompile Include="bsplinecurve.cpp" />
+    <ClCompile Include="Systems\bsplinesystem.cpp" />
+    <ClCompile Include="Widgets\bsplinewidget.cpp" />
+    <ClCompile Include="Components\camera.cpp" />
+    <ClCompile Include="Systems\camerasystem.cpp" />
+    <ClCompile Include="Components\collision.cpp" />
+    <ClCompile Include="Systems\collisionsystem.cpp" />
+    <ClCompile Include="Widgets\collisionwidget.cpp" />
+    <ClCompile Include="Shaders\colorshader.cpp" />
+    <ClCompile Include="Components\component.cpp" />
+    <ClCompile Include="Components\entitydata.cpp" />
+    <ClCompile Include="eventhandler.cpp" />
+    <ClCompile Include="GSL\gsl_math.cpp" />
+    <ClCompile Include="GSL\gsl_math_extensions.cpp" />
+    <ClCompile Include="Components\gui.cpp" />
+    <ClCompile Include="Factories\guifactory.cpp" />
+    <ClCompile Include="Shaders\guishader.cpp" />
+    <ClCompile Include="Widgets\guiwidget.cpp" />
+    <ClCompile Include="Components\input.cpp" />
+    <ClCompile Include="Systems\inputsystem.cpp" />
+    <ClCompile Include="Widgets\inputwidget.cpp" />
+    <ClCompile Include="jsonscene.cpp" />
+    <ClCompile Include="Script\jstimer.cpp" />
+    <ClCompile Include="Components\light.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="Components\material.cpp" />
+    <ClCompile Include="Widgets\materialwidget.cpp" />
+    <ClCompile Include="GSL\matrix2x2.cpp" />
+    <ClCompile Include="GSL\matrix3x3.cpp" />
+    <ClCompile Include="GSL\matrix4x4.cpp" />
+    <ClCompile Include="Components\mesh.cpp" />
+    <ClCompile Include="Widgets\meshwidget.cpp" />
+    <ClCompile Include="Components\npc.cpp" />
+    <ClCompile Include="Systems\npcsystem.cpp" />
+    <ClCompile Include="octahedronball.cpp" />
+    <ClCompile Include="Shaders\phongshader.cpp" />
+    <ClCompile Include="Shaders\plainshader.cpp" />
+    <ClCompile Include="Components\projectile.cpp" />
+    <ClCompile Include="Systems\projectilesystem.cpp" />
+    <ClCompile Include="Widgets\projectilewidget.cpp" />
+    <ClCompile Include="Systems\rendersystem.cpp" />
+    <ClCompile Include="Systems\rendersystem2d.cpp" />
+    <ClCompile Include="renderwindow.cpp" />
+    <ClCompile Include="Factories\resourcefactory.cpp" />
+    <ClCompile Include="Systems\scenesystem.cpp" />
+    <ClCompile Include="Components\script.cpp" />
+    <ClCompile Include="Systems\scriptsystem.cpp" />
+    <ClCompile Include="Widgets\scriptwidget.cpp" />
+    <ClCompile Include="Shaders\shader.cpp" />
+    <ClCompile Include="Managers\shadermanager.cpp" />
+    <ClCompile Include="Components\sound.cpp" />
+    <ClCompile Include="Managers\soundmanager.cpp" />
+    <ClCompile Include="soundsource.cpp" />
+    <ClCompile Include="Systems\soundsystem.cpp" />
+    <ClCompile Include="Widgets\soundwidget.cpp" />
+    <ClCompile Include="Systems\system.cpp" />
+    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Factories\texturefactory.cpp" />
+    <ClCompile Include="Shaders\textureshader.cpp" />
+    <ClCompile Include="Components\transform.cpp" />
+    <ClCompile Include="Widgets\transformwidget.cpp" />
+    <ClCompile Include="GSL\vector2d.cpp" />
+    <ClCompile Include="GSL\vector3d.cpp" />
+    <ClCompile Include="Windows\vector3dpicker.cpp" />
+    <ClCompile Include="GSL\vector4d.cpp" />
+    <ClCompile Include="vertex.cpp" />
+    <ClCompile Include="Handlers\wavfilehandler.cpp" />
+    <ClCompile Include="world.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Widgets\addcomponentwidget.h">
+    </QtMoc>
+    <ClInclude Include="Components\allcomponents.h" />
+    <ClInclude Include="Widgets\allcomponentwidgets.h" />
+    <ClInclude Include="Systems\allsystems.h" />
+    <QtMoc Include="app.h">
+    </QtMoc>
+    <ClInclude Include="Components\bspline.h" />
+    <ClInclude Include="bsplinecurve.h" />
+    <ClInclude Include="Systems\bsplinesystem.h" />
+    <QtMoc Include="Widgets\bsplinewidget.h">
+    </QtMoc>
+    <ClInclude Include="Components\camera.h" />
+    <ClInclude Include="Systems\camerasystem.h" />
+    <ClInclude Include="Components\collision.h" />
+    <QtMoc Include="Systems\collisionsystem.h">
+    </QtMoc>
+    <QtMoc Include="Widgets\collisionwidget.h">
+    </QtMoc>
+    <ClInclude Include="Shaders\colorshader.h" />
+    <ClInclude Include="Components\component.h" />
+    <ClInclude Include="Components\componentArray.h" />
+    <ClInclude Include="Managers\componentManager.h" />
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="Components\entitydata.h" />
+    <ClInclude Include="Managers\entitymanager.h" />
+    <QtMoc Include="eventhandler.h">
+    </QtMoc>
+    <ClInclude Include="gltypes.h" />
+    <ClInclude Include="GSL\gsl_math.h" />
+    <ClInclude Include="GSL\gsl_math_extensions.h" />
+    <ClInclude Include="Components\gui.h" />
+    <ClInclude Include="Factories\guifactory.h" />
+    <ClInclude Include="Shaders\guishader.h" />
+    <QtMoc Include="Widgets\guiwidget.h">
+    </QtMoc>
+    <ClInclude Include="hitresult.h" />
+    <ClInclude Include="Components\input.h" />
+    <ClInclude Include="Systems\inputsystem.h" />
+    <QtMoc Include="Widgets\inputwidget.h">
+    </QtMoc>
+    <ClInclude Include="jsonscene.h" />
+    <QtMoc Include="Script\jstimer.h">
+    </QtMoc>
+    <ClInclude Include="Components\light.h" />
+    <QtMoc Include="mainwindow.h">
+    </QtMoc>
+    <ClInclude Include="Components\material.h" />
+    <QtMoc Include="Widgets\materialwidget.h">
+    </QtMoc>
+    <ClInclude Include="GSL\math_constants.h" />
+    <ClInclude Include="GSL\matrix2x2.h" />
+    <ClInclude Include="GSL\matrix3x3.h" />
+    <ClInclude Include="GSL\matrix4x4.h" />
+    <ClInclude Include="Components\mesh.h" />
+    <QtMoc Include="Widgets\meshwidget.h">
+    </QtMoc>
+    <ClInclude Include="Components\npc.h" />
+    <ClInclude Include="Systems\npcsystem.h" />
+    <ClInclude Include="octahedronball.h" />
+    <ClInclude Include="Shaders\phongshader.h" />
+    <ClInclude Include="Shaders\plainshader.h" />
+    <ClInclude Include="Components\projectile.h" />
+    <ClInclude Include="Systems\projectilesystem.h" />
+    <QtMoc Include="Widgets\projectilewidget.h">
+    </QtMoc>
+    <ClInclude Include="Systems\rendersystem.h" />
+    <ClInclude Include="Systems\rendersystem2d.h" />
+    <QtMoc Include="renderwindow.h">
+    </QtMoc>
+    <ClInclude Include="Factories\resourcefactory.h" />
+    <ClInclude Include="Systems\scenesystem.h" />
+    <ClInclude Include="Components\script.h" />
+    <QtMoc Include="Systems\scriptsystem.h">
+    </QtMoc>
+    <QtMoc Include="Widgets\scriptwidget.h">
+    </QtMoc>
+    <ClInclude Include="Shaders\shader.h" />
+    <ClInclude Include="Managers\shadermanager.h" />
+    <ClInclude Include="Components\sound.h" />
+    <ClInclude Include="Managers\soundmanager.h" />
+    <ClInclude Include="soundsource.h" />
+    <ClInclude Include="Systems\soundsystem.h" />
+    <QtMoc Include="Widgets\soundwidget.h">
+    </QtMoc>
+    <QtMoc Include="Systems\system.h">
+    </QtMoc>
+    <ClInclude Include="Managers\systemManager.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="Factories\texturefactory.h" />
+    <ClInclude Include="Shaders\textureshader.h" />
+    <ClInclude Include="Components\transform.h" />
+    <QtMoc Include="Widgets\transformwidget.h">
+    </QtMoc>
+    <ClInclude Include="types.h" />
+    <ClInclude Include="GSL\vector2d.h" />
+    <ClInclude Include="GSL\vector3d.h" />
+    <QtMoc Include="Windows\vector3dpicker.h">
+    </QtMoc>
+    <ClInclude Include="GSL\vector4d.h" />
+    <ClInclude Include="vertex.h" />
+    <ClInclude Include="Handlers\wavfilehandler.h" />
+    <QtMoc Include="world.h">
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_predefs.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Widgets\addcomponentwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\bsplinewidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\collisionwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\guiwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\inputwidget.ui">
+    </QtUic>
+    <QtUic Include="mainwindow.ui">
+    </QtUic>
+    <QtUic Include="Widgets\materialwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\meshwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\projectilewidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\scriptwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\soundwidget.ui">
+    </QtUic>
+    <QtUic Include="Widgets\transformwidget.ui">
+    </QtUic>
+    <QtUic Include="Windows\vector3dpicker.ui">
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GSL\README.md" />
+    <None Include="README.md" />
+    <None Include="Shaders\colorshader.frag" />
+    <None Include="Shaders\colorshader.vert" />
+    <None Include="Shaders\guishader.frag" />
+    <None Include="Shaders\guishader.vert" />
+    <None Include="Shaders\phongshader.frag" />
+    <None Include="Shaders\phongshader.vert" />
+    <None Include="Shaders\plainshader.frag" />
+    <None Include="Shaders\plainshader.vert" />
+    <None Include="Shaders\textureshader.frag" />
+    <None Include="Shaders\textureshader.vert" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
