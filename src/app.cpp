@@ -12,6 +12,7 @@
 #include "constants.h"
 #include "GSL/gsl_math_extensions.h"
 #include <QFileDialog>
+#include <ui_mainwindow.h>
 
 App::App()
 {
@@ -26,6 +27,9 @@ App::App()
 
 
     mainWindow_ = std::make_unique<MainWindow>();
+
+    getWorld()->outputWindow = std::unique_ptr<QPlainTextEdit>(mainWindow_->ui->LogOutput);
+	
     renderWindow_ = mainWindow_->renderWindow_;
     eventHandler_ = std::make_shared<EventHandler>();
     renderWindow_->installEventFilter(eventHandler_.get());
@@ -74,10 +78,12 @@ void App::postInit()
     getWorld()->addComponent(entity, Transform(gsl::Vector3D(1.f, 1.f, 4.4f)));
     getWorld()->setCurrentCamera(entity);
 
-
     QFileInfo path(QString::fromStdString(gsl::jsonFilePath) + "Particle.json");
     getWorld()->getSystem<SceneSystem>()->loadScene(path);
     mainWindow_->displayEntitiesInOutliner();
+
+    getWorld()->Log("Test log");
+    getWorld()->Log("text lgoggg 2 ");
 }
 
 void App::tick()

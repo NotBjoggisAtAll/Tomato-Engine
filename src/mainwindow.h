@@ -191,10 +191,11 @@ private slots:
      * Called when the user presses delete entity in the editor.
      */
     void deleteEntity();
-private:
 
+public:
     Ui::MainWindow *ui;
 
+private:
     /**
      * Setsup the child/parent relationship when the user drag and drops a entity on another.
      * @param parent

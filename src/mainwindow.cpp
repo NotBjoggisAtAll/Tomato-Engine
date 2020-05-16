@@ -9,6 +9,7 @@
 #include <QDesktopWidget>
 #include <QSurfaceFormat>
 #include <QAbstractItemView>
+#include <QPlainTextEdit>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Outliner->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->Outliner, &QWidget::customContextMenuRequested, this, &MainWindow::onOutlinerRightClick);
 
-    setWindowIcon(QIcon("../INNgine2019/Icons/tomatobotBIG.png"));
+    setWindowIcon(QIcon("../Tomato-Engine/Icons/tomatobotBIG.png"));
 
     renderWindow_ = std::make_shared<RenderWindow>();
     renderWindowContainer_ = QWidget::createWindowContainer(renderWindow_.get());

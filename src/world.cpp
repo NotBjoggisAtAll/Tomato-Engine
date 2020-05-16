@@ -1,5 +1,7 @@
 #include "world.h"
 
+#include <QPlainTextEdit>
+
 World* World::instance = nullptr;
 
 Entity World::createEntity()
@@ -54,4 +56,9 @@ World::World()
     componentManager_ = std::make_unique<ComponentManager>();
     entityManager_ = std::make_unique<EntityManager>();
     systemManager_ = std::make_unique<SystemManager>();
+}
+
+void World::Log(QString text) const
+{
+    outputWindow->appendPlainText(text);
 }
